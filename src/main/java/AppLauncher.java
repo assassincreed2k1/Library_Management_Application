@@ -1,4 +1,5 @@
-package src.main;
+package src.main.java;
+
 import javax.swing.SwingUtilities;
 
 public class AppLauncher {
