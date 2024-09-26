@@ -4,10 +4,11 @@ import javax.swing.SwingUtilities;
 
 public class AppLauncher {
     public static void main(String args[]) {
+        // Launch App code
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new DictionaryApplication().setVisible(true);
+                new Main().setVisible(true);
             }
         });
     }
