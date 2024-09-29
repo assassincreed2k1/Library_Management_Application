@@ -21,18 +21,33 @@ public class Main extends JFrame {
         setLayout(null);
         setResizable(true);
         
-        //Logo();
+        Menu();
         Search_Box();
+        //Add_Document();
+        //Remove_Document();
+
     }
 
-    private void Logo() {
+    private void Menu() {
+        JButton Menu_Button = new JButton();
+        Menu_Button.setBounds(0, 0, 50, 50);
+        Menu_Button.setText("Menu");
 
+        add(Menu_Button);
+
+        Menu_Button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Menu gui
+
+            }
+        });
     }
     
     private void Search_Box() {
         //Text Field
         JTextField searchTextField = new JTextField();
-        searchTextField.setBounds(15, 15, 520, 50);
+        searchTextField.setBounds(50, 0, 520, 50);
         searchTextField.setFont(new Font("Dialog", Font.PLAIN, 30));
         
         add(searchTextField);
@@ -45,7 +60,7 @@ public class Main extends JFrame {
 
         //Create Search button
         JButton Search_Button = new JButton(resizedIcon);
-        Search_Button.setBounds(15 + 525 , 15, 50, 50);
+        Search_Button.setBounds(50 + 520 , 0, 50, 50);
         
         add(Search_Button);
 
