@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "com.lma.App",
+            "projectName": "libmgr"
+        },
+        // {
+        //     "type": "java",
+        //     "name": "MainGUI",
+        //     "request": "launch",
+        //     "mainClass": "src.main.java.MainGUI",
+        //     "projectName": "Java App_7c7b03ce"
+        // },
+        // {
+        //     "type": "java",
+        //     "name": "Launch JavaFX",
+        //     "request": "launch",
+        //     "mainClass": "Main",
+        //     "vmArgs": "--module-path /path/to/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml"
+        // }
+    ]
+}
