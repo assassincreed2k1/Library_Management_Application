@@ -1,4 +1,4 @@
-package com.library;
+package com.libmgr;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -36,3 +36,5 @@ public class App extends Application {
     }
 
 }
+
+

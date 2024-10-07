@@ -1,4 +1,4 @@
-package com.library;
+package com.libmgr;
 
 import java.io.IOException;
 import javafx.fxml.FXML;

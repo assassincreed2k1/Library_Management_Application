@@ -1,0 +1,40 @@
+# build file
+/bin/
+/build/
+/target/
+
+# class files
+*.class
+
+# log files
+*.log
+
+# IntelliJ, Eclipse, NetBeans
+.idea/
+*.iml
+*.ipr
+*.iws
+/.project
+/.classpath
+/.settings/
+*.nbproject
+
+# Maven or Gradle file
+/.mvn/
+/.gradle/
+/*.jar
+/*.war
+/*.ear
+
+# cache
+/.cache/
+/out/
+
+# Tệp cấu hình môi trường cục bộ
+.env
+
+# Các tệp tạm thời của hệ điều hành
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
