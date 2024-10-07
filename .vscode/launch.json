@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "com.libmgr/com.libmgr.App",
+            "projectName": "libgmr-app"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "com.lma.App",
+            "projectName": "libmgr"
+        }
+    ]
+}
