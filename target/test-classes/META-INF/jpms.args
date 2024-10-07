@@ -1,0 +1,4 @@
+--patch-module
+com.library=_
+--add-reads
+com.library=ALL-UNNAMED
