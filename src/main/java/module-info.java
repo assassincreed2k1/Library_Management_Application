@@ -1,7 +1,7 @@
-module com.libmgr {
+module com.library {
     requires javafx.controls;
     requires javafx.fxml;
 
-    opens com.libmgr to javafx.fxml;
-    exports com.libmgr;
+    opens com.library to javafx.fxml;
+    exports com.library;
 }
