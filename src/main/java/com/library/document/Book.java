@@ -1,23 +1,30 @@
 package com.library.document;
 
-class Book extends Document {
+/**Class Book
+ * @param Name book name (title, Example: )
+ * @param Group Group (Example: "TextBook", "Novel", "PictureBook", ...)
+ * @param ID ID (Example: "000000001")
+ * @param Quantity Quantity (Example: 10)
+ * @param Author
+ */
+public class Book extends Document {
     private String IBSN;
     private String Author;
 
     // Getter setter for IBSN and Author
-    String getIBSN() {
+    public String getIBSN() {
         return IBSN;
     }
 
-    void setIBSN(String ibsn) {
+    public void setIBSN(String ibsn) {
         this.IBSN = ibsn;
     }
 
-    String getAuthor() {
+    public String getAuthor() {
         return Author;
     }
 
-    void setAuthor(String author) {
+    public void setAuthor(String author) {
         this.Author = author;
     }
 
@@ -35,10 +42,25 @@ class Book extends Document {
         this.Author = "None";
     }
 
-    public Book(String name, String group, String ID, int quantity, String ibsn, String author) {
-        super(name, group, ID, quantity);
+    /**Book:
+     * @param Name
+     * @param Group 
+     * @param ID 
+     * @param IBSN 
+     * @param Author
+     */
+    public Book(String name, String group, int quantity, String ibsn, String author) {
+        super(name, group, quantity);
         this.IBSN = ibsn;
         this.Author = author;
     }
     
+    /**Get Book info
+     * @return Name + Group + ID + IBSN + Author
+    */
+    public String getInfo() {
+        return "<" + super.getName() + "><" + super.getGroup() + "><" 
+        + super.getID() + "><" + IBSN + "><" + Author + ">";
+    }
+
 }

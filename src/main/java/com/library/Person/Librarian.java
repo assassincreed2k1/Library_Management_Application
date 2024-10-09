@@ -1,4 +1,4 @@
-package com.library;
+package com.library.Person;
 
 public class Librarian extends Person {
     private String employeeId;
@@ -34,7 +34,7 @@ public class Librarian extends Person {
     }
 
     public void setPosition(String position){
-        this.position = position
+        this.position = position;
     }
 
     /**
@@ -44,7 +44,7 @@ public class Librarian extends Person {
     @Override
     public String getDetails() {
         return String.format("%sEmployee ID: %s\nPosition: %s\n",
-         super.getDetails(), employeeId, position);
+        super.getDetails(), employeeId, position);
     }
 }
 

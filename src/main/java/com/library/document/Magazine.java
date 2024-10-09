@@ -7,11 +7,11 @@ public class Magazine extends Document {
     private String Author;
     
     // Getter/setter for Author
-    String getAuthor() {
+    public String getAuthor() {
         return Author;
     }
 
-    void setAuthor(String author) {
+    public void setAuthor(String author) {
         this.Author = author;
     }
 
@@ -20,11 +20,10 @@ public class Magazine extends Document {
         this.Author = "";
     }
 
-    public Magazine(String name, String group, String ID , int quantity, String author) {
-        super(name, group, ID, quantity);
+    /**Constructor for Magazine */
+    public Magazine(String name, String group, int quantity, String author) {
+        super(name, group, quantity);
         this.Author = author;
     }
-
-
 
 }
