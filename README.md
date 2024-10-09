@@ -1,4 +1,4 @@
-# **English Dictionary Application**
+# **Library Management Application**
 
 ## Bài tập lớn học phần Lập trình hướng đối tượng UET.
 

@@ -10,6 +10,8 @@ class Document {
     private String Name;
     private String Group;
     private String ID;
+    private int Quantity;
+    private boolean Available;
     
     /**Getter/Setter for 
      * @param Name
@@ -50,6 +52,18 @@ class Document {
         this.ID = id;
     }
 
+    /**Getter/Setter for 
+     * @param Quantity */
+    public int getQuantity() {
+        return Quantity;
+    }
+
+    /**Getter/Setter for 
+     * @param Quantity */
+    public void setQuantity(int Quantity) {
+        this.Quantity = Quantity;
+    }
+
     /**Default Document:
      * @param Name "No name"
      * @param Group "Default"
@@ -59,17 +73,30 @@ class Document {
         this.Name = "No name";
         this.Group = "Default";
         this.ID = "Invalid";
+        this.Quantity = 0;
+        this.Available = false;
     }
 
     /**Document:
-     * @param Name
-     * @param Group
-     * @param ID
+     * @param Name String
+     * @param Group String
+     * @param ID String 
+     * @param Quantity int
      */
-    public Document(String name, String group, String id) {
+    public Document(String name, String group, String id, int Quantity) {
         this.Name = name;
         this.Group = group;
         this.ID = id;
+        this.Quantity = Quantity;
+        if (this.Quantity > 0) {
+            this.Available = true;
+        } else {
+            this.Available = false;
+        }
+    }
+
+    public boolean isAvailable() {
+        return Available;
     }
 
 };
