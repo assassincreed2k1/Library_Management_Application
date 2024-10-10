@@ -1,4 +1,4 @@
-package com.library;
+package com.library.Person;
 
 public class Person {
     private String name;
