@@ -4,26 +4,27 @@ package com.library.document;
  * 
  */
 public class Magazine extends Document {
-    private String Author;
+    private String publisher;
+
     
     // Getter/setter for Author
     public String getAuthor() {
-        return Author;
+        return publisher;
     }
 
     public void setAuthor(String author) {
-        this.Author = author;
+        this.publisher = publisher;
     }
 
     public Magazine() {
         super();
-        this.Author = "";
+        this.publisher = "";
     }
 
     /**Constructor for Magazine */
-    public Magazine(String name, String group, int quantity, String author) {
+    public Magazine(String name, String group, int quantity, String publisher) {
         super(name, group, quantity);
-        this.Author = author;
+        this.publisher = publisher;
     }
 
 }

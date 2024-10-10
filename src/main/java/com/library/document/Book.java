@@ -5,41 +5,41 @@ package com.library.document;
  * @param Group Group (Example: "TextBook", "Novel", "PictureBook", ...)
  * @param ID ID (Example: "000000001")
  * @param Quantity Quantity (Example: 10)
- * @param Author
+ * @param author
  */
 public class Book extends Document {
-    private String IBSN;
-    private String Author;
+    private String ibsn;
+    private String author;
 
-    // Getter setter for IBSN and Author
+    // Getter setter for IBSN and author
     public String getIBSN() {
-        return IBSN;
+        return ibsn;
     }
 
     public void setIBSN(String ibsn) {
-        this.IBSN = ibsn;
+        this.ibsn = ibsn;
     }
 
     public String getAuthor() {
-        return Author;
+        return author;
     }
 
     public void setAuthor(String author) {
-        this.Author = author;
+        this.author = author;
     }
 
     /**Default Book:
      * @param Name "No name"
      * @param Group "Default"
      * @param ID "Invalid"
-     * @param IBSN ""
-     * @param Author "None"
+     * @param ibsn ""
+     * @param author "None"
      */
     public Book() {
         // Call constructor Document()
         super();
-        this.IBSN = "";
-        this.Author = "None";
+        this.ibsn = "";
+        this.author = "None";
     }
 
     /**Book:
@@ -47,20 +47,20 @@ public class Book extends Document {
      * @param Group 
      * @param ID 
      * @param IBSN 
-     * @param Author
+     * @param author
      */
     public Book(String name, String group, int quantity, String ibsn, String author) {
         super(name, group, quantity);
-        this.IBSN = ibsn;
-        this.Author = author;
+        this.ibsn = ibsn;
+        this.author = author;
     }
     
     /**Get Book info
-     * @return Name + Group + ID + IBSN + Author
+     * @return Name + Group + ID + IBSN + author
     */
     public String getInfo() {
         return "<" + super.getName() + "><" + super.getGroup() + "><" 
-        + super.getID() + "><" + IBSN + "><" + Author + ">";
+        + super.getID() + "><" + ibsn + "><" + author + ">";
     }
 
     
