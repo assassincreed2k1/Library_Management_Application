@@ -12,7 +12,7 @@ public class Magazine extends Document {
         return publisher;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(String publisher) {
         this.publisher = publisher;
     }
 
