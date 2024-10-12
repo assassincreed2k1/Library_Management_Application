@@ -1,7 +1,7 @@
 package com.library.document;
 
 /**Class Book
- * @param Name book name (title, Example: )
+ * @param Name Name of book (title, Example: )
  * @param Group Group (Example: "TextBook", "Novel", "PictureBook", ...)
  * @param ID ID (Example: "000000001")
  * @param Quantity Quantity (Example: 10)
