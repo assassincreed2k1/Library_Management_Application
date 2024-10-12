@@ -10,12 +10,7 @@ public class Magazine extends Document {
     private String publisher;
     private String genre;
 
-<<<<<<< HEAD
     // Getter/setter for Publisher
-=======
-    
-    // Getter/setter for Author
->>>>>>> 7daad81e065f6645a05ab0fabd1d5570ae378510
     public String getPublisher() {
         return publisher;
     }
