@@ -8,11 +8,11 @@ public class Magazine extends Document {
 
     
     // Getter/setter for Author
-    public String getAuthor() {
+    public String getPublisher() {
         return publisher;
     }
 
-    public void setAuthor(String author) {
+    public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
 
