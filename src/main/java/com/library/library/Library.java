@@ -19,10 +19,10 @@ public class Library {
         this.listNews = new ArrayList<>();
     }
 
-    /**add new book to listBook.
+    /**add new Book to listBook.
      * @param book new book.
      */
-    public void addBook(Book book) {
+    public void addDocuments(Book book) {
         if (listBooks.size() == 0) {
             listBooks.add(book);
             return;
@@ -34,7 +34,6 @@ public class Library {
                 return;
             }
         }
-
         listBooks.add(book);
     }
 
@@ -119,7 +118,57 @@ public class Library {
         }
         return null;
     }
-    
-    
+
+    /**
+     * add new Magazine to listBook.
+     * 
+     * @param book new Magazine.
+     */
+    public void addDocuments(Magazine magazine) {
+        if (listMagazines.size() == 0) {
+            listMagazines.add(magazine);
+            return;
+        }
+
+        for (Magazine iterator : listMagazines) {
+            if (iterator.equals(magazine)) {
+                iterator.setQuantity(iterator.getQuantity() + magazine.getQuantity());
+                return;
+            }
+        }
+        listMagazines.add(magazine);
+    }
+
+    /**
+     * Remove a listMagazines from listMagazines by its ID.
+     * 
+     * @param id Magazine's ID.
+     * @return true when removed successful, or false if not found this id
+     */
+    public boolean removeMagazine(String id) {
+        for (int i = 0; i < listMagazines.size(); i++) {
+            if (listMagazines.get(i).getID().equals(id)) {
+                listMagazines.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Find Magazines by author.
+     * 
+     * @param Publisher Magazine Publisher.
+     * @return list of Magazines by the given Publisher. Return empty list if not found
+     */
+    public ArrayList<Magazine> findMagazinesByPublisher(String publisher) {
+        ArrayList<Magazine> foundMagazines = new ArrayList<>();
+        for (Magazine magazine : listMagazines) {
+            if (magazine.getPublisher().equalsIgnoreCase(publisher)) {
+                foundMagazines.add(magazine);
+            }
+        }
+        return foundMagazines;
+    }
 
 };
