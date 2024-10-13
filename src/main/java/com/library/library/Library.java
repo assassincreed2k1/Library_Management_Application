@@ -3,7 +3,9 @@ package com.library.library;
 import java.util.ArrayList;
 import com.library.document.*;
 
-/**Library Management class
+/**
+ * Library Management class
+ * 
  * @param listBook
  * @param listMagazine
  * @param listNews
@@ -19,7 +21,9 @@ public class Library {
         this.listNews = new ArrayList<>();
     }
 
-    /**add new Book to listBook.
+    /**
+     * add new Book to listBook.
+     * 
      * @param book new book.
      */
     public void addDocuments(Book book) {
@@ -37,7 +41,9 @@ public class Library {
         listBooks.add(book);
     }
 
-    /**Remove a book from listBooks by its ID.
+    /**
+     * Remove a book from listBooks by its ID.
+     * 
      * @param id book ID.
      * @return true when removed successful, or false if not found this id
      */
@@ -51,7 +57,9 @@ public class Library {
         return false;
     }
 
-    /**Find a book by its ID.
+    /**
+     * Find a book by its ID.
+     * 
      * @param id book ID.
      * @return the found book, or null if not found.
      */
@@ -64,7 +72,9 @@ public class Library {
         return null;
     }
 
-    /**Find books by name.
+    /**
+     * Find books by name.
+     * 
      * @param name book name.
      * @return list of books with the given name. return empty list if not found
      */
@@ -78,7 +88,9 @@ public class Library {
         return foundBooks;
     }
 
-    /**Find books by group.
+    /**
+     * Find books by group.
+     * 
      * @param group book group.
      * @return list of books in the given group. Return empty list if not found
      */
@@ -92,7 +104,9 @@ public class Library {
         return foundBooks;
     }
 
-    /**Find books by author.
+    /**
+     * Find books by author.
+     * 
      * @param author book author.
      * @return list of books by the given author. Return empty list if not found
      */
@@ -106,7 +120,9 @@ public class Library {
         return foundBooks;
     }
 
-    /**Find a book by IBSN.
+    /**
+     * Find a book by IBSN.
+     * 
      * @param ibsn book IBSN.
      * @return the found book, or null if not found.
      */
@@ -120,7 +136,7 @@ public class Library {
     }
 
     /**
-     * add new Magazine to listBook.
+     * add a new Magazine to listBook.
      * 
      * @param book new Magazine.
      */
@@ -158,8 +174,9 @@ public class Library {
     /**
      * Find Magazines by author.
      * 
-     * @param Publisher Magazine Publisher.
-     * @return list of Magazines by the given Publisher. Return empty list if not found
+     * @param publisher Magazine Publisher.
+     * @return list of Magazines by the given Publishers. Return empty list if not
+     *         found
      */
     public ArrayList<Magazine> findMagazinesByPublisher(String publisher) {
         ArrayList<Magazine> foundMagazines = new ArrayList<>();
@@ -171,4 +188,19 @@ public class Library {
         return foundMagazines;
     }
 
+    /**
+     * Find Magazines by Genre.
+     * 
+     * @param genre Magazine Genre.
+     * @return list of Magazines by the given Genres. Return empty list if not found
+     */
+    public ArrayList<Magazine> findMagazinesByGenre(String genre) {
+        ArrayList<Magazine> foundMagazines = new ArrayList<>();
+        for (Magazine magazine : listMagazines) {
+            if (magazine.getGenre().equalsIgnoreCase(genre)) {
+                foundMagazines.add(magazine);
+            }
+        }
+        return foundMagazines;
+    }
 };

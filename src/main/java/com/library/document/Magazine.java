@@ -10,6 +10,19 @@ public class Magazine extends Document {
     private String publisher;
     private String genre;
 
+    public Magazine() {
+        super();
+        this.publisher = "";
+        this.genre = "";
+    }
+
+    /** Constructor for Magazine */
+    public Magazine(String name, String group, int quantity, String publisher, String genre) {
+        super(name, group, quantity);
+        this.publisher = publisher;
+        this.genre = genre;
+    }
+
     // Getter/setter for Publisher
     public String getPublisher() {
         return publisher;
@@ -25,19 +38,6 @@ public class Magazine extends Document {
     }
 
     public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public Magazine() {
-        super();
-        this.publisher = "";
-        this.genre = "";
-    }
-
-    /**Constructor for Magazine */
-    public Magazine(String name, String group, int quantity, String publisher, String genre) {
-        super(name, group, quantity);
-        this.publisher = publisher;
         this.genre = genre;
     }
 
