@@ -5,6 +5,20 @@
             "type": "java",
             "name": "App",
             "request": "launch",
+            "mainClass": "com.library/com.library.App",
+            "projectName": "library-app"
+        },
+        {
+            "type": "java",
+            "name": "Connect",
+            "request": "launch",
+            "mainClass": "com.library/com.library.Connect",
+            "projectName": "library-app"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
             "mainClass": "com.libmgr/com.libmgr.App",
             "projectName": "libgmr-app"
         },
