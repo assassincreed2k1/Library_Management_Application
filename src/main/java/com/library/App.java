@@ -7,13 +7,22 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
 
-/**
- * JavaFX App
- */
 public class App extends Application {
 
     private static Scene scene;
+    private static Connection connection; // Declare the connection variable
+
+    @Override
+    public void init() {
+        connection = Connect.connect(); // Connect to SQLite during initialization
+        if (connection != null) {
+            System.out.println("Database connection established successfully.");
+        } else {
+            System.out.println("Failed to establish database connection.");
+        }
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -34,7 +43,4 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-
 }
-
-
