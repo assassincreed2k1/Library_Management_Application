@@ -2,28 +2,46 @@ package com.library.library;
 
 import java.util.ArrayList;
 import com.library.document.*;
+
 /**
- * Library Management class
+ * The {@code Library} class manages collections of {@link Book},
+ * {@link Magazine}, and {@link Newspaper}.
+ * It provides methods to add, remove, and search for these documents within
+ * their respective collections.
+ * <p>
+ * Example:
  * 
- * @param listBook
- * @param listMagazine
- * @param listNews
+ * <pre>
+ * Library library = new Library();
+ * Book book = new Book("Book Title", "Fiction", 10, "Author", "12345");
+ * library.addDocuments(book);
+ * </pre>
+ * </p>
+ * 
+ * @param listBooks      The collection of books in the library.
+ * @param listMagazines  The collection of magazines in the library.
+ * @param listNewspapers The collection of newspapers in the library.
  */
 public class Library {
     private ArrayList<Book> listBooks;
     private ArrayList<Magazine> listMagazines;
-    private ArrayList<News> listNews;
+    private ArrayList<Newspaper> listNewspapers;
 
+    /**
+     * Default constructor for the {@code Library} class.
+     * Initializes empty lists for books, magazines, and newspapers.
+     */
     public Library() {
         this.listBooks = new ArrayList<>();
         this.listMagazines = new ArrayList<>();
-        this.listNews = new ArrayList<>();
+        this.listNewspapers = new ArrayList<>();
     }
 
     /**
-     * add new Book to listBook.
+     * Adds a new {@link Book} to the library's book collection.
+     * If the book already exists, its quantity is updated.
      * 
-     * @param book new book.
+     * @param book The new book to add.
      */
     public void addDocuments(Book book) {
         if (listBooks.size() == 0) {
@@ -41,10 +59,10 @@ public class Library {
     }
 
     /**
-     * Remove a book from listBooks by its ID.
+     * Removes a {@link Book} from the library's book collection by its ID.
      * 
-     * @param id book ID.
-     * @return true when removed successful, or false if not found this id
+     * @param id The ID of the book to remove.
+     * @return true if the book was successfully removed, false if not found.
      */
     public boolean removeBook(String id) {
         for (int i = 0; i < listBooks.size(); i++) {
@@ -57,10 +75,10 @@ public class Library {
     }
 
     /**
-     * Find a book by its ID.
+     * Finds a {@link Book} by its ID.
      * 
-     * @param id book ID.
-     * @return the found book, or null if not found.
+     * @param id The ID of the book to find.
+     * @return The found book, or null if not found.
      */
     public Book findBookByID(String id) {
         for (Book book : listBooks) {
@@ -72,10 +90,11 @@ public class Library {
     }
 
     /**
-     * Find books by name.
+     * Finds books by name.
      * 
-     * @param name book name.
-     * @return list of books with the given name. return empty list if not found
+     * @param name The name of the book(s) to find.
+     * @return A list of books with the given name. Returns an empty list if not
+     *         found.
      */
     public ArrayList<Book> findBookByName(String name) {
         ArrayList<Book> foundBooks = new ArrayList<>();
@@ -88,10 +107,11 @@ public class Library {
     }
 
     /**
-     * Find books by group.
+     * Finds books by group.
      * 
-     * @param group book group.
-     * @return list of books in the given group. Return empty list if not found
+     * @param group The group or category of the book(s) to find.
+     * @return A list of books in the given group. Returns an empty list if not
+     *         found.
      */
     public ArrayList<Book> findBookByGroup(String group) {
         ArrayList<Book> foundBooks = new ArrayList<>();
@@ -104,10 +124,11 @@ public class Library {
     }
 
     /**
-     * Find books by author.
+     * Finds books by author.
      * 
-     * @param author book author.
-     * @return list of books by the given author. Return empty list if not found
+     * @param author The author of the book(s) to find.
+     * @return A list of books by the given author. Returns an empty list if not
+     *         found.
      */
     public ArrayList<Book> findBookByAuthor(String author) {
         ArrayList<Book> foundBooks = new ArrayList<>();
@@ -120,10 +141,10 @@ public class Library {
     }
 
     /**
-     * Find a book by IBSN.
+     * Finds a {@link Book} by its ISBN.
      * 
-     * @param ibsn book IBSN.
-     * @return the found book, or null if not found.
+     * @param ibsn The ISBN of the book to find.
+     * @return The found book, or null if not found.
      */
     public Book findBookByIBSN(String ibsn) {
         for (Book book : listBooks) {
@@ -135,9 +156,10 @@ public class Library {
     }
 
     /**
-     * add a new Magazine to listBook.
+     * Adds a new {@link Magazine} to the library's magazine collection.
+     * If the magazine already exists, its quantity is updated.
      * 
-     * @param book new Magazine.
+     * @param magazine The new magazine to add.
      */
     public void addDocuments(Magazine magazine) {
         if (listMagazines.size() == 0) {
@@ -155,10 +177,10 @@ public class Library {
     }
 
     /**
-     * Remove a listMagazines from listMagazines by its ID.
+     * Removes a {@link Magazine} from the library's magazine collection by its ID.
      * 
-     * @param id Magazine's ID.
-     * @return true when removed successful, or false if not found this id
+     * @param id The ID of the magazine to remove.
+     * @return true if the magazine was successfully removed, false if not found.
      */
     public boolean removeMagazine(String id) {
         for (int i = 0; i < listMagazines.size(); i++) {
@@ -171,11 +193,11 @@ public class Library {
     }
 
     /**
-     * Find Magazines by author.
+     * Finds magazines by publisher.
      * 
-     * @param publisher Magazine Publisher.
-     * @return list of Magazines by the given Publishers. Return empty list if not
-     *         found
+     * @param publisher The publisher of the magazine(s) to find.
+     * @return A list of magazines by the given publisher. Returns an empty list if
+     *         not found.
      */
     public ArrayList<Magazine> findMagazinesByPublisher(String publisher) {
         ArrayList<Magazine> foundMagazines = new ArrayList<>();
@@ -188,10 +210,11 @@ public class Library {
     }
 
     /**
-     * Find Magazines by Genre.
+     * Finds magazines by genre.
      * 
-     * @param genre Magazine Genre.
-     * @return list of Magazines by the given Genres. Return empty list if not found
+     * @param genre The genre of the magazine(s) to find.
+     * @return A list of magazines by the given genre. Returns an empty list if not
+     *         found.
      */
     public ArrayList<Magazine> findMagazinesByGenre(String genre) {
         ArrayList<Magazine> foundMagazines = new ArrayList<>();
@@ -202,4 +225,93 @@ public class Library {
         }
         return foundMagazines;
     }
-};
+
+    /**
+     * Adds a new {@link Newspaper} to the library's newspaper collection.
+     * If the newspaper already exists, its quantity is updated.
+     * 
+     * @param newspaper The new newspaper to add.
+     */
+    public void addDocuments(Newspaper newspaper) {
+        if (listNewspapers.size() == 0) {
+            listNewspapers.add(newspaper);
+            return;
+        }
+
+        for (Newspaper iterator : listNewspapers) {
+            if (iterator.equals(newspaper)) {
+                iterator.setQuantity(iterator.getQuantity() + newspaper.getQuantity());
+                return;
+            }
+        }
+        listNewspapers.add(newspaper);
+    }
+
+    /**
+     * Removes a {@link Newspaper} from the library's newspaper collection by its
+     * ID.
+     * 
+     * @param id The ID of the newspaper to remove.
+     * @return true if the newspaper was successfully removed, false if not found.
+     */
+    public boolean removeNewspaper(String id) {
+        for (int i = 0; i < listNewspapers.size(); i++) {
+            if (listNewspapers.get(i).getID().equals(id)) {
+                listNewspapers.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Finds Newspapers by source.
+     * 
+     * @param source The source of the Newspaper(s) to find.
+     * @return A list of Newspapers by the given source. Returns an empty list if not
+     *         found.
+     */
+    public ArrayList<Newspaper> findNewspapersBySource(String source) {
+        ArrayList<Newspaper> foundNewspaper = new ArrayList<>();
+        for (Newspaper newspaper : listNewspapers) {
+            if (newspaper.getSource().equals(source)) {
+                foundNewspaper.add(newspaper);
+            }
+        }
+        return foundNewspaper;
+    }
+
+    /**
+     * Finds Newspapers by category.
+     * 
+     * @param source The category of the Newspaper(s) to find.
+     * @return A list of Newspapers by the given category. Returns an empty list if
+     *         not found.
+     */
+    public ArrayList<Newspaper> findNewspapersByCategory(String category) {
+        ArrayList<Newspaper> foundNewspaper = new ArrayList<>();
+        for (Newspaper newspaper : listNewspapers) {
+            if (newspaper.getSource().equals(category)) {
+                foundNewspaper.add(newspaper);
+            }
+        }
+        return foundNewspaper;
+    }
+
+    /**
+     * Finds Newspapers by region.
+     * 
+     * @param source The category of the Newspaper(s) to find.
+     * @return A list of Newspapers by the given region. Returns an empty list if
+     *         not found.
+     */
+    public ArrayList<Newspaper> findNewspapersByRegion(String region) {
+        ArrayList<Newspaper> foundNewspaper = new ArrayList<>();
+        for (Newspaper newspaper : listNewspapers) {
+            if (newspaper.getSource().equals(region)) {
+                foundNewspaper.add(newspaper);
+            }
+        }
+        return foundNewspaper;
+    }
+}
