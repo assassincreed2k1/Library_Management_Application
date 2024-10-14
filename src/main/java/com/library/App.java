@@ -15,16 +15,6 @@ public class App extends Application {
     private static Connection connection; // Declare the connection variable
 
     @Override
-    public void init() {
-        connection = Connect.connect(); // Connect to SQLite during initialization
-        if (connection != null) {
-            System.out.println("Database connection established successfully.");
-        } else {
-            System.out.println("Failed to establish database connection.");
-        }
-    }
-
-    @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setScene(scene);
@@ -41,6 +31,20 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        //test dabase work
+        /*myDatabase myDB = new myDatabase();
+        myDB.createDB();
+        System.out.println("db created successfull");
+        myDB.createTable();
+        System.out.println("table is created");
+        myDB.insertData();
+        System.out.println("inserted data");
+        myDB.updateData();
+        System.out.println("updated data");
+        myDB.selectData();
+        System.out.println("selected data done");
+        myDB.deleteData();
+        System.out.println("delete done");.*/
         launch();
     }
 }
