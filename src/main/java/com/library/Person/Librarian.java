@@ -12,8 +12,8 @@ public class Librarian extends Person {
      * @param dateOfBirth
      * @param phoneNumber
      * @param email
-     * @param employeeId
-     * @param position la chuc vu
+     * @param employeeId ID cua nguoi thu thu
+     * @param position chuc vu cua thu thu
      */
     public Librarian(String name, String address, String gender, String dateOfBirth, String phoneNumber, String email, String employeeId, String position){
         super(name, address, gender, dateOfBirth, phoneNumber, email);
