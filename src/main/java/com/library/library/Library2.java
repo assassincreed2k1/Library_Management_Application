@@ -87,6 +87,14 @@ public class Library2 {
         }
     }
 
+    public void addDocuments(Magazine mgz) {
+
+    }
+
+    public void addDocuments(Newspaper news) {
+
+    }
+
     public void removeDocument(Book book) {
         String sql_statement = "DELETE FROM Books WHERE id = ?";
 
@@ -98,6 +106,14 @@ public class Library2 {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void removeDocument(Magazine mgz) {
+        
+    }
+
+    public void removeDocument(Newspaper news) {
+
     }
 
 }
