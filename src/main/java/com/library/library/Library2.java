@@ -15,9 +15,32 @@ public class Library2 {
 
     public Library2() {
         createDataBase();
-        createListBook();
-        createListMagazine();
-        createListNewspaper();
+        // Create listBooks
+        createList("CREATE TABLE IF NOT EXISTS Books ("
+                    + "ID VARCHAR(255) PRIMARY KEY, "
+                    + "Name VARCHAR(255), "
+                    + "Group VARCHAR(50), "
+                    + "Author VARCHAR(255), "
+                    + "Quantity INT)");
+
+        // Create listMagazines
+        createList("CREATE TABLE IF NOT EXISTS Magazines ("
+                    + "ID VARCHAR(255) PRIMARY KEY, "
+                    + "Name VARCHAR(255), "
+                    + "Group VARCHAR(50), "
+                    + "Publisher VARCHAR(255), "
+                    + "Genre VARCHAR(255), "
+                    + "Quantity INT)" );
+
+        // Create listNewspaper
+        createList("CREATE TABLE IF NOT EXISTS Newspaper ("
+                            + "ID VARCHAR(255) PRIMARY KEY, "
+                            + "Name VARCHAR(255), "
+                            + "Group VARCHAR(50), "
+                            + "Source VARCHAR(255), "
+                            + "Category VARCHAR(255), "
+                            + "Region VARCHAR(255), "
+                            + "Quantity INT)");
     }
 
     /**Create new database */
@@ -33,14 +56,7 @@ public class Library2 {
         }
     }
 
-    private void createListBook() {
-        String sql_statement = "CREATE TABLE IF NOT EXISTS Books ("
-                            + "ID VARCHAR(255) PRIMARY KEY, "
-                            + "Name VARCHAR(255), "
-                            + "Group VARCHAR(50), "
-                            + "Author VARCHAR(255), "
-                            + "Quantity INT)";  
-        
+    private void createList(String sql_statement) {
         try (Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement()) {
             // Create a new table
@@ -51,46 +67,6 @@ public class Library2 {
         }
     }
     
-    private void createListMagazine() {
-        String sql_statement = "CREATE TABLE IF NOT EXISTS Magazines ("
-                            + "ID VARCHAR(255) PRIMARY KEY, "
-                            + "Name VARCHAR(255), "
-                            + "Group VARCHAR(50), "
-                            + "Publisher VARCHAR(255), "
-                            + "Genre VARCHAR(255), "
-                            + "Quantity INT)";  
-    
-        try (Connection conn = DriverManager.getConnection(url);
-        Statement stmt = conn.createStatement()) {
-            // Create a new table
-            stmt.execute(sql_statement);
-            System.out.println("Table created or already created");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    private void createListNewspaper() {
-        String sql_statement = "CREATE TABLE IF NOT EXISTS Newspaper ("
-                            + "ID VARCHAR(255) PRIMARY KEY, "
-                            + "Name VARCHAR(255), "
-                            + "Group VARCHAR(50), "
-                            + "Source VARCHAR(255), "
-                            + "Category VARCHAR(255), "
-                            + "Region VARCHAR(255), "
-                            + "Quantity INT)";  
-    
-        try (Connection conn = DriverManager.getConnection(url);
-        Statement stmt = conn.createStatement()) {
-            // Create a new table
-            stmt.execute(sql_statement);
-            System.out.println("Table created or already created");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
-
     /**
      * Adds a new {@link Book} to the library's book collection.
      * If the book already exists, its quantity is updated.
