@@ -21,7 +21,7 @@ public class Library2 {
                     + "Name VARCHAR(255), "
                     + "Group VARCHAR(50), "
                     + "Author VARCHAR(255), "
-                    + "Quantity INT)");
+                    + "isAvailable BOOLEAN)");
 
         // Create listMagazines
         createList("CREATE TABLE IF NOT EXISTS Magazines ("
@@ -30,7 +30,7 @@ public class Library2 {
                     + "Group VARCHAR(50), "
                     + "Publisher VARCHAR(255), "
                     + "Genre VARCHAR(255), "
-                    + "Quantity INT)" );
+                    + "isAvailable BOOLEAN)");
 
         // Create listNewspaper
         createList("CREATE TABLE IF NOT EXISTS Newspaper ("
@@ -40,7 +40,7 @@ public class Library2 {
                             + "Source VARCHAR(255), "
                             + "Category VARCHAR(255), "
                             + "Region VARCHAR(255), "
-                            + "Quantity INT)");
+                            + "isAvailable BOOLEAN)");
     }
 
     /**Create new database */
@@ -58,7 +58,7 @@ public class Library2 {
 
     private void createList(String sql_statement) {
         try (Connection conn = DriverManager.getConnection(url);
-        Statement stmt = conn.createStatement()) {
+             Statement stmt = conn.createStatement()) {
             // Create a new table
             stmt.execute(sql_statement);
             System.out.println("Table created or already created");
@@ -66,23 +66,35 @@ public class Library2 {
             System.out.println(e.getMessage());
         }
     }
-    
+
     /**
      * Adds a new {@link Book} to the library's book collection.
-     * If the book already exists, its quantity is updated.
-     * 
      * @param book The new book to add.
      */
     public void addDocuments(Book book) {
         String sql_statement = "INSERT INTO Books (ID, Name, Group, Author) VALUES (?, ?, ?, ?)";
+
         try (Connection conn = DriverManager.getConnection(url);
-        PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
             pstmt.setString(1, book.getID());
             pstmt.setString(2, book.getName());
             pstmt.setString(3, book.getGroup());
             pstmt.setString(4, book.getAuthor());
             pstmt.executeUpdate();
             System.out.println("Data inserted successfully");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void removeDocument(Book book) {
+        String sql_statement = "DELETE FROM Books WHERE id = ?";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+            pstmt.setString(1, book.getID());
+            pstmt.executeUpdate();
+            System.out.println("Data deleted successfully");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
