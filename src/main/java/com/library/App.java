@@ -13,6 +13,15 @@ public class App extends Application {
 
     private static Scene scene;
     private static Connection connection; // Declare the connection variable
+    
+    @Override
+    public void init() {
+        if (connection != null) {
+            System.out.println("Database connection established successfully.");
+        } else {
+            System.out.println("Failed to establish database connection.");
+        }        
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -21,7 +30,7 @@ public class App extends Application {
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
+    static void setRoot(String fxml) throws IOException { 
         scene.setRoot(loadFXML(fxml));
     }
 
@@ -30,21 +39,11 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
+    public static Connection getConnection() {
+        return connection; // Return the database connection
+    }
+
     public static void main(String[] args) {
-        //test dabase work
-        /*myDatabase myDB = new myDatabase();
-        myDB.createDB();
-        System.out.println("db created successfull");
-        myDB.createTable();
-        System.out.println("table is created");
-        myDB.insertData();
-        System.out.println("inserted data");
-        myDB.updateData();
-        System.out.println("updated data");
-        myDB.selectData();
-        System.out.println("selected data done");
-        myDB.deleteData();
-        System.out.println("delete done");.*/
         launch();
     }
 }

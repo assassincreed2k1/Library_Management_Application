@@ -1,5 +1,6 @@
 package com.library.library;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import com.library.document.*;
 
@@ -31,7 +32,8 @@ public class Library {
      * Default constructor for the {@code Library} class.
      * Initializes empty lists for books, magazines, and newspapers.
      */
-    public Library() {
+    public Library(Connection cn) {
+        
         this.listBooks = new ArrayList<>();
         this.listMagazines = new ArrayList<>();
         this.listNewspapers = new ArrayList<>();
