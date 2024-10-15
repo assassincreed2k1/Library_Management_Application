@@ -1,6 +1,4 @@
-package com.library.library;
-
-import com.library.document.*;
+package com.library.service;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -8,12 +6,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import com.library.model.*;
+import com.library.model.doc.Book;
+import com.library.model.doc.Magazine;
+import com.library.model.doc.Newspaper;
+
 import java.sql.ResultSet;
 
-public class Library2 {
+public class LibraryService {
     final private String url = "jdbc:sqlite:db/library.db";
 
-    public Library2() {
+    public LibraryService() {
         createDataBase();
         // Create listBooks
         createList("CREATE TABLE IF NOT EXISTS Books ("

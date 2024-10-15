@@ -1,4 +1,4 @@
-package com.library.Person;
+package com.library.model.Person;
 
 public class Librarian extends Person {
     private String employeeId;

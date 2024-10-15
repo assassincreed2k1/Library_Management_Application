@@ -1,4 +1,4 @@
-package com.library.Person;
+package com.library.model.Person;
 
 public class Member extends Person {
     private String membershipId;

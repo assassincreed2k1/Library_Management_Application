@@ -1,8 +1,12 @@
-package com.library.library;
+package com.library.service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import com.library.document.*;
+
+import com.library.model.*;
+import com.library.model.doc.Book;
+import com.library.model.doc.Magazine;
+import com.library.model.doc.Newspaper;
 
 /**
  * The {@code Library} class manages collections of {@link Book},
