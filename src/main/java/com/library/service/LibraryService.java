@@ -42,11 +42,9 @@ public class LibraryService {
     /** Create new database */
     public void createDataBase() {
         try (Connection cn = DriverManager.getConnection(url)) {
-            if (cn == null) {
                 DatabaseMetaData meta = cn.getMetaData();
                 System.out.println("The driver name is " + meta.getDriverName());
                 System.out.println("A new database has been created");
-            }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
@@ -55,7 +53,6 @@ public class LibraryService {
     private void createList(String sql_statement) {
         try (Connection conn = DriverManager.getConnection(url);
                 Statement stmt = conn.createStatement()) {
-            // Create a new table
             stmt.execute(sql_statement);
             System.out.println("Table created or already created");
         } catch (SQLException e) {

@@ -58,7 +58,6 @@ public class BookManagement extends LibraryService {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
-
     }
 
     /** Remove Book */
@@ -74,5 +73,4 @@ public class BookManagement extends LibraryService {
             System.out.println(e.getMessage());
         }
     }
-
 }

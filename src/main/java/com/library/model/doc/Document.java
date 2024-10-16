@@ -8,14 +8,14 @@ class Document {
     private boolean isAvailable;
 
     public Document() {
-        this.ID = generateID();
+        this.id = generateID();
         this.name = "No name";
         this.group = "Default";
         this.isAvailable = false;
     }
 
     public Document(String name, String group, int quantity) {
-        this.ID = generateID(); 
+        this.id = generateID(); 
         this.name = name;
         this.group = group;
         this.isAvailable = true;
@@ -29,7 +29,7 @@ class Document {
 
     // Getter / setter
     public String getID() {
-        return ID;
+        return id;
     }
 
     public String getName() {

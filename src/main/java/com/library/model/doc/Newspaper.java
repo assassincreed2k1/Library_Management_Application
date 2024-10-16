@@ -3,16 +3,13 @@ package com.library.model.doc;
 /**
  * The {@code Newspaper} class represents a type of {@link Document}.
  * 
- * @param source   The source of the newspaper (e.g., Cong An Nhan Dan
- *                 Newspaper).
- * @param category The category of the newspaper (e.g., politics, sports,
- *                 entertainment).
- * @param region   The region of publication for the newspaper (e.g., National,
- *                 International).
+ * @param source The source of the newspaper (e.g., Cong An Nhan Dan
+ *               Newspaper).
+ * @param region The region of publication for the newspaper (e.g., National,
+ *               International).
  */
 public class Newspaper extends Document {
     private String source;
-    private String category;
     private String region;
 
     /**
@@ -25,19 +22,17 @@ public class Newspaper extends Document {
 
     /**
      * Constructs a {@code Newspaper} with the specified name, group, quantity,
-     * source, category, and region.
+     * source, and region.
      * 
      * @param name     The name of the newspaper.
      * @param group    The group or category the newspaper belongs to.
      * @param quantity The number of copies of the newspaper.
      * @param source   The source of the newspaper.
-     * @param category The category of the newspaper.
      * @param region   The region where the newspaper is published.
      */
-    public Newspaper(String name, String group, int quantity, String source, String category, String region) {
+    public Newspaper(String name, String group, int quantity, String source, String region) {
         super(name, group, quantity);
         this.source = source;
-        this.category = category;
         this.region = region;
     }
 
@@ -57,25 +52,6 @@ public class Newspaper extends Document {
      */
     public void setSource(String source) {
         this.source = source;
-    }
-
-    /**
-     * Gets the category of this newspaper.
-     * 
-     * @param category The category of the newspaper.
-     * @return The category of the newspaper.
-     */
-    public String getCategory(String category) {
-        return this.category;
-    }
-
-    /**
-     * Sets the category of this newspaper.
-     * 
-     * @param category The new category to set.
-     */
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     /**

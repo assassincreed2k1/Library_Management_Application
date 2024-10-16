@@ -10,8 +10,8 @@ import com.library.model.doc.Magazine;
 public class MagazineManagement extends LibraryService {
     public void addDocuments(Magazine mgz) {
         String sql_statement = "INSERT INTO Magazines "
-                + "(id, name, group, publisher, genre, isAvailable) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+                + "(id, name, group, publisher, isAvailable) "
+                + "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(super.url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
@@ -19,8 +19,7 @@ public class MagazineManagement extends LibraryService {
             pstmt.setString(2, mgz.getName());
             pstmt.setString(3, mgz.getGroup());
             pstmt.setString(4, mgz.getPublisher());
-            pstmt.setString(5, mgz.getGenre());
-            pstmt.setBoolean(6, mgz.getIsAvailable());
+            pstmt.setBoolean(5, mgz.getIsAvailable());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -28,11 +27,39 @@ public class MagazineManagement extends LibraryService {
     }
 
     public void updateDocuments(Magazine magazine) {
+        String sql_stmt = "UPDATE Magazines SET "
+                + "name = ?, "
+                + "group = ?, "
+                + "publisher = ?, "
+                + "isAvailable = ? "
+                + "WHERE id = ?";
 
+        String group = magazine.getGroup();
+        String publisher = magazine.getPublisher();
+        boolean isAvailable = magazine.getIsAvailable();
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_stmt)) {
+            pstmt.setString(1, magazine.getName());
+            pstmt.setString(2, group);
+            pstmt.setString(3, publisher);
+            pstmt.setBoolean(4, isAvailable);
+            pstmt.setString(5, magazine.getID());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
-    public void removeDocument(Magazine mgz) {
-
+    public void removeDocument(Magazine magazine) {
+        String sql_statement = "DELETE FROM Magazines WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+            pstmt.setString(1, magazine.getID());
+            pstmt.executeUpdate();
+            System.out.println("Data deleted successfully");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
-
 }

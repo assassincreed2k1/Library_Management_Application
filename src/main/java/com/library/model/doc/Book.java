@@ -6,7 +6,6 @@ package com.library.model.doc;
  * @param Name     Name of book (title, Example: )
  * @param Group    Group (Example: "TextBook", "Novel", "PictureBook", ...)
  * @param ID       ID (Example: "000000001")
- * @param Quantity Quantity (Example: 10)
  * @param author
  */
 public class Book extends Document {
