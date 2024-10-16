@@ -1,4 +1,4 @@
-package com.library.document;
+package com.library.model.document;
 
 class Document {
     private static long idCounter = 0; // Static long integer generate id

@@ -1,6 +1,4 @@
-package com.library.library;
-
-import com.library.document.*;
+package com.library.service;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -8,6 +6,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import com.library.model.document.*;
+
 import java.sql.ResultSet;
 
 public class Library2 {

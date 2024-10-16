@@ -1,4 +1,4 @@
-package com.library.document;
+package com.library.model.document;
 
 /**
  * Class Book
