@@ -5,14 +5,12 @@ class Document {
     private String ID; 
     private String Name;
     private String Group;
-    private int Quantity;
     private boolean Available;
 
     public Document() {
         this.ID = generateID();
         this.Name = "No name";
         this.Group = "Default";
-        this.Quantity = 0;
         this.Available = false;
     }
 
@@ -20,8 +18,7 @@ class Document {
         this.ID = generateID(); 
         this.Name = name;
         this.Group = group;
-        this.Quantity = quantity;
-        this.Available = quantity > 0;
+        this.Available = true;
     }
 
     // ID Auto generate, Example: 000000001, 012345678,...
@@ -51,15 +48,11 @@ class Document {
         this.Group = group;
     }
 
-    public int getQuantity() {
-        return Quantity;
+    public void setAvailable(boolean isAvailable) {
+        this.Available = isAvailable;
     }
 
-    public void setQuantity(int quantity) {
-        this.Quantity = quantity;
-    }
-
-    public boolean isAvailable() {
+    public boolean getAvailable() {
         return Available;
     }
 }
