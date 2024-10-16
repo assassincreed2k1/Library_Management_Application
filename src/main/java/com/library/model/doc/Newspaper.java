@@ -1,4 +1,4 @@
-package com.library.model.document;
+package com.library.model.doc;
 
 /**
  * The {@code Newspaper} class represents a type of {@link Document}.

@@ -1,8 +1,8 @@
 package com.library.service;
 
-import com.library.model.document.Newspaper;
+import com.library.model.doc.Newspaper;
 
-public class NewsPaperManagament extends Library2 {
+public class NewsPaperManagament extends LibraryService {
     public void addDocuments(Newspaper news) {
 
     }

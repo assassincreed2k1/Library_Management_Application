@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import com.library.model.document.Magazine;
+import com.library.model.doc.Magazine;
 
-public class MagazineManagement extends Library2 {
+public class MagazineManagement extends LibraryService {
     public void addDocuments(Magazine mgz) {
         String sql_statement = "INSERT INTO Magazines "
                                + "(id, name, group, publisher, genre, isAvailable) " 

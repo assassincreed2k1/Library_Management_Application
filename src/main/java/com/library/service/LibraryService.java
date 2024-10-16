@@ -7,14 +7,14 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.library.model.document.*;
+import com.library.model.doc.*;
 
 import java.sql.ResultSet;
 
-public class Library2 {
+public class LibraryService {
     final protected String url = "jdbc:sqlite:db/library.db";
 
-    public Library2() {
+    public LibraryService() {
         createDataBase();
         // Create listBooks
         createList("CREATE TABLE IF NOT EXISTS Books ("

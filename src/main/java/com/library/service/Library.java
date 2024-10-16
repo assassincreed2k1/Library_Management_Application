@@ -3,7 +3,7 @@ package com.library.service;
 import java.sql.Connection;
 import java.util.ArrayList;
 
-import com.library.model.document.*;
+import com.library.model.doc.*;
 
 /**
  * The {@code Library} class manages collections of {@link Book},

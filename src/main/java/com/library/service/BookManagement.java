@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import com.library.model.document.Book;
+import com.library.model.doc.Book;
 
-public class BookManagement extends Library2 {
+public class BookManagement extends LibraryService {
     /**
      * Adds a new {@link Book} to the library's book collection.
      * @param book The new book to add.
