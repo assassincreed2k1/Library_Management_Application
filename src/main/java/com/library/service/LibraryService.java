@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.library.model.*;
 import com.library.model.doc.Book;
 import com.library.model.doc.Magazine;
 import com.library.model.doc.Newspaper;
@@ -21,33 +20,33 @@ public class LibraryService {
         createDataBase();
         // Create listBooks
         createList("CREATE TABLE IF NOT EXISTS Books ("
-                    + "ID VARCHAR(255) PRIMARY KEY, "
-                    + "Name VARCHAR(255), "
-                    + "Group VARCHAR(50), "
-                    + "Author VARCHAR(255), "
-                    + "isAvailable BOOLEAN)");
+                + "ID VARCHAR(255) PRIMARY KEY, "
+                + "Name VARCHAR(255), "
+                + "Group VARCHAR(50), "
+                + "Author VARCHAR(255), "
+                + "isAvailable BOOLEAN)");
 
         // Create listMagazines
         createList("CREATE TABLE IF NOT EXISTS Magazines ("
-                    + "ID VARCHAR(255) PRIMARY KEY, "
-                    + "Name VARCHAR(255), "
-                    + "Group VARCHAR(50), "
-                    + "Publisher VARCHAR(255), "
-                    + "Genre VARCHAR(255), "
-                    + "isAvailable BOOLEAN)");
+                + "ID VARCHAR(255) PRIMARY KEY, "
+                + "Name VARCHAR(255), "
+                + "Group VARCHAR(50), "
+                + "Publisher VARCHAR(255), "
+                + "Genre VARCHAR(255), "
+                + "isAvailable BOOLEAN)");
 
         // Create listNewspaper
         createList("CREATE TABLE IF NOT EXISTS Newspaper ("
-                            + "ID VARCHAR(255) PRIMARY KEY, "
-                            + "Name VARCHAR(255), "
-                            + "Group VARCHAR(50), "
-                            + "Source VARCHAR(255), "
-                            + "Category VARCHAR(255), "
-                            + "Region VARCHAR(255), "
-                            + "isAvailable BOOLEAN)");
+                + "ID VARCHAR(255) PRIMARY KEY, "
+                + "Name VARCHAR(255), "
+                + "Group VARCHAR(50), "
+                + "Source VARCHAR(255), "
+                + "Category VARCHAR(255), "
+                + "Region VARCHAR(255), "
+                + "isAvailable BOOLEAN)");
     }
 
-    /**Create new database */
+    /** Create new database */
     public void createDataBase() {
         try (Connection cn = DriverManager.getConnection(url)) {
             if (cn == null) {
@@ -62,7 +61,7 @@ public class LibraryService {
 
     private void createList(String sql_statement) {
         try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement()) {
+                Statement stmt = conn.createStatement()) {
             // Create a new table
             stmt.execute(sql_statement);
             System.out.println("Table created or already created");
@@ -73,13 +72,14 @@ public class LibraryService {
 
     /**
      * Adds a new {@link Book} to the library's book collection.
+     * 
      * @param book The new book to add.
      */
     public void addDocuments(Book book) {
         String sql_statement = "INSERT INTO Books (ID, Name, Group, Author) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
             pstmt.setString(1, book.getID());
             pstmt.setString(2, book.getName());
             pstmt.setString(3, book.getGroup());
@@ -103,7 +103,7 @@ public class LibraryService {
         String sql_statement = "DELETE FROM Books WHERE id = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
             pstmt.setString(1, book.getID());
             pstmt.executeUpdate();
             System.out.println("Data deleted successfully");
@@ -113,7 +113,7 @@ public class LibraryService {
     }
 
     public void removeDocument(Magazine mgz) {
-        
+
     }
 
     public void removeDocument(Newspaper news) {
