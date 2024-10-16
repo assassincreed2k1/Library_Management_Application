@@ -37,8 +37,8 @@ public class Book extends Document {
      * @param IBSN
      * @param author
      */
-    public Book(String name, String group, int quantity, String ibsn, String author) {
-        super(name, group, quantity);
+    public Book(String name, String group, String ibsn, String author) {
+        super(name, group);
         this.ibsn = ibsn;
         this.author = author;
     }
