@@ -2,23 +2,23 @@ package com.library.model.doc;
 
 class Document {
     private static long idCounter = 0; // Static long integer generate id
-    private String ID; 
-    private String Name;
-    private String Group;
-    private boolean Available;
+    private String id; 
+    private String name;
+    private String group;
+    private boolean isAvailable;
 
     public Document() {
         this.ID = generateID();
-        this.Name = "No name";
-        this.Group = "Default";
-        this.Available = false;
+        this.name = "No name";
+        this.group = "Default";
+        this.isAvailable = false;
     }
 
     public Document(String name, String group, int quantity) {
         this.ID = generateID(); 
-        this.Name = name;
-        this.Group = group;
-        this.Available = true;
+        this.name = name;
+        this.group = group;
+        this.isAvailable = true;
     }
 
     // ID Auto generate, Example: 000000001, 012345678,...
@@ -33,26 +33,26 @@ class Document {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        this.Name = name;
+        this.name = name;
     }
 
     public String getGroup() {
-        return Group;
+        return group;
     }
 
     public void setGroup(String group) {
-        this.Group = group;
+        this.group = group;
     }
 
     public void setAvailable(boolean isAvailable) {
-        this.Available = isAvailable;
+        this.isAvailable = isAvailable;
     }
 
-    public boolean getAvailable() {
-        return Available;
+    public boolean getIsAvailable() {
+        return isAvailable;
     }
 }

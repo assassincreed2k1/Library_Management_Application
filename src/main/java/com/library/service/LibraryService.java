@@ -3,15 +3,8 @@ package com.library.service;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import com.library.model.doc.Book;
-import com.library.model.doc.Magazine;
-import com.library.model.doc.Newspaper;
-
-import java.sql.ResultSet;
 
 public class LibraryService {
     final protected String url = "jdbc:sqlite:db/library.db";
@@ -69,55 +62,4 @@ public class LibraryService {
             System.out.println(e.getMessage());
         }
     }
-
-    /**
-     * Adds a new {@link Book} to the library's book collection.
-     * 
-     * @param book The new book to add.
-     */
-    public void addDocuments(Book book) {
-        String sql_statement = "INSERT INTO Books (ID, Name, Group, Author) VALUES (?, ?, ?, ?)";
-
-        try (Connection conn = DriverManager.getConnection(url);
-                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setString(1, book.getID());
-            pstmt.setString(2, book.getName());
-            pstmt.setString(3, book.getGroup());
-            pstmt.setString(4, book.getAuthor());
-            pstmt.executeUpdate();
-            System.out.println("Data inserted successfully");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void addDocuments(Magazine mgz) {
-
-    }
-
-    public void addDocuments(Newspaper news) {
-
-    }
-
-    public void removeDocument(Book book) {
-        String sql_statement = "DELETE FROM Books WHERE id = ?";
-
-        try (Connection conn = DriverManager.getConnection(url);
-                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setString(1, book.getID());
-            pstmt.executeUpdate();
-            System.out.println("Data deleted successfully");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void removeDocument(Magazine mgz) {
-
-    }
-
-    public void removeDocument(Newspaper news) {
-
-    }
-
 }

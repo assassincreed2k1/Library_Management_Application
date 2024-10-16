@@ -19,7 +19,8 @@ public class myDatabase {
 
     /**
      * Creates a new SQLite database if it does not already exist.
-     * Prints the name of the database driver and confirms the creation of the database.
+     * Prints the name of the database driver and confirms the creation of the
+     * database.
      */
     public void createDB() {
         try (Connection conn = DriverManager.getConnection(url)) {
@@ -39,13 +40,13 @@ public class myDatabase {
      */
     public void createTable() {
         String sql_statement = "CREATE TABLE IF NOT EXISTS warehouse ("
-                            + " id INTEGER PRIMARY KEY, "
-                            + " name text NOT NULL, "
-                            + " capacity REAL"
-                            + ");";
-        
+                + " id INTEGER PRIMARY KEY, "
+                + " name text NOT NULL, "
+                + " capacity REAL"
+                + ");";
+
         try (Connection conn = DriverManager.getConnection(url);
-            Statement stmt = conn.createStatement()) {
+                Statement stmt = conn.createStatement()) {
             // Create a new table
             stmt.execute(sql_statement);
             System.out.println("Table created or already created");
@@ -56,11 +57,12 @@ public class myDatabase {
 
     /**
      * Inserts sample data into the 'warehouse' table.
-     * This method adds three entries for different types of goods with their capacities.
+     * This method adds three entries for different types of goods with their
+     * capacities.
      */
     public void insertData() {
-        String[] names = new String[] {"Raw Materials", "Semifinished Goods", "Finished Goods"};
-        int[] capacities = new int[] {3000, 4000, 5000};
+        String[] names = new String[] { "Raw Materials", "Semifinished Goods", "Finished Goods" };
+        int[] capacities = new int[] { 3000, 4000, 5000 };
 
         String sql_stmt = "INSERT INTO warehouse(name,capacity) VALUES(?,?)";
 
@@ -71,27 +73,28 @@ public class myDatabase {
                 pstmt.setString(1, names[i]);
                 pstmt.setDouble(2, capacities[i]);
                 pstmt.executeUpdate();
-            } 
+            }
         } catch (SQLException e) {
-                System.err.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
     /**
      * Updates the details of an entry in the 'warehouse' table.
-     * Specifically, it updates the name and capacity for the entry with the specified id.
+     * Specifically, it updates the name and capacity for the entry with the
+     * specified id.
      */
     public void updateData() {
         String sql_stmt = "UPDATE warehouse SET name = ? ,"
-                        + "capacity = ? "
-                        + "WHERE id = ?";
+                + "capacity = ? "
+                + "WHERE id = ?";
 
         String name = "Finished Products";
         int capacity = 5500;
         int id = 3;
 
         try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql_stmt)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql_stmt)) {
             pstmt.setString(1, name);
             pstmt.setDouble(2, capacity);
             pstmt.setInt(3, id);
@@ -113,16 +116,15 @@ public class myDatabase {
         double capacity = 3600;
 
         try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement prepared_statememt = conn.prepareStatement(sql_statement)) {
+                PreparedStatement prepared_statememt = conn.prepareStatement(sql_statement)) {
             prepared_statememt.setDouble(1, capacity);
             ResultSet rs = prepared_statememt.executeQuery();
 
             while (rs.next()) {
                 System.out.printf("%-5s%-25s%-10s%n",
-                                 rs.getInt("id"),
-                                 rs.getString("name"),
-                                 rs.getDouble("capacity")
-                                 );
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getDouble("capacity"));
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -138,7 +140,7 @@ public class myDatabase {
         String sql_statement = "DELETE FROM warehouse WHERE id = ?";
         int id = 3;
         try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
