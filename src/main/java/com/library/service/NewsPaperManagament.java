@@ -9,7 +9,7 @@ import com.library.model.doc.Newspaper;
 
 public class NewsPaperManagament extends LibraryService {
     public void addDocuments(Newspaper newspaper) {
-        String sql_statement = "INSERT INTO Magazines "
+        String sql_statement = "INSERT INTO Magazines " 
                 + "(id, name, group, source, region, isAvailable) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
