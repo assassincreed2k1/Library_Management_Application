@@ -14,7 +14,7 @@ import com.library.model.doc.Newspaper;
 import java.sql.ResultSet;
 
 public class LibraryService {
-    final private String url = "jdbc:sqlite:db/library.db";
+    final protected String url = "jdbc:sqlite:db/library.db";
 
     public LibraryService() {
         createDataBase();
