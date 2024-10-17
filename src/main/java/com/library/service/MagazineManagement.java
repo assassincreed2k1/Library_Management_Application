@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import com.library.model.doc.Book;
 import com.library.model.doc.Magazine;
 
 public class MagazineManagement extends LibraryService {
