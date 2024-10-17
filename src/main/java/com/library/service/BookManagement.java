@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 import com.library.model.doc.Book;
 
@@ -71,5 +72,32 @@ public class BookManagement extends LibraryService {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    /**Get Document */
+    public Book getDocument(String id) {
+        String sql_statement = "SELECT * FROM Books WHERE id = ?";
+        Book book = null;
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String bookId = rs.getString("id");
+                String name = rs.getString("name");
+                String group = rs.getString("group");
+                String author = rs.getString("author");
+                boolean isAvailable = rs.getBoolean("isAvailable");
+
+                // Tạo đối tượng Book từ dữ liệu lấy được
+                
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return book;
     }
 }

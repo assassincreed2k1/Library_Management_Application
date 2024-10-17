@@ -38,6 +38,14 @@ class Document {
         this.group = group;
         this.isAvailable = true;
     }
+    
+    // for find or get book
+    public Document(String id, String name, String group) {
+        this.id = generateID();
+        this.name = name;
+        this.group = group;
+        this.isAvailable = true;
+    }
 
     /**
      * Generates a unique ID for the document in the format of a zero-padded
@@ -50,6 +58,9 @@ class Document {
         return String.format("%09d", idCounter);
     }
 
+    public void setID(String id) {
+        this.id = id;
+    }
     /**
      * Gets the ID of this document.
      * 

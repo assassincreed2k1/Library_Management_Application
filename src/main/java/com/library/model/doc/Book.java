@@ -43,6 +43,12 @@ public class Book extends Document {
         this.author = author;
     }
 
+    public Book(String id, String name, String group, String ibsn, String author) {
+        super(id, name, group);
+        this.ibsn = ibsn;
+        this.author = author;
+    }
+
     // Getter setter for IBSN and author
     public String getIBSN() {
         return ibsn;
@@ -58,16 +64,6 @@ public class Book extends Document {
 
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    /**
-     * Get Book info
-     * 
-     * @return Name + Group + ID + IBSN + author
-     */
-    public String getInfo() {
-        return "<" + super.getName() + "><" + super.getGroup() + "><"
-                + super.getID() + "><" + ibsn + "><" + author + ">";
     }
 
 }
