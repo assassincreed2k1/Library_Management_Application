@@ -18,33 +18,33 @@ public class LibraryService {
         createDataBase();
         // Create listBooks
         createList("CREATE TABLE IF NOT EXISTS Books ("
-                    + "id VARCHAR(255) PRIMARY KEY, "
-                    + "name VARCHAR(255), "
-                    + "group VARCHAR(50), "
-                    + "author VARCHAR(255), "
-                    + "isAvailable BOOLEAN)");
+                + "id VARCHAR(255) PRIMARY KEY, "
+                + "name VARCHAR(255), "
+                + "group VARCHAR(50), "
+                + "author VARCHAR(255), "
+                + "isAvailable BOOLEAN)");
 
         // Create listMagazines
         createList("CREATE TABLE IF NOT EXISTS Magazines ("
-                    + "id VARCHAR(255) PRIMARY KEY, "
-                    + "name VARCHAR(255), "
-                    + "group VARCHAR(50), "
-                    + "publisher VARCHAR(255), "
-                    + "genre VARCHAR(255), "
-                    + "isAvailable BOOLEAN)");
+                + "id VARCHAR(255) PRIMARY KEY, "
+                + "name VARCHAR(255), "
+                + "group VARCHAR(50), "
+                + "publisher VARCHAR(255), "
+                + "genre VARCHAR(255), "
+                + "isAvailable BOOLEAN)");
 
         // Create listNewspaper
         createList("CREATE TABLE IF NOT EXISTS Newspaper ("
-                            + "id VARCHAR(255) PRIMARY KEY, "
-                            + "name VARCHAR(255), "
-                            + "group VARCHAR(50), "
-                            + "source VARCHAR(255), "
-                            + "category VARCHAR(255), "
-                            + "region VARCHAR(255), "
-                            + "isAvailable BOOLEAN)");
+                + "id VARCHAR(255) PRIMARY KEY, "
+                + "name VARCHAR(255), "
+                + "group VARCHAR(50), "
+                + "source VARCHAR(255), "
+                + "category VARCHAR(255), "
+                + "region VARCHAR(255), "
+                + "isAvailable BOOLEAN)");
     }
 
-    /**Create new database */
+    /** Create new database */
     public void createDataBase() {
         try (Connection cn = DriverManager.getConnection(url)) {
             if (cn == null) {
@@ -59,13 +59,17 @@ public class LibraryService {
 
     private void createList(String sql_statement) {
         try (Connection conn = DriverManager.getConnection(url);
-             Statement stmt = conn.createStatement()) {
+                Statement stmt = conn.createStatement()) {
             // Create a new table
             stmt.execute(sql_statement);
             System.out.println("Table created or already created");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void addDocuments() {
+
     }
 
 }
