@@ -6,6 +6,7 @@ import com.library.model.doc.Newspaper;
 import com.library.service.BookManagement;
 import com.library.service.MagazineManagement;
 import com.library.service.NewsPaperManagament;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -111,7 +112,10 @@ public class App extends Application {
 
         // Add newspaper on button click
         addNewspaperButton.setOnAction(e -> {
-            Newspaper newspaper = new Newspaper(newspaperNameInput.getText(), newspaperGroupInput.getText(), newspaperSourceInput.getText(), newspaperRegionInput.getText());
+            Newspaper newspaper = new Newspaper(newspaperNameInput.getText(), 
+                                        newspaperGroupInput.getText(), 
+                                        newspaperSourceInput.getText(), 
+                                        newspaperRegionInput.getText());
             newspaperManager.addDocuments(newspaper);
             System.out.println("Added Newspaper: " + newspaper.getName());
         });

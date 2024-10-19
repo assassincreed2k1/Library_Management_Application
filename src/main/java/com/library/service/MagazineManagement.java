@@ -9,6 +9,17 @@ import com.library.model.doc.Magazine;
 
 public class MagazineManagement extends LibraryService {
 
+    public MagazineManagement() {
+        // Create listMagazines
+        super.createList("CREATE TABLE IF NOT EXISTS Magazines ("
+                        + "id VARCHAR(255) PRIMARY KEY, "
+                        + "name VARCHAR(255), "
+                        + "magazineGroup VARCHAR(50), "
+                        + "publisher VARCHAR(255), "
+                        + "isAvailable BOOLEAN)");
+    }
+
+
     /**
      * Adds a new {@link Magazine} to the library's book collection.
      * 
@@ -16,7 +27,7 @@ public class MagazineManagement extends LibraryService {
      */
     public void addDocuments(Magazine mgz) {
         String sql_statement = "INSERT INTO Magazines "
-                + "(id, name, group, publisher, isAvailable) "
+                + "(id, name, magazineGroup, publisher, isAvailable) "
                 + "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(super.url);
@@ -35,7 +46,7 @@ public class MagazineManagement extends LibraryService {
     public void updateDocuments(Magazine magazine) {
         String sql_stmt = "UPDATE Magazines SET "
                 + "name = ?, "
-                + "group = ?, "
+                + "magazineGroup = ?, "
                 + "publisher = ?, "
                 + "isAvailable = ? "
                 + "WHERE id = ?";
