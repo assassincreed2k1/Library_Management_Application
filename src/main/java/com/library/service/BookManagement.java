@@ -9,6 +9,15 @@ import java.sql.ResultSet;
 import com.library.model.doc.Book;
 
 public class BookManagement extends LibraryService {
+    public BookManagement() {
+        super.createList("CREATE TABLE IF NOT EXISTS Books ("
+                        + "id VARCHAR(255) PRIMARY KEY, "
+                        + "name VARCHAR(255), "
+                        + "bookGroup VARCHAR(50), "
+                        + "author VARCHAR(255), "
+                        + "isAvailable BOOLEAN)");
+    }
+
     /**
      * Adds a new {@link Book} to the library's book collection.
      * 
@@ -16,7 +25,7 @@ public class BookManagement extends LibraryService {
      */
     public void addDocuments(Book book) {
         String sql_statement = "INSERT INTO Books "
-                + "(id, name, group, author, isAvailable) "
+                + "(id, name, bookGroup, author, isAvailable) "
                 + "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -37,23 +46,18 @@ public class BookManagement extends LibraryService {
     public void updateDocuments(Book book) {
         String sql_stmt = "UPDATE Books SET "
                 + "name = ?, "
-                + "group = ?, "
+                + "bookGroup = ?, "
                 + "author = ?, "
-                + "isAvailable = ?, "
+                + "isAvailable = ? "
                 + "WHERE id = ?";
-
-        String name = book.getName();
-        String group = book.getGroup();
-        String author = book.getAuthor();
-        boolean isAvailable = book.getIsAvailable();
 
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_stmt)) {
-            pstmt.setString(1, name);
-            pstmt.setString(2, group);
-            pstmt.setString(3, author);
-            pstmt.setBoolean(4, isAvailable);
-            pstmt.setBoolean(5, isAvailable);
+            pstmt.setString(1, book.getName());
+            pstmt.setString(2, book.getGroup());
+            pstmt.setString(3, book.getAuthor());
+            pstmt.setBoolean(4, book.getIsAvailable());
+            pstmt.setString(5, book.getID());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -87,12 +91,9 @@ public class BookManagement extends LibraryService {
             if (rs.next()) {
                 String bookId = rs.getString("id");
                 String name = rs.getString("name");
-                String group = rs.getString("group");
+                String group = rs.getString("bookGroup");
                 String author = rs.getString("author");
                 boolean isAvailable = rs.getBoolean("isAvailable");
-
-                // Tạo đối tượng Book từ dữ liệu lấy được
-                
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

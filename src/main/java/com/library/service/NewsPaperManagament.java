@@ -8,9 +8,23 @@ import java.sql.SQLException;
 import com.library.model.doc.Newspaper;
 
 public class NewsPaperManagament extends LibraryService {
+
+    public NewsPaperManagament() {
+        // Create listNewspaper
+        createList("CREATE TABLE IF NOT EXISTS Newspaper ("
+        + "id VARCHAR(255) PRIMARY KEY, "
+        + "name VARCHAR(255), "
+        + "newsGroup VARCHAR(50), "
+        + "source VARCHAR(255), "
+        + "category VARCHAR(255), "
+        + "region VARCHAR(255), "
+        + "isAvailable BOOLEAN)");
+    }
+
+
     public void addDocuments(Newspaper newspaper) {
         String sql_statement = "INSERT INTO Newspaper " 
-                + "(id, name, group, source, region, isAvailable) "
+                + "(id, name, newsGroup, source, region, isAvailable) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(super.url);
@@ -29,11 +43,12 @@ public class NewsPaperManagament extends LibraryService {
 
     public void updateDocuments(Newspaper newspaper) {
         String sql_stmt = "UPDATE Newspaper SET "
-                        + "name = ? "
-                        + "group = ? "
-                        + "source = ? "
-                        + "region = ? "
-                        + "isAvailable = ?";
+                        + "name = ?, "
+                        + "newsGroup = ?, "
+                        + "source = ?, "
+                        + "region = ?, "
+                        + "isAvailable = ? "
+                        + "WHERE id = ?";
         
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_stmt)) {
