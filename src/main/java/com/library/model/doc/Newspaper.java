@@ -29,8 +29,8 @@ public class Newspaper extends Document {
      * @param source   The source of the newspaper.
      * @param region   The region where the newspaper is published.
      */
-    public Newspaper(String name, String group, String source, String region) {
-        super(name, group);
+    public Newspaper(String id, String name, String group, String source, String region) {
+        super(id, name, group);
         this.source = source;
         this.region = region;
     }
