@@ -3,6 +3,8 @@ package com.library;
 import com.library.model.doc.Book;
 import com.library.model.doc.Magazine;
 import com.library.model.doc.Newspaper;
+
+import com.library.service.LibraryService;
 import com.library.service.BookManagement;
 import com.library.service.MagazineManagement;
 import com.library.service.NewsPaperManagament;
@@ -17,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class App extends Application {
+    LibraryService libraryService = new LibraryService();
     BookManagement bookManager = new BookManagement();
     MagazineManagement magazineManager = new MagazineManagement();
     NewsPaperManagament newspaperManager = new NewsPaperManagament();
@@ -56,7 +59,12 @@ public class App extends Application {
 
         // Add book on button click
         addBookButton.setOnAction(e -> {
-            Book book = new Book(bookNameInput.getText(), bookGroupInput.getText(), bookIBSNInput.getText(), bookAuthorInput.getText());
+            Book book = new Book(libraryService.generateID(),
+                                bookNameInput.getText(),
+                                bookGroupInput.getText(),
+                                bookIBSNInput.getText(),
+                                bookAuthorInput.getText());
+
             bookManager.addDocuments(book);
             System.out.println("Added Book: " + book.getName());
         });
@@ -82,7 +90,11 @@ public class App extends Application {
 
         // Add magazine on button click
         addMagazineButton.setOnAction(e -> {
-            Magazine magazine = new Magazine(magazineNameInput.getText(), magazineGroupInput.getText(), magazinePublisherInput.getText());
+            Magazine magazine = new Magazine(libraryService.generateID(),
+                                            magazineNameInput.getText(),
+                                            magazineGroupInput.getText(),
+                                            magazinePublisherInput.getText());
+
             magazineManager.addDocuments(magazine);
             System.out.println("Added Magazine: " + magazine.getName());
         });
@@ -112,10 +124,12 @@ public class App extends Application {
 
         // Add newspaper on button click
         addNewspaperButton.setOnAction(e -> {
-            Newspaper newspaper = new Newspaper(newspaperNameInput.getText(), 
-                                        newspaperGroupInput.getText(), 
-                                        newspaperSourceInput.getText(), 
-                                        newspaperRegionInput.getText());
+            Newspaper newspaper = new Newspaper(libraryService.generateID(),
+                                                newspaperNameInput.getText(),
+                                                newspaperGroupInput.getText(),
+                                                newspaperSourceInput.getText(),
+                                                newspaperRegionInput.getText());
+
             newspaperManager.addDocuments(newspaper);
             System.out.println("Added Newspaper: " + newspaper.getName());
         });
