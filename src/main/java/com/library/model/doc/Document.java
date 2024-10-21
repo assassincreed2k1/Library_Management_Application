@@ -99,7 +99,7 @@ class Document {
      * 
      * @param isAvailable The new availability status to set.
      */
-    public void setAvailable(boolean isAvailable) {
+    public void setIsAvailable(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
 

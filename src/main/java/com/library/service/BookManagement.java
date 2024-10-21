@@ -78,10 +78,10 @@ public class BookManagement extends LibraryService {
         }
     }
 
-    /**Get Document */
+    /** Get Document */
     public Book getDocument(String id) {
         String sql_statement = "SELECT * FROM Books WHERE id = ?";
-        Book book = null;
+        Book book = null; // Initialize the Book object
 
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
@@ -89,11 +89,20 @@ public class BookManagement extends LibraryService {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
+                // Extract values from the ResultSet
                 String bookId = rs.getString("id");
                 String name = rs.getString("name");
                 String group = rs.getString("bookGroup");
                 String author = rs.getString("author");
                 boolean isAvailable = rs.getBoolean("isAvailable");
+
+                // Create a new Book object and set its fields
+                book = new Book();
+                book.setID(bookId);
+                book.setName(name);
+                book.setGroup(group);
+                book.setAuthor(author);
+                book.setIsAvailable(isAvailable);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -101,4 +110,5 @@ public class BookManagement extends LibraryService {
 
         return book;
     }
+
 }
