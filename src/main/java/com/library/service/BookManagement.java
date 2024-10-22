@@ -72,6 +72,7 @@ public class BookManagement extends LibraryService {
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
             pstmt.setString(1, book.getID());
             pstmt.executeUpdate();
+            addDeletedID(book.getID());
             System.out.println("Data deleted successfully");
         } catch (SQLException e) {
             System.out.println(e.getMessage());

@@ -71,6 +71,7 @@ public class NewsPaperManagament extends LibraryService {
                 PreparedStatement pstmt = conn.prepareStatement(sql_stmt)) {
             pstmt.setString(1, newspaper.getID());
             pstmt.executeUpdate();
+            addDeletedID(newspaper.getID());
             System.out.println("Data deleted successfully!");
         } catch(SQLException e) {
             System.out.println(e.getMessage());
