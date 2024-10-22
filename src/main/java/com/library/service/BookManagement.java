@@ -8,20 +8,32 @@ import java.sql.ResultSet;
 
 import com.library.model.doc.Book;
 
+/**
+ * The {@code BookManagement} class provides services for managing a library's
+ * book collection,
+ * including adding, updating, removing, retrieving, and displaying available
+ * books.
+ * It interacts with an SQLite database.
+ */
 public class BookManagement extends LibraryService {
+
+    /**
+     * Constructs a {@code BookManagement} object.
+     * It creates the Books table if it doesn't already exist.
+     */
     public BookManagement() {
         super.createList("CREATE TABLE IF NOT EXISTS Books ("
-                        + "id VARCHAR(255) PRIMARY KEY, "
-                        + "name VARCHAR(255), "
-                        + "bookGroup VARCHAR(50), "
-                        + "author VARCHAR(255), "
-                        + "isAvailable BOOLEAN)");
+                + "id VARCHAR(255) PRIMARY KEY, "
+                + "name VARCHAR(255), "
+                + "bookGroup VARCHAR(50), "
+                + "author VARCHAR(255), "
+                + "isAvailable BOOLEAN)");
     }
 
     /**
      * Adds a new {@link Book} to the library's book collection.
      * 
-     * @param book The new book to add.
+     * @param book The new book to add to the collection.
      */
     public void addDocuments(Book book) {
         String sql_statement = "INSERT INTO Books "
@@ -42,7 +54,11 @@ public class BookManagement extends LibraryService {
         }
     }
 
-    /** Update Book */
+    /**
+     * Updates an existing {@link Book} in the library's collection.
+     * 
+     * @param book The book with updated information.
+     */
     public void updateDocuments(Book book) {
         String sql_stmt = "UPDATE Books SET "
                 + "name = ?, "
@@ -64,7 +80,11 @@ public class BookManagement extends LibraryService {
         }
     }
 
-    /** Remove Book */
+    /**
+     * Removes a {@link Book} from the library's collection.
+     * 
+     * @param book The book to be removed.
+     */
     public void removeDocument(Book book) {
         String sql_statement = "DELETE FROM Books WHERE id = ?";
 
@@ -78,10 +98,15 @@ public class BookManagement extends LibraryService {
         }
     }
 
-    /** Get Document */
+    /**
+     * Retrieves a {@link Book} from the library's collection using its ID.
+     * 
+     * @param id The ID of the book to retrieve.
+     * @return The {@link Book} object if found, otherwise {@code null}.
+     */
     public Book getDocument(String id) {
         String sql_statement = "SELECT * FROM Books WHERE id = ?";
-        Book book = null; // Initialize the Book object
+        Book book = null;
 
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
@@ -89,14 +114,12 @@ public class BookManagement extends LibraryService {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                // Extract values from the ResultSet
                 String bookId = rs.getString("id");
                 String name = rs.getString("name");
                 String group = rs.getString("bookGroup");
                 String author = rs.getString("author");
                 boolean isAvailable = rs.getBoolean("isAvailable");
 
-                // Create a new Book object and set its fields
                 book = new Book();
                 book.setID(bookId);
                 book.setName(name);
@@ -111,9 +134,14 @@ public class BookManagement extends LibraryService {
         return book;
     }
 
-    /*Display Books Available */
-    //////////////   NEED UPDATE ->>>>>>>
-    public void displayAvailableDocuments() {
+    /**
+     * Displays all books in the library that are currently available.
+     * 
+     * @param type The type of the document (currently unused in this method, but
+     *             can be expanded for future use).
+     */
+    //////////// ----->>> NEED to UPDATE
+    public void displayAvailableDocuments(String type) {
         String sql_statement = "SELECT * FROM Books WHERE isAvailable = true";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -128,7 +156,6 @@ public class BookManagement extends LibraryService {
                 String author = rs.getString("author");
                 boolean isAvailable = rs.getBoolean("isAvailable");
 
-                // Hiển thị thông tin sách
                 System.out.println("ID: " + id);
                 System.out.println("Name: " + name);
                 System.out.println("Group: " + group);
@@ -140,5 +167,4 @@ public class BookManagement extends LibraryService {
             System.out.println(e.getMessage());
         }
     }
-
 }
