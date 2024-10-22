@@ -111,4 +111,34 @@ public class BookManagement extends LibraryService {
         return book;
     }
 
+    /*Display Books Available */
+    //////////////   NEED UPDATE ->>>>>>>
+    public void displayAvailableDocuments() {
+        String sql_statement = "SELECT * FROM Books WHERE isAvailable = true";
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement);
+                ResultSet rs = pstmt.executeQuery()) {
+
+            System.out.println("Available Books:");
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String name = rs.getString("name");
+                String group = rs.getString("bookGroup");
+                String author = rs.getString("author");
+                boolean isAvailable = rs.getBoolean("isAvailable");
+
+                // Hiển thị thông tin sách
+                System.out.println("ID: " + id);
+                System.out.println("Name: " + name);
+                System.out.println("Group: " + group);
+                System.out.println("Author: " + author);
+                System.out.println("Available: " + isAvailable);
+                System.out.println("------------------------");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }
