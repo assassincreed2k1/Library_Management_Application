@@ -16,7 +16,7 @@ public class NewsPaperManagament extends LibraryService {
         + "name VARCHAR(255), "
         + "newsGroup VARCHAR(50), "
         + "source VARCHAR(255), "
-        + "category VARCHAR(255), "
+        //+ "category VARCHAR(255), "
         + "region VARCHAR(255), "
         + "isAvailable BOOLEAN)");
     }
@@ -57,6 +57,7 @@ public class NewsPaperManagament extends LibraryService {
             pstmt.setString(3, newspaper.getSource());
             pstmt.setString(4, newspaper.getRegion());
             pstmt.setBoolean(5, newspaper.getIsAvailable());
+            pstmt.setString(6, newspaper.getID());
             pstmt.executeUpdate();
         } catch(SQLException e) {
             System.out.println(e.getMessage());

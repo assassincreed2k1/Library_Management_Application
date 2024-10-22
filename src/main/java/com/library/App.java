@@ -69,6 +69,32 @@ public class App extends Application {
             System.out.println("Added Book: " + book.getName());
         });
 
+        TextField bookIDinput = new TextField();
+        bookIDinput.setPromptText("ID");
+        grid.add(bookIDinput, 0, 6);
+
+        Button updateButton = new Button("Update Book");
+        grid.add(updateButton, 0, 7);
+        
+        updateButton.setOnAction(e -> {
+            Book upBook = new Book(bookIDinput.getText(),
+                                    bookNameInput.getText(),
+                                    bookGroupInput.getText(),
+                                    bookIBSNInput.getText(),
+                                    bookAuthorInput.getText());
+            bookManager.updateDocuments(upBook);
+            System.out.println("Updated Book: " + upBook.getName());
+        });
+
+        Button removeBookButton = new Button("Remove book");
+        grid.add(removeBookButton, 0, 8);
+
+        removeBookButton.setOnAction(e -> {
+            Book rmBook = new Book();
+            rmBook.setID(bookIDinput.getText());
+            bookManager.removeDocument(rmBook);
+        });
+
         // Labels and input fields for Magazine
         Label magazineLabel = new Label("Magazine");
         grid.add(magazineLabel, 1, 0);
@@ -97,6 +123,30 @@ public class App extends Application {
 
             magazineManager.addDocuments(magazine);
             System.out.println("Added Magazine: " + magazine.getName());
+        });
+
+        TextField magazineIdInput = new TextField();
+        magazineIdInput.setPromptText("ID");
+        grid.add(magazineIdInput, 1, 6);
+
+        Button updateMagazineButton = new Button("Update Magazine");
+        grid.add(updateMagazineButton, 1, 7);
+
+        updateMagazineButton.setOnAction(e -> {
+            Magazine upMagazine = new Magazine(magazineIdInput.getText(),
+                                                magazineNameInput.getText(),
+                                                magazineGroupInput.getText(),
+                                                magazinePublisherInput.getText());
+            magazineManager.updateDocuments(upMagazine);
+        }); 
+
+        Button removeMagazineButton = new Button("Remove Magazine");
+        grid.add(removeMagazineButton, 1, 8);
+
+        removeMagazineButton.setOnAction(e -> {
+            Magazine rmMgz = new Magazine();
+            rmMgz.setID(magazineIdInput.getText());
+            magazineManager.removeDocument(rmMgz);
         });
 
         // Labels and input fields for Newspaper
@@ -132,6 +182,32 @@ public class App extends Application {
 
             newspaperManager.addDocuments(newspaper);
             System.out.println("Added Newspaper: " + newspaper.getName());
+        });
+
+        TextField newspaperIdInput = new TextField();
+        newspaperIdInput.setPromptText("ID");
+        grid.add(newspaperIdInput, 2, 6);
+
+        Button updateNewspaperButton = new Button("Update Newspaper");
+        grid.add(updateNewspaperButton, 2, 7);
+
+        updateNewspaperButton.setOnAction(e -> {
+            Newspaper upNews = new Newspaper(newspaperIdInput.getText(),
+                                            newspaperNameInput.getText(),
+                                            newspaperGroupInput.getText(),
+                                            newspaperSourceInput.getText(),
+                                            newspaperRegionInput.getText());
+
+            newspaperManager.updateDocuments(upNews);
+        });     
+
+        Button removeNewspaperButton = new Button("Remove Newspaper");
+        grid.add(removeNewspaperButton, 2, 8);
+
+        removeNewspaperButton.setOnAction(e -> {
+            Newspaper news = new Newspaper();
+            news.setID(newspaperIdInput.getText());
+            newspaperManager.removeDocument(news);
         });
 
         // Create scene and show the stage

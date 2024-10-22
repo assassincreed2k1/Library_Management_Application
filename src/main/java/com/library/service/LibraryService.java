@@ -1,5 +1,7 @@
 package com.library.service;
 
+import java.util.ArrayList;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -11,6 +13,7 @@ import java.sql.ResultSet;
 public class LibraryService {
     final protected String url = "jdbc:sqlite:db/library.db";
     private int idCounter;
+    private ArrayList<String> deletedId;
 
     public LibraryService() {
         createDataBase();
