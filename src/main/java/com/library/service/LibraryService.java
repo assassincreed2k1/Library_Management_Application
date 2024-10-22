@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 public class LibraryService {
     final protected String url = "jdbc:sqlite:db/library.db";
     private int idCounter;
-    private ArrayList<String> deletedId;
+    protected ArrayList<String> deletedId;
 
     public LibraryService() {
         createDataBase();
@@ -53,6 +53,20 @@ public class LibraryService {
             String initData = "INSERT INTO IDCounter (idCounter) SELECT 0 WHERE NOT EXISTS (SELECT 1 FROM IDCounter)";
             stmt.execute(initData);
             System.out.println("IDCounter table created or already exists with initial value");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void createDeletedIDTable() {
+        String sql_statement = "CREATE TABLE IF NOT EXISTS deletedID ("
+                            + "data INTEGER)";
+
+        try (Connection conn = DriverManager.getConnection(url);
+                Statement stmt = conn.createStatement()) {
+            stmt.execute(sql_statement);
+
+            System.out.println("deletedID table created or already exists with initial value");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
