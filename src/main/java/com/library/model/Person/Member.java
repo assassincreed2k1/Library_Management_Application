@@ -1,4 +1,4 @@
-package com.library.Person;
+package com.library.model.Person;
 
 public class Member extends Person {
     private String membershipId;
@@ -25,7 +25,7 @@ public class Member extends Person {
      * @param expiryDate is String
      */
     public Member(String name, String address, String dateOfBirth, String phoneNumber, String email, 
-                  String gender, String membershipId, String membershipType, String joinDate, String expiryDate) {
+                String gender, String membershipId, String membershipType, String joinDate, String expiryDate) {
         super(name, address, gender, dateOfBirth, phoneNumber, email);
         this.membershipId = membershipId;
         this.membershipType = membershipType;
@@ -46,7 +46,7 @@ public class Member extends Person {
      * @param expiryDate is String
      */
     public Member(String name, String gender, String address, String dateOfBirth, String phoneNum_email,
-                  String membershipId, String membershipType, String joinDate, String expiryDate) {
+                String membershipId, String membershipType, String joinDate, String expiryDate) {
         super(name,address, gender, dateOfBirth, phoneNum_email);
         this.membershipId = membershipId;
         this.membershipType = membershipType;
