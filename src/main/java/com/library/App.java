@@ -93,6 +93,7 @@ public class App extends Application {
             Book rmBook = new Book();
             rmBook.setID(bookIDinput.getText());
             bookManager.removeDocument(rmBook);
+            System.out.println("Removed Book with ID: " + bookIDinput.getText());
         });
 
         // Labels and input fields for Magazine
@@ -138,6 +139,7 @@ public class App extends Application {
                                                 magazineGroupInput.getText(),
                                                 magazinePublisherInput.getText());
             magazineManager.updateDocuments(upMagazine);
+            System.out.println("Updated Magazine: " + upMagazine.getName());
         }); 
 
         Button removeMagazineButton = new Button("Remove Magazine");
@@ -147,6 +149,7 @@ public class App extends Application {
             Magazine rmMgz = new Magazine();
             rmMgz.setID(magazineIdInput.getText());
             magazineManager.removeDocument(rmMgz);
+            System.out.println("Removed Magazine with ID: " + magazineIdInput.getText());
         });
 
         // Labels and input fields for Newspaper
@@ -199,6 +202,7 @@ public class App extends Application {
                                             newspaperRegionInput.getText());
 
             newspaperManager.updateDocuments(upNews);
+            System.out.println("Updated Newspaper: " + upNews.getName());
         });     
 
         Button removeNewspaperButton = new Button("Remove Newspaper");
@@ -208,6 +212,7 @@ public class App extends Application {
             Newspaper news = new Newspaper();
             news.setID(newspaperIdInput.getText());
             newspaperManager.removeDocument(news);
+            System.out.println("Removed Newspaper with ID: " + newspaperIdInput.getText());
         });
 
         // Create scene and show the stage

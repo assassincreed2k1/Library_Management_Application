@@ -74,7 +74,6 @@ public class MagazineManagement extends LibraryService {
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
             pstmt.setString(1, magazine.getID());
             pstmt.executeUpdate();
-            addDeletedID(magazine.getID());
             System.out.println("Data deleted successfully");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
