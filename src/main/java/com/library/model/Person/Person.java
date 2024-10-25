@@ -9,6 +9,18 @@ public class Person {
     private String email;
 
     /**
+     * constructor Person no param
+     */
+    public Person() {
+        name = "";
+        address = "";
+        gender = "";
+        dateOfBirth = "";
+        phoneNumber = "";
+        email = "";
+    }
+
+    /**
      * constructor for person who has all information.
      * @param name is String
      * @param address is String

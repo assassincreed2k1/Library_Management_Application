@@ -17,7 +17,6 @@ public class Librarian extends Person {
      */
 
     public Librarian(){
-        super();
         this.employeeId = "";
         this.position = "";
     }
