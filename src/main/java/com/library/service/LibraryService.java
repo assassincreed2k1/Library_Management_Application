@@ -39,6 +39,23 @@ public class LibraryService {
         }
     }
 
+    /**
+     * delete table from database.
+     * 
+     * @param table name of table that want to delete
+     */
+    public void deleteTable(String table) {
+        String sql_statement = "DROP TABLE " + table + ";";
+
+        try (Connection conn = DriverManager.getConnection(url);
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(sql_statement);
+            System.out.println("drop table successfully\n");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private void createIDCounterTable() {
         String sql_statement = "CREATE TABLE IF NOT EXISTS IDCounter ("
                 + "idCounter INTEGER)";
