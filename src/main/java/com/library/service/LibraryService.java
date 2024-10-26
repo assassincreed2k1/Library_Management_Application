@@ -1,7 +1,5 @@
 package com.library.service;
 
-import java.util.ArrayList;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -9,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import org.json.JSONObject;
 
 /**
  * The LibraryService class provides services for managing a library database, including 
@@ -54,6 +53,24 @@ public class LibraryService {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     * delete table from database.
+     * 
+     * @param table name of table that want to delete
+     */
+    public void deleteTable(String table) {
+        String sql_statement = "DROP TABLE " + table + ";";
+
+        try (Connection conn = DriverManager.getConnection(url);
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(sql_statement);
+            System.out.println("drop table successfully\n");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     /**
      * Creates the id_generator table for generating unique IDs.

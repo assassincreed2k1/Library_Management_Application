@@ -6,6 +6,7 @@ import com.library.model.doc.Magazine;
 import com.library.model.doc.Newspaper;
 
 import com.library.service.LibraryService;
+import com.library.service.APIService;
 import com.library.service.BookManagement;
 import com.library.service.MagazineManagement;
 import com.library.service.NewsPaperManagament;
@@ -19,6 +20,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class App extends Application {
     LibraryService libraryService = new LibraryService();
@@ -52,23 +56,49 @@ public class App extends Application {
         bookAuthorInput.setPromptText("Author");
         grid.add(bookAuthorInput, 0, 3);
 
-        TextField bookIBSNInput = new TextField();
-        bookIBSNInput.setPromptText("IBSN");
-        grid.add(bookIBSNInput, 0, 4);
+        TextField bookISBNInput = new TextField();
+        bookISBNInput.setPromptText("ISBN");
+        grid.add(bookISBNInput, 0, 4);
 
         Button addBookButton = new Button("Add Book");
         grid.add(addBookButton, 0, 5);
 
         // Add book on button click
+        /**Code Mẫu cho gọi addDocument từ UI */
         addBookButton.setOnAction(e -> {
-            Book book = new Book(libraryService.generateID(),
-                                bookNameInput.getText(),
-                                bookGroupInput.getText(),
-                                bookIBSNInput.getText(),
-                                bookAuthorInput.getText());
+            JSONObject getAPIBook = APIService.getBookInfoByISBN(bookISBNInput.getText());
+            
+            if (getAPIBook != null) {
+                String bookName = getAPIBook.optString("title", "Unknown Title"); 
+                String bookAuthor = "Unknown Author"; 
+                
+                if (getAPIBook.has("authors")) {
+                    JSONArray authorsArray = getAPIBook.getJSONArray("authors");
+                    if (authorsArray.length() > 0) {
+                        bookAuthor = authorsArray.getJSONObject(0).optString("name", "Unknown Author");
+                    }
+                }
 
-            bookManager.addDocuments(book);
-            System.out.println("Added Book: " + book.getName());
+                String bookGroup = getAPIBook.optString("subject", "General"); 
+                
+                Book book = new Book(libraryService.generateID(), 
+                                    bookName, 
+                                    bookGroup, 
+                                    bookISBNInput.getText(), 
+                                    bookAuthor);
+
+                bookManager.addDocuments(book);
+                System.out.println("Added Book from API: " + book.getName());
+            } else {
+                Book book = new Book(libraryService.generateID(),
+                                        bookNameInput.getText(),
+                                        bookGroupInput.getText(),
+                                        bookISBNInput.getText(),
+                                        bookAuthorInput.getText());
+
+                bookManager.addDocuments(book);
+                System.out.println("Added Book: " + book.getName());
+            }
         });
 
         TextField bookIDinput = new TextField();
@@ -82,7 +112,7 @@ public class App extends Application {
             Book upBook = new Book(bookIDinput.getText(),
                                     bookNameInput.getText(),
                                     bookGroupInput.getText(),
-                                    bookIBSNInput.getText(),
+                                    bookISBNInput.getText(),
                                     bookAuthorInput.getText());
             bookManager.updateDocuments(upBook);
             System.out.println("Updated Book: " + upBook.getName());

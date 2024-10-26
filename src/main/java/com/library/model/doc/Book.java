@@ -9,7 +9,7 @@ package com.library.model.doc;
  * @param author
  */
 public class Book extends Document {
-    private String ibsn;
+    private String isbn;
     private String author;
 
     /**
@@ -18,13 +18,13 @@ public class Book extends Document {
      * @param Name   "No name"
      * @param Group  "Default"
      * @param ID     "Invalid"
-     * @param ibsn   ""
+     * @param isbn   ""
      * @param author "None"
      */
     public Book() {
         // Call constructor Document()
         super();
-        this.ibsn = "";
+        this.isbn = "";
         this.author = "None";
     }
 
@@ -34,28 +34,28 @@ public class Book extends Document {
      * @param Name
      * @param Group
      * @param ID
-     * @param IBSN
+     * @param ISBN
      * @param author
      */
-    public Book(String name, String group, String ibsn, String author) {
+    public Book(String name, String group, String isbn, String author) {
         super(name, group);
-        this.ibsn = ibsn;
+        this.isbn = isbn;
         this.author = author;
     }
 
-    public Book(String id, String name, String group, String ibsn, String author) {
+    public Book(String id, String name, String group, String isbn, String author) {
         super(id, name, group);
-        this.ibsn = ibsn;
+        this.isbn = isbn;
         this.author = author;
     }
 
-    // Getter setter for IBSN and author
-    public String getIBSN() {
-        return ibsn;
+    // Getter setter for ISBN and author
+    public String getISBN() {
+        return isbn;
     }
 
-    public void setIBSN(String ibsn) {
-        this.ibsn = ibsn;
+    public void setISBN(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getAuthor() {
