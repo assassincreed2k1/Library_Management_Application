@@ -17,13 +17,12 @@ public class Librarian extends Person {
      */
 
     public Librarian(){
-        super();
         this.employeeId = "";
         this.position = "";
     }
 
     public Librarian(String name, String address, String gender, String dateOfBirth, String phoneNumber, String email, String employeeId, String position){
-        super(name, address, gender, dateOfBirth, phoneNumber, email);
+        super(name, address, gender, dateOfBirth, phoneNumber);
         this.employeeId = employeeId;
         this.position = position;
     }
