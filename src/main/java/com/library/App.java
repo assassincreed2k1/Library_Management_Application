@@ -1,5 +1,6 @@
 package com.library;
 
+import com.library.model.Person.Librarian;
 import com.library.model.Person.Member;
 import com.library.model.doc.Book;
 import com.library.model.doc.Magazine;
@@ -7,6 +8,7 @@ import com.library.model.doc.Newspaper;
 
 import com.library.service.LibraryService;
 import com.library.service.BookManagement;
+import com.library.service.LibrarianManagement;
 import com.library.service.MagazineManagement;
 import com.library.service.NewsPaperManagament;
 import com.library.service.MemberManagement;
@@ -225,10 +227,5 @@ public class App extends Application {
 
     public static void main(String[] args) {
         //launch(args);
-        MemberManagement memberManagement = new MemberManagement();
-        // Giả sử member đã tồn tại
-            String membershipId = "M100";
-            Member mem = memberManagement.getMemberInfo(membershipId);
-            System.out.println(mem.getDetails());
     }
 }
