@@ -43,7 +43,7 @@ public class LibrarianManagementTest {
 
     @Test
     public void testUpdateLibrarian() {
-        Librarian librarian = new Librarian("Jane Doe", "456 Elm St", "female", "1990-05-05", "0987654321", "jane@example.com", "E002", "Assistant Librarian", "password456");
+        Librarian librarian = new Librarian("Jane Doe", "456 Elm St", "female", "1990-05-05", "0987654321", "E002", "Assistant Librarian", "password456");
         librarianManagement.addLibrarian(librarian);
 
         // Update the librarian's details
@@ -60,7 +60,7 @@ public class LibrarianManagementTest {
 
     @Test
     public void testRemoveLibrarian() {
-        Librarian librarian = new Librarian("Jim Beam", "321 Pine St", "male", "1980-11-11", "1234567890", "jim@example.com", "E003", "Librarian", "password789");
+        Librarian librarian = new Librarian("Jim Beam", "321 Pine St", "male", "1980-11-11", "1234567890", "E003", "Librarian", "password789");
         librarianManagement.addLibrarian(librarian);
 
         // Remove the librarian

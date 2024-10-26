@@ -27,7 +27,8 @@ public class Librarian extends Person {
      * @param position    The position of the librarian
      * @param password    The password for the librarian's account
      */
-    public Librarian(String name, String address, String gender, String dateOfBirth, String phoneNumber, String email, String employeeId, String position, String password) {
+    public Librarian(String name, String address, String gender, String dateOfBirth, 
+                    String phoneNumber, String employeeId, String position, String password) {
         super(name, address, gender, dateOfBirth, phoneNumber);
         this.employeeId = employeeId; 
         this.position = position;       
