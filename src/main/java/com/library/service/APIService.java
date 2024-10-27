@@ -11,7 +11,7 @@ import org.json.JSONObject;
  * This class provides static methods to search for books and retrieve book information by ISBN.
  */
 public class APIService {
-    private static final String OPEN_LIBRARY_SEARCH_URL = "https://openlibrary.org/search.json?q=";
+    private static final String OPEN_LIBRARY_SEARCH_URL = "https://openlibrary.org/api/books?bibkeys=ISBN:";
     private static final String OPEN_LIBRARY_BOOK_URL = "https://openlibrary.org/api/books?bibkeys=ISBN:";
 
     /**

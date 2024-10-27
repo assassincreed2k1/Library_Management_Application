@@ -60,41 +60,58 @@ public class App extends Application {
         bookISBNInput.setPromptText("ISBN");
         grid.add(bookISBNInput, 0, 4);
 
+        TextField publishDateInput = new TextField();
+        publishDateInput.setPromptText("Publish Date");
+        grid.add(publishDateInput, 0, 5);
+
         Button addBookButton = new Button("Add Book");
-        grid.add(addBookButton, 0, 5);
+        grid.add(addBookButton, 0, 6);
 
         // Add book on button click
-        /**Code Mẫu cho gọi addDocument từ UI */
         addBookButton.setOnAction(e -> {
             JSONObject getAPIBook = APIService.getBookInfoByISBN(bookISBNInput.getText());
-            
-            if (getAPIBook != null) {
-                String bookName = getAPIBook.optString("title", "Unknown Title"); 
-                String bookAuthor = "Unknown Author"; 
-                
-                if (getAPIBook.has("authors")) {
-                    JSONArray authorsArray = getAPIBook.getJSONArray("authors");
+
+            if (getAPIBook != null && getAPIBook.has("ISBN:" + bookISBNInput.getText())) {
+                JSONObject bookData = getAPIBook.getJSONObject("ISBN:" + bookISBNInput.getText());
+
+                String bookName = bookData.optString("title", "Unknown Title");
+
+                String bookAuthor = "";
+                if (bookData.has("authors")) {
+                    JSONArray authorsArray = bookData.getJSONArray("authors");
                     if (authorsArray.length() > 0) {
                         bookAuthor = authorsArray.getJSONObject(0).optString("name", "Unknown Author");
                     }
+                } else {
+                    bookAuthor = "Unknown Author";
                 }
 
-                String bookGroup = getAPIBook.optString("subject", "General"); 
-                
-                Book book = new Book(libraryService.generateID(), 
-                                    bookName, 
-                                    bookGroup, 
-                                    bookISBNInput.getText(), 
-                                    bookAuthor);
+                String publishDate = bookData.optString("publish_date", "Unknown Date");
+
+                String bookGroup = "General";
+                if (bookData.has("subjects")) {
+                    JSONArray subjectsArray = bookData.getJSONArray("subjects");
+                    if (subjectsArray.length() > 0) {
+                        bookGroup = subjectsArray.getJSONObject(0).optString("name", "General");
+                    }
+                }
+
+                Book book = new Book(libraryService.generateID(3), // Type 3 for Book
+                        bookName,
+                        bookGroup,
+                        bookISBNInput.getText(),
+                        bookAuthor,
+                        publishDate);
 
                 bookManager.addDocuments(book);
                 System.out.println("Added Book from API: " + book.getName());
             } else {
-                Book book = new Book(libraryService.generateID(),
-                                        bookNameInput.getText(),
-                                        bookGroupInput.getText(),
-                                        bookISBNInput.getText(),
-                                        bookAuthorInput.getText());
+                Book book = new Book(libraryService.generateID(3), // Type 3 for Book
+                        bookNameInput.getText(),
+                        bookGroupInput.getText(),
+                        bookISBNInput.getText(),
+                        bookAuthorInput.getText(),
+                        publishDateInput.getText());
 
                 bookManager.addDocuments(book);
                 System.out.println("Added Book: " + book.getName());
@@ -103,23 +120,25 @@ public class App extends Application {
 
         TextField bookIDinput = new TextField();
         bookIDinput.setPromptText("ID");
-        grid.add(bookIDinput, 0, 6);
+        grid.add(bookIDinput, 0, 8);
 
         Button updateButton = new Button("Update Book");
-        grid.add(updateButton, 0, 7);
-        
+        grid.add(updateButton, 0, 9);
+
         updateButton.setOnAction(e -> {
             Book upBook = new Book(bookIDinput.getText(),
-                                    bookNameInput.getText(),
-                                    bookGroupInput.getText(),
-                                    bookISBNInput.getText(),
-                                    bookAuthorInput.getText());
+                    bookNameInput.getText(),
+                    bookGroupInput.getText(),
+                    bookISBNInput.getText(),
+                    bookAuthorInput.getText(),
+                    publishDateInput.getText());
+
             bookManager.updateDocuments(upBook);
             System.out.println("Updated Book: " + upBook.getName());
         });
 
         Button removeBookButton = new Button("Remove book");
-        grid.add(removeBookButton, 0, 8);
+        grid.add(removeBookButton, 0, 10);
 
         removeBookButton.setOnAction(e -> {
             Book rmBook = new Book();
@@ -149,10 +168,10 @@ public class App extends Application {
 
         // Add magazine on button click
         addMagazineButton.setOnAction(e -> {
-            Magazine magazine = new Magazine(libraryService.generateID(),
-                                            magazineNameInput.getText(),
-                                            magazineGroupInput.getText(),
-                                            magazinePublisherInput.getText());
+            Magazine magazine = new Magazine(libraryService.generateID(4), // Type 4 for Magazine
+                    magazineNameInput.getText(),
+                    magazineGroupInput.getText(),
+                    magazinePublisherInput.getText());
 
             magazineManager.addDocuments(magazine);
             System.out.println("Added Magazine: " + magazine.getName());
@@ -167,12 +186,12 @@ public class App extends Application {
 
         updateMagazineButton.setOnAction(e -> {
             Magazine upMagazine = new Magazine(magazineIdInput.getText(),
-                                                magazineNameInput.getText(),
-                                                magazineGroupInput.getText(),
-                                                magazinePublisherInput.getText());
+                    magazineNameInput.getText(),
+                    magazineGroupInput.getText(),
+                    magazinePublisherInput.getText());
             magazineManager.updateDocuments(upMagazine);
             System.out.println("Updated Magazine: " + upMagazine.getName());
-        }); 
+        });
 
         Button removeMagazineButton = new Button("Remove Magazine");
         grid.add(removeMagazineButton, 1, 8);
@@ -209,11 +228,11 @@ public class App extends Application {
 
         // Add newspaper on button click
         addNewspaperButton.setOnAction(e -> {
-            Newspaper newspaper = new Newspaper(libraryService.generateID(),
-                                                newspaperNameInput.getText(),
-                                                newspaperGroupInput.getText(),
-                                                newspaperSourceInput.getText(),
-                                                newspaperRegionInput.getText());
+            Newspaper newspaper = new Newspaper(libraryService.generateID(5), // Type 5 for Newspaper
+                    newspaperNameInput.getText(),
+                    newspaperGroupInput.getText(),
+                    newspaperSourceInput.getText(),
+                    newspaperRegionInput.getText());
 
             newspaperManager.addDocuments(newspaper);
             System.out.println("Added Newspaper: " + newspaper.getName());
@@ -228,14 +247,14 @@ public class App extends Application {
 
         updateNewspaperButton.setOnAction(e -> {
             Newspaper upNews = new Newspaper(newspaperIdInput.getText(),
-                                            newspaperNameInput.getText(),
-                                            newspaperGroupInput.getText(),
-                                            newspaperSourceInput.getText(),
-                                            newspaperRegionInput.getText());
+                    newspaperNameInput.getText(),
+                    newspaperGroupInput.getText(),
+                    newspaperSourceInput.getText(),
+                    newspaperRegionInput.getText());
 
             newspaperManager.updateDocuments(upNews);
             System.out.println("Updated Newspaper: " + upNews.getName());
-        });     
+        });
 
         Button removeNewspaperButton = new Button("Remove Newspaper");
         grid.add(removeNewspaperButton, 2, 8);
@@ -254,11 +273,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        //launch(args);
-        MemberManagement memberManagement = new MemberManagement();
-        // Giả sử member đã tồn tại
-            String membershipId = "M100";
-            Member mem = memberManagement.getMemberInfo(membershipId);
-            System.out.println(mem.getDetails());
+        launch(args);
     }
 }
