@@ -72,52 +72,35 @@ public class App extends Application {
         // Add book on button click
         addBookButton.setOnAction(e -> {
             JSONObject getAPIBook = APIService.getBookInfoByISBN(bookISBNInput.getText());
+            String bookName, bookAuthor = "Unknown Author", publishDate = "Unknown Date", bookGroup = "General";
 
             if (getAPIBook != null && getAPIBook.has("ISBN:" + bookISBNInput.getText())) {
                 JSONObject bookData = getAPIBook.getJSONObject("ISBN:" + bookISBNInput.getText());
+                bookName = bookData.optString("title", "Unknown Title");
 
-                String bookName = bookData.optString("title", "Unknown Title");
-
-                String bookAuthor = "";
                 if (bookData.has("authors")) {
                     JSONArray authorsArray = bookData.getJSONArray("authors");
-                    if (authorsArray.length() > 0) {
-                        bookAuthor = authorsArray.getJSONObject(0).optString("name", "Unknown Author");
-                    }
-                } else {
-                    bookAuthor = "Unknown Author";
+                    bookAuthor = authorsArray.length() > 0 ? authorsArray.getJSONObject(0).optString("name", bookAuthor)
+                            : bookAuthor;
                 }
 
-                String publishDate = bookData.optString("publish_date", "Unknown Date");
-
-                String bookGroup = "General";
+                publishDate = bookData.optString("publish_date", publishDate);
                 if (bookData.has("subjects")) {
                     JSONArray subjectsArray = bookData.getJSONArray("subjects");
-                    if (subjectsArray.length() > 0) {
-                        bookGroup = subjectsArray.getJSONObject(0).optString("name", "General");
-                    }
+                    bookGroup = subjectsArray.length() > 0 ? subjectsArray.getJSONObject(0).optString("name", bookGroup)
+                            : bookGroup;
                 }
-
-                Book book = new Book(libraryService.generateID(3), // Type 3 for Book
-                        bookName,
-                        bookGroup,
-                        bookISBNInput.getText(),
-                        bookAuthor,
-                        publishDate);
-
-                bookManager.addDocuments(book);
-                System.out.println("Added Book from API: " + book.getName());
             } else {
-                Book book = new Book(libraryService.generateID(3), // Type 3 for Book
-                        bookNameInput.getText(),
-                        bookGroupInput.getText(),
-                        bookISBNInput.getText(),
-                        bookAuthorInput.getText(),
-                        publishDateInput.getText());
-
-                bookManager.addDocuments(book);
-                System.out.println("Added Book: " + book.getName());
+                bookName = bookNameInput.getText();
+                bookGroup = bookGroupInput.getText();
+                bookAuthor = bookAuthorInput.getText();
+                publishDate = publishDateInput.getText();
             }
+
+            Book book = new Book(libraryService.generateID(), bookName, bookGroup, bookISBNInput.getText(), bookAuthor,
+                    publishDate);
+            bookManager.addDocuments(book);
+            System.out.println("Added Book: " + book.getName());
         });
 
         TextField bookIDinput = new TextField();
@@ -170,7 +153,7 @@ public class App extends Application {
 
         // Add magazine on button click
         addMagazineButton.setOnAction(e -> {
-            Magazine magazine = new Magazine(libraryService.generateID(4), // Type 4 for Magazine
+            Magazine magazine = new Magazine(libraryService.generateID(), // Type 4 for Magazine
                     magazineNameInput.getText(),
                     magazineGroupInput.getText(),
                     magazinePublisherInput.getText());
@@ -230,7 +213,7 @@ public class App extends Application {
 
         // Add newspaper on button click
         addNewspaperButton.setOnAction(e -> {
-            Newspaper newspaper = new Newspaper(libraryService.generateID(5), // Type 5 for Newspaper
+            Newspaper newspaper = new Newspaper(libraryService.generateID(), // Type 5 for Newspaper
                     newspaperNameInput.getText(),
                     newspaperGroupInput.getText(),
                     newspaperSourceInput.getText(),
@@ -275,6 +258,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        //launch(args);
+        launch(args);
     }
 }
