@@ -26,12 +26,11 @@ public class Newspaper extends Document {
      * 
      * @param name     The name of the newspaper.
      * @param group    The group or category the newspaper belongs to.
-     * @param quantity The number of copies of the newspaper.
      * @param source   The source of the newspaper.
      * @param region   The region where the newspaper is published.
      */
-    public Newspaper(String name, String group, String source, String region) {
-        super(name, group);
+    public Newspaper(String id, String name, String group, String source, String region) {
+        super(id, name, group);
         this.source = source;
         this.region = region;
     }

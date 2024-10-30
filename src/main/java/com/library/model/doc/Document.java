@@ -5,7 +5,6 @@ package com.library.model.doc;
  * and availability status.
  */
 class Document {
-    private static long idCounter = 0; // Static long integer to generate ID
     private String id;
     private String name;
     private String group;
@@ -17,7 +16,7 @@ class Document {
      * it as not available.
      */
     public Document() {
-        this.id = generateID();
+        this.id = "";
         this.name = "No name";
         this.group = "Default";
         this.isAvailable = false;
@@ -33,23 +32,23 @@ class Document {
      *                 context).
      */
     public Document(String name, String group) {
-        this.id = generateID();
+        this.id = "";
+        this.name = name;
+        this.group = group;
+        this.isAvailable = true;
+    }
+    
+    // for find or get doc
+    public Document(String id, String name, String group) {
+        this.id = id;
         this.name = name;
         this.group = group;
         this.isAvailable = true;
     }
 
-    /**
-     * Generates a unique ID for the document in the format of a zero-padded
-     * nine-digit string.
-     * 
-     * @return A unique ID as a String.
-     */
-    private String generateID() {
-        idCounter++;
-        return String.format("%09d", idCounter);
+    public void setID(String id) {
+        this.id = id;
     }
-
     /**
      * Gets the ID of this document.
      * 
@@ -100,7 +99,7 @@ class Document {
      * 
      * @param isAvailable The new availability status to set.
      */
-    public void setAvailable(boolean isAvailable) {
+    public void setIsAvailable(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
 

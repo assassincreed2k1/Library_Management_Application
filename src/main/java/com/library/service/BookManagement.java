@@ -4,18 +4,40 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 import com.library.model.doc.Book;
 
+/**
+ * The {@code BookManagement} class provides services for managing a library's
+ * book collection,
+ * including adding, updating, removing, retrieving, and displaying available
+ * books.
+ * It interacts with an SQLite database.
+ */
 public class BookManagement extends LibraryService {
+
+    /**
+     * Constructs a {@code BookManagement} object.
+     * It creates the Books table if it doesn't already exist.
+     */
+    public BookManagement() {
+        super.createList("CREATE TABLE IF NOT EXISTS Books ("
+                + "id VARCHAR(255) PRIMARY KEY, "
+                + "name VARCHAR(255), "
+                + "bookGroup VARCHAR(50), "
+                + "author VARCHAR(255), "
+                + "isAvailable BOOLEAN)");
+    }
+
     /**
      * Adds a new {@link Book} to the library's book collection.
      * 
-     * @param book The new book to add.
+     * @param book The new book to add to the collection.
      */
     public void addDocuments(Book book) {
         String sql_statement = "INSERT INTO Books "
-                + "(id, name, group, author, isAvailable) "
+                + "(id, name, bookGroup, author, isAvailable) "
                 + "VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -32,35 +54,37 @@ public class BookManagement extends LibraryService {
         }
     }
 
-    /** Update Book */
+    /**
+     * Updates an existing {@link Book} in the library's collection.
+     * 
+     * @param book The book with updated information.
+     */
     public void updateDocuments(Book book) {
         String sql_stmt = "UPDATE Books SET "
                 + "name = ?, "
-                + "group = ?, "
+                + "bookGroup = ?, "
                 + "author = ?, "
-                + "isAvailable = ?, "
+                + "isAvailable = ? "
                 + "WHERE id = ?";
-
-        String name = book.getName();
-        String group = book.getGroup();
-        String author = book.getAuthor();
-        boolean isAvailable = book.getIsAvailable();
-        int id = 3;
 
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_stmt)) {
-            pstmt.setString(1, name);
-            pstmt.setString(2, group);
-            pstmt.setString(3, author);
-            pstmt.setBoolean(4, isAvailable);
-            pstmt.setInt(5, id);
+            pstmt.setString(1, book.getName());
+            pstmt.setString(2, book.getGroup());
+            pstmt.setString(3, book.getAuthor());
+            pstmt.setBoolean(4, book.getIsAvailable());
+            pstmt.setString(5, book.getID());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
     }
 
-    /** Remove Book */
+    /**
+     * Removes a {@link Book} from the library's collection.
+     * 
+     * @param book The book to be removed.
+     */
     public void removeDocument(Book book) {
         String sql_statement = "DELETE FROM Books WHERE id = ?";
 
@@ -69,6 +93,76 @@ public class BookManagement extends LibraryService {
             pstmt.setString(1, book.getID());
             pstmt.executeUpdate();
             System.out.println("Data deleted successfully");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Retrieves a {@link Book} from the library's collection using its ID.
+     * 
+     * @param id The ID of the book to retrieve.
+     * @return The {@link Book} object if found, otherwise {@code null}.
+     */
+    public Book getDocument(String id) {
+        String sql_statement = "SELECT * FROM Books WHERE id = ?";
+        Book book = null;
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String bookId = rs.getString("id");
+                String name = rs.getString("name");
+                String group = rs.getString("bookGroup");
+                String author = rs.getString("author");
+                boolean isAvailable = rs.getBoolean("isAvailable");
+
+                book = new Book();
+                book.setID(bookId);
+                book.setName(name);
+                book.setGroup(group);
+                book.setAuthor(author);
+                book.setIsAvailable(isAvailable);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return book;
+    }
+
+    /**
+     * Displays all books in the library that are currently available.
+     * 
+     * @param type The type of the document (currently unused in this method, but
+     *             can be expanded for future use).
+     */
+    //////////// ----->>> NEED to UPDATE
+    public void displayAvailableDocuments(String type) {
+        String sql_statement = "SELECT * FROM Books WHERE isAvailable = true";
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement);
+                ResultSet rs = pstmt.executeQuery()) {
+
+            System.out.println("Available Books:");
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String name = rs.getString("name");
+                String group = rs.getString("bookGroup");
+                String author = rs.getString("author");
+                boolean isAvailable = rs.getBoolean("isAvailable");
+
+                System.out.println("ID: " + id);
+                System.out.println("Name: " + name);
+                System.out.println("Group: " + group);
+                System.out.println("Author: " + author);
+                System.out.println("Available: " + isAvailable);
+                System.out.println("------------------------");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

@@ -27,8 +27,8 @@ public class Magazine extends Document {
      * @param quantity  The number of copies of the magazine.
      * @param publisher The publisher of the magazine.
      */
-    public Magazine(String name, String group, String publisher) {
-        super(name, group);
+    public Magazine(String id, String name, String group, String publisher) {
+        super(id, name, group);
         this.publisher = publisher;
     }
 
