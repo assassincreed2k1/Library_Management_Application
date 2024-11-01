@@ -1,0 +1,30 @@
+.login-form {
+    -fx-background-color: linear-gradient (to bottom right, #252d50, #324f6b);
+}
+
+
+
+.card-form {
+    -fx-background-color: #2a5172;
+    -fx-background-radius: 15px;
+}
+
+.close {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.close:hover {
+    -fx-background-color: #f13f57;
+}
+
+.minimize {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.minimize:hover {
+    -fx-background-color: #5481ab;
+}
+
+/* .textfield */
