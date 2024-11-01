@@ -5,26 +5,26 @@
 
 
 .card-form {
-    -fx-background-color: #2a5172;
-    -fx-background-radius: 15px;
+    background-color: #2a5172;
+    -fx-  :15px;
 }
 
 .close {
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
+    background-color: transparent;
+    cursor: hand;
 }
 
 .close:hover {
-    -fx-background-color: #f13f57;
+    background-color: #f13f57;
 }
 
 .minimize {
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
+    background-color: transparent;
+    cursor: hand;
 }
 
 .minimize:hover {
-    -fx-background-color: #5481ab;
+    background-color: #5481ab;
 }
 
 /* .textfield */
