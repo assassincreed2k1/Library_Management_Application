@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -8,14 +8,22 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="469.0" prefWidth="691.0" stylesheets="@designLogin.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="469.0" prefWidth="691.0" styleClass="login-form" stylesheets="@designLogin.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="625.0" layoutY="14.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="52.0" text="ESC" textAlignment="CENTER" />
-      <AnchorPane layoutX="56.0" layoutY="58.0" prefHeight="353.0" prefWidth="580.0" styleClass="login-form" stylesheets="@designLogin.css">
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="636.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="52.0" styleClass="close" stylesheets="@designLogin.css" text="X" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font></Button>
+      <AnchorPane layoutX="56.0" layoutY="51.0" prefHeight="353.0" prefWidth="580.0" styleClass="card-form" stylesheets="@designLogin.css">
          <children>
-            <TextField layoutX="216.0" layoutY="116.0" prefHeight="29.0" prefWidth="135.0" style="-fx-background-color: #f2f2f2;" text="username" />
-            <PasswordField layoutX="216.0" layoutY="153.0" prefHeight="29.0" prefWidth="135.0" style="-fx-background-color: #f2f2f2;" text="password" />
+            <TextField layoutX="216.0" layoutY="116.0" prefHeight="29.0" prefWidth="135.0" style="-fx-background-color: #f2f2f2;" styleClass="textfield" stylesheets="@designLogin.css" text="username" AnchorPane.bottomAnchor="208.0" AnchorPane.leftAnchor="216.0">
+               <padding>
+                  <Insets left="5.0" />
+               </padding></TextField>
+            <PasswordField layoutX="216.0" layoutY="153.0" prefHeight="29.0" prefWidth="135.0" style="-fx-background-color: #f2f2f2;" styleClass="textfield" stylesheets="@designLogin.css" text="   password">
+               <padding>
+                  <Insets left="5.0" />
+               </padding></PasswordField>
             <Label layoutX="118.0" layoutY="120.0" prefHeight="24.0" prefWidth="103.0" text="USERNAME:" textFill="#00db09">
                <font>
                   <Font name="System Bold" size="16.0" />
@@ -26,16 +34,13 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Button layoutX="243.0" layoutY="210.0" mnemonicParsing="false" text="LOGIN" textFill="#fff71e">
-               <font>
-                  <Font name="System Bold" size="26.0" />
-               </font>
-            </Button>
+            <Button alignment="CENTER" layoutX="239.0" layoutY="202.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="89.0" styleClass="login-btn" stylesheets="@designLogin.css" text="Log In" textAlignment="CENTER" textFill="#fff307" />
          </children>
       </AnchorPane>
+      <Button layoutX="619.0" layoutY="-11.0" mnemonicParsing="false" prefHeight="69.0" prefWidth="16.0" styleClass="minimize" stylesheets="@designLogin.css" text="-" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="43.0" />
+         </font>
+      </Button>
    </children>
-   <styleClass>
-      <String fx:value="login-form" />
-      <String fx:value="login-btn" />
-   </styleClass>
 </AnchorPane>
