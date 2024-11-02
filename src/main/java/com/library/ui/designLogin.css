@@ -19,6 +19,7 @@
 
 .minimize {
     -fx-background-color: transparent;
+        -fx-text-fill: #fff;
     -fx-cursor: hand;
 }
 
