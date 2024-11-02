@@ -1,50 +1,72 @@
 package com.library.model.Person;
 
 public class Librarian extends Person {
-    private String employeeId;
-    private String position;
+    private String employeeId; 
+    private String position;  
+    private String password; 
 
     /**
-     * COnstructor for Librarian with all information
-     * @param name
-     * @param address
-     * @param gender
-     * @param dateOfBirth
-     * @param phoneNumber
-     * @param email
-     * @param employeeId ID cua nguoi thu thu
-     * @param position chuc vu cua thu thu
+     * Default constructor for Librarian with no initial values
      */
-    public Librarian(String name, String address, String gender, String dateOfBirth, String phoneNumber, String email, String employeeId, String position){
-        super(name, address, gender, dateOfBirth, phoneNumber, email);
-        this.employeeId = employeeId;
-        this.position = position;
+    public Librarian() {
+        this.employeeId = ""; 
+        this.position = "";   
+        this.password = "";   
     }
 
-    public String getEmployeeId(){
-        return employeeId;
+    /**
+     * Constructor for Librarian with all information
+     * 
+     * @param name        The name of the librarian
+     * @param address     The address of the librarian
+     * @param gender      The gender of the librarian
+     * @param dateOfBirth The date of birth of the librarian
+     * @param phoneNumber The phone number of the librarian
+     * @param email       The email of the librarian
+     * @param employeeId  The unique ID for the librarian
+     * @param position    The position of the librarian
+     * @param password    The password for the librarian's account
+     */
+    public Librarian(String name, String address, String gender, String dateOfBirth, 
+                    String phoneNumber, String employeeId, String position, String password) {
+        super(name, address, gender, dateOfBirth, phoneNumber);
+        this.employeeId = employeeId; 
+        this.position = position;       
+        this.password = password;       
     }
 
-    public void setEmployeeId(String employeeId){
-        this.employeeId = employeeId;
+    public String getEmployeeId() {
+        return employeeId; 
     }
 
-    public String getPosition(){
-        return position;
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId; 
     }
 
-    public void setPosition(String position){
-        this.position = position;
+    public String getPosition() {
+        return position; 
+    }
+
+    public void setPosition(String position) {
+        this.position = position; 
+    }
+
+    public String getPassword() {
+        return password; 
+    }
+
+    public void setPassword(String password) {
+        this.password = password; 
     }
 
     /**
      * Override getDetails to include librarian-specific info
-     * @return String with all details
+     * 
+     * @return String containing all details about the librarian
      */
     @Override
     public String getDetails() {
         return String.format("%sEmployee ID: %s\nPosition: %s\n",
-        super.getDetails(), employeeId, position);
+                super.getDetails(), employeeId, position);
     }
 }
-

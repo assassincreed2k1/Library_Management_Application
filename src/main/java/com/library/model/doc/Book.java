@@ -6,56 +6,62 @@ package com.library.model.doc;
  * @param Name     Name of book (title, Example: )
  * @param Group    Group (Example: "TextBook", "Novel", "PictureBook", ...)
  * @param ID       ID (Example: "000000001")
- * @param author
+ * @param author   Author of the book
+ * @param publishDate  Publish date of the book
  */
 public class Book extends Document {
-    private String ibsn;
+    private String isbn;
     private String author;
+    private String publishDate; 
 
     /**
      * Default Book:
      * 
-     * @param Name   "No name"
-     * @param Group  "Default"
-     * @param ID     "Invalid"
-     * @param ibsn   ""
-     * @param author "None"
+     * @param Name       "No name"
+     * @param Group      "Default"
+     * @param ID         "Invalid"
+     * @param isbn       ""
+     * @param author     "None"
+     * @param publishDate "Unknown Date"
      */
     public Book() {
         // Call constructor Document()
         super();
-        this.ibsn = "";
+        this.isbn = "";
         this.author = "None";
+        this.publishDate = "Unknown Date"; 
     }
 
     /**
      * Book:
      * 
-     * @param Name
-     * @param Group
-     * @param ID
-     * @param IBSN
-     * @param author
+     * @param Name       Name of the book
+     * @param Group      Group of the book
+     * @param ID         ID of the book
+     * @param isbn       ISBN of the book
+     * @param author     Author of the book
+     * @param publishDate Publish date of the book
      */
-    public Book(String name, String group, String ibsn, String author) {
+    public Book(String name, String group, String isbn, String author, String publishDate) {
         super(name, group);
-        this.ibsn = ibsn;
+        this.isbn = isbn;
         this.author = author;
+        this.publishDate = publishDate; 
     }
 
-    public Book(String id, String name, String group, String ibsn, String author) {
+    public Book(String id, String name, String group, String isbn, String author, String publishDate) {
         super(id, name, group);
-        this.ibsn = ibsn;
+        this.isbn = isbn;
         this.author = author;
+        this.publishDate = publishDate;
     }
 
-    // Getter setter for IBSN and author
-    public String getIBSN() {
-        return ibsn;
+    public String getISBN() {
+        return isbn;
     }
 
-    public void setIBSN(String ibsn) {
-        this.ibsn = ibsn;
+    public void setISBN(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getAuthor() {
@@ -66,4 +72,11 @@ public class Book extends Document {
         this.author = author;
     }
     
+    public String getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(String publishDate) {
+        this.publishDate = publishDate;
+    }
 }
