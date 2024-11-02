@@ -28,7 +28,7 @@
 
 .textfield {
     -fx-background-color: transparent;
-    /* -fx-text-inner-color: #fff; */
+    -fx-text-fill: #000000;
     -fx-border-color: #fff;
     -fx-border-width: 0px 0px .4px 0px;
     -fx-font-size: 13px;
