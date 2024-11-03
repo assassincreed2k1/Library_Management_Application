@@ -55,7 +55,12 @@ public class LoanManagement extends LibraryService {
         }
     }
 
-    /** Borrow a Newspaper */
+     /**
+     * Borrow a newspaper from the library.
+     * This method checks if the newspaper is available and, if so, updates its availability status to false in the database.
+     *
+     * @param newspaper The newspaper object to be borrowed.
+     */
     public void borrowNewspaper(Newspaper newspaper) {
         if (!newspaper.getIsAvailable()) {
             System.out.println("Newspaper is already borrowed.");
@@ -76,10 +81,10 @@ public class LoanManagement extends LibraryService {
     }
 
     /**
-     * Borrow a newspaper from the library.
-     * This method checks if the newspaper is available and, if so, updates its availability status to false in the database.
+     * Return a borrowed newspaper to the library.
+     * This method updates the availability status of the newspaper to true in the database.
      *
-     * @param newspaper The newspaper object to be borrowed.
+     * @param newspaper The newspaper object to be returned.
      */
     public void returnNewspaper(Newspaper newspaper) {
         String sql = "UPDATE Newspaper SET isAvailable = ? WHERE id = ?";
@@ -96,10 +101,10 @@ public class LoanManagement extends LibraryService {
     }
 
     /**
-     * Return a borrowed newspaper to the library.
-     * This method updates the availability status of the newspaper to true in the database.
+     * Borrow a magazine from the library.
+     * This method checks if the magazine is available and, if so, updates its availability status to false in the database.
      *
-     * @param newspaper The newspaper object to be returned.
+     * @param magazine The magazine object to be borrowed.
      */
     public void borrowMagazine(Magazine magazine) {
         if (!magazine.getIsAvailable()) {
@@ -120,7 +125,12 @@ public class LoanManagement extends LibraryService {
         }
     }
 
-    /** Return a Magazine */
+     /**
+     * Return a borrowed magazine to the library.
+     * This method updates the availability status of the magazine to true in the database.
+     *
+     * @param magazine The magazine object to be returned.
+     */
     public void returnMagazine(Magazine magazine) {
         String sql = "UPDATE Magazines SET isAvailable = ? WHERE id = ?";
 
