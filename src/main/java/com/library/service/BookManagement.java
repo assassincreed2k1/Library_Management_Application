@@ -27,6 +27,8 @@ public class BookManagement extends LibraryService {
                 + "name VARCHAR(255), "
                 + "bookGroup VARCHAR(50), "
                 + "author VARCHAR(255), "
+                + "publishDate VARCHAR(50), "
+                + "ISBN VARCHAR(50), " // Thêm cột ISBN
                 + "isAvailable BOOLEAN)");
     }
 
@@ -37,8 +39,8 @@ public class BookManagement extends LibraryService {
      */
     public void addDocuments(Book book) {
         String sql_statement = "INSERT INTO Books "
-                + "(id, name, bookGroup, author, isAvailable) "
-                + "VALUES (?, ?, ?, ?, ?)";
+                + "(id, name, bookGroup, author, publishDate, ISBN, isAvailable) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
@@ -46,7 +48,9 @@ public class BookManagement extends LibraryService {
             pstmt.setString(2, book.getName());
             pstmt.setString(3, book.getGroup());
             pstmt.setString(4, book.getAuthor());
-            pstmt.setBoolean(5, book.getIsAvailable());
+            pstmt.setString(5, book.getPublishDate()); 
+            pstmt.setString(6, book.getISBN()); 
+            pstmt.setBoolean(7, book.getIsAvailable());
             pstmt.executeUpdate();
             System.out.println("Data inserted successfully");
         } catch (SQLException e) {
@@ -64,6 +68,8 @@ public class BookManagement extends LibraryService {
                 + "name = ?, "
                 + "bookGroup = ?, "
                 + "author = ?, "
+                + "publishDate = ?, "
+                + "ISBN = ?, " 
                 + "isAvailable = ? "
                 + "WHERE id = ?";
 
@@ -72,8 +78,10 @@ public class BookManagement extends LibraryService {
             pstmt.setString(1, book.getName());
             pstmt.setString(2, book.getGroup());
             pstmt.setString(3, book.getAuthor());
-            pstmt.setBoolean(4, book.getIsAvailable());
-            pstmt.setString(5, book.getID());
+            pstmt.setString(4, book.getPublishDate()); 
+            pstmt.setString(5, book.getISBN()); 
+            pstmt.setBoolean(6, book.getIsAvailable());
+            pstmt.setString(7, book.getID());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -118,6 +126,8 @@ public class BookManagement extends LibraryService {
                 String name = rs.getString("name");
                 String group = rs.getString("bookGroup");
                 String author = rs.getString("author");
+                String publishDate = rs.getString("publishDate"); 
+                String isbn = rs.getString("ISBN"); 
                 boolean isAvailable = rs.getBoolean("isAvailable");
 
                 book = new Book();
@@ -125,6 +135,8 @@ public class BookManagement extends LibraryService {
                 book.setName(name);
                 book.setGroup(group);
                 book.setAuthor(author);
+                book.setPublishDate(publishDate); 
+                book.setISBN(isbn); 
                 book.setIsAvailable(isAvailable);
             }
         } catch (SQLException e) {
@@ -140,7 +152,6 @@ public class BookManagement extends LibraryService {
      * @param type The type of the document (currently unused in this method, but
      *             can be expanded for future use).
      */
-    //////////// ----->>> NEED to UPDATE
     public void displayAvailableDocuments(String type) {
         String sql_statement = "SELECT * FROM Books WHERE isAvailable = true";
 
@@ -154,12 +165,16 @@ public class BookManagement extends LibraryService {
                 String name = rs.getString("name");
                 String group = rs.getString("bookGroup");
                 String author = rs.getString("author");
+                String publishDate = rs.getString("publishDate"); 
+                String isbn = rs.getString("ISBN"); 
                 boolean isAvailable = rs.getBoolean("isAvailable");
 
                 System.out.println("ID: " + id);
                 System.out.println("Name: " + name);
                 System.out.println("Group: " + group);
                 System.out.println("Author: " + author);
+                System.out.println("Publish Date: " + publishDate); 
+                System.out.println("ISBN: " + isbn); 
                 System.out.println("Available: " + isAvailable);
                 System.out.println("------------------------");
             }

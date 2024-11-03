@@ -6,7 +6,17 @@ public class Person {
     private String gender;
     private String dateOfBirth;
     private String phoneNumber;
-    private String email;
+
+    /**
+     * constructor Person no param
+     */
+    public Person() {
+        name = "";
+        address = "";
+        gender = "";
+        dateOfBirth = "";
+        phoneNumber = "";
+    }
 
     /**
      * constructor for person who has all information.
@@ -15,35 +25,13 @@ public class Person {
      * @param gender is String
      * @param dateOfBirth is String
      * @param phoneNumber is String
-     * @param email is String
      */
-    public Person(String name, String address, String gender, String dateOfBirth, String phoneNumber, String email) { 
+    public Person(String name, String address, String gender, String dateOfBirth, String phoneNumber) { 
         this.name = name;
         this.address = address;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
-        this.email = email;
-    }
-
-    /**
-     * constructor for person who just has phoneNumber or email.
-     * @param name
-     * @param address
-     * @param gender
-     * @param dateOfBirth
-     * @param phoneNumber
-     */
-    public Person(String name, String address, String gender, String dateOfBirth, String phoneNum_email) { 
-        this.name = name;
-        this.address = address;
-        this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
-        if (phoneNum_email.charAt(0) >= '0' && phoneNum_email.charAt(0) <= '9') {
-            this.phoneNumber = phoneNum_email;
-        } else {
-            this.email = phoneNum_email;
-        }
     }
 
     public String getName() {
@@ -86,21 +74,13 @@ public class Person {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     /**
      * return String will all information of Person.
      * @return is String
      */
     public String getDetails() {
-        return String.format("Name: %s\nGender: %s\nAddress: %s\nPhone Number: %s\nEmail: %s\n",
-                            name, gender, address, phoneNumber, email);
+        return String.format("Name: %s\nGender: %s\nAddress: %s\nPhone Number: %s\n",
+                            name, gender, address, phoneNumber);
     }
 
 

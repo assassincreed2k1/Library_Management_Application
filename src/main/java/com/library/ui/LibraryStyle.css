@@ -1,0 +1,46 @@
+.background-main {
+    -fx-background-color: #E0E0E0;
+}
+
+.taskbar {
+    -fx-background-color: linear-gradient(to top, #194c19, #034803);
+}
+
+.mini-taskbar {
+    -fx-background-color: #336633;
+}
+
+.text-taskbar {
+    -fx-text-fill: #ffffff;
+}
+
+.mini-box {
+    -fx-background-color: #F0F0F0;
+    -fx-background-radius: 5px;
+}
+
+.ChoiceBox {
+    -fx-background-color: #ffffff;
+    -fx-border-color: lightgray transparent;
+    -fx-border-width: 1 0;
+    -fx-cursor: hand;
+    -fx-background-radius: 5px;
+
+}
+
+.ChoiceBox:hover {
+    -fx-background-color: #E0E0E0;
+    -fx-border-color: lightgray transparent;
+    -fx-border-width: 1 0;
+}
+
+.ChoiceBox:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: lightgray transparent;
+    -fx-border-width: 1 0;
+}
+
+.card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: lightgray transparent;
+}
