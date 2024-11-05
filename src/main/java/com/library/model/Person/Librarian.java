@@ -1,9 +1,13 @@
 package com.library.model.Person;
 
+import com.library.service.LibrarianManagement;
+
 public class Librarian extends Person {
     private String employeeId; 
     private String position;  
     private String password; 
+
+    private LibrarianManagement libManagement = new LibrarianManagement();
 
     /**
      * Default constructor for Librarian with no initial values
@@ -68,5 +72,26 @@ public class Librarian extends Person {
     public String getDetails() {
         return String.format("%sEmployee ID: %s\nPosition: %s\n",
                 super.getDetails(), employeeId, position);
+    }
+
+    /**
+     * add librarian to database.
+     */
+    public void addLibrarian() {
+        libManagement.addLibrarian(this);
+    }
+
+    /**
+     * delete this librarian from dababase.
+     */
+    public void deleteLibrarian() {
+        libManagement.removeLibrarian(this.employeeId);
+    }
+
+    /**
+     * update new things in librarian in database.
+     */
+    public void updateLibrarian() {
+        libManagement.updateLibrarian(this);
     }
 }

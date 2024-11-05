@@ -16,7 +16,7 @@ public class LibrarianManagement extends LibraryService {
      */
     public LibrarianManagement() {
         super.createList("CREATE TABLE IF NOT EXISTS Librarian ("
-                        + "employeeId INT PRIMARY KEY AUTO_INCREMENT, "
+                        + "employeeId string primary key, "
                         + "name VARCHAR(255), "
                         + "address varchar(255), "
                         + "dateOfBirth date,  "
@@ -148,5 +148,31 @@ public class LibrarianManagement extends LibraryService {
         }
 
         return lib;
+    }
+
+    /**
+     * check librarian account in log in.
+     * 
+     * @param id String id
+     * @param password String password 
+     * @return boolean
+     */
+    public boolean checkLibrarian(String id, String password) {
+        String sql_statement = "SELECT * FROM Librarian "
+                            + "WHERE employeeId = ? and password = ? ";
+        
+        try (Connection conn = DriverManager.getConnection(url);
+            PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+             pstmt.setString(1, id);
+             pstmt.setString(2, password);
+             
+             ResultSet rs = pstmt.executeQuery();
+             if (rs.next()) {
+                return true;
+             }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }                    
+        return false;
     }
 }
