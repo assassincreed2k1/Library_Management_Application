@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="402.0" prefWidth="556.0" styleClass="box-mini" stylesheets="@LoginStyle.css" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.LoginController">
+<AnchorPane prefHeight="402.0" prefWidth="556.0" styleClass="box-mini" stylesheets="@LoginStyle.css" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.LoginController">
    <children>
       <TextField fx:id="usernameField" layoutX="154.0" layoutY="140.0" prefHeight="42.0" prefWidth="276.0" promptText="Username" styleClass="TextField">
          <font>
@@ -42,5 +42,6 @@
             <Font size="19.0" />
          </font>
       </Button>
+      <Button fx:id="closeButton" layoutX="520.0" layoutY="10.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" text="X" textFill="#252424" onAction="#closeWindow" />
    </children>
 </AnchorPane>

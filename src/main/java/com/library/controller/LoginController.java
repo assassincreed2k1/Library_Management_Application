@@ -1,4 +1,4 @@
-package com.library;
+package com.library.controller;
 
 import java.io.IOException;
 
@@ -20,23 +20,31 @@ public class LoginController {
     @FXML
     private Button loginButton;
     @FXML
-    private Label messageLabel;
+    private Button closeButton;
+    @FXML
+    private Label errorLabel;
 
     @FXML
     private void loginButtonClick() throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
         if (username.isEmpty() || password.isEmpty()) {
-            messageLabel.setText("Please enter username and password.");
+            errorLabel.setText("Please enter username and password.");
         } else {
             // doan trong if nay can duoc sua boi nguoi code user management --
             if (!username.isEmpty() && !password.isEmpty()) {
-                messageLabel.setText("Login successful!");
+                errorLabel.setText("Login successful!");
                 switchToLibrary();
             } else {
-                messageLabel.setText("Invalid username or password.");
+                errorLabel.setText("Invalid username or password.");
             }
         }
+    }
+
+    @FXML
+    private void closeWindow() {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
 
     private void switchToLibrary() throws IOException {
