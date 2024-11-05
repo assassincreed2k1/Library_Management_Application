@@ -16,7 +16,7 @@ public class LibrarianManagement extends LibraryService {
      */
     public LibrarianManagement() {
         super.createList("CREATE TABLE IF NOT EXISTS Librarian ("
-                        + "employeeId char(14) PRIMARY KEY, "
+                        + "employeeId INT PRIMARY KEY AUTO_INCREMENT, "
                         + "name VARCHAR(255), "
                         + "address varchar(255), "
                         + "dateOfBirth date,  "

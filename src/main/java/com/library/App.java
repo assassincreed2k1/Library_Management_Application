@@ -276,5 +276,7 @@ public class App extends Application {
 
     public static void main(String[] args) {
         //launch(args);
+        LibraryService lib = new LibraryService();
+        lib.createDataBase();
     }
 }
