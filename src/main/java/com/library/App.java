@@ -10,7 +10,25 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
+import com.library.service.BookManagement;
+import com.library.service.LibrarianManagement;
+import com.library.service.LoanManagement;
+import com.library.service.MagazineManagement;
+import com.library.service.MemberManagement;
+import com.library.service.NewsPaperManagament;
+
 public class App extends Application {
+
+    public static BookManagement bookManagement = new BookManagement();
+    public static MagazineManagement magazineManagement = new MagazineManagement();
+    public static NewsPaperManagament newsPaperManagament = new NewsPaperManagament();
+
+    public static LibrarianManagement librarianManagement = new LibrarianManagement();
+    public static MemberManagement memberManagement = new MemberManagement();
+    public static LoanManagement loanManagement = new LoanManagement();
+
+    //API Service: Static
+
     private double xOffset = 0;
     private double yOffset = 0;
 
