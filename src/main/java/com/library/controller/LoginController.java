@@ -48,7 +48,7 @@ public class LoginController {
     }
 
     private void switchToLibrary() throws IOException {
-        Parent libraryPage = FXMLLoader.load(getClass().getResource("/fxml/Library/Library.fxml"));
+        Parent libraryPage = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
         Stage stage = (Stage) usernameField.getScene().getWindow();
 
         Scene scene = new Scene(libraryPage);
