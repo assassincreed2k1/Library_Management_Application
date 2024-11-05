@@ -1,6 +1,9 @@
 package com.library.controller;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -8,6 +11,10 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 public class LibraryHomeController {
     
@@ -104,7 +111,19 @@ public class LibraryHomeController {
 
     private void handleLogOut() {
         System.out.println("Logging out...");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login/Login.fxml"));
+            Parent loginRoot= loader.load();
 
+            Stage curStage = (Stage) logOutButton.getScene().getWindow();
+
+            curStage.setScene(new Scene(loginRoot));
+            curStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to load Login.fxml.");
+        }
     }
 
     private void handleAddDocument() {

@@ -12,9 +12,6 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 
-import com.library.service.LibrarianManagement;
-import com.library.service.MemberManagement;
-
 public class LoginController {
     @FXML
     private TextField usernameField;
@@ -51,7 +48,7 @@ public class LoginController {
     }
 
     private void switchToLibrary() throws IOException {
-        Parent libraryPage = FXMLLoader.load(getClass().getResource("/fxml/Library/Library.fxml"));
+        Parent libraryPage = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
         Stage stage = (Stage) usernameField.getScene().getWindow();
 
         Scene scene = new Scene(libraryPage);

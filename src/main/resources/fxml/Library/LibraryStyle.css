@@ -15,7 +15,7 @@
 }
 
 .mini-box {
-    -fx-background-color: rgba(255,255,255,0);
+    -fx-background-color: #f0f0f0;
     -fx-background-radius: 5px;
 }
 
