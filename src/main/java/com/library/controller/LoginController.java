@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 
+import com.library.service.LibrarianManagement;;
+
 public class LoginController {
     @FXML
     private TextField usernameField;
@@ -24,6 +26,8 @@ public class LoginController {
     @FXML
     private Label errorLabel;
 
+    private LibrarianManagement libManagament = new LibrarianManagement();
+
     @FXML
     private void loginButtonClick() throws IOException {
         String username = usernameField.getText();
@@ -32,7 +36,7 @@ public class LoginController {
             errorLabel.setText("Please enter username and password.");
         } else {
             // doan trong if nay can duoc sua boi nguoi code user management --
-            if (!username.isEmpty() && !password.isEmpty()) {
+            if (!username.isEmpty() && !password.isEmpty() && libManagament.checkLibrarian(username, password)) {
                 errorLabel.setText("Login successful!");
                 switchToLibrary();
             } else {
