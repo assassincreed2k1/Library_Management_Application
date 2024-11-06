@@ -22,6 +22,8 @@ public class LoginController {
     @FXML
     private Button loginButton;
     @FXML
+    private Button registerButton;
+    @FXML
     private Button closeButton;
     @FXML
     private Label errorLabel;
@@ -35,14 +37,23 @@ public class LoginController {
         if (username.isEmpty() || password.isEmpty()) {
             errorLabel.setText("Please enter username and password.");
         } else {
-            // doan trong if nay can duoc sua boi nguoi code user management --
-            if (!username.isEmpty() && !password.isEmpty() && libManagament.checkLibrarian(username, password)) {
+            if (libManagament.checkLibrarian(username, password)) {
                 errorLabel.setText("Login successful!");
                 switchToLibrary();
             } else {
                 errorLabel.setText("Invalid username or password.");
             }
         }
+    }
+
+    @FXML
+    private void registerButtonClick() throws IOException {
+        Parent registerPage = FXMLLoader.load(getClass().getResource("/fxml/Login/Register.fxml"));
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+
+        Scene scene = new Scene(registerPage);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML

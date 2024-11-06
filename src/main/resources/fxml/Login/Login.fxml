@@ -26,7 +26,7 @@
             <Image url="@../../../../resources/img/icon.png" />
          </image>
       </ImageView>
-      <Label alignment="CENTER" layoutX="223.0" layoutY="38.0" prefHeight="42.0" prefWidth="224.0" text=" Library Management" textFill="#e8b9b9">
+      <Label alignment="CENTER" layoutX="223.0" layoutY="38.0" prefHeight="42.0" prefWidth="224.0" text="Library Management" textFill="#e8b9b9">
          <font>
             <Font size="22.0" />
          </font>
@@ -37,7 +37,12 @@
          </font>
       </Label>
       <Label fx:id="errorLabel" layoutX="154.0" layoutY="250.0" textFill="red" styleClass="error-label" />
-      <Button layoutX="234.0" layoutY="299.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="Log In" textFill="#252424" onAction="#loginButtonClick">
+      <Button fx:id="loginButton" layoutX="184.0" layoutY="299.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="Log In" textFill="#252424" onAction="#loginButtonClick">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Button>
+      <Button fx:id="registerButton" layoutX="314.0" layoutY="299.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="117.0" text="Register" textFill="#252424" onAction="#registerButtonClick">
          <font>
             <Font size="19.0" />
          </font>
