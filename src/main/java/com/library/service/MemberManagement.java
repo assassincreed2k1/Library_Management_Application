@@ -1,5 +1,8 @@
 package com.library.service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -17,7 +20,7 @@ public class MemberManagement extends LibraryService {
      */
     public MemberManagement() {
         super.createList("CREATE TABLE IF NOT EXISTS Member ("
-                        + "membershipId INT PRIMARY KEY AUTO_INCREMENT, "
+                        + "membershipId INTEGER PRIMARY KEY AUTOINCREMENT, "
                         + "name VARCHAR(255), "
                         + "address VARCHAR(255), "
                         + "dateOfBirth DATE,  "
@@ -45,7 +48,12 @@ public class MemberManagement extends LibraryService {
             birth = DateString.toSqlDate(member.getDateOfBirth());
         }
         if (member.getJoinDate() != null) {
-            join = DateString.toSqlDate(member.getJoinDate());      
+            join = DateString.toSqlDate(member.getJoinDate());
+        } else {
+            ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+            ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
+            LocalDate now = zonedDateTime.toLocalDate();
+            join = Date.valueOf(now);
         }
         if (member.getExpiryDate() != null) {
             expiry = DateString.toSqlDate(member.getExpiryDate()); 

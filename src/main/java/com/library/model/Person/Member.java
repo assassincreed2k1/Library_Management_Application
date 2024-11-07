@@ -1,9 +1,13 @@
 package com.library.model.Person;
 
+import com.library.service.MemberManagement;
+
 public class Member extends Person {
     private String membershipId;
     private String joinDate;
     private String expiryDate;
+
+    private MemberManagement memManagement = new MemberManagement();
 
     public Member() {
         super();
@@ -29,6 +33,11 @@ public class Member extends Person {
         this.membershipId = membershipId;
         this.joinDate = joinDate;
         this.expiryDate = expiryDate;
+    }
+
+    public Member(String name, String address, String dateOfBirth, String phoneNumber,
+                String gender) {
+        super(name, address, gender, dateOfBirth, phoneNumber);
     }
 
     public String getMembershipId() {
@@ -62,5 +71,17 @@ public class Member extends Person {
     public String getDetails() {
         return String.format("%s\nMembership ID: %s\nJoin Date: %s\nExpiry Date: %s\n",
                             super.getDetails(), membershipId, joinDate, expiryDate);
+    }
+
+    public void addMember() {
+        memManagement.addMember(this);
+    }
+
+    public void deleteMember() {
+        memManagement.removeMember(this.membershipId);
+    }
+
+    public void updateMember() {
+        memManagement.updateMember(this);
     }
 }

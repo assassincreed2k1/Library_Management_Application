@@ -6,6 +6,7 @@ module com.library {
     
     opens com.library to javafx.fxml;
     opens com.library.controller to javafx.fxml;
+    opens com.library.controller.memberController to javafx.fxml;
     
     exports com.library;
     exports com.library.service to com.library;
