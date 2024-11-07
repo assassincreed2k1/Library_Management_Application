@@ -11,12 +11,14 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 
 import com.library.model.Person.Librarian;
+import com.library.model.Person.Member;
 import com.library.service.BookManagement;
 import com.library.service.LibrarianManagement;
 import com.library.service.LoanManagement;
 import com.library.service.MagazineManagement;
 import com.library.service.MemberManagement;
 import com.library.service.NewsPaperManagament;
+
 public class TestApp extends Application {
     public static BookManagement bookManagement = new BookManagement();
     public static MagazineManagement magazineManagement = new MagazineManagement();
@@ -40,6 +42,9 @@ public class TestApp extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        Member mem = new Member();
+        mem = mem.getInforFromDatabase(3);
+        System.out.println(mem.getDetails());
+        //launch(args);
     }
 }
