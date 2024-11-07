@@ -14,6 +14,7 @@ import com.library.model.Person.Librarian;
 import com.library.model.Person.Member;
 import com.library.service.BookManagement;
 import com.library.service.LibrarianManagement;
+import com.library.service.LibraryService;
 import com.library.service.LoanManagement;
 import com.library.service.MagazineManagement;
 import com.library.service.MemberManagement;
@@ -42,9 +43,9 @@ public class TestApp extends Application {
     }
 
     public static void main(String[] args) {
-        Member mem = new Member();
-        mem = mem.getInforFromDatabase(3);
-        System.out.println(mem.getDetails());
-        //launch(args);
+        // Member mem = new Member();
+        // mem = mem.getInforFromDatabase(0);
+        // System.out.println(mem.getDetails());
+        launch(args);
     }
 }

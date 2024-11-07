@@ -1,8 +1,6 @@
 package com.library.service;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -38,44 +36,43 @@ public class MemberManagement extends LibraryService {
      */
     public void addMember(Member member) {
         String sql_statement = "INSERT INTO Member "
-                + "(membershipId, name, address, dateOfBirth, phoneNumber, gender, joinDate, expiryDate) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
+                + "(name, address, dateOfBirth, phoneNumber, gender, joinDate, expiryDate) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";  // Remove membershipId here
+    
         Date birth = null;
         Date join = null;
         Date expiry = null;
-
+    
         if (member.getDateOfBirth() != null) {
             birth = DateString.toSqlDate(member.getDateOfBirth());
         }
         if (member.getJoinDate() != null) {
             join = DateString.toSqlDate(member.getJoinDate());
         } else {
-            ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
-            ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
-            LocalDate now = zonedDateTime.toLocalDate();
+            LocalDate now = LocalDate.now();
             join = Date.valueOf(now);
         }
         if (member.getExpiryDate() != null) {
             expiry = DateString.toSqlDate(member.getExpiryDate());
         }
-
+    
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setInt(1, member.getMembershipId()); // Changed to setInt for membershipId as int
-            pstmt.setString(2, member.getName());
-            pstmt.setString(3, member.getAddress());
-            pstmt.setDate(4, birth);
-            pstmt.setString(5, member.getPhoneNumber());
-            pstmt.setString(6, member.getGender());
-            pstmt.setDate(7, join);
-            pstmt.setDate(8, expiry);
+            // Do not set membershipId here, let SQLite handle it
+            pstmt.setString(1, member.getName());
+            pstmt.setString(2, member.getAddress());
+            pstmt.setDate(3, birth);
+            pstmt.setString(4, member.getPhoneNumber());
+            pstmt.setString(5, member.getGender());
+            pstmt.setDate(6, join);
+            pstmt.setDate(7, expiry);
             pstmt.executeUpdate();
             System.out.println("Data inserted successfully");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
+    
 
     /**
      * Update member from Member.
