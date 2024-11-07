@@ -18,9 +18,9 @@
    <children>
       <AnchorPane prefHeight="93.0" prefWidth="1200.0" styleClass="taskbar">
          <children>
-            <ImageView fitHeight="52.0" fitWidth="45.0" layoutX="14.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="45.0" fitWidth="48.0" layoutX="14.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/icon.png" />
+                  <Image url="@../../../../resources/img/icon.png" />
                </image></ImageView>
             <Label layoutX="68.0" layoutY="20.0" prefHeight="29.0" prefWidth="170.0" styleClass="text-taskbar" text=" Library Management">
                <font>
@@ -91,7 +91,7 @@
       </AnchorPane>
       <ImageView fitHeight="253.0" fitWidth="434.0" layoutX="394.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../img/Test/image.png" />
+            <Image url="@../../../../resources/img/Test/image.png" />
          </image>
       </ImageView>
    <TabPane layoutX="291.0" layoutY="394.0" prefHeight="398.0" prefWidth="909.0" styleClass="mini-box" tabClosingPolicy="UNAVAILABLE">
@@ -114,7 +114,7 @@
                            <children>
                               <ImageView fitHeight="245.0" fitWidth="203.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../img/Test/1608961071mRibhR6lqgKhBmf.jpg" />
+                                    <Image url="@../../../../resources/img/Test/Byousoku_5_Centimeter_DVD_cover.jpg" />
                                  </image>
                               </ImageView>
                               <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
@@ -172,7 +172,7 @@
                            <children>
                               <ImageView fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../img/Test/Byousoku_5_Centimeter_DVD_cover.jpg" />
+                                    <Image url="@../../../../resources/img/Test/1608961071mRibhR6lqgKhBmf.jpg" />
                                  </image>
                               </ImageView>
                               <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
@@ -274,7 +274,7 @@
       </TabPane>
       <ImageView fitHeight="253.0" fitWidth="472.0" layoutX="717.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../img/Test/image%20-%20Copy.png" />
+            <Image url="@../../../../resources/img/Test/image%20-%20Copy.png" />
          </image> 
       </ImageView>
    </children>

@@ -17,14 +17,14 @@ public class MemberManagement extends LibraryService {
      */
     public MemberManagement() {
         super.createList("CREATE TABLE IF NOT EXISTS Member ("
-                        + "membershipId char(14) primary key, "
+                        + "membershipId INT PRIMARY KEY AUTO_INCREMENT, "
                         + "name VARCHAR(255), "
-                        + "address varchar(255), "
-                        + "dateOfBirth date,  "
-                        + "phoneNumber varchar(11),  "
-                        + "gender varchar(6),  "
-                        + "joinDate date,  "
-                        + "expiryDate date"
+                        + "address VARCHAR(255), "
+                        + "dateOfBirth DATE,  "
+                        + "phoneNumber VARCHAR(11),  "
+                        + "gender VARCHAR(6),  "
+                        + "joinDate DATE,  "
+                        + "expiryDate DATE"
                         + ");  ");
     }
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="450.0" prefWidth="600.0" styleClass="box-mini" stylesheets="@RegisterStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.RegisterController">
+   <children>
+      <TextField fx:id="usernameField" layoutX="154.0" layoutY="120.0" prefHeight="42.0" prefWidth="276.0" promptText="Username" styleClass="TextField">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <PasswordField fx:id="passwordField" layoutX="154.0" layoutY="180.0" prefHeight="42.0" prefWidth="276.0" promptText="Password" styleClass="TextField">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </PasswordField>
+      <PasswordField fx:id="confirmPasswordField" layoutX="154.0" layoutY="240.0" prefHeight="42.0" prefWidth="276.0" promptText="Confirm Password" styleClass="TextField">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </PasswordField>
+      <ImageView fitHeight="80.0" fitWidth="87.0" layoutX="137.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../img/icon.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="199.0" layoutY="30.0" prefHeight="61.0" prefWidth="187.0" text="Register" textFill="#e8b9b9">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Label>
+      <Label fx:id="errorLabel" layoutX="154.0" layoutY="290.0" styleClass="error-label" textFill="red" />
+      <Button layoutX="234.0" layoutY="340.0" mnemonicParsing="false" onAction="#registerButtonClick" prefHeight="50.0" prefWidth="117.0" text="Register" textFill="#252424">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Button>
+      <Button fx:id="closeButton" layoutX="560.0" layoutY="10.0" mnemonicParsing="false" onAction="#closeWindow" prefHeight="20.0" prefWidth="20.0" style="-fx-background-color: rgba(255,255,255,0);" text="x" textFill="white" />
+   </children>
+</AnchorPane>

@@ -32,7 +32,7 @@ public class LibraryService {
      * Creates a new database connection if it doesn't already exist.
      * Displays the driver name and confirmation message if the database is created.
      */
-    private void createDataBase() {
+    public void createDataBase() {
         try (Connection cn = DriverManager.getConnection(url)) {
             DatabaseMetaData meta = cn.getMetaData();
             System.out.println("The driver name is " + meta.getDriverName());
