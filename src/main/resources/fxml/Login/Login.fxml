@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="402.0" prefWidth="556.0" styleClass="box-mini" stylesheets="@LoginStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextField layoutX="154.0" layoutY="140.0" prefHeight="42.0" prefWidth="276.0" promptText="Username" styleClass="TextField">
@@ -23,7 +22,7 @@
       </TextField>
       <ImageView fitHeight="80.0" fitWidth="87.0" layoutX="137.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../resources/img/icon.png" />
+            <Image url="@../../img/icon.png" />
          </image>
       </ImageView>
       <Label alignment="CENTER" layoutX="223.0" layoutY="38.0" prefHeight="42.0" prefWidth="224.0" text=" Library Management" textFill="#e8b9b9">
