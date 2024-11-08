@@ -118,7 +118,6 @@ public class Member extends Person {
             System.out.println("No member found with ID: " + id);
             return null;
         }
-        
         return memberFromDB;  // Return the retrieved Member object
     }  
 }

@@ -125,12 +125,12 @@ public class MemberManagement extends LibraryService {
      *
      * @param id int
      */
-    public void removeMember(int id) {
+    public void removeMember(int membershipId) {
         String sql_statement = "DELETE FROM Member WHERE membershipId = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setInt(1, id); // Set membershipId as int
+            pstmt.setInt(1, membershipId); // Set membershipId as int
             pstmt.executeUpdate();
             System.out.println("Data deleted successfully");
         } catch (SQLException e) {
@@ -142,51 +142,40 @@ public class MemberManagement extends LibraryService {
      * Get member information from SQL.
      *
      * @param membershipId membership id (int)
-     * @return Member
+     * @return Member object with information from the database, or null if not found.
      */
-    public Member getMemberInfo(int id) {
+    public Member getMemberInfo(int membershipId) {
         String sql_statement = "SELECT * FROM Member WHERE membershipId = ?";
         Member member = null;
 
         try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setInt(1, id); // Set membershipId as int
+            PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+            
+            pstmt.setInt(1, membershipId); // Set membershipId as int
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 member = new Member();
-                member.setMembershipId(rs.getInt("membershipId")); // Get membershipId as int
+                member.setMembershipId(rs.getInt("membershipId"));
                 member.setName(rs.getString("name"));
                 member.setAddress(rs.getString("address"));
-
-                // Handle if birth date is null
-                if (rs.getDate("dateOfBirth") == null) {
-                    member.setDateOfBirth(null);
-                } else {
-                    member.setDateOfBirth(rs.getDate("dateOfBirth").toString());
-                }
+                
+                Date birthDate = rs.getDate("dateOfBirth");
+                member.setDateOfBirth(birthDate != null ? birthDate.toString() : null);
 
                 member.setPhoneNumber(rs.getString("phoneNumber"));
                 member.setGender(rs.getString("gender"));
 
-                // Handle if join date is null
-                if (rs.getDate("joinDate") == null) {
-                    member.setJoinDate(null);
-                } else {
-                    member.setJoinDate(rs.getDate("joinDate").toString());
-                }
+                Date joinDate = rs.getDate("joinDate");
+                member.setJoinDate(joinDate != null ? joinDate.toString() : null);
 
-                // Handle if expiry date is null
-                if (rs.getDate("expiryDate") == null) {
-                    member.setExpiryDate(null);
-                } else {
-                    member.setExpiryDate(rs.getDate("expiryDate").toString());
-                }
+                Date expiryDate = rs.getDate("expiryDate");
+                member.setExpiryDate(expiryDate != null ? expiryDate.toString() : null);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("Error fetching member info: " + e.getMessage());
         }
-
         return member;
     }
+
 }

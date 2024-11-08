@@ -32,11 +32,13 @@ public class LoginController {
     private void loginButtonClick() throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
+        //tam thoi la chi cho librarian 
+        int usernameID = Integer.parseInt(username.substring(1));
         if (username.isEmpty() || password.isEmpty()) {
             errorLabel.setText("Please enter username and password.");
         } else {
             // doan trong if nay can duoc sua boi nguoi code user management --
-            if (!username.isEmpty() && !password.isEmpty() && libManagament.checkLibrarian(username, password)) {
+            if (!username.isEmpty() && !password.isEmpty() && libManagament.checkLibrarian(usernameID, password)) {
                 errorLabel.setText("Login successful!");
                 switchToLibrary();
             } else {

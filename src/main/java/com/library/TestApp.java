@@ -29,11 +29,15 @@ public class TestApp extends Application {
     public static MemberManagement memberManagement = new MemberManagement();
     public static LoanManagement loanManagement = new LoanManagement();
 
+    public static LibraryService libraryService = new LibraryService();
+
     @Override
     public void start(Stage stage) throws IOException {
         new MemberManagement();
+        new LibrarianManagement();
+
         // Tải file FXML cần thử nghiệm
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/AddMem.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/Updatemem.fxml"));
 
         Scene scene = new Scene(root);
 
@@ -43,9 +47,6 @@ public class TestApp extends Application {
     }
 
     public static void main(String[] args) {
-        // Member mem = new Member();
-        // mem = mem.getInforFromDatabase(0);
-        // System.out.println(mem.getDetails());
         launch(args);
     }
 }
