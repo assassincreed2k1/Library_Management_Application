@@ -19,7 +19,7 @@ public class Librarian extends Person {
     }
 
     /**
-     * Constructor for Librarian with all information
+     * Constructor for Librarian with all information.
      * 
      * @param name        The name of the librarian
      * @param address     The address of the librarian
@@ -36,6 +36,23 @@ public class Librarian extends Person {
         this.employeeId = employeeId; 
         this.position = position;       
         this.password = password;       
+    }
+
+    /**
+     * Constructor for Librarian when adding.
+     * 
+     * @param name        The name of the librarian
+     * @param address     The address of the librarian
+     * @param gender      The gender of the librarian
+     * @param dateOfBirth The date of birth of the librarian
+     * @param phoneNumber The phone number of the librarian
+     * @param position    The position of the librarian
+     */
+    public Librarian(String name, String address, String gender, String dateOfBirth, 
+                    String phoneNumber, String position) {
+        super(name, address, gender, dateOfBirth, phoneNumber);
+        this.position = position;    
+        this.password = "00001111"; //default password, u can change if u like       
     }
 
     public int getEmployeeId() {

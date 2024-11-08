@@ -1,4 +1,4 @@
-package com.library.controller.memberController;
+package com.library.controller.personController;
 
 import com.library.model.Person.Admin;
 import com.library.model.Person.Librarian;

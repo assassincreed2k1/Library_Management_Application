@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.memberController.AddMemberController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.personController.AddMemberController">
    <children>
       <Button fx:id="addButton" layoutX="281.0" layoutY="304.0" mnemonicParsing="false" text="Add" />
       <TextField fx:id="nameField" layoutX="117.0" layoutY="57.0" />
@@ -20,5 +19,6 @@
       <TextField fx:id="dobField" layoutX="117.0" layoutY="129.0" />
       <TextField fx:id="phoneField" layoutX="132.0" layoutY="163.0" />
       <ComboBox fx:id="genderComboBox" layoutX="98.0" layoutY="206.0" prefWidth="150.0" promptText="Choose" />
+      <Text fx:id="messageText" layoutX="132.0" layoutY="358.0" strokeType="OUTSIDE" strokeWidth="0.0" />
    </children>
 </AnchorPane>
