@@ -21,3 +21,15 @@
     -fx-text-fill: rgb(22, 21, 21);
     -fx-font-size: 18px;
 }
+
+.box-mini .button:hover{
+    -fx-background-color:rgb(233, 233, 233) ;
+}
+
+#remove_background {
+    -fx-background-color:transparent ;
+}
+
+#remove_background:hover{
+        -fx-background-color: rgb(172, 38, 38);
+}

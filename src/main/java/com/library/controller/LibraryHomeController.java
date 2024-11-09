@@ -13,7 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
+//import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class LibraryHomeController {
@@ -109,6 +109,13 @@ public class LibraryHomeController {
         showAllButton.setOnAction(event -> handleShowAll());
     }
 
+    @FXML
+    private void handleSearch() {
+        String query = searchTextField.getText();
+        System.out.println("Searching for: " + query);
+
+    }
+
     private void handleLogOut() {
         System.out.println("Logging out...");
         try {
@@ -128,7 +135,7 @@ public class LibraryHomeController {
 
     private void handleAddDocument() {
         System.out.println("Adding a document...");
-
+        
     }
 
     private void handleRemoveDocument() {
@@ -156,10 +163,7 @@ public class LibraryHomeController {
 
     }
     
-    @FXML
-    private void handleSearch() {
-        String query = searchTextField.getText();
-        System.out.println("Searching for: " + query);
-
+    private void switchToAddBookPage() {
+        
     }
 }
