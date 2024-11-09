@@ -1,0 +1,9 @@
+.grid-pane-class Label {
+    -fx-font-size: 24px;
+    -fx-padding: 0px 0px 0px 10px;
+}
+
+
+Button {
+    -fx-font-size: 18px;
+}
