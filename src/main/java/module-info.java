@@ -3,6 +3,7 @@ module com.library {
     requires javafx.fxml;
     requires java.sql;
     requires org.json;
+    requires javafx.graphics;
     
     opens com.library to javafx.fxml;
     opens com.library.controller to javafx.fxml;

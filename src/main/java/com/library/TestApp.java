@@ -37,7 +37,7 @@ public class TestApp extends Application {
         new LibrarianManagement();
 
         // Tải file FXML cần thử nghiệm
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/Updatemem.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/SearchPerson.fxml"));
 
         Scene scene = new Scene(root);
 
