@@ -18,17 +18,17 @@
                   <Image url="@../../img/icon.png" />
                </image>
             </ImageView>
-            <Label layoutX="68.0" layoutY="20.0" prefHeight="29.0" prefWidth="170.0" styleClass="text-taskbar" text=" Library Management">
+            <Label layoutX="68.0" layoutY="20.0" prefHeight="29.0" prefWidth="170.0" text=" Library Management">
                <font>
                   <Font size="17.0" />
                </font>
             </Label>
-            <Label layoutX="96.0" layoutY="44.0" prefHeight="30.0" prefWidth="155.0" styleClass="text-taskbar" text="VNU-UET" textFill="#ffffc4">
+            <Label layoutX="96.0" layoutY="44.0" prefHeight="30.0" prefWidth="155.0" text="VNU-UET" textFill="#ffffc4">
                <font>
                   <Font name="Bodoni MT Bold Italic" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="438.0" layoutY="19.0" styleClass="text-taskbar" text="Magazines Management">
+            <Label layoutX="438.0" layoutY="19.0" text="Magazines Management">
                <font>
                   <Font name="System Bold" size="32.0" />
                </font>

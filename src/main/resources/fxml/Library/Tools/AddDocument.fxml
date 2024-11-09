@@ -17,7 +17,7 @@
    <children>
       <AnchorPane prefHeight="67.0" prefWidth="642.0" styleClass="taskbar">
          <children>
-            <Label layoutX="230.0" layoutY="16.0" styleClass="text-taskbar" text="Add Documents">
+            <Label layoutX="230.0" layoutY="16.0" text="Add Documents">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -79,7 +79,7 @@
             <ChoiceBox prefHeight="41.0" prefWidth="446.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <Button layoutX="278.0" layoutY="319.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="87.0" styleClass="label" text="Add ">
+      <Button layoutX="278.0" layoutY="319.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="87.0" text="Add ">
          <font>
             <Font size="13.0" />
          </font>

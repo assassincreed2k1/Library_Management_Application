@@ -6,17 +6,20 @@
     -fx-background-color: linear-gradient(to top, #194c19, #034803);
 }
 
-.mini-taskbar {
-    -fx-background-color: #336633;
-}
-
-.text-taskbar {
+.taskbar Label {
     -fx-font-style: Bold;
     -fx-text-fill: #ffffff;
 }
 
-.exit-button{
-        -fx-background-color: transparent;
+.mini-taskbar {
+    -fx-background-color: #336633;
+    -fx-font-style: Bold;
+    -fx-text-fill: #ffffff;
+}
+
+.exit-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 15px;
 
 }
 
