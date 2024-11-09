@@ -32,7 +32,8 @@ public class LoginController {
     private void loginButtonClick() throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        //tam thoi la chi cho librarian 
+        //tam thoi la chi cho librarian ----> oke
+        //cần cải tiến thêm cho cả admin nữa ---> phân vai trò, access cho loại
         int usernameID = Integer.parseInt(username.substring(1));
         if (username.isEmpty() || password.isEmpty()) {
             errorLabel.setText("Please enter username and password.");

@@ -99,20 +99,24 @@ public class SearchPersonController {
         String personID = idTextField.getText();
         Person person = PersonIdHandle.getPerson(personID);
     
-        if (!personID.isEmpty() && person instanceof Member) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DemoPerson/UpdateMember.fxml"));
-                Stage stage = (Stage) updateButton.getScene().getWindow();
-                Scene scene = new Scene(loader.load());
-    
-                // Lấy controller của UpdateMember và truyền Member vào
-                UpdateMemberController controller = loader.getController();
-                controller.setMember((Member) person);
-    
-                stage.setScene(scene);
-                stage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (!personID.isEmpty() && person != null) {
+            if (person instanceof Member) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DemoPerson/UpdateMember.fxml"));
+                    Stage stage = (Stage) updateButton.getScene().getWindow();
+                    Scene scene = new Scene(loader.load());
+        
+                    // Lấy controller của UpdateMember và truyền Member vào
+                    UpdateMemberController controller = loader.getController();
+                    controller.setMember((Member) person);
+        
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else{
+                showNotification("You don't have access to update", Color.RED);
             }
         } else {
             showNotification("Invalid ID for update.", Color.RED);
