@@ -11,5 +11,15 @@
 }
 
 .text-taskbar {
+    -fx-font-style: Bold;
     -fx-text-fill: #ffffff;
+}
+
+.exit-button{
+        -fx-background-color: transparent;
+
+}
+
+.exit-button:hover {
+    -fx-background-color: rgb(172, 38, 38);
 }
