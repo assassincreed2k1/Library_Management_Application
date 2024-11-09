@@ -44,3 +44,6 @@ Thumbs.db
 
 # Note
 note.txt
+
+# ignore file tasks.json
+.vscode/tasks.json

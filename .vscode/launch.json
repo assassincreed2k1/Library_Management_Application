@@ -3,10 +3,17 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TestApp",
+            "request": "launch",
+            "mainClass": "com.library/com.library.TestApp",
+            "projectName": "library-app"
+        },
+        {
+            "type": "java",
             "name": "App",
             "request": "launch",
             "mainClass": "com.library/com.library.App",
             "projectName": "library-app"
-        },
+        }
     ]
 }

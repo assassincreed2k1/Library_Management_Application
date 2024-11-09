@@ -171,4 +171,10 @@ public class LibraryService {
         return generatedID;
     }
 
+    public void SearchDocument(String ketWord) {
+        
+    }
+
+
+
 }

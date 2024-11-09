@@ -109,6 +109,13 @@ public class LibraryHomeController {
         showAllButton.setOnAction(event -> handleShowAll());
     }
 
+    @FXML
+    private void handleSearch() {
+        String query = searchTextField.getText();
+        System.out.println("Searching for: " + query);
+
+    }
+
     private void handleLogOut() {
         System.out.println("Logging out...");
         try {
@@ -128,7 +135,7 @@ public class LibraryHomeController {
 
     private void handleAddDocument() {
         System.out.println("Adding a document...");
-
+        
     }
 
     private void handleRemoveDocument() {
@@ -156,10 +163,7 @@ public class LibraryHomeController {
 
     }
     
-    @FXML
-    private void handleSearch() {
-        String query = searchTextField.getText();
-        System.out.println("Searching for: " + query);
-
+    private void switchToAddBookPage() {
+        
     }
 }
