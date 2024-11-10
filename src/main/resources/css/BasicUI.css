@@ -7,13 +7,13 @@
 }
 
 .taskbar Label {
-    -fx-font-style: Bold;
+    -fx-font-style: oblique;
     -fx-text-fill: #ffffff;
 }
 
 .mini-taskbar {
     -fx-background-color: #336633;
-    -fx-font-style: Bold;
+    -fx-font-style: oblique;
     -fx-text-fill: #ffffff;
 }
 

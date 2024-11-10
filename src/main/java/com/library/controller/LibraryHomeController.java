@@ -97,7 +97,6 @@ public class LibraryHomeController {
 
     private void setupButtons() {
         logOutButton.setOnAction(event -> handleLogOut());
-        
         addDocumentButton.setOnAction(event -> handleAddDocument());
         removeDocumentButton.setOnAction(event -> handleRemoveDocument());
         updateDocumentButton.setOnAction(event -> handleUpdateDocument());
