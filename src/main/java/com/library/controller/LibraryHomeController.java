@@ -110,6 +110,7 @@ public class LibraryHomeController {
     private void handleLogOut() {
         System.out.println("Logging out...");
         try { 
+            showAlert("Log Out", "Are you sure you want to log out?");
             switchTo("/fxml/Login/SignIn.fxml");
         } catch (IOException e) {
             e.printStackTrace();
@@ -144,11 +145,11 @@ public class LibraryHomeController {
     // Handle Show All action
     private void handleShowAll() {
         System.out.println("Showing all documents...");
-        try {
-            switchTo("/fxml/Documents/Documents.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     switchTo("/fxml/Documents/Documents.fxml");
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
     }
 
     // Switch to another page

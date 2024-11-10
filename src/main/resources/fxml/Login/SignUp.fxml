@@ -9,11 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<<<<<<< HEAD
 <AnchorPane fx:controller="com.library.controller.SignUpController" prefHeight="402.0" prefWidth="556.0" styleClass="box-mini" stylesheets="@LoginStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
-=======
-<AnchorPane prefHeight="402.0" prefWidth="556.0" styleClass="box-mini" stylesheets="@../../css/LoginStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
->>>>>>> 7bedcedc780a3d42f3a03609b913da922c3f72bc
    <children>
       <TextField fx:id="usernameField" layoutX="145.0" layoutY="123.0" prefHeight="42.0" prefWidth="276.0" promptText="Username" styleClass="TextField">
          <font>

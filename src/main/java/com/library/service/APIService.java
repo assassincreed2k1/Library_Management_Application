@@ -3,6 +3,7 @@ package com.library.service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import org.json.JSONObject;
 
@@ -44,7 +45,9 @@ public class APIService {
      */
     private static JSONObject getJsonResponse(String urlString) {
         try {
-            URL url = new URL(urlString);
+            URI uri = URI.create(urlString); // Create URI from the string
+            URL url = uri.toURL(); // Convert URI to URL
+
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
@@ -52,15 +55,17 @@ public class APIService {
             // Check response code
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
+                // Use try-with-resources to automatically close the BufferedReader
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
 
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+
+                    return new JSONObject(response.toString()); // Use JSONObject to parse response
                 }
-                in.close();
-                return new JSONObject(response.toString()); // Use JSONObject to parse response
             } else {
                 System.out.println("Request failed, status code: " + responseCode);
             }

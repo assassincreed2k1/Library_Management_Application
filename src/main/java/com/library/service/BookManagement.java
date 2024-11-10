@@ -145,41 +145,5 @@ public class BookManagement extends LibraryService {
 
         return book;
     }
-
-    /**
-     * Displays all books in the library that are currently available.
-     * 
-     * @param type The type of the document (currently unused in this method, but
-     *             can be expanded for future use).
-     */
-    public void displayAvailableDocuments(String type) {
-        String sql_statement = "SELECT * FROM Books WHERE isAvailable = true";
-
-        try (Connection conn = DriverManager.getConnection(url);
-                PreparedStatement pstmt = conn.prepareStatement(sql_statement);
-                ResultSet rs = pstmt.executeQuery()) {
-
-            System.out.println("Available Books:");
-            while (rs.next()) {
-                String id = rs.getString("id");
-                String name = rs.getString("name");
-                String group = rs.getString("bookGroup");
-                String author = rs.getString("author");
-                String publishDate = rs.getString("publishDate"); 
-                String isbn = rs.getString("ISBN"); 
-                boolean isAvailable = rs.getBoolean("isAvailable");
-
-                System.out.println("ID: " + id);
-                System.out.println("Name: " + name);
-                System.out.println("Group: " + group);
-                System.out.println("Author: " + author);
-                System.out.println("Publish Date: " + publishDate); 
-                System.out.println("ISBN: " + isbn); 
-                System.out.println("Available: " + isAvailable);
-                System.out.println("------------------------");
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    
 }
