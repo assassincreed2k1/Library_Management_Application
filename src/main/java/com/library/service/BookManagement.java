@@ -23,12 +23,12 @@ public class BookManagement extends LibraryService {
      */
     public BookManagement() {
         super.createList("CREATE TABLE IF NOT EXISTS Books ("
-                + "id VARCHAR(255) PRIMARY KEY auto_increment, "
+                + "id VARCHAR(255) PRIMARY KEY, "
                 + "name VARCHAR(255), "
                 + "bookGroup VARCHAR(50), "
                 + "author VARCHAR(255), "
                 + "publishDate VARCHAR(50), "
-                + "ISBN VARCHAR(50), " // Thêm cột ISBN
+                + "ISBN VARCHAR(50), " 
                 + "isAvailable BOOLEAN)");
     }
 

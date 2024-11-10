@@ -118,7 +118,12 @@ public class LibraryHomeController {
 
     // Handle Add Document action
     private void handleAddDocument() {
-        System.out.println("Adding a document...");
+        System.out.println("Switching to add document page...");
+        try {
+            switchTo("/fxml/Library/Tools/AddDocument.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Handle Remove Document action

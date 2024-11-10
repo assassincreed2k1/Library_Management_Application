@@ -18,7 +18,7 @@ public class Book extends Document {
      * Default Book:
      * 
      * @param Name       "No name"
-     * @param Group      "Default"
+     * @param Group      "Default" (genre)
      * @param ID         "Invalid"
      * @param isbn       ""
      * @param author     "None"
