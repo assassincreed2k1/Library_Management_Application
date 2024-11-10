@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:controller="com.library.controller.LibraryHomeController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@libraryStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" fx:controller="com.library.controller.LibraryHomeController" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="93.0" prefWidth="1200.0" styleClass="taskbar">
          <children>
@@ -81,16 +81,8 @@
             <Button fx:id="showAllButton" layoutX="5.0" layoutY="225.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Show All" />
          </children>
       </AnchorPane>
-<<<<<<< HEAD
-      <ImageView fx:id="mainImageView" fitHeight="253.0" fitWidth="434.0" layoutX="394.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../resources/img/Test/image.png" />
-         </image>
-      </ImageView>
-   <TabPane fx:id="tabPane" layoutX="291.0" layoutY="394.0" prefHeight="398.0" prefWidth="909.0" styleClass="mini-box" tabClosingPolicy="UNAVAILABLE">
-=======
+      <ImageView fitHeight="253.0" fitWidth="434.0" layoutX="394.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
    <TabPane layoutX="291.0" layoutY="394.0" prefHeight="398.0" prefWidth="909.0" styleClass="mini-box" tabClosingPolicy="UNAVAILABLE">
->>>>>>> 7bedcedc780a3d42f3a03609b913da922c3f72bc
       <tabs>
          <Tab text="Latest">
             <content>
@@ -260,7 +252,7 @@
       <ImageView fitHeight="253.0" fitWidth="472.0" layoutX="717.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
    </children>
    <stylesheets>
-      <URL value="@../../css/LibraryStyle.css" />
       <URL value="@../../css/BasicUI.css" />
+      <URL value="@../../css/LibraryStyle.css" />
    </stylesheets>
 </AnchorPane>
