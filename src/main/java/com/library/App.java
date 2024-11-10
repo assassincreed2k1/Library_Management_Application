@@ -24,7 +24,7 @@ public class App extends Application {
         
         setDragEvent(root, stage);
 
-        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.initStyle(StageStyle.DECORATED);
         stage.setScene(scene);
         stage.show();
     }

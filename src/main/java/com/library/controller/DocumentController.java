@@ -21,15 +21,17 @@ public class DocumentController {
 
     @FXML
     private Button btnAdd;
+
     @FXML
     private Button btnEdit;
+
     @FXML
     private Button btnDelete;
+
     @FXML
     private Button btnBack;
 
-    // Constructor
-    public DocumentController() {
+    public void initialize() {
         setupButtons();
     }
 

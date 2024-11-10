@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import com.library.service.LibrarianManagement;
 
@@ -61,6 +62,7 @@ public class SignInController {
             errorLabel.setText("Please enter username and password.");
         } else {
             switchTo("/fxml/Library/LibraryHome.fxml");
+            
         }
     }
 
