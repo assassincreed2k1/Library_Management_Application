@@ -1,0 +1,28 @@
+.background-main {
+    -fx-background-color: #E0E0E0;
+}
+
+.taskbar {
+    -fx-background-color: linear-gradient(to top, #194c19, #034803);
+}
+
+.taskbar Label {
+    -fx-font-style: Bold;
+    -fx-text-fill: #ffffff;
+}
+
+.mini-taskbar {
+    -fx-background-color: #336633;
+    -fx-font-style: Bold;
+    -fx-text-fill: #ffffff;
+}
+
+.exit-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 15px;
+
+}
+
+.exit-button:hover {
+    -fx-background-color: rgb(172, 38, 38);
+}

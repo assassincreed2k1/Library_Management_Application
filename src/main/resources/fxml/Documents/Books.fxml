@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@../../css/BasicUI.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="94.0" prefWidth="1210.0" styleClass="taskbar">
+         <children>
+            <ImageView fitHeight="45.0" fitWidth="48.0" layoutX="14.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/icon.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="68.0" layoutY="20.0" prefHeight="29.0" prefWidth="170.0" text=" Library Management">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <Label layoutX="96.0" layoutY="44.0" prefHeight="30.0" prefWidth="155.0" text="VNU-UET" textFill="#ffffc4">
+               <font>
+                  <Font name="Bodoni MT Bold Italic" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="438.0" layoutY="19.0" text="Book Management">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <ScrollPane layoutY="94.0" prefHeight="707.0" prefWidth="910.0">
+         <content>
+            <TableView prefHeight="706.0" prefWidth="908.0">
+              <columns>
+                <TableColumn prefWidth="192.0" text="Book Title" />
+                <TableColumn prefWidth="152.0" text="Author" />
+                  <TableColumn prefWidth="166.0" text="Genre" />
+                  <TableColumn prefWidth="176.0" text="Publish Date" />
+                  <TableColumn prefWidth="213.0" text="ISBN" />
+              </columns>
+            </TableView>
+         </content>
+      </ScrollPane>
+      <ImageView fitHeight="365.0" fitWidth="279.0" layoutX="917.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="959.0" layoutY="550.0" text="MORE INFORMATION">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
