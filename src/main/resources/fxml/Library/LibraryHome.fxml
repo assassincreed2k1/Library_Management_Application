@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@libraryStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="93.0" prefWidth="1200.0" styleClass="taskbar">
          <children>
@@ -32,7 +32,7 @@
                   <Font name="Bodoni MT Bold Italic" size="18.0" />
                </font>
             </Label>
-            <Button layoutX="1106.0" layoutY="30.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="80.0" text="Log Out">
+            <Button fx:id="logOutButton" layoutX="1106.0" layoutY="30.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="80.0" text="Log Out">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -43,7 +43,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <ComboBox layoutX="371.0" layoutY="34.0" prefHeight="25.0" prefWidth="92.0" promptText="Genre" />
+            <ComboBox fx:id="genreComboBox" layoutX="371.0" layoutY="34.0" prefHeight="25.0" prefWidth="92.0" promptText="Genre" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="10.0" layoutY="110.0" prefHeight="253.0" prefWidth="252.0" styleClass="mini-box">
@@ -56,14 +56,14 @@
                   <Insets left="10.0" top="6.0" />
                </padding>
             </Label>
-            <ComboBox layoutX="9.0" layoutY="45.0" prefHeight="38.0" prefWidth="235.0" promptText="Books" styleClass="ChoiceBox" />
-            <ComboBox layoutX="9.0" layoutY="83.0" prefHeight="38.0" prefWidth="235.0" promptText="Magazines" styleClass="ChoiceBox" />
-            <ComboBox layoutX="9.0" layoutY="121.0" prefHeight="38.0" prefWidth="235.0" promptText="Newspapers" styleClass="ChoiceBox" />
-            <ComboBox layoutX="9.0" layoutY="159.0" prefHeight="38.0" prefWidth="235.0" promptText="Videos" styleClass="ChoiceBox" />
-            <ComboBox layoutX="9.0" layoutY="197.0" prefHeight="38.0" prefWidth="235.0" promptText="Albums" styleClass="ChoiceBox" />
+            <ComboBox fx:id="booksComboBox" layoutX="9.0" layoutY="45.0" prefHeight="38.0" prefWidth="235.0" promptText="Books" styleClass="ChoiceBox" />
+            <ComboBox fx:id="magazinesComboBox" layoutX="9.0" layoutY="83.0" prefHeight="38.0" prefWidth="235.0" promptText="Magazines" styleClass="ChoiceBox" />
+            <ComboBox fx:id="newspapersComboBox" layoutX="9.0" layoutY="121.0" prefHeight="38.0" prefWidth="235.0" promptText="Newspapers" styleClass="ChoiceBox" />
+            <ComboBox fx:id="videosComboBox" layoutX="9.0" layoutY="159.0" prefHeight="38.0" prefWidth="235.0" promptText="Videos" styleClass="ChoiceBox" />
+            <ComboBox fx:id="albumsComboBox" layoutX="9.0" layoutY="197.0" prefHeight="38.0" prefWidth="235.0" promptText="Albums" styleClass="ChoiceBox" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="10.0" layoutY="393.0" prefHeight="284.0" prefWidth="252.0" styleClass="mini-box">
+      <AnchorPane fx:id="toolsPane" layoutX="10.0" layoutY="393.0" prefHeight="284.0" prefWidth="252.0" styleClass="mini-box">
          <children>
             <Label alignment="CENTER" layoutX="5.0" layoutY="9.0" prefHeight="38.0" prefWidth="243.0" styleClass="mini-taskbar" text="TOOLS">
                <font>
@@ -73,14 +73,19 @@
                   <Insets left="10.0" top="6.0" />
                </padding>
             </Label>
-            <Button layoutX="5.0" layoutY="47.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Add Documents" />
-            <Button layoutX="5.0" layoutY="85.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Remove Documents" />
-            <Button layoutX="5.0" layoutY="119.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Update Documents" />
-            <Button layoutX="5.0" layoutY="153.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Check Book Available" />
-            <Button layoutX="5.0" layoutY="187.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Document's Address" />
-            <Button layoutX="5.0" layoutY="225.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Show All" />
+            <Button fx:id="addDocumentButton" layoutX="5.0" layoutY="47.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Add Documents" />
+            <Button fx:id="removeDocumentButton" layoutX="5.0" layoutY="85.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Remove Documents" />
+            <Button fx:id="updateDocumentButton" layoutX="5.0" layoutY="119.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Update Documents" />
+            <Button fx:id="checkAvailabilityButton" layoutX="5.0" layoutY="153.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Check Book Available" />
+            <Button fx:id="documentAddressButton" layoutX="5.0" layoutY="187.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Document's Address" />
+            <Button fx:id="showAllButton" layoutX="5.0" layoutY="225.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Show All" />
          </children>
       </AnchorPane>
+      <ImageView fitHeight="253.0" fitWidth="434.0" layoutX="394.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../resources/img/Test/image.png" />
+         </image>
+      </ImageView>
    <TabPane layoutX="291.0" layoutY="394.0" prefHeight="398.0" prefWidth="909.0" styleClass="mini-box" tabClosingPolicy="UNAVAILABLE">
       <tabs>
          <Tab text="Latest">

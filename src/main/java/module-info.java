@@ -5,7 +5,6 @@ module com.library {
 
     requires transitive org.json;
     requires transitive javafx.graphics;
-
     
     opens com.library to javafx.fxml;
     opens com.library.controller to javafx.fxml;
