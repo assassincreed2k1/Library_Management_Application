@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" fx:controller="com.library.controller.LibraryHomeController" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.LibraryHomeController">
    <children>
       <AnchorPane prefHeight="93.0" prefWidth="1200.0" styleClass="taskbar">
          <children>
@@ -43,7 +43,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <ComboBox fx:id="genreComboBox" layoutX="371.0" layoutY="34.0" prefHeight="25.0" prefWidth="92.0" promptText="Genre" />
+            <ComboBox fx:id="typeComboBox" layoutX="391.0" layoutY="34.0" prefHeight="25.0" prefWidth="72.0" promptText=" Type" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="10.0" layoutY="110.0" prefHeight="253.0" prefWidth="252.0" styleClass="mini-box">

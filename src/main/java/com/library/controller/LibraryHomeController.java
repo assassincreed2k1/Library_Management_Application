@@ -1,6 +1,8 @@
 package com.library.controller;
 
 import java.io.IOException;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -13,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.event.EventHandler;
 
 public class LibraryHomeController {
     
@@ -37,7 +40,7 @@ public class LibraryHomeController {
     private AnchorPane documentsPane;
     
     @FXML
-    private ComboBox<String> genreComboBox;
+    private ComboBox<String> typeComboBox;
     
     @FXML
     private ComboBox<String> booksComboBox;
@@ -87,34 +90,76 @@ public class LibraryHomeController {
     }
 
     private void setupComboBoxes() {
-        genreComboBox.getItems().addAll("Fiction", "Non-Fiction", "Science", "Biography");
-        booksComboBox.getItems().addAll("Book 1", "Book 2", "Book 3");
-        magazinesComboBox.getItems().addAll("Magazine 1", "Magazine 2");
-        newspapersComboBox.getItems().addAll("Newspaper 1", "Newspaper 2");
-        videosComboBox.getItems().addAll("Video 1", "Video 2");
-        albumsComboBox.getItems().addAll("Album 1", "Album 2");
+        typeComboBox.getItems().addAll("Books", "Magazines", "Newspapers");
+        booksComboBox.getItems().addAll("All Books");
+        magazinesComboBox.getItems().addAll("All Magazines");
+        newspapersComboBox.getItems().addAll("All Newspapers");
+        videosComboBox.getItems().addAll("All Videos");
+        albumsComboBox.getItems().addAll("All Albums");
     }
 
     private void setupButtons() {
         logOutButton.setOnAction(event -> handleLogOut());
+
+        setComboBoxHandler(booksComboBox);
+        setComboBoxHandler(magazinesComboBox);
+        setComboBoxHandler(newspapersComboBox);
+
         addDocumentButton.setOnAction(event -> handleAddDocument());
         removeDocumentButton.setOnAction(event -> handleRemoveDocument());
         updateDocumentButton.setOnAction(event -> handleUpdateDocument());
         checkAvailabilityButton.setOnAction(event -> handleCheckAvailability());
         documentAddressButton.setOnAction(event -> handleDocumentAddress());
         showAllButton.setOnAction(event -> handleShowAll());
+
+
     }
 
-    // Handle LogOut action
+    // Handle LogOut action  -- Need Fix
     private void handleLogOut() {
         System.out.println("Logging out...");
-        try { 
+        try {
             showAlert("Log Out", "Are you sure you want to log out?");
             switchTo("/fxml/Login/SignIn.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private void setComboBoxHandler(ComboBox<String> comboBox) {
+        comboBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String selectedPage = comboBox.getValue();
+                switchToPage(selectedPage);
+            }
+        });
+    }
+    
+    //Handle Switch Page
+    private void switchToPage(String pageName) {
+        String fxmlFile = "";
+        switch (pageName) {
+            case "All Books":
+                fxmlFile = "/fxml/Documents/Books.fxml";
+                break;
+            case "All Magazines":
+                fxmlFile = "/fxml/Documents/Magazines.fxml";
+                break;
+            case "All Newspapers":
+                fxmlFile = "/fxml/Documents/Newspapers.fxml";
+                break;
+            default:
+                break;
+        }
+
+        try {
+            switchTo(fxmlFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // Handle Add Document action
     private void handleAddDocument() {
@@ -141,14 +186,14 @@ public class LibraryHomeController {
         System.out.println("Getting document's address...");
     }
 
-    // Handle Show All action
+    // Handle Show All action   -- Need Fix
     private void handleShowAll() {
         System.out.println("Showing all documents...");
-        // try {
-        //     switchTo("/fxml/Documents/Documents.fxml");
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
+        try {
+            switchTo("/fxml/Documents/Documents.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Switch to another page
@@ -168,5 +213,4 @@ public class LibraryHomeController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
 }
