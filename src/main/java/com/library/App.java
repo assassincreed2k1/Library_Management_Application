@@ -19,7 +19,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
+        
         Scene scene = new Scene(root);
+        
         setDragEvent(root, stage);
 
         stage.initStyle(StageStyle.DECORATED);
