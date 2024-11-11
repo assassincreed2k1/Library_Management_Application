@@ -64,7 +64,7 @@ public class AddDocumentController {
         this.magazineManagement = ServiceManager.getMagazineManagement();
         this.newsPaperManagament = ServiceManager.getNewsPaperManagament();
         this.libraryService = ServiceManager.getLibraryService();
-        
+
         documentTypeComboBox.getItems().addAll("Book", "Magazine", "Newspaper");
 
         documentTypeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -81,8 +81,8 @@ public class AddDocumentController {
 
     private void createInputFields(String documentType) {
         getDocumentInfoPane.getChildren().removeIf(node -> node instanceof AnchorPane
-                                                && node.getId() != null
-                                                && node.getId().equals("inputPane"));
+                && node.getId() != null
+                && node.getId().equals("inputPane"));
 
         AnchorPane inputPane = new AnchorPane();
         inputPane.setId("inputPane");
@@ -233,52 +233,120 @@ public class AddDocumentController {
             });
 
         } else if (documentType.equals("Magazine")) {
+            double anchorWidth = 400;
+            double fieldWidth = anchorWidth * 0.8;
+            double startX = (anchorWidth - fieldWidth) / 2;
+            double startY = 20;
+            double spacing = 35;
+
             TextField titleField = new TextField();
             titleField.setPromptText("Enter Title");
-            titleField.setLayoutX(50);
-            titleField.setLayoutY(60);
+            titleField.setLayoutX(startX);
+            titleField.setLayoutY(startY);
+            titleField.setPrefWidth(fieldWidth);
 
             TextField publisherField = new TextField();
             publisherField.setPromptText("Enter Publisher");
-            publisherField.setLayoutX(50);
-            publisherField.setLayoutY(100);
+            publisherField.setLayoutX(startX);
+            publisherField.setLayoutY(startY + spacing);
+            publisherField.setPrefWidth(fieldWidth);
 
             TextField genreField = new TextField();
             genreField.setPromptText("Enter Genre");
-            genreField.setLayoutX(50);
-            genreField.setLayoutY(140);
+            genreField.setLayoutX(startX);
+            genreField.setLayoutY(startY + spacing * 2);
+            genreField.setPrefWidth(fieldWidth);
 
-            inputPane.getChildren().addAll(titleField, publisherField, genreField);
-            
+            Label errorLabel = new Label();
+            errorLabel.setLayoutX(startX);
+            errorLabel.setLayoutY(startY + spacing * 3);
+            errorLabel.setTextFill(javafx.scene.paint.Color.RED);
+
+            inputPane.getChildren().addAll(titleField, publisherField, genreField, errorLabel);
+
             addButton.setOnAction(event -> {
-                Magazine newMgz = new Magazine();
-                newMgz.setID(libraryService.generateID());
+                String title = titleField.getText();
+                String publisher = publisherField.getText();
+                String genre = genreField.getText();
 
+                if (title.isEmpty() || publisher.isEmpty() || genre.isEmpty()) {
+                    errorLabel.setTextFill(javafx.scene.paint.Color.RED);
+                    errorLabel.setText("Please fill in all fields.");
+                } else {
+                    Magazine newMgz = new Magazine();
+                    newMgz.setID(libraryService.generateID());
+                    newMgz.setName(title);
+                    newMgz.setPublisher(publisher);
+                    newMgz.setGroup(genre);
+                    newMgz.setIsAvailable(true);
+
+                    magazineManagement.addDocuments(newMgz);
+
+                    errorLabel.setTextFill(javafx.scene.paint.Color.GREEN);
+                    errorLabel.setText("Successfully added to the library");
+                }
             });
         } else if (documentType.equals("Newspaper")) {
+            double anchorWidth = 400;
+            double fieldWidth = anchorWidth * 0.8;
+            double startX = (anchorWidth - fieldWidth) / 2;
+            double startY = 20;
+            double spacing = 35;
+
             TextField titleField = new TextField();
             titleField.setPromptText("Enter Title");
-            titleField.setLayoutX(50);
-            titleField.setLayoutY(60);
+            titleField.setLayoutX(startX);
+            titleField.setLayoutY(startY);
+            titleField.setPrefWidth(fieldWidth);
 
             TextField genreField = new TextField();
             genreField.setPromptText("Enter Genre");
-            genreField.setLayoutX(50);
-            genreField.setLayoutY(100);
+            genreField.setLayoutX(startX);
+            genreField.setLayoutY(startY + spacing);
+            genreField.setPrefWidth(fieldWidth);
 
             TextField sourceField = new TextField();
             sourceField.setPromptText("Enter Source");
-            sourceField.setLayoutX(50);
-            sourceField.setLayoutY(140);
+            sourceField.setLayoutX(startX);
+            sourceField.setLayoutY(startY + spacing * 2);
+            sourceField.setPrefWidth(fieldWidth);
 
             TextField regionField = new TextField();
             regionField.setPromptText("Enter Region");
-            regionField.setLayoutX(50);
-            regionField.setLayoutY(180);
+            regionField.setLayoutX(startX);
+            regionField.setLayoutY(startY + spacing * 3);
+            regionField.setPrefWidth(fieldWidth);
 
-            inputPane.getChildren().addAll(titleField, genreField, sourceField, regionField);
+            Label errorLabel = new Label();
+            errorLabel.setLayoutX(startX);
+            errorLabel.setLayoutY(startY + spacing * 4);
+            errorLabel.setTextFill(javafx.scene.paint.Color.RED);
+
+            inputPane.getChildren().addAll(titleField, genreField, sourceField, regionField, errorLabel);
+
             addButton.setOnAction(event -> {
+                String title = titleField.getText();
+                String genre = genreField.getText();
+                String source = sourceField.getText();
+                String region = regionField.getText();
 
+                if (title.isEmpty() || genre.isEmpty() || source.isEmpty() || region.isEmpty()) {
+                    errorLabel.setTextFill(javafx.scene.paint.Color.RED);
+                    errorLabel.setText("Please fill in all fields.");
+                } else {
+                    Newspaper newNewspaper = new Newspaper();
+                    newNewspaper.setID(libraryService.generateID());
+                    newNewspaper.setName(title);
+                    newNewspaper.setGroup(genre);
+                    newNewspaper.setSource(source);
+                    newNewspaper.setRegion(region);
+                    newNewspaper.setIsAvailable(true);
+
+                    newsPaperManagament.addDocuments(newNewspaper);
+
+                    errorLabel.setTextFill(javafx.scene.paint.Color.GREEN);
+                    errorLabel.setText("Successfully added to the library");
+                }
             });
         }
 
