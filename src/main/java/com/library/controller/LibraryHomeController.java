@@ -10,10 +10,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.event.EventHandler;
 
@@ -77,6 +79,15 @@ public class LibraryHomeController {
     
     @FXML
     private Button showAllButton;
+
+    @FXML
+    private TabPane tabPane;
+
+    @FXML
+    private ImageView latestDoc1, latestDoc2, latestDoc3, latestDoc4;
+
+    @FXML
+    private ImageView oldestDoc1, oldestDoc2, oldestDoc3, oldestDoc4;
 
     // Main Content
     @FXML
@@ -160,15 +171,22 @@ public class LibraryHomeController {
         }
     }
 
-
-    // Handle Add Document action
+    // Handle Add Document action    --Need Fix
     private void handleAddDocument() {
-        System.out.println("Adding a document...");
+        try {
+            switchTo("/fxml/Library/Tools/AddDocuments.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    // Handle Remove Document action
+    // Handle Remove Document action   --Need Fix
     private void handleRemoveDocument() {
-        System.out.println("Removing a document...");
+        try {
+            switchTo("/fxml/Library/Tools/RemoveDocuments.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Handle Update Document action
@@ -212,5 +230,22 @@ public class LibraryHomeController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    // Show Cover of Latest Documents     --Need Fix: Add database
+    private void showLatestDocs() {
+        latestDoc1.setImage(new Image(""));
+        latestDoc2.setImage(new Image(""));
+        latestDoc3.setImage(new Image(""));
+        latestDoc4.setImage(new Image(""));
+
+    }
+    
+    // // Show Cover of Oldest Documents --Need Fix: Add database
+    private void showOldestDocs() {
+        oldestDoc1.setImage(new Image(""));
+        oldestDoc2.setImage(new Image(""));
+        oldestDoc3.setImage(new Image(""));
+        oldestDoc4.setImage(new Image(""));
     }
 }
