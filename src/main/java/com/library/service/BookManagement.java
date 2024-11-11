@@ -23,7 +23,7 @@ public class BookManagement extends LibraryService {
      */
     public BookManagement() {
         super.createList("CREATE TABLE IF NOT EXISTS Books ("
-                + "id VARCHAR(255) PRIMARY KEY, "
+                + "id VARCHAR(255), "
                 + "name VARCHAR(255), "
                 + "bookGroup VARCHAR(50), "
                 + "author VARCHAR(255), "
@@ -44,7 +44,7 @@ public class BookManagement extends LibraryService {
 
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            //pstmt.setString(1, book.getID());
+            pstmt.setString(1, book.getID());
             pstmt.setString(2, book.getName());
             pstmt.setString(3, book.getGroup());
             pstmt.setString(4, book.getAuthor());

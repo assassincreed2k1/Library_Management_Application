@@ -10,6 +10,8 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
+import com.library.controller.ServiceManager;
+
 public class App extends Application {
 
 
@@ -18,6 +20,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        ServiceManager.initialize();
+
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/AddDocument.fxml"));
         
         Scene scene = new Scene(root);

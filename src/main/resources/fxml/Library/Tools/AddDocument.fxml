@@ -49,13 +49,14 @@
       </AnchorPane>
    </children>
 
-   <AnchorPane fx:id="getDocumentInfoPane" layoutY="120.0" prefHeight="200.0" prefWidth="600.0" />
-
+   <AnchorPane fx:id="getDocumentInfoPane" layoutY="120.0" prefHeight="200.0" prefWidth="400.0" />
+   
    <Button fx:id="addButton" layoutX="278.0" layoutY="319.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="87.0" text="Add ">
       <font>
          <Font size="13.0" />
       </font>
    </Button>
+   <ImageView fx:id="docImagePreview" fitHeight="200.0" fitWidth="167.0" layoutX="431.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true" />
 
    <stylesheets>
       <URL value="@../../../css/BasicUI.css" />
