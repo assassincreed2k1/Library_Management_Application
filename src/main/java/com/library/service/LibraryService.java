@@ -15,7 +15,7 @@ import java.sql.ResultSet;
  * and deleted IDs.
  */
 public class LibraryService {
-    public static final String url = "jdbc:sqlite:db/library.db";
+    protected final String url = "jdbc:sqlite:db/library.db";
 
     /**
      * Constructor for the LibraryService class. It initializes the database
@@ -127,7 +127,7 @@ public class LibraryService {
      *         // for an ID of 1 billion.
      *         </pre>
      */
-    public static String generateID() {
+    public String generateID() {
         String generatedID = null;
 
         String selectCurrentIdSql = "SELECT id FROM id_generator";
