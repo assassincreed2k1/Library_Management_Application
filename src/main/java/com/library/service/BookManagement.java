@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 
 import com.library.model.doc.Book;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 /**
  * The {@code BookManagement} class provides services for managing a library's
  * book collection,
@@ -28,8 +31,9 @@ public class BookManagement extends LibraryService {
                 + "bookGroup VARCHAR(50), "
                 + "author VARCHAR(255), "
                 + "publishDate VARCHAR(50), "
-                + "ISBN VARCHAR(50), " 
-                + "isAvailable BOOLEAN)");
+                + "ISBN VARCHAR(50), "
+                + "isAvailable BOOLEAN, "
+                + "imagePreview VARCHAR(255))");
     }
 
     /**
@@ -39,8 +43,8 @@ public class BookManagement extends LibraryService {
      */
     public void addDocuments(Book book) {
         String sql_statement = "INSERT INTO Books "
-                + "(id, name, bookGroup, author, publishDate, ISBN, isAvailable) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "(id, name, bookGroup, author, publishDate, ISBN, isAvailable, imagePreview) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
@@ -48,9 +52,10 @@ public class BookManagement extends LibraryService {
             pstmt.setString(2, book.getName());
             pstmt.setString(3, book.getGroup());
             pstmt.setString(4, book.getAuthor());
-            pstmt.setString(5, book.getPublishDate()); 
-            pstmt.setString(6, book.getISBN()); 
+            pstmt.setString(5, book.getPublishDate());
+            pstmt.setString(6, book.getISBN());
             pstmt.setBoolean(7, book.getIsAvailable());
+            pstmt.setString(8, book.getImagePreview());
             pstmt.executeUpdate();
             System.out.println("Data inserted successfully");
         } catch (SQLException e) {
@@ -69,8 +74,9 @@ public class BookManagement extends LibraryService {
                 + "bookGroup = ?, "
                 + "author = ?, "
                 + "publishDate = ?, "
-                + "ISBN = ?, " 
-                + "isAvailable = ? "
+                + "ISBN = ?, "
+                + "isAvailable = ?, "
+                + "imagePreview = ? "
                 + "WHERE id = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -78,10 +84,11 @@ public class BookManagement extends LibraryService {
             pstmt.setString(1, book.getName());
             pstmt.setString(2, book.getGroup());
             pstmt.setString(3, book.getAuthor());
-            pstmt.setString(4, book.getPublishDate()); 
-            pstmt.setString(5, book.getISBN()); 
+            pstmt.setString(4, book.getPublishDate());
+            pstmt.setString(5, book.getISBN());
             pstmt.setBoolean(6, book.getIsAvailable());
-            pstmt.setString(7, book.getID());
+            pstmt.setString(7, book.getImagePreview());
+            pstmt.setString(8, book.getID());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -126,24 +133,59 @@ public class BookManagement extends LibraryService {
                 String name = rs.getString("name");
                 String group = rs.getString("bookGroup");
                 String author = rs.getString("author");
-                String publishDate = rs.getString("publishDate"); 
-                String isbn = rs.getString("ISBN"); 
+                String publishDate = rs.getString("publishDate");
+                String isbn = rs.getString("ISBN");
                 boolean isAvailable = rs.getBoolean("isAvailable");
+                String imagePreview = rs.getString("imagePreview");
 
                 book = new Book();
                 book.setID(bookId);
                 book.setName(name);
                 book.setGroup(group);
                 book.setAuthor(author);
-                book.setPublishDate(publishDate); 
-                book.setISBN(isbn); 
+                book.setPublishDate(publishDate);
+                book.setISBN(isbn);
                 book.setIsAvailable(isAvailable);
+                book.setImagePreview(imagePreview);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
         return book;
     }
-    
+
+    /**
+     * Retrieves all books from the database and returns them as an ObservableList.
+     * This method executes a SQL query to fetch all records from the "Books" table,
+     * creates Book objects, and populates them with data from the database.
+     * The resulting list of Book objects is then returned.
+     *
+     * @return An ObservableList containing all the books from the database.
+     */
+    public ObservableList<Book> getAllBooks() {
+        ObservableList<Book> bookList = FXCollections.observableArrayList();
+        String sql_statement = "SELECT * FROM Books";
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement);
+                ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Book book = new Book();
+                book.setID(rs.getString("id"));
+                book.setName(rs.getString("name"));
+                book.setGroup(rs.getString("bookGroup"));
+                book.setAuthor(rs.getString("author"));
+                book.setPublishDate(rs.getString("publishDate"));
+                book.setISBN(rs.getString("ISBN"));
+                book.setIsAvailable(rs.getBoolean("isAvailable"));
+                book.setImagePreview(rs.getString("imagePreview"));
+                bookList.add(book);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return bookList;
+    }
+
 }
