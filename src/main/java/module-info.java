@@ -11,6 +11,7 @@ module com.library {
     opens com.library.controller.personController to javafx.fxml;
     opens com.library.controller.tools to javafx.fxml;
     opens com.library.controller.Document to javafx.fxml;
+    opens com.library.model.doc to javafx.base;
 
     exports com.library;
     exports com.library.model.doc to com.library.service;

@@ -40,7 +40,7 @@
       <!-- Book TableView -->
       <ScrollPane layoutY="94.0" prefHeight="707.0" prefWidth="910.0">
          <content>
-            <TableView fx:id="bookTable" onMouseClicked="#showSelectedBookDetails" prefHeight="706.0" prefWidth="908.0">
+            <TableView fx:id="bookTable" prefHeight="706.0" prefWidth="908.0">
                   <columns>
                      <TableColumn fx:id="titleColumn" prefWidth="192.0" text="Book Title" />
                      <TableColumn fx:id="authorColumn" prefWidth="152.0" text="Author" />
