@@ -161,7 +161,8 @@ public class AddDocumentController {
                     String athString = "";
                     if (authorsArray.length() > 0) {
                         for (int i = 0; i < authorsArray.length(); i++) {
-                            athString += authorsArray.getJSONObject(i).optString("name", "") + ", ";
+                            athString += authorsArray.getJSONObject(i).optString("name",
+                                    "") + ", ";
                         }
                         if (!athString.isEmpty()) {
                             athString = athString.substring(0, athString.length() - 2);
@@ -169,7 +170,8 @@ public class AddDocumentController {
                         authorField.setText(athString);
                     }
 
-                    publishDateField.setText(bookData.optString("publish_date", publishDateField.getText()));
+                    publishDateField.setText(bookData.optString("publish_date",
+                            publishDateField.getText()));
 
                     if (bookData.has("subjects")) {
                         JSONArray subjectsArray = bookData.getJSONArray("subjects");
@@ -213,7 +215,8 @@ public class AddDocumentController {
                 String genre = genreField.getText();
                 String publishDate = publishDateField.getText();
 
-                if (isbn.isEmpty() || title.isEmpty() || author.isEmpty() || genre.isEmpty() || publishDate.isEmpty()) {
+                if (isbn.isEmpty() || title.isEmpty() || author.isEmpty()
+                    || genre.isEmpty() || publishDate.isEmpty()) {
                     errorLabel.setTextFill(javafx.scene.paint.Color.RED);
                     errorLabel.setText("Please fill in all fields.");
                 } else {
@@ -225,6 +228,7 @@ public class AddDocumentController {
                     newBook.setPublishDate(publishDate);
                     newBook.setISBN(isbn);
                     newBook.setIsAvailable(true);
+                    newBook.setImagePreview(docImagePreview.getImage().getUrl());
 
                     bookManagement.addDocuments(newBook);
                     errorLabel.setTextFill(javafx.scene.paint.Color.GREEN);

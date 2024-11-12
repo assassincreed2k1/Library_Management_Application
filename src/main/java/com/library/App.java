@@ -22,8 +22,8 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         ServiceManager.initialize();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/AddDocument.fxml"));
-        
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Books.fxml"));
+        // Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/AddDocument.fxml"));
         Scene scene = new Scene(root);
         
         setDragEvent(root, stage);

@@ -171,4 +171,22 @@ public class LibraryService {
         return generatedID;
     }
 
+    public String getCurrentID() {
+        String currentID = null;
+        String selectCurrentIdSql = "SELECT id FROM id_generator";
+
+        try (Connection conn = DriverManager.getConnection(url);
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(selectCurrentIdSql)) {
+
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                currentID = (id < 1000000000) ? String.format("%09d", id) : String.valueOf(id);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return currentID;
+    }
+
 }
