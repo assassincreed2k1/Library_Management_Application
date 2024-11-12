@@ -83,12 +83,19 @@ public class APIService {
     }
 
     public static String getCoverBookURL(String isbn) {
-        JSONObject bookData = getBookInfoByISBN(isbn);
-        JSONObject cover = bookData.getJSONObject("cover");
-        String prevImgUrl = cover.optString("medium", "");
-        if (!prevImgUrl.isEmpty()) {
-            System.out.println("Load Book's Cover false! ISBN: " + isbn + "\n");
+        JSONObject getAPIBook = APIService.getBookInfoByISBN(isbn);
+        JSONObject bookData = getAPIBook.getJSONObject("ISBN:" + isbn);
+
+        if (bookData.has("cover")) {
+            JSONObject cover = bookData.getJSONObject("cover");
+            String prevImgUrl = cover.optString("medium", "");
+            if (prevImgUrl.isEmpty()) {
+                System.out.println("Load Book's Cover failed! ISBN: " + isbn + " - 'medium' not found\n");
+            }
+            return prevImgUrl;
+        } else {
+            System.out.println("Cover not found for ISBN: " + isbn + "\n");
+            return ""; 
         }
-        return prevImgUrl;
     }
 }

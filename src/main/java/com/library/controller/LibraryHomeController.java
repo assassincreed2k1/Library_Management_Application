@@ -2,6 +2,10 @@ package com.library.controller;
 
 import java.io.IOException;
 
+import com.library.service.APIService;
+import com.library.service.BookManagement;
+import com.library.service.LibraryService;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -20,7 +25,9 @@ import javafx.scene.image.ImageView;
 import javafx.event.EventHandler;
 
 public class LibraryHomeController {
-    
+
+    private LibraryService libraryService;
+
     // Taskbar Components
     @FXML
     private ImageView iconImageView;
@@ -84,6 +91,9 @@ public class LibraryHomeController {
     private TabPane tabPane;
 
     @FXML
+    private Tab latestBooks, oldestBooks;
+
+    @FXML
     private ImageView latestDoc1, latestDoc2, latestDoc3, latestDoc4;
 
     @FXML
@@ -96,8 +106,10 @@ public class LibraryHomeController {
     // Initialization method
     @FXML
     public void initialize() {
+        this.libraryService = ServiceManager.getLibraryService();
         setupComboBoxes();
         setupButtons();
+        setUpTabPane();
     }
 
     private void setupComboBoxes() {
@@ -174,7 +186,7 @@ public class LibraryHomeController {
     // Handle Add Document action    --Need Fix
     private void handleAddDocument() {
         try {
-            switchTo("/fxml/Library/Tools/AddDocuments.fxml");
+            switchTo("/fxml/Library/Tools/AddDocument.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,7 +195,7 @@ public class LibraryHomeController {
     // Handle Remove Document action   --Need Fix
     private void handleRemoveDocument() {
         try {
-            switchTo("/fxml/Library/Tools/RemoveDocuments.fxml");
+            switchTo("/fxml/Library/Tools/RemoveDocument.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -232,20 +244,54 @@ public class LibraryHomeController {
         alert.showAndWait();
     }
 
+    private void setUpTabPane() {
+        tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
+            if (newTab == latestBooks) {
+                showLatestDocs();
+            } else if (newTab == oldestBooks) {
+                showOldestDocs();
+            }
+        });
+    }
+
     // Show Cover of Latest Documents     --Need Fix: Add database
     private void showLatestDocs() {
-        latestDoc1.setImage(new Image(""));
-        latestDoc2.setImage(new Image(""));
-        latestDoc3.setImage(new Image(""));
-        latestDoc4.setImage(new Image(""));
+        String lastBookID = libraryService.getCurrentID();
+        int lastBookIdInt = Integer.parseInt(lastBookID);
 
+        String firstBookID = (lastBookIdInt < 1000000000) ? String.format("%09d", lastBookIdInt)
+                : String.valueOf(lastBookIdInt);
+        String secondBookID = (lastBookIdInt < 1000000000) ? String.format("%09d", lastBookIdInt - 1)
+                : String.valueOf(lastBookIdInt - 1);
+        String thirdBookID = (lastBookIdInt < 1000000000) ? String.format("%09d", lastBookIdInt - 2)
+                : String.valueOf(lastBookIdInt - 2);
+        String forthBookID = (lastBookIdInt < 1000000000) ? String.format("%09d", lastBookIdInt - 3)
+                : String.valueOf(lastBookIdInt - 3);
+
+        String firstBookISBN = libraryService.getBookISBN(firstBookID);
+        String secondBookISBN = libraryService.getBookISBN(secondBookID);
+        String thirdBookISBN = libraryService.getBookISBN(thirdBookID);
+        String forthBookISBN = libraryService.getBookISBN(forthBookID);
+
+        if (firstBookISBN != null) {
+            latestDoc1.setImage(new Image(APIService.getCoverBookURL(firstBookISBN)));
+        }
+        if (secondBookISBN != null) {
+            latestDoc2.setImage(new Image(APIService.getCoverBookURL(secondBookISBN)));
+        }
+        if (thirdBookISBN != null) {
+            latestDoc3.setImage(new Image(APIService.getCoverBookURL(thirdBookISBN)));
+        }
+        if (forthBookISBN != null) {
+            latestDoc4.setImage(new Image(APIService.getCoverBookURL(forthBookISBN)));
+        }
     }
     
     // // Show Cover of Oldest Documents --Need Fix: Add database
     private void showOldestDocs() {
-        oldestDoc1.setImage(new Image(""));
-        oldestDoc2.setImage(new Image(""));
-        oldestDoc3.setImage(new Image(""));
-        oldestDoc4.setImage(new Image(""));
+        // oldestDoc1.setImage(new Image(""));
+        // oldestDoc2.setImage(new Image(""));
+        // oldestDoc3.setImage(new Image(""));
+        // oldestDoc4.setImage(new Image(""));
     }
 }

@@ -82,9 +82,9 @@
          </children>
       </AnchorPane>
       <ImageView fitHeight="253.0" fitWidth="434.0" layoutX="394.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
-   <TabPane layoutX="291.0" layoutY="394.0" prefHeight="398.0" prefWidth="909.0" styleClass="mini-box" tabClosingPolicy="UNAVAILABLE">
+   <TabPane fx:id="tabPane" layoutX="291.0" layoutY="394.0" prefHeight="398.0" prefWidth="909.0" styleClass="mini-box" tabClosingPolicy="UNAVAILABLE">
       <tabs>
-         <Tab text="Latest">
+         <Tab fx:id="latestBooks" text="Latest">
             <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -192,7 +192,7 @@
                   </AnchorPane>
                </content>
          </Tab>
-            <Tab fx:id="oldestName1" text="Oldest">
+            <Tab fx:id="oldestBooks" text="Oldest">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
