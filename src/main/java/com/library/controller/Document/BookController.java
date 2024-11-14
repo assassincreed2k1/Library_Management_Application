@@ -12,19 +12,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import com.library.controller.ServiceManager;
 import com.library.model.doc.Book;
+import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
+import com.library.service.ServiceManager;
 
 public class BookController {
 
     private BookManagement bookManagement;
 
-    private final ExecutorService executor = Executors.newCachedThreadPool();
-    private Task<Void> currentTask;
+    private BackgroundService executor;
 
     @FXML
     private TableView<Book> bookTable;
@@ -54,6 +51,7 @@ public class BookController {
     @FXML
     private void initialize() {
         this.bookManagement = ServiceManager.getBookManagement();
+        this.executor = ServiceManager.getBackgroundService();
 
         // Set up the columns to use properties from the Book class
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -85,49 +83,51 @@ public class BookController {
             System.out.println("Failed to load book list.");
         });
 
-        executor.submit(task);
+        executor.startNewThread(task);
+
     }
 
+    private Task<Void> showSelectedBookDetailsTask;
     private void showSelectedBookDetails() {
-        if (currentTask != null && currentTask.isRunning()) {
-            System.out.println("Task Cancelled");
-            currentTask.cancel();
+        if (showSelectedBookDetailsTask != null && showSelectedBookDetailsTask.isRunning()) {
+        System.out.println("Task Cancelled");
+        showSelectedBookDetailsTask.cancel();
         }
-    
-        currentTask = new Task<>() {
+
+        showSelectedBookDetailsTask = new Task<>() {
             @Override
             protected Void call() {
                 System.out.println("Running new showSelectedBookDetails()...");
-    
+
                 Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
-                if (selectedBook != null && !isCancelled()) {
+                if (selectedBook != null) {
                     Platform.runLater(() -> updateBookDetails(selectedBook));
                 }
                 return null;
             }
-    
+
             @Override
             protected void succeeded() {
                 System.out.println("Succeeded!");
             }
-    
+
             @Override
             protected void cancelled() {
                 System.out.println("Task Cancelled");
             }
-    
+
             @Override
             protected void failed() {
                 System.out.println("Task Error");
             }
         };
-    
-        executor.submit(currentTask);
+
+        System.out.println(executor.isThreadRunning());
+        executor.startNewThread(showSelectedBookDetailsTask);
     }
 
     private void updateBookDetails(Book selectedBook) {
         moreInfoPane.getChildren().clear();
-        prevImage.setImage(new Image(selectedBook.getImagePreview()));
 
         Label idLabel = new Label("ID: " + selectedBook.getID());
         Label titleLabel = new Label("Title: " + selectedBook.getName());
@@ -168,6 +168,8 @@ public class BookController {
 
         availabilityLabel.setLayoutX(5);
         availabilityLabel.setLayoutY(120);
+
+        // prevImage.setImage(new Image(selectedBook.getImagePreview()));
     }
 
     private ObservableList<Book> getBookList() {

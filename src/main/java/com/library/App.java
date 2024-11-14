@@ -10,7 +10,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-import com.library.controller.ServiceManager;
+import com.library.service.ServiceManager;
 
 public class App extends Application {
 
