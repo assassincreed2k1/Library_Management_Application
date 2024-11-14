@@ -27,7 +27,7 @@ public class NewsPaperManagament extends LibraryService {
                 + "(id, name, newsGroup, source, region, isAvailable) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(super.url);
+        try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
             pstmt.setString(1, newspaper.getID());
             pstmt.setString(2, newspaper.getName());

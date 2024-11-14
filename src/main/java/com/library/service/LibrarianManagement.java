@@ -11,6 +11,7 @@ import com.library.model.Person.Librarian;
 import com.library.model.helpMethod.DateString;
 
 public class LibrarianManagement extends LibraryService {
+    private PersonIDManagement librarianIdManagement = new PersonIDManagement("LibrarianID");
 
     /**
      * Constructor for LibrarianManagement class. It initializes the Librarian table in the database
@@ -18,7 +19,7 @@ public class LibrarianManagement extends LibraryService {
      */
     public LibrarianManagement() {
         super.createList("CREATE TABLE IF NOT EXISTS Librarian ("
-                        + "employeeId INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + "employeeId INTEGER PRIMARY KEY, "
                         + "name VARCHAR(255), "
                         + "address VARCHAR(255), "
                         + "dateOfBirth DATE,  "
@@ -34,23 +35,27 @@ public class LibrarianManagement extends LibraryService {
      * @param lib The Librarian object containing the librarian's details to be added.
      */
     public void addLibrarian(Librarian lib) {
+        int newId = librarianIdManagement.getID(); // Lấy ID hiện tại từ PersonIDManagement
         String sql_statement = "INSERT INTO Librarian "
-                + "(name, address, dateOfBirth, phoneNumber, gender, position, password) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "(employeeId, name, address, dateOfBirth, phoneNumber, gender, position, password) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         Date birth = lib.getDateOfBirth() != null ? DateString.toSqlDate(lib.getDateOfBirth()) : null;
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setString(1, lib.getName());
-            pstmt.setString(2, lib.getAddress());
-            pstmt.setDate(3, birth);
-            pstmt.setString(4, lib.getPhoneNumber());
-            pstmt.setString(5, lib.getGender());
-            pstmt.setString(6, lib.getPosition());
-            pstmt.setString(7, lib.getPassword());
+            pstmt.setInt(1, newId); // Sử dụng ID từ PersonIDManagement
+            pstmt.setString(2, lib.getName());
+            pstmt.setString(3, lib.getAddress());
+            pstmt.setDate(4, birth);
+            pstmt.setString(5, lib.getPhoneNumber());
+            pstmt.setString(6, lib.getGender());
+            pstmt.setString(7, lib.getPosition());
+            pstmt.setString(8, lib.getPassword());
             pstmt.executeUpdate();
-            System.out.println("Data inserted successfully");
+
+            librarianIdManagement.increaseID(); // Tăng ID cho lần sử dụng tiếp theo
+            System.out.println("Data inserted successfully with ID: " + newId);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
