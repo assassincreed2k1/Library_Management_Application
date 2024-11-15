@@ -1,17 +1,11 @@
-package com.library.controller;
-
-import com.library.service.BookManagement;
-import com.library.service.LibrarianManagement;
-import com.library.service.LibraryService;
-import com.library.service.LoanManagement;
-import com.library.service.MagazineManagement;
-import com.library.service.MemberManagement;
-import com.library.service.NewsPaperManagament;
+package com.library.service;
 
 /**
- * The {@code ServiceManager} class is responsible for initializing and providing access 
+ * The {@code ServiceManager} class is responsible for initializing and
+ * providing access
  * to various service instances used across the application.
- * It ensures that each service is only initialized once and provides singleton access 
+ * It ensures that each service is only initialized once and provides singleton
+ * access
  * to the services.
  */
 public class ServiceManager {
@@ -24,10 +18,12 @@ public class ServiceManager {
     private static LibrarianManagement librarianManagement;
     private static LoanManagement loanManagement;
     private static MemberManagement memberManagement;
+    private static BackgroundService backgroundService;
 
     /**
      * Initializes all service instances if they haven't been initialized yet.
-     * This method ensures that the services are created only once during the application lifecycle.
+     * This method ensures that the services are created only once during the
+     * application lifecycle.
      */
     public static void initialize() {
         if (libraryService == null) {
@@ -50,6 +46,9 @@ public class ServiceManager {
         }
         if (memberManagement == null) {
             memberManagement = new MemberManagement();
+        }
+        if (backgroundService == null) {
+            backgroundService = new BackgroundService();
         }
     }
 
@@ -114,5 +113,16 @@ public class ServiceManager {
      */
     public static MemberManagement getMemberManagement() {
         return memberManagement;
+    }
+
+    /**
+     * Returns the singleton instance of the {@link BackgroundService} class.
+     * This method ensures that there is only one instance of BackgroundService used
+     * throughout the application.
+     *
+     * @return the singleton instance of {@link BackgroundService}
+     */
+    public static BackgroundService getBackgroundService() {
+        return backgroundService;
     }
 }
