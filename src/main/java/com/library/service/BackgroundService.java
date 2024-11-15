@@ -20,6 +20,10 @@ public class BackgroundService {
         executor = Executors.newFixedThreadPool(Math.max(6, Runtime.getRuntime().availableProcessors()));
     }
 
+    public ExecutorService getExecutor() {
+        return executor;
+    }
+
     /**
      * Starts a new background thread to execute the given task.
      * 
@@ -52,11 +56,11 @@ public class BackgroundService {
      * 
      * @throws InterruptedException if the thread is interrupted while waiting.
      */
-    // public void waitForThreads() throws InterruptedException {
-    //     while (!executor.isTerminated()) {
-    //         Thread.sleep(100);
-    //     }
-    // }
+    public void waitForThreads() throws InterruptedException {
+        while (!executor.isTerminated()) {
+            Thread.sleep(100);
+        }
+    }
 
     /**
      * Gracefully shuts down the executor, waiting for the currently executing tasks

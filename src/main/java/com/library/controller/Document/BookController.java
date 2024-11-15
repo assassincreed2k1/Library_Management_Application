@@ -3,6 +3,7 @@ package com.library.controller.Document;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -11,6 +12,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.scene.control.Button;
+
+import java.util.concurrent.ThreadPoolExecutor;
 
 import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
@@ -22,6 +27,12 @@ public class BookController {
     private BookManagement bookManagement;
 
     private BackgroundService executor;
+
+    @FXML
+    private AnchorPane taskBar;
+
+    @FXML
+    Button exitButton;
 
     @FXML
     private TableView<Book> bookTable;
@@ -60,7 +71,15 @@ public class BookController {
         publishDateColumn.setCellValueFactory(new PropertyValueFactory<>("publishDate"));
         isbnColumn.setCellValueFactory(new PropertyValueFactory<>("ISBN"));
 
-        prevImage.setOnMouseClicked(event -> showSelectedBookDetails());
+        bookTable.setOnMouseClicked(event -> showSelectedBookDetails());
+        bookTable.setOnKeyPressed(event -> showSelectedBookDetails());
+
+        exitButton.setOnAction(event -> {
+            executor.stopAllThreads();
+            Platform.exit();
+            Stage stage = (Stage) exitButton.getScene().getWindow();
+            stage.close();
+        });
 
         loadBookListAsync();
     }
@@ -87,17 +106,19 @@ public class BookController {
 
     }
 
-    private Task<Void> showSelectedBookDetailsTask;
+    private Task<Void> showBookTask;
+    private Task<Void> showPrevTask;
+
     private void showSelectedBookDetails() {
-        if (showSelectedBookDetailsTask != null && showSelectedBookDetailsTask.isRunning()) {
-        System.out.println("Task Cancelled");
-        showSelectedBookDetailsTask.cancel();
+        if (showBookTask != null && showBookTask.isRunning()) {
+            System.out.println("Task Cancelled");
+            showBookTask.cancel();
         }
 
-        showSelectedBookDetailsTask = new Task<>() {
+        showBookTask = new Task<>() {
             @Override
             protected Void call() {
-                System.out.println("Running new showSelectedBookDetails()...");
+                System.out.println("Running new updateBookDetails()...");
 
                 Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
                 if (selectedBook != null) {
@@ -108,22 +129,49 @@ public class BookController {
 
             @Override
             protected void succeeded() {
-                System.out.println("Succeeded!");
+                System.out.println("updateBookDetails(): Succeeded!");
             }
 
             @Override
             protected void cancelled() {
-                System.out.println("Task Cancelled");
+                System.out.println("updateBookDetails(): Task Cancelled");
             }
 
             @Override
             protected void failed() {
-                System.out.println("Task Error");
+                System.out.println("updateBookDetails(): Task Error");
             }
         };
 
-        System.out.println(executor.isThreadRunning());
-        executor.startNewThread(showSelectedBookDetailsTask);
+        showPrevTask = new Task<>() {
+            @Override
+            protected Void call() {
+                System.out.println("Running new showPrevTask()...");
+                Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
+                if (selectedBook != null) {
+                    Platform.runLater(() -> prevImage.setImage(new Image(selectedBook.getImagePreview())));
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                System.out.println("showPrevTask(): Succeeded!");
+            }
+
+            @Override
+            protected void cancelled() {
+                System.out.println("showPrevTask(): Task Cancelled");
+            }
+
+            @Override
+            protected void failed() {
+                System.out.println("showPrevTask(): Task Error");
+            }
+        };
+
+        executor.startNewThread(showBookTask);
+        executor.startNewThread(showPrevTask);
     }
 
     private void updateBookDetails(Book selectedBook) {
@@ -168,8 +216,6 @@ public class BookController {
 
         availabilityLabel.setLayoutX(5);
         availabilityLabel.setLayoutY(120);
-
-        // prevImage.setImage(new Image(selectedBook.getImagePreview()));
     }
 
     private ObservableList<Book> getBookList() {
