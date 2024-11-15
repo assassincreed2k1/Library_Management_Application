@@ -9,7 +9,6 @@ import com.library.model.doc.Newspaper;
 import com.library.model.doc.Magazine;
 
 public class LoanManagement extends LibraryService {
-    
     /**
      * Borrow a book from the library.
      * This method checks if the book is available and, if so, updates its availability status to false in the database.

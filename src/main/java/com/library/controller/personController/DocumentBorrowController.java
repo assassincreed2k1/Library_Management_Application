@@ -1,5 +1,8 @@
 package com.library.controller.personController;
 
+import com.library.model.Person.Member;
+import com.library.model.helpMethod.PersonIdHandle;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import javafx.util.Duration;
 
 //chưa chỉnh sửa
 public class DocumentBorrowController {
+    private Member member = new Member();
 
     @FXML
     private TextField MemberIDTextField;
@@ -38,11 +42,13 @@ public class DocumentBorrowController {
     @FXML
     public void initialize() {
         // Thêm các loại tài liệu vào comboBox (ví dụ)
-        DocumentTypeComboBox.getItems().addAll("Book", "Magazine", "Thesis", "Newspaper");
+        DocumentTypeComboBox.getItems().addAll("Book", "Magazine", "Newspaper");
+
+        confirmButton.setOnAction(event -> onView());
     }
 
     @FXML
-    private void handleConfirmAction() {
+    private void onView() {
         String memberID = MemberIDTextField.getText().trim();
         String documentID = DocumentIDTextField.getText().trim();
         String documentType = DocumentTypeComboBox.getValue();
@@ -54,12 +60,24 @@ public class DocumentBorrowController {
         }
 
         // Lấy thông tin của thành viên từ memberID (giả sử từ cơ sở dữ liệu)
-        String memberInfo = getMemberInfo(memberID);
-        if (memberInfo == null) {
-            inforMemTextArea.setText("Not found.");
+        if (memberID.length() != 10) {
+            notification.setText("Invalid ID format");
             return;
-        } else {
-            inforMemTextArea.setText(memberInfo);
+        }
+
+        member = (Member)PersonIdHandle.getPerson(memberID);
+
+        if (member == null) {
+            notification.setText("Cannot find information for this member (ID not found)");
+            inforMemTextArea.setText("Not found");
+            return;
+        } else{
+            try {
+                String memberInfor = getMemberInfo(member.getDetails());
+                inforMemTextArea.setText(memberInfor);
+            }catch(Exception e) {
+                notification.setText("Error to get member information.");
+            }
         }
 
         // Lấy thông tin của tài liệu từ documentID và documentType
@@ -85,10 +103,10 @@ public class DocumentBorrowController {
     }
 
     private String getMemberInfo(String memberID) {
-        return "Sample Member Info for ID: " + memberID;
+        return "Information of member with ID: " + memberID + "\n";
     }
 
     private String getDocumentInfo(String documentID, String documentType) {
-        return "Sample Document Info for ID: " + documentID + ", Type: " + documentType;
+        return "Sample Document Info for ID: " + documentID + "\n Type: " + documentType;
     }
 }
