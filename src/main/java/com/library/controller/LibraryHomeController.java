@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.library.service.APIService;
 import com.library.service.BookManagement;
+import com.library.model.doc.Book;
 import com.library.service.LibraryService;
 
 import javafx.event.ActionEvent;
@@ -27,7 +28,7 @@ import javafx.event.EventHandler;
 public class LibraryHomeController {
 
     private LibraryService libraryService;
-
+    private BookManagement bookManagement;
     // Taskbar Components
     @FXML
     private ImageView iconImageView;
@@ -99,6 +100,18 @@ public class LibraryHomeController {
     @FXML
     private ImageView oldestDoc1, oldestDoc2, oldestDoc3, oldestDoc4;
 
+    @FXML
+    private Label latestName1, latestName2, latestName3, latestName4;
+
+    @FXML
+    private Label latestAuthor1, latestAuthor2, latestAuthor3, latestAuthor4;
+
+    @FXML
+    private Label latestGenre1, latestGenre2, latestGenre3, latestGenre4;
+
+    @FXML
+    private Label latestAvailable1, latestAvailable2, latestAvailable3, latestAvailable4;
+
     // Main Content
     @FXML
     private ImageView mainImageView;
@@ -107,6 +120,7 @@ public class LibraryHomeController {
     @FXML
     public void initialize() {
         this.libraryService = ServiceManager.getLibraryService();
+        this.bookManagement = ServiceManager.getBookManagement();
         setupComboBoxes();
         setupButtons();
         setUpTabPane();
@@ -247,7 +261,7 @@ public class LibraryHomeController {
     private void setUpTabPane() {
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
             if (newTab == latestBooks) {
-                showLatestDocs();
+                showLatestDocsImg();
             } else if (newTab == oldestBooks) {
                 showOldestDocs();
             }
@@ -255,8 +269,9 @@ public class LibraryHomeController {
     }
 
     // Show Cover of Latest Documents     --Need Fix: Add database
-    private void showLatestDocs() {
-        String lastBookID = libraryService.getCurrentID();
+    private void showLatestDocsImg() {
+        Book latestBook = bookManagement.getDocument(libraryService.getCurrentID());
+        String lastBookID = latestBook.getID();
         int lastBookIdInt = Integer.parseInt(lastBookID);
 
         String firstBookID = (lastBookIdInt < 1000000000) ? String.format("%09d", lastBookIdInt)
@@ -267,6 +282,26 @@ public class LibraryHomeController {
                 : String.valueOf(lastBookIdInt - 2);
         String forthBookID = (lastBookIdInt < 1000000000) ? String.format("%09d", lastBookIdInt - 3)
                 : String.valueOf(lastBookIdInt - 3);
+
+        Book firstBook = bookManagement.getDocument(firstBookID);
+        Book secondBook = bookManagement.getDocument(secondBookID);
+        Book thirdBook = bookManagement.getDocument(thirdBookID);
+        Book forthBook = bookManagement.getDocument(forthBookID);
+
+        latestName1.setText(firstBook.getName());
+        latestName2.setText(secondBook.getName());
+        latestName3.setText(thirdBook.getName());
+        latestName4.setText(forthBook.getName());
+
+        latestAuthor1.setText(firstBook.getAuthor());
+        latestAuthor2.setText(secondBook.getAuthor());
+        latestAuthor3.setText(thirdBook.getAuthor());
+        latestAuthor4.setText(forthBook.getAuthor());
+
+        latestGenre1.setText(firstBook.getGroup());
+        latestGenre2.setText(firstBook.getGroup());
+        latestGenre3.setText(firstBook.getGroup());
+        latestGenre4.setText(firstBook.getGroup());
 
         String firstBookISBN = libraryService.getBookISBN(firstBookID);
         String secondBookISBN = libraryService.getBookISBN(secondBookID);
