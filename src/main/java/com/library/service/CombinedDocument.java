@@ -6,9 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CombinedDocument extends LibraryService {
-
-    private final String url = "jdbc:sqlite:path_to_your_database.db";
-
     public CombinedDocument() {
         // Create combined_documents table
         createCombinedDocumentsTable();
