@@ -19,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
@@ -96,6 +97,9 @@ public class LibraryHomeController {
     private Button showAllButton;
 
     @FXML
+    private Hyperlink moreButton;
+
+    @FXML
     private TabPane tabPane;
 
     @FXML
@@ -166,6 +170,13 @@ public class LibraryHomeController {
         checkAvailabilityButton.setOnAction(event -> handleCheckAvailability());
         documentAddressButton.setOnAction(event -> handleDocumentAddress());
         showAllButton.setOnAction(event -> handleShowAll());
+        moreButton.setOnAction(event -> {
+            try {
+                switchTo("/fxml/Documents/Books.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
     }
 
@@ -276,6 +287,7 @@ public class LibraryHomeController {
     }
 
     private void setUpTabPane() {
+        showLatestDocsImg();
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
             if (newTab == latestBooks) {
                 showLatestDocsImg();
