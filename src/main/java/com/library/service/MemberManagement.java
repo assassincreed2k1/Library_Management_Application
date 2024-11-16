@@ -68,6 +68,23 @@ public class MemberManagement extends LibraryService {
             System.out.println(e.getMessage());
         }
     }
+    
+    /**
+     * Removes a member from the database by membership ID.
+     * @param membershipId The ID of the member to be removed.
+     */
+    public void removeMember(int membershipId) {
+        String sql_statement = "DELETE FROM Member WHERE membershipId = ?";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+            pstmt.setInt(1, membershipId);
+            pstmt.executeUpdate();
+            System.out.println("Member deleted successfully");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     /**
      * Updates the details of an existing member in the database.
@@ -134,8 +151,6 @@ public class MemberManagement extends LibraryService {
         } catch (SQLException e) {
             System.err.println("Error fetching member info: " + e.getMessage());
         }
-
-        // In giá trị expiryDate sau khi đã lấy từ ResultSet
         return member;
     }
 
