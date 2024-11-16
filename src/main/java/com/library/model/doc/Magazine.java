@@ -24,7 +24,6 @@ public class Magazine extends Document {
      * 
      * @param name      The name of the magazine.
      * @param group     The group or category the magazine belongs to.
-     * @param quantity  The number of copies of the magazine.
      * @param publisher The publisher of the magazine.
      */
     public Magazine(String id, String name, String group, String publisher) {
