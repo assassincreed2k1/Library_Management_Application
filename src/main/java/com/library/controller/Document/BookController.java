@@ -15,8 +15,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
-import java.util.concurrent.ThreadPoolExecutor;
-
 import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
@@ -73,6 +71,8 @@ public class BookController {
 
         bookTable.setOnMouseClicked(event -> showSelectedBookDetails());
         bookTable.setOnKeyPressed(event -> showSelectedBookDetails());
+
+        prevImage.setOnMouseClicked(event -> showPreview());
 
         exitButton.setOnAction(event -> {
             executor.stopAllThreads();
@@ -171,6 +171,39 @@ public class BookController {
         };
 
         executor.startNewThread(showBookTask);
+    }
+
+    private void showPreview() {
+        showPrevTask = new Task<>() {
+            @Override
+            protected Void call() {
+                System.out.println("Running new showPrevTask()...");
+                Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
+                if (selectedBook != null) {
+                    if (selectedBook.getImagePreview() != null || !selectedBook.getImagePreview().isEmpty()) {
+                        Platform.runLater(() -> prevImage.setImage(new Image(selectedBook.getImagePreview())));
+                    } else {
+                        prevImage.setImage(new Image(getClass().getResource("/img/prve.png").toExternalForm()));
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                System.out.println("showPrevTask(): Succeeded!");
+            }
+
+            @Override
+            protected void cancelled() {
+                System.out.println("showPrevTask(): Task Cancelled");
+            }
+
+            @Override
+            protected void failed() {
+                System.out.println("showPrevTask(): Task Error");
+            }
+        };
         executor.startNewThread(showPrevTask);
     }
 
@@ -216,6 +249,8 @@ public class BookController {
 
         availabilityLabel.setLayoutX(5);
         availabilityLabel.setLayoutY(120);
+
+        prevImage.setImage(new Image(getClass().getResource("/img/prv.png").toExternalForm()));
     }
 
     private ObservableList<Book> getBookList() {
