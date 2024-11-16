@@ -12,6 +12,12 @@ import com.library.model.Person.Member;
 import com.library.model.helpMethod.DateString;
 
 public class MemberManagement extends LibraryService {
+
+    public static final String ONEMONTH = "1 month";
+    public static final String THREEMONTHS = "3 months";
+    public static final String SIXMONTHS = "6 months";
+    public static final String ONEYEAR = "1 year";
+
     private PersonIDManagement memberIdManagement = new PersonIDManagement("MemberID");
 
     /**
@@ -100,23 +106,6 @@ public class MemberManagement extends LibraryService {
     }
 
     /**
-     * Removes a member from the database by membership ID.
-     * @param membershipId The ID of the member to be removed.
-     */
-    public void removeMember(int membershipId) {
-        String sql_statement = "DELETE FROM Member WHERE membershipId = ?";
-
-        try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setInt(1, membershipId);
-            pstmt.executeUpdate();
-            System.out.println("Member deleted successfully");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    /**
      * Retrieves member information based on membership ID from the database.
      * @param membershipId The ID of the member whose information is to be retrieved.
      * @return A Member object containing the member's information, or null if not found.
@@ -124,9 +113,10 @@ public class MemberManagement extends LibraryService {
     public Member getMemberInfo(int membershipId) {
         String sql_statement = "SELECT * FROM Member WHERE membershipId = ?";
         Member member = null;
+        String expiryDateStr = null;  // Khai báo biến để lưu expiryDate
 
         try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
             pstmt.setInt(1, membershipId);
             ResultSet rs = pstmt.executeQuery();
 
@@ -139,11 +129,38 @@ public class MemberManagement extends LibraryService {
                 member.setPhoneNumber(rs.getString("phoneNumber"));
                 member.setGender(rs.getString("gender"));
                 member.setJoinDate(rs.getDate("joinDate") != null ? rs.getDate("joinDate").toString() : null);
-                member.setExpiryDate(rs.getDate("expiryDate") != null ? rs.getDate("expiryDate").toString() : null);
+                member.setExpiryDate(rs.getString("expiryDate") != null ? rs.getString("expiryDate") : null);
             }
         } catch (SQLException e) {
             System.err.println("Error fetching member info: " + e.getMessage());
         }
+
+        // In giá trị expiryDate sau khi đã lấy từ ResultSet
         return member;
     }
+
+
+
+    public void renewCard(int membershipId, String addDate) {
+        String sql_statement = "UPDATE Member "
+                             + "SET expiryDate = DATE(CASE "
+                             + "WHEN expiryDate IS NOT NULL AND expiryDate > (strftime('%s', 'now') * 1000) THEN expiryDate "
+                             + "WHEN expiryDate IS NULL THEN (strftime('%s', 'now') * 1000) "
+                             + "ELSE (strftime('%s', 'now') * 1000) END, ?) "
+                             + "WHERE membershipId = ?";
+    
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+    
+            // Set parameters dynamically
+            pstmt.setString(1, addDate);  // Adjust based on the renewal duration
+            pstmt.setInt(2, membershipId);
+    
+            int rowsAffected = pstmt.executeUpdate();
+            // Test
+            System.out.println(rowsAffected + " rows updated.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }    
 }
