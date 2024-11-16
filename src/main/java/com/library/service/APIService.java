@@ -7,9 +7,12 @@ import java.net.URI;
 import java.net.URL;
 import org.json.JSONObject;
 
+import javafx.scene.image.Image;
+
 /**
  * APIService class to interact with the Open Library API.
- * This class provides static methods to search for books and retrieve book information by ISBN.
+ * This class provides static methods to search for books and retrieve book
+ * information by ISBN.
  */
 public class APIService {
     private static final String OPEN_LIBRARY_SEARCH_URL = "https://openlibrary.org/api/books?bibkeys=ISBN:";
@@ -19,7 +22,8 @@ public class APIService {
      * Searches for books by a given keyword.
      *
      * @param query the keyword to search for in book titles and descriptions.
-     * @return a JSONObject containing the search results, or null if the request fails.
+     * @return a JSONObject containing the search results, or null if the request
+     *         fails.
      */
     public static JSONObject searchBooks(String query) {
         String urlString = OPEN_LIBRARY_SEARCH_URL + query;
@@ -30,7 +34,8 @@ public class APIService {
      * Retrieves book information by its ISBN.
      *
      * @param isbn the ISBN of the book to retrieve information for.
-     * @return a JSONObject containing the book information, or null if the request fails.
+     * @return a JSONObject containing the book information, or null if the request
+     *         fails.
      */
     public static JSONObject getBookInfoByISBN(String isbn) {
         String urlString = OPEN_LIBRARY_BOOK_URL + isbn + "&format=json&jscmd=data";
@@ -38,10 +43,12 @@ public class APIService {
     }
 
     /**
-     * Sends a GET request to the specified URL and returns the response as a JSONObject.
+     * Sends a GET request to the specified URL and returns the response as a
+     * JSONObject.
      *
      * @param urlString the URL to send the GET request to.
-     * @return a JSONObject containing the response data, or null if the request fails.
+     * @return a JSONObject containing the response data, or null if the request
+     *         fails.
      */
     private static JSONObject getJsonResponse(String urlString) {
         try {
@@ -73,5 +80,22 @@ public class APIService {
             e.printStackTrace();
         }
         return null; // Return null in case of error
+    }
+
+    public static String getCoverBookURL(String isbn) {
+        JSONObject getAPIBook = APIService.getBookInfoByISBN(isbn);
+        JSONObject bookData = getAPIBook.getJSONObject("ISBN:" + isbn);
+
+        if (bookData.has("cover")) {
+            JSONObject cover = bookData.getJSONObject("cover");
+            String prevImgUrl = cover.optString("medium", "");
+            if (prevImgUrl.isEmpty()) {
+                System.out.println("Load Book's Cover failed! ISBN: " + isbn + " - 'medium' not found\n");
+            }
+            return prevImgUrl;
+        } else {
+            System.out.println("Cover not found for ISBN: " + isbn + "\n");
+            return ""; 
+        }
     }
 }
