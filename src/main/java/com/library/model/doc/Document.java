@@ -4,7 +4,7 @@ package com.library.model.doc;
  * The {@code Document} class represents a document with an ID, name, group,
  * availability status, and an image preview.
  */
-class Document {
+public abstract class Document {
     private String id;
     private String name;
     private String group;
@@ -144,4 +144,19 @@ class Document {
     public void setImagePreview(String imagePreview) {
         this.imagePreview = imagePreview;
     }
+
+    /**
+     * Returns a string representation of the document's details, including its ID, name, group,
+     * availability status, and image preview.
+     *
+     * @return A string containing the document's details.
+     */
+    public String getDetails() {
+        // Trả về thông tin chi tiết về tài liệu dưới dạng chuỗi
+        return String.format("ID: %s\nName: %s\nGroup: %s\nAvailable: %s",
+                            id, name, group, isAvailable ? "Yes" : "No");
+    }
+
+    public abstract Document getInforFromDatabase(String id);
+
 }

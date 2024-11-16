@@ -1,9 +1,17 @@
 package com.library.service;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import com.library.model.doc.Book;
+import com.library.model.doc.Document;
+import com.library.model.doc.Magazine;
+import com.library.model.doc.Newspaper;
 
 public class CombinedDocument extends LibraryService {
     public CombinedDocument() {
@@ -14,11 +22,11 @@ public class CombinedDocument extends LibraryService {
     private void createCombinedDocumentsTable() {
         String sql = """
                 CREATE TABLE IF NOT EXISTS combined_documents AS
-                SELECT id, name, genre, 'book' AS document_type FROM book
+                SELECT id, name, 'book' AS document_type FROM Books
                 UNION ALL
-                SELECT id, name, genre, 'magazine' AS document_type FROM magazine
+                SELECT id, name, 'magazine' AS document_type FROM Magazines
                 UNION ALL
-                SELECT id, name, genre, 'news' AS document_type FROM news;
+                SELECT id, name, 'news' AS document_type FROM Newspaper;
                 """;
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -35,11 +43,11 @@ public class CombinedDocument extends LibraryService {
         String deleteDataSQL = "DELETE FROM combined_documents;";
         String insertDataSQL = """
                 INSERT INTO combined_documents (id, name, genre, document_type)
-                SELECT id, name, genre, 'book' AS document_type FROM book
+                SELECT id, name, 'book' AS document_type FROM Books
                 UNION ALL
-                SELECT id, name, genre, 'magazine' AS document_type FROM magazine
+                SELECT id, name, 'magazine' AS document_type FROM Magazines
                 UNION ALL
-                SELECT id, name, genre, 'news' AS document_type FROM news;
+                SELECT id, name, 'news' AS document_type FROM Newspaper;
                 """;
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -56,5 +64,38 @@ public class CombinedDocument extends LibraryService {
         } catch (SQLException e) {
             System.err.println("Error updating combined_documents table: " + e.getMessage());
         }
+    }
+
+    public Document getDocument(String documentId) {
+        String sql_statement = "SELECT document_type FROM combined_documents WHERE id = ?";
+        Document document = null; // Khởi tạo tài liệu mặc định là null
+        try (Connection conn = DriverManager.getConnection(url);
+            PreparedStatement stmt = conn.prepareStatement(sql_statement)) {
+            
+            // Thiết lập tham số cho câu truy vấn
+            stmt.setString(1, documentId);
+            
+            // Thực hiện truy vấn và lấy kết quả
+            ResultSet rs = stmt.executeQuery();
+            
+            // Kiểm tra kết quả truy vấn
+            if (rs.next()) {
+                String type = rs.getString("document_type");
+                
+                // Dựa vào document_type, tạo đối tượng Document phù hợp
+                if ("Book".equalsIgnoreCase(type)) {
+                    document = new Book();
+                } else if ("Magazine".equalsIgnoreCase(type)) {
+                    document = new Magazine(); 
+                } else if ("News".equalsIgnoreCase(type)) {
+                    document = new Newspaper(); // Giả sử bạn có lớp News
+                }
+                document = document.getInforFromDatabase(document.getID());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return document; // Trả về đối tượng Document tương ứng, có thể là null nếu không tìm thấy
     }
 }

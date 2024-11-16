@@ -1,5 +1,7 @@
 package com.library.model.doc;
 
+import com.library.service.MagazineManagement;
+
 /**
  * The {@code Magazine} class represents a type of {@link Document}.
  * 
@@ -8,6 +10,7 @@ package com.library.model.doc;
  */
 public class Magazine extends Document {
     private String publisher;
+    private MagazineManagement magazineManagement = new MagazineManagement();
 
     /**
      * Default constructor for the {@code Magazine} class.
@@ -47,5 +50,20 @@ public class Magazine extends Document {
      */
     public void setPublisher(String publisher) {
         this.publisher = publisher;
+    }
+
+    @Override
+    public String getDetails() {
+        return String.format("%s\n Publisher: %s\n",
+                            super.getDetails(), this.publisher);
+    }
+
+    public Magazine getInforFromDatabase(String id) {
+        Magazine magazineFromDB = magazineManagement.getDocument(id);
+
+        if (magazineFromDB == null) {
+            System.out.println("Can't find this book in database");
+        } 
+        return magazineFromDB;
     }
 }

@@ -6,9 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 //import java.sql.Statement;
 
+import com.library.model.doc.Book;
+import com.library.model.doc.Document;
+import com.library.model.doc.Magazine;
+import com.library.model.doc.Newspaper;
+
 public class DocumentTransaction extends LibraryService {
 
     private CombinedDocument combined_document= new CombinedDocument();
+    private LoanManagement loanManagement = new LoanManagement();
 
     public DocumentTransaction() {
         String sql = "CREATE TABLE IF NOT EXISTS bookTransaction (" +
@@ -36,6 +42,17 @@ public class DocumentTransaction extends LibraryService {
      * @param dueDate Ngày đến hạn
      */
     public void borrowDocument(String documentId, int membershipId, int editedBy, String borrowDate, String dueDate) {
+        //thiết lập cho phần document
+        Document document = combined_document.getDocument(documentId);
+        if (document instanceof Book) {
+            loanManagement.borrowBook((Book) document);
+        } else if (document instanceof Magazine) {
+            loanManagement.borrowMagazine((Magazine) document);
+        } else if (document instanceof Newspaper) {
+            loanManagement.borrowNewspaper((Newspaper) document);
+        }
+        
+        //thiết lập cho phần bookTransaction
         //merging all documents before check
         combined_document.updateCombinedDocument();
         String sql = "INSERT INTO bookTransaction (document_id, membershipId, edited_by, borrowDate, dueDate, status) " +
@@ -67,6 +84,16 @@ public class DocumentTransaction extends LibraryService {
      * @param returnDate Ngày trả tài liệu
      */
     public void returnDocument(String documentId, int membershipId, int editedBy) {
+        //thiết lập cho phần document
+        Document document = combined_document.getDocument(documentId);
+        if (document instanceof Book) {
+            loanManagement.returnBook((Book) document);
+        } else if (document instanceof Magazine) {
+            loanManagement.returnMagazine((Magazine) document);
+        } else if (document instanceof Newspaper) {
+            loanManagement.returnNewspaper((Newspaper) document);
+        }
+
         String sql = "UPDATE bookTransaction SET returnDate = DATE('now'), status = 'returned' " +
                      "WHERE document_id = ? AND membershipId = ? AND edited_by = ? AND returnDate IS NULL";           
         
