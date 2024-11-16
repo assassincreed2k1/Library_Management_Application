@@ -3,7 +3,6 @@ package com.library.controller.Document;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -20,40 +19,36 @@ import javafx.scene.control.Button;
 
 import java.io.IOException;
 
-import com.library.model.doc.Book;
+import com.library.model.doc.Newspaper;
 import com.library.service.BackgroundService;
-import com.library.service.BookManagement;
+import com.library.service.NewsPaperManagament;
 import com.library.service.ServiceManager;
 
-public class BookController {
+public class NewspaperController {
 
-    private BookManagement bookManagement;
-
+    private NewsPaperManagament newspaperManagement;
     private BackgroundService executor;
 
     @FXML
     private AnchorPane taskBar;
 
     @FXML
-    Button exitButton;
+    private Button exitButton;
 
     @FXML
-    private TableView<Book> bookTable;
+    private TableView<Newspaper> newspaperTable;
 
     @FXML
-    private TableColumn<Book, String> titleColumn;
+    private TableColumn<Newspaper, String> titleColumn;
 
     @FXML
-    private TableColumn<Book, String> authorColumn;
+    private TableColumn<Newspaper, String> genreColumn;
 
     @FXML
-    private TableColumn<Book, String> genreColumn;
+    private TableColumn<Newspaper, String> sourceColumn;
 
     @FXML
-    private TableColumn<Book, String> publishDateColumn;
-
-    @FXML
-    private TableColumn<Book, String> isbnColumn;
+    private TableColumn<Newspaper, String> regionColumn;
 
     @FXML
     private ImageView prevImage;
@@ -64,18 +59,17 @@ public class BookController {
     // This method is called by the FXMLLoader when initialization is complete
     @FXML
     private void initialize() {
-        this.bookManagement = ServiceManager.getBookManagement();
+        this.newspaperManagement = ServiceManager.getNewsPaperManagament();
         this.executor = ServiceManager.getBackgroundService();
 
-        // Set up the columns to use properties from the Book class
+        // Set up the columns to use properties from the Newspaper class
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("group"));
-        publishDateColumn.setCellValueFactory(new PropertyValueFactory<>("publishDate"));
-        isbnColumn.setCellValueFactory(new PropertyValueFactory<>("ISBN"));
+        sourceColumn.setCellValueFactory(new PropertyValueFactory<>("source"));
+        regionColumn.setCellValueFactory(new PropertyValueFactory<>("region"));
 
-        bookTable.setOnMouseClicked(event -> showSelectedBookDetails());
-        bookTable.setOnKeyPressed(event -> showSelectedBookDetails());
+        newspaperTable.setOnMouseClicked(event -> showSelectedNewspaperDetails());
+        newspaperTable.setOnKeyPressed(event -> showSelectedNewspaperDetails());
 
         prevImage.setOnMouseClicked(event -> showPreview());
 
@@ -92,65 +86,64 @@ public class BookController {
             }
         });
 
-        loadBookListAsync();
+        loadNewspaperListAsync();
     }
 
-    private void loadBookListAsync() {
-        Task<ObservableList<Book>> task = new Task<>() {
+    private void loadNewspaperListAsync() {
+        Task<ObservableList<Newspaper>> task = new Task<>() {
             @Override
-            protected ObservableList<Book> call() {
-                System.out.println("Running loadBookListAsync()...");
-                return getBookList();
+            protected ObservableList<Newspaper> call() {
+                System.out.println("Running loadNewspaperListAsync()...");
+                return getNewspaperList();
             }
         };
 
         task.setOnSucceeded(event -> {
-            System.out.println("Succeeded: loadBookListAsync()");
-            bookTable.setItems(task.getValue());
+            System.out.println("Succeeded: loadNewspaperListAsync()");
+            newspaperTable.setItems(task.getValue());
         });
 
         task.setOnFailed(event -> {
-            System.out.println("Failed to load book list.");
+            System.out.println("Failed to load newspaper list.");
         });
 
         executor.startNewThread(task);
-
     }
 
-    private Task<Void> showBookTask;
+    private Task<Void> showNewspaperTask;
     private Task<Void> showPrevTask;
 
-    private void showSelectedBookDetails() {
-        if (showBookTask != null && showBookTask.isRunning()) {
+    private void showSelectedNewspaperDetails() {
+        if (showNewspaperTask != null && showNewspaperTask.isRunning()) {
             System.out.println("Task Cancelled");
-            showBookTask.cancel();
+            showNewspaperTask.cancel();
         }
 
-        showBookTask = new Task<>() {
+        showNewspaperTask = new Task<>() {
             @Override
             protected Void call() {
-                System.out.println("Running new updateBookDetails()...");
+                System.out.println("Running new updateNewspaperDetails()...");
 
-                Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
-                if (selectedBook != null) {
-                    Platform.runLater(() -> updateBookDetails(selectedBook));
+                Newspaper selectedNewspaper = newspaperTable.getSelectionModel().getSelectedItem();
+                if (selectedNewspaper != null) {
+                    Platform.runLater(() -> updateNewspaperDetails(selectedNewspaper));
                 }
                 return null;
             }
 
             @Override
             protected void succeeded() {
-                System.out.println("updateBookDetails(): Succeeded!");
+                System.out.println("updateNewspaperDetails(): Succeeded!");
             }
 
             @Override
             protected void cancelled() {
-                System.out.println("updateBookDetails(): Task Cancelled");
+                System.out.println("updateNewspaperDetails(): Task Cancelled");
             }
 
             @Override
             protected void failed() {
-                System.out.println("updateBookDetails(): Task Error");
+                System.out.println("updateNewspaperDetails(): Task Error");
             }
         };
 
@@ -158,9 +151,9 @@ public class BookController {
             @Override
             protected Void call() {
                 System.out.println("Running new showPrevTask()...");
-                Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
-                if (selectedBook != null) {
-                    Platform.runLater(() -> prevImage.setImage(new Image(selectedBook.getImagePreview())));
+                Newspaper selectedNewspaper = newspaperTable.getSelectionModel().getSelectedItem();
+                if (selectedNewspaper != null) {
+                    Platform.runLater(() -> prevImage.setImage(new Image(selectedNewspaper.getImagePreview())));
                 }
                 return null;
             }
@@ -181,7 +174,7 @@ public class BookController {
             }
         };
 
-        executor.startNewThread(showBookTask);
+        executor.startNewThread(showNewspaperTask);
     }
 
     private void showPreview() {
@@ -189,10 +182,10 @@ public class BookController {
             @Override
             protected Void call() {
                 System.out.println("Running new showPrevTask()...");
-                Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
-                if (selectedBook != null) {
-                    if (selectedBook.getImagePreview() != null || !selectedBook.getImagePreview().isEmpty()) {
-                        Platform.runLater(() -> prevImage.setImage(new Image(selectedBook.getImagePreview())));
+                Newspaper selectedNewspaper = newspaperTable.getSelectionModel().getSelectedItem();
+                if (selectedNewspaper != null) {
+                    if (selectedNewspaper.getImagePreview() != null || !selectedNewspaper.getImagePreview().isEmpty()) {
+                        Platform.runLater(() -> prevImage.setImage(new Image(selectedNewspaper.getImagePreview())));
                     } else {
                         prevImage.setImage(new Image(getClass().getResource("/img/prve.png").toExternalForm()));
                     }
@@ -218,27 +211,22 @@ public class BookController {
         executor.startNewThread(showPrevTask);
     }
 
-    private void updateBookDetails(Book selectedBook) {
+    private void updateNewspaperDetails(Newspaper selectedNewspaper) {
         moreInfoPane.getChildren().clear();
 
-        Label idLabel = new Label("ID: " + selectedBook.getID());
-        Label titleLabel = new Label("Title: " + selectedBook.getName());
-        Label authorLabel = new Label("Author: " + selectedBook.getAuthor());
-        Label genreLabel = new Label("Genre: " + selectedBook.getGroup());
-        Label publishDateLabel = new Label("Publish Date: " + selectedBook.getPublishDate());
-        Label isbnLabel = new Label("ISBN: " + selectedBook.getISBN());
-        Label availabilityLabel = new Label("Available: " + (selectedBook.getIsAvailable() ? "Yes" : "No"));
+        Label idLabel = new Label("ID: " + selectedNewspaper.getID());
+        Label titleLabel = new Label("Title: " + selectedNewspaper.getName());
+        Label genreLabel = new Label("Genre: " + selectedNewspaper.getGroup());
+        Label sourceLabel = new Label("Source: " + selectedNewspaper.getSource());
+        Label regionLabel = new Label("Region: " + selectedNewspaper.getRegion());
 
         idLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         titleLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        authorLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         genreLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        publishDateLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        isbnLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        availabilityLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        sourceLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        regionLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
 
-        moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel, publishDateLabel, isbnLabel,
-                availabilityLabel);
+        moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel);
 
         idLabel.setLayoutX(5);
         idLabel.setLayoutY(0);
@@ -246,25 +234,19 @@ public class BookController {
         titleLabel.setLayoutX(5);
         titleLabel.setLayoutY(20);
 
-        authorLabel.setLayoutX(5);
-        authorLabel.setLayoutY(40);
-
         genreLabel.setLayoutX(5);
-        genreLabel.setLayoutY(60);
+        genreLabel.setLayoutY(40);
 
-        publishDateLabel.setLayoutX(5);
-        publishDateLabel.setLayoutY(80);
+        sourceLabel.setLayoutX(5);
+        sourceLabel.setLayoutY(60);
 
-        isbnLabel.setLayoutX(5);
-        isbnLabel.setLayoutY(100);
+        regionLabel.setLayoutX(5);
+        regionLabel.setLayoutY(80);
 
-        availabilityLabel.setLayoutX(5);
-        availabilityLabel.setLayoutY(120);
-        
         prevImage.setImage(new Image(getClass().getResource("/img/prv.png").toExternalForm()));
     }
 
-    private ObservableList<Book> getBookList() {
-        return bookManagement.getAllBooks();
+    private ObservableList<Newspaper> getNewspaperList() {
+        return newspaperManagement.getAllNewspapers();
     }
 }

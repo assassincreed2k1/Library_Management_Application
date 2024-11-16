@@ -1,5 +1,30 @@
-{
-    "java.configuration.updateBuildConfiguration": "interactive"
-    
-}
-
+// {
+//     "java.home": "C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.4.7-hotspot",
+//     "java.configuration.updateBuildConfiguration": "interactive",
+//     "java.jdt.ls.javaHome": "java.jdt.ls.java.home",
+//     "java.debug.settings.console": "integratedTerminal",
+//     "java.test.configurations": [
+//         {
+//             "name": "TestApp",
+//             "type": "java",
+//             "request": "launch",
+//             "mainClass": "com.library.TestApp",
+//             "args": "",
+//             "projectName": "library-app",
+//             "testFramework": "junit5"
+//         },
+//         {
+//             "name": "App",
+//             "type": "java",
+//             "request": "launch",
+//             "mainClass": "com.library.App",
+//             "args": "",
+//             "projectName": "library-app"
+//         }
+//     ],
+//     "recommendations": [
+//         "vscjava.vscode-java-test",
+//         "vscjava.vscode-java-dependency",
+//         "vscjava.vscode-java-pack"
+//     ]
+// }

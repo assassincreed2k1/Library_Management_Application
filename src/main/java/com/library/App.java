@@ -10,7 +10,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-import com.library.controller.ServiceManager;
+import com.library.service.ServiceManager;
 
 public class App extends Application {
 
@@ -30,6 +30,9 @@ public class App extends Application {
 
         stage.initStyle(StageStyle.DECORATED);
         stage.setScene(scene);
+        stage.setOnCloseRequest(event -> {
+            ServiceManager.getBackgroundService().stopAllThreads();
+        });
         stage.show();
     }
 
