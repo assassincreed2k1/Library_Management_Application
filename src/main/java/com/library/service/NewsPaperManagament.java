@@ -92,7 +92,7 @@ public class NewsPaperManagament extends LibraryService {
      */
     public ObservableList<Newspaper> getAllNewspapers() {
         ObservableList<Newspaper> newspaperList = FXCollections.observableArrayList();
-        String sqlStatement = "SELECT * FROM Newspapers"; // SQL query to fetch all records from the "Newspapers" table
+        String sqlStatement = "SELECT * FROM Newspaper"; // SQL query to fetch all records from the "Newspapers" table
 
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sqlStatement);
@@ -106,7 +106,7 @@ public class NewsPaperManagament extends LibraryService {
                 newspaper.setSource(rs.getString("source"));
                 newspaper.setRegion(rs.getString("region"));
                 newspaper.setImagePreview("");
-                newspaper.setIsAvailable(rs.getBoolean("isAvaiable"));
+                newspaper.setIsAvailable(rs.getBoolean("isAvailable"));
                 newspaperList.add(newspaper);
             }
         } catch (SQLException e) {
@@ -114,5 +114,37 @@ public class NewsPaperManagament extends LibraryService {
         }
 
         return newspaperList;
+    }
+
+    /**
+     * Retrieves a specific newspaper by its ID from the database.
+     *
+     * @param id The ID of the newspaper to retrieve.
+     * @return The Newspaper object with the specified ID, or null if not found.
+     */
+    public Newspaper getDocument(String id) {
+        String sql_statement = "SELECT * FROM Newspaper WHERE id = ?";
+        Newspaper newspaper = null;
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                newspaper = new Newspaper();
+                newspaper.setID(rs.getString("id"));
+                newspaper.setName(rs.getString("name"));
+                newspaper.setGroup(rs.getString("newsGroup"));
+                newspaper.setSource(rs.getString("source"));
+                newspaper.setRegion(rs.getString("region"));
+                newspaper.setImagePreview("");
+                newspaper.setIsAvailable(rs.getBoolean("isAvailable"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return newspaper;
     }
 }

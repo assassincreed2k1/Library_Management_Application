@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -12,7 +13,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+
+import java.io.IOException;
 
 import com.library.model.doc.Newspaper;
 import com.library.service.BackgroundService;
@@ -58,8 +63,8 @@ public class NewspaperController {
         this.executor = ServiceManager.getBackgroundService();
 
         // Set up the columns to use properties from the Newspaper class
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        genreColumn.setCellValueFactory(new PropertyValueFactory<>("group"));
         sourceColumn.setCellValueFactory(new PropertyValueFactory<>("source"));
         regionColumn.setCellValueFactory(new PropertyValueFactory<>("region"));
 
@@ -69,10 +74,16 @@ public class NewspaperController {
         prevImage.setOnMouseClicked(event -> showPreview());
 
         exitButton.setOnAction(event -> {
-            executor.stopAllThreads();
-            Platform.exit();
-            Stage stage = (Stage) exitButton.getScene().getWindow();
-            stage.close();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = (Stage) exitButton.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         loadNewspaperListAsync();
@@ -203,29 +214,34 @@ public class NewspaperController {
     private void updateNewspaperDetails(Newspaper selectedNewspaper) {
         moreInfoPane.getChildren().clear();
 
+        Label idLabel = new Label("ID: " + selectedNewspaper.getID());
         Label titleLabel = new Label("Title: " + selectedNewspaper.getName());
         Label genreLabel = new Label("Genre: " + selectedNewspaper.getGroup());
         Label sourceLabel = new Label("Source: " + selectedNewspaper.getSource());
         Label regionLabel = new Label("Region: " + selectedNewspaper.getRegion());
 
+        idLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         titleLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         genreLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         sourceLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         regionLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
 
-        moreInfoPane.getChildren().addAll(titleLabel, genreLabel, sourceLabel, regionLabel);
+        moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel);
+
+        idLabel.setLayoutX(5);
+        idLabel.setLayoutY(0);
 
         titleLabel.setLayoutX(5);
-        titleLabel.setLayoutY(0);
+        titleLabel.setLayoutY(20);
 
         genreLabel.setLayoutX(5);
-        genreLabel.setLayoutY(20);
+        genreLabel.setLayoutY(40);
 
         sourceLabel.setLayoutX(5);
-        sourceLabel.setLayoutY(40);
+        sourceLabel.setLayoutY(60);
 
         regionLabel.setLayoutX(5);
-        regionLabel.setLayoutY(60);
+        regionLabel.setLayoutY(80);
 
         prevImage.setImage(new Image(getClass().getResource("/img/prv.png").toExternalForm()));
     }

@@ -24,13 +24,17 @@ public class App extends Application {
 
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Books.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/AddDocument.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Magazines.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Magazines.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
         Scene scene = new Scene(root);
         
         setDragEvent(root, stage);
 
         stage.initStyle(StageStyle.DECORATED);
         stage.setScene(scene);
+        stage.setOnCloseRequest(event -> {
+            ServiceManager.getBackgroundService().stopAllThreads();
+        });
         stage.show();
     }
 

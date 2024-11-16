@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -12,7 +13,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+
+import java.io.IOException;
 
 import com.library.model.doc.Magazine;
 import com.library.service.BackgroundService;
@@ -66,10 +71,16 @@ public class MagazineController {
         prevImage.setOnMouseClicked(event -> showPreview());
 
         exitButton.setOnAction(event -> {
-            executor.stopAllThreads();
-            Platform.exit();
-            Stage stage = (Stage) exitButton.getScene().getWindow();
-            stage.close();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = (Stage) exitButton.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         loadMagazineListAsync();
@@ -200,24 +211,41 @@ public class MagazineController {
     private void updateMagazineDetails(Magazine selectedMagazine) {
         moreInfoPane.getChildren().clear();
 
+        Label idLabel = new Label("ID: " + selectedMagazine.getID());
         Label titleLabel = new Label("Title: " + selectedMagazine.getName());
         Label genreLabel = new Label("Genre: " + selectedMagazine.getGroup());
         Label publisherLabel = new Label("Publisher: " + selectedMagazine.getPublisher());
+        Label availabilityLabel = new Label("Available: " + (selectedMagazine.getIsAvailable() ? "Yes" : "No"));
+        Label imagePreviewLabel = new Label("Image Preview: "
+                + (selectedMagazine.getImagePreview().isEmpty() ? "No preview" : selectedMagazine.getImagePreview()));
 
+        idLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         titleLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         genreLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         publisherLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        availabilityLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        imagePreviewLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
 
-        moreInfoPane.getChildren().addAll(titleLabel, genreLabel, publisherLabel);
+        moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, publisherLabel, availabilityLabel,
+                imagePreviewLabel);
+
+        idLabel.setLayoutX(5);
+        idLabel.setLayoutY(0);
 
         titleLabel.setLayoutX(5);
-        titleLabel.setLayoutY(0);
+        titleLabel.setLayoutY(20);
 
         genreLabel.setLayoutX(5);
-        genreLabel.setLayoutY(20);
+        genreLabel.setLayoutY(40);
 
         publisherLabel.setLayoutX(5);
-        publisherLabel.setLayoutY(40);
+        publisherLabel.setLayoutY(60);
+
+        availabilityLabel.setLayoutX(5);
+        availabilityLabel.setLayoutY(80);
+
+        imagePreviewLabel.setLayoutX(5);
+        imagePreviewLabel.setLayoutY(100);
 
         prevImage.setImage(new Image(getClass().getResource("/img/prv.png").toExternalForm()));
     }

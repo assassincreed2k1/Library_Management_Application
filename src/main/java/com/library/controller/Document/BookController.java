@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -13,7 +14,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+
+import java.io.IOException;
 
 import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
@@ -75,10 +80,16 @@ public class BookController {
         prevImage.setOnMouseClicked(event -> showPreview());
 
         exitButton.setOnAction(event -> {
-            executor.stopAllThreads();
-            Platform.exit();
-            Stage stage = (Stage) exitButton.getScene().getWindow();
-            stage.close();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
+                Parent root = loader.load();
+
+                Stage stage = (Stage) exitButton.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         loadBookListAsync();
@@ -249,7 +260,7 @@ public class BookController {
 
         availabilityLabel.setLayoutX(5);
         availabilityLabel.setLayoutY(120);
-
+        
         prevImage.setImage(new Image(getClass().getResource("/img/prv.png").toExternalForm()));
     }
 

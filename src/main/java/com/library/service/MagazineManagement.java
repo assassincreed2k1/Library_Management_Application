@@ -108,13 +108,44 @@ public class MagazineManagement extends LibraryService {
                 magazine.setGroup(rs.getString("magazineGroup"));
                 magazine.setPublisher(rs.getString("publisher"));
                 magazine.setImagePreview("");
-                magazine.setIsAvailable(rs.getBoolean("isAvaiable"));
+                magazine.setIsAvailable(rs.getBoolean("isAvailable"));
                 magazineList.add(magazine);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return magazineList;
+    }
+
+    /**
+     * Retrieves a specific magazine by its ID from the database.
+     *
+     * @param id The ID of the magazine to retrieve.
+     * @return The Magazine object with the specified ID, or null if not found.
+     */
+    public Magazine getDocument(String id) {
+        String sql_statement = "SELECT * FROM Magazines WHERE id = ?";
+        Magazine magazine = null;
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                magazine = new Magazine();
+                magazine.setID(rs.getString("id"));
+                magazine.setName(rs.getString("name"));
+                magazine.setGroup(rs.getString("magazineGroup"));
+                magazine.setPublisher(rs.getString("publisher"));
+                magazine.setImagePreview("");
+                magazine.setIsAvailable(rs.getBoolean("isAvailable"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return magazine;
     }
 
 }

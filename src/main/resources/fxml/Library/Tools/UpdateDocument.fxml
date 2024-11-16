@@ -10,14 +10,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="371.0" prefWidth="642.0" styleClass="background-main" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.tools.AddDocumentController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="371.0" prefWidth="642.0" styleClass="background-main" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.tools.UpdateDocumentController">
    <children>
 
       <!-- Taskbar AnchorPane containing the title and exit button -->
       <AnchorPane prefHeight="67.0" prefWidth="642.0" styleClass="taskbar">
          <children>
-            <!-- Title label displaying "Add Documents" -->
-            <Label layoutX="230.0" layoutY="16.0" text="Add Documents">
+            <!-- Title label displaying "Update Documents" -->
+            <Label layoutX="230.0" layoutY="16.0" text="Update Documents">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -55,13 +55,14 @@
             <ComboBox fx:id="documentTypeComboBox" layoutX="321.0" layoutY="6.0" prefWidth="150.0" promptText="Select Type" />
          </children>
       </AnchorPane>
+
    </children>
 
    <!-- Placeholder for document info input area -->
-   <AnchorPane fx:id="getDocumentInfoPane" layoutY="120.0" prefHeight="200.0" prefWidth="400.0" />
+   <AnchorPane fx:id="updateDocumentInfoPane" layoutY="120.0" prefHeight="200.0" prefWidth="400.0" />
 
-   <!-- Button to trigger adding the document -->
-   <Button fx:id="addButton" layoutX="278.0" layoutY="319.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="87.0" text="Add ">
+   <!-- Button to trigger updating the document -->
+   <Button fx:id="updateButton" layoutX="278.0" layoutY="319.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="87.0" text="Update">
       <font>
          <Font size="13.0" />
       </font>

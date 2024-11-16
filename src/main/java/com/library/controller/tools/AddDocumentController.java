@@ -10,10 +10,15 @@ import com.library.service.NewsPaperManagament;
 import com.library.service.ServiceManager;
 import com.library.service.LibraryService;
 
+import java.io.IOException;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -75,8 +80,16 @@ public class AddDocumentController {
     }
 
     private void onExitButtonClicked() {
-        Stage stage = (Stage) exitButton.getScene().getWindow();
-        stage.close();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) exitButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createInputFields(String documentType) {
@@ -216,7 +229,7 @@ public class AddDocumentController {
                 String publishDate = publishDateField.getText();
 
                 if (isbn.isEmpty() || title.isEmpty() || author.isEmpty()
-                    || genre.isEmpty() || publishDate.isEmpty()) {
+                        || genre.isEmpty() || publishDate.isEmpty()) {
                     errorLabel.setTextFill(javafx.scene.paint.Color.RED);
                     errorLabel.setText("Please fill in all fields.");
                 } else {
