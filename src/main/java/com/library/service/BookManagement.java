@@ -188,4 +188,36 @@ public class BookManagement extends LibraryService {
         return bookList;
     }
 
+    public ObservableList<Book> getAllBooksFilter(String keyword) {
+        ObservableList<Book> filteredBooks = FXCollections.observableArrayList();
+        String sql_statement = "SELECT * FROM Books WHERE name LIKE ? OR ISBN LIKE ?";
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+
+            // Using LIKE to search Books with Name or ISBN
+            pstmt.setString(1, "%" + keyword + "%"); // Search with Name
+            pstmt.setString(2, "%" + keyword + "%"); // Search with ISBN
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Book book = new Book();
+                    book.setID(rs.getString("id"));
+                    book.setName(rs.getString("name"));
+                    book.setGroup(rs.getString("bookGroup"));
+                    book.setAuthor(rs.getString("author"));
+                    book.setPublishDate(rs.getString("publishDate"));
+                    book.setISBN(rs.getString("ISBN"));
+                    book.setIsAvailable(rs.getBoolean("isAvailable"));
+                    book.setImagePreview(rs.getString("imagePreview"));
+                    filteredBooks.add(book);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return filteredBooks;
+    }
+
 }

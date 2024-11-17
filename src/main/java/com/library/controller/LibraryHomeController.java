@@ -30,6 +30,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javafx.event.EventHandler;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.stage.Stage;
 
@@ -366,11 +367,11 @@ public class LibraryHomeController {
 
     private void openNewWindow(String name) {
         try {
-            // Tải file FXML
+            //Load file FXML
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(name));
             Scene scene = new Scene(fxmlLoader.load());
 
-            // Tạo Stage mới
+            //Create new Window
             Stage newStage = new Stage();
             newStage.setTitle("New Window");
             newStage.setScene(scene);
@@ -378,6 +379,32 @@ public class LibraryHomeController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private ObservableList<Book> getBookListFilter(String keyWord) {
+        return bookManagement.getAllBooksFilter(keyWord);
+    }
+    
+    private void loadBookListAsync(String keyWord) {
+        Task<ObservableList<Book>> task = new Task<>() {
+            @Override
+            protected ObservableList<Book> call() {
+                System.out.println("Running loadBookListAsync()...");
+                return getBookListFilter(keyWord);
+            }
+        };
+
+        task.setOnSucceeded(event -> {
+            System.out.println("Succeeded: loadBookListAsync()");
+            bookTable.setItems(task.getValue());
+        });
+
+        task.setOnFailed(event -> {
+            System.out.println("Failed to load book list.");
+        });
+
+        executor.startNewThread(task);
+
     }
 
 }
