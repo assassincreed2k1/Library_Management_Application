@@ -1,7 +1,15 @@
 package com.library.controller.personController;
 
+import java.time.LocalDate;
+
 import com.library.model.Person.Member;
+import com.library.model.doc.Book;
+import com.library.model.doc.Document;
+import com.library.model.doc.Magazine;
+import com.library.model.doc.Newspaper;
 import com.library.model.helpMethod.PersonIdHandle;
+import com.library.service.CombinedDocument;
+import com.library.service.DocumentTransaction;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,9 +22,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-//chưa chỉnh sửa
 public class DocumentBorrowController {
-    private Member member = new Member();
+    private Member member = null;
+    private Document document = null;
+    private DocumentTransaction documentTransaction = new DocumentTransaction();
+    private CombinedDocument combinedDocument = new CombinedDocument();
 
     @FXML
     private TextField MemberIDTextField;
@@ -26,6 +36,9 @@ public class DocumentBorrowController {
 
     @FXML
     private ComboBox<String> DocumentTypeComboBox;
+
+    @FXML
+    private ComboBox<String> typeComboBox;
 
     @FXML
     private TextArea inforMemTextArea;
@@ -40,15 +53,24 @@ public class DocumentBorrowController {
     private Text notification;
 
     @FXML
+    private Button checkButton;
+
+    @FXML
     public void initialize() {
-        // Thêm các loại tài liệu vào comboBox (ví dụ)
+        // Thêm các loại tài liệu vào DocumentTypeComboBox
         DocumentTypeComboBox.getItems().addAll("Book", "Magazine", "Newspaper");
 
-        confirmButton.setOnAction(event -> onView());
+        // Thêm các loại giao dịch vào typeComboBox
+        typeComboBox.getItems().addAll("Borrow", "Return");
+
+        confirmButton.setOnAction(event -> onConfirm());
+        checkButton.setOnAction(event -> onCheck());
+
+        confirmButton.setDisable(true); // Vô hiệu hóa nút Confirm mặc định
     }
 
     @FXML
-    private void onView() {
+    private void onCheck() {
         String memberID = MemberIDTextField.getText().trim();
         String documentID = DocumentIDTextField.getText().trim();
         String documentType = DocumentTypeComboBox.getValue();
@@ -59,37 +81,63 @@ public class DocumentBorrowController {
             return;
         }
 
-        // Lấy thông tin của thành viên từ memberID (giả sử từ cơ sở dữ liệu)
-        if (memberID.length() != 10) {
-            notification.setText("Invalid ID format");
-            return;
-        }
-
-        member = (Member)PersonIdHandle.getPerson(memberID);
+        // Lấy thông tin của thành viên
+        member = (Member) PersonIdHandle.getPerson(memberID);
 
         if (member == null) {
-            notification.setText("Cannot find information for this member (ID not found)");
-            inforMemTextArea.setText("Not found");
-            return;
-        } else{
-            try {
-                String memberInfor = getMemberInfo(member.getDetails());
-                inforMemTextArea.setText(memberInfor);
-            }catch(Exception e) {
-                notification.setText("Error to get member information.");
-            }
-        }
-
-        // Lấy thông tin của tài liệu từ documentID và documentType
-        String documentInfo = getDocumentInfo(documentID, documentType);
-        if (documentInfo == null) {
-            inforDocTextArea.setText("Not found.");
-            return;
+            showNotification("Cannot find information for this member.", Color.RED);
+            inforMemTextArea.setText("Not found.");
         } else {
-            inforDocTextArea.setText(documentInfo);
+            inforMemTextArea.setText(member.getDetails());
         }
 
-        showNotification("Borrow request processed successfully.", Color.GREEN);
+        // Lấy thông tin tài liệu
+        document = combinedDocument.getDocument(documentID);
+        if (document == null) {
+            inforDocTextArea.setText("Not found.");
+            showNotification("Document not found.", Color.RED);
+            confirmButton.setDisable(true);
+        } else {
+            if (document instanceof Book) {
+                inforDocTextArea.setText(((Book) document).getDetails());
+            } else if (document instanceof Magazine) {
+                inforDocTextArea.setText(((Magazine) document).getDetails());
+            } else if (document instanceof Newspaper) {
+                inforDocTextArea.setText(((Newspaper) document).getDetails());
+            }
+            confirmButton.setDisable(false); // Kích hoạt nút Confirm nếu tìm thấy tài liệu
+        }
+    }
+
+    @FXML
+    private void onConfirm() {
+        String transactionType = typeComboBox.getValue();
+
+        if (transactionType == null) {
+            showNotification("Please select a transaction type.", Color.RED);
+            return;
+        }
+
+        try {
+            String memberID = MemberIDTextField.getText().trim();
+            String documentID = DocumentIDTextField.getText().trim();
+            int editedBy = 1; // sau này vào ứng dụng được rồi thì sửa sau
+
+            if ("Borrow".equals(transactionType)) {
+                LocalDate localDate = LocalDate.now();
+                String borrowDate = localDate.toString();
+                String dueDate = localDate.plusDays(7).toString(); //7 is default, can change !
+
+                documentTransaction.borrowDocument(documentID, Integer.parseInt(memberID.substring(1)), editedBy, borrowDate, dueDate);
+                showNotification("Document borrowed successfully.", Color.GREEN);
+            } else if ("Return".equals(transactionType)) {
+                // Thực hiện trả tài liệu
+                documentTransaction.returnDocument(documentID, Integer.parseInt(memberID.substring(1)), editedBy);
+                showNotification("Document returned successfully.", Color.GREEN);
+            }
+        } catch (Exception e) {
+            showNotification("Error: " + e.getMessage(), Color.RED);
+        }
     }
 
     private void showNotification(String message, Color color) {
@@ -100,13 +148,5 @@ public class DocumentBorrowController {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> notification.setText("")));
         timeline.setCycleCount(1); // Chỉ chạy một lần
         timeline.play();
-    }
-
-    private String getMemberInfo(String memberID) {
-        return "Information of member with ID: " + memberID + "\n";
-    }
-
-    private String getDocumentInfo(String documentID, String documentType) {
-        return "Sample Document Info for ID: " + documentID + "\n Type: " + documentType;
     }
 }
