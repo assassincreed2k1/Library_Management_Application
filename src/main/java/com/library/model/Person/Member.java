@@ -120,4 +120,10 @@ public class Member extends Person {
         }
         return memberFromDB;  // Return the retrieved Member object
     }  
+
+    public void renewMembership(String addDate) {
+        System.out.println(addDate);
+        memManagement.renewCard(this.membershipId, addDate);
+        
+    }
 }

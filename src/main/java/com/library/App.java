@@ -10,6 +10,8 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
+import com.library.service.ServiceManager;
+
 public class App extends Application {
 
 
@@ -18,14 +20,20 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login/Login.fxml"));
-        
+        ServiceManager.initialize();
+
+        // Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/docBorrow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/AddDocument.fxml"));
+        // Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
         Scene scene = new Scene(root);
         
         setDragEvent(root, stage);
 
-        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.initStyle(StageStyle.DECORATED);
         stage.setScene(scene);
+        stage.setOnCloseRequest(event -> {
+            ServiceManager.getBackgroundService().stopAllThreads();
+        });
         stage.show();
     }
 

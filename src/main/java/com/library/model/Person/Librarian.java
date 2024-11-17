@@ -86,7 +86,7 @@ public class Librarian extends Person {
      */
     @Override
     public String getDetails() {
-        return String.format("%sEmployee ID: %d\nPosition: %s\n",
+        return String.format("%sEmployee ID: L%09d\nPosition: %s\n",
                 super.getDetails(), employeeId, position);
     }
 

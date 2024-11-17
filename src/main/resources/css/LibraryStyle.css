@@ -28,3 +28,8 @@
     -fx-background-color: #ffffff;
     -fx-border-color: lightgray transparent;
 }
+
+.image-view {
+-fx-fit-to-width: 177px;
+-fx-fit-to-height: 245px;   
+}
