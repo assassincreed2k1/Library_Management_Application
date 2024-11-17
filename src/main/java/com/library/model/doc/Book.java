@@ -90,6 +90,7 @@ public class Book extends Document {
     }
 
     public Book getInforFromDatabase(String id) {
+        System.out.println(id);
         Book bookFromDB = bookManagement.getDocument(id);
 
         if (bookFromDB == null) {

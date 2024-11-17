@@ -21,7 +21,7 @@ import javafx.collections.ObservableList;
 public class BookManagement extends LibraryService {
 
     /**
-     * Constructs a {@code BookManagement} object. 
+     * Constructs a {@code BookManagement} object.
      * It creates the Books table if it doesn't already exist.
      */
     public BookManagement() {
@@ -92,6 +92,37 @@ public class BookManagement extends LibraryService {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Updates all books in the library's collection that match the given ISBN.
+     * 
+     * @param book The book containing the updated information. All books with the
+     *             same ISBN will be updated with this data.
+     */
+    public void updateDocumentMatchingISBN(Book book) {
+        String sql_stmt = "UPDATE Books SET "
+                + "name = ?, "
+                + "bookGroup = ?, "
+                + "author = ?, "
+                + "publishDate = ?, "
+                + "isAvailable = ?, "
+                + "imagePreview = ? "
+                + "WHERE ISBN = ?";
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_stmt)) {
+            pstmt.setString(1, book.getName());
+            pstmt.setString(2, book.getGroup());
+            pstmt.setString(3, book.getAuthor());
+            pstmt.setString(4, book.getPublishDate());
+            pstmt.setBoolean(5, book.getIsAvailable());
+            pstmt.setString(6, book.getImagePreview());
+            pstmt.setString(7, book.getISBN());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error updating books with matching ISBN: " + e.getMessage());
         }
     }
 
@@ -186,6 +217,38 @@ public class BookManagement extends LibraryService {
             System.out.println(e.getMessage());
         }
         return bookList;
+    }
+
+    public ObservableList<Book> getAllBooksFilter(String keyword) {
+        ObservableList<Book> filteredBooks = FXCollections.observableArrayList();
+        String sql_statement = "SELECT * FROM Books WHERE name LIKE ? OR ISBN LIKE ?";
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+
+            // Using LIKE to search Books with Name or ISBN
+            pstmt.setString(1, "%" + keyword + "%"); // Search with Name
+            pstmt.setString(2, "%" + keyword + "%"); // Search with ISBN
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Book book = new Book();
+                    book.setID(rs.getString("id"));
+                    book.setName(rs.getString("name"));
+                    book.setGroup(rs.getString("bookGroup"));
+                    book.setAuthor(rs.getString("author"));
+                    book.setPublishDate(rs.getString("publishDate"));
+                    book.setISBN(rs.getString("ISBN"));
+                    book.setIsAvailable(rs.getBoolean("isAvailable"));
+                    book.setImagePreview(rs.getString("imagePreview"));
+                    filteredBooks.add(book);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return filteredBooks;
     }
 
 }

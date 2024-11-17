@@ -12,8 +12,8 @@ public class PersonIDManagement extends LibraryService {
     public PersonIDManagement(String table) {
         this.table = table;
         super.createList("CREATE TABLE IF NOT EXISTS " + table + " ("
-                        + "id INT PRIMARY KEY"
-                        + ");");
+                + "id INT PRIMARY KEY"
+                + ");");
     }
 
     public void increaseID() {
@@ -37,7 +37,7 @@ public class PersonIDManagement extends LibraryService {
         try (Connection conn = DriverManager.getConnection("jdbc:your_database_url", "username", "password")) {
             String query = "SELECT id FROM " + table;
             try (PreparedStatement pstmt = conn.prepareStatement(query);
-                 ResultSet rs = pstmt.executeQuery()) {
+                    ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     id = rs.getInt("id");
                 } else {

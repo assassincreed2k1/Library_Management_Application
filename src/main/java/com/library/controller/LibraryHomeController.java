@@ -9,6 +9,7 @@ import com.library.service.BookManagement;
 import com.library.model.doc.Book;
 import com.library.service.LibraryService;
 import com.library.service.ServiceManager;
+import com.library.controller.tools.SearchBookController;
 
 import javafx.event.ActionEvent;
 
@@ -28,6 +29,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.TextField;
 
 import javafx.event.EventHandler;
 import javafx.concurrent.Task;
@@ -77,6 +79,12 @@ public class LibraryHomeController {
 
     @FXML
     private AnchorPane toolsPane;
+
+    @FXML
+    private TextField searchTextField;
+
+    @FXML
+    private Button searchButton;
 
     @FXML
     private Button addDocumentButton;
@@ -164,6 +172,7 @@ public class LibraryHomeController {
         setComboBoxHandler(magazinesComboBox);
         setComboBoxHandler(newspapersComboBox);
 
+        searchButton.setOnAction(event-> handleSearchDocuments());
         addDocumentButton.setOnAction(event -> handleAddDocument());
         removeDocumentButton.setOnAction(event -> handleRemoveDocument());
         updateDocumentButton.setOnAction(event -> handleUpdateDocument());
@@ -217,10 +226,25 @@ public class LibraryHomeController {
             default:
                 break;
         }
-
         try {
             switchTo(fxmlFile);
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    private void handleSearchDocuments() {
+        String keyword = searchTextField.getText().trim().toLowerCase();
+
+        if (keyword.isEmpty()) {
+            throw new IllegalArgumentException("Search field cannot be empty");
+        }
+
+        SearchBookController.setKeyWord(keyword);
+        try {
+            openNewWindow("/fxml/Library/Tools/SearchBook.fxml");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -228,7 +252,7 @@ public class LibraryHomeController {
     // Handle Add Document action --Need Fix
     private void handleAddDocument() {
         try {
-            switchTo("/fxml/Library/Tools/AddDocument.fxml");
+            openNewWindow("/fxml/Library/Tools/AddDocument.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -362,6 +386,22 @@ public class LibraryHomeController {
         loadImageTask.setOnFailed(event -> System.out.println("Failed to load image: " + imageUrl));
 
         new Thread(loadImageTask).start();
+    }
+
+    private void openNewWindow(String name) {
+        try {
+            //Load file FXML
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(name));
+            Scene scene = new Scene(fxmlLoader.load());
+
+            //Create new Window
+            Stage newStage = new Stage();
+            newStage.setTitle("New Window");
+            newStage.setScene(scene);
+            newStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
