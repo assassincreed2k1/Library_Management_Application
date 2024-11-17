@@ -34,22 +34,44 @@ public class DocumentTransaction extends LibraryService {
     }
 
     /**
-     * Xử lý mượn tài liệu
-     * @param documentId Mã tài liệu
-     * @param membershipId ID thành viên mượn tài liệu
-     * @param editedBy ID nhân viên xử lý giao dịch
-     * @param borrowDate Ngày mượn
-     * @param dueDate Ngày đến hạn
+     * 
+     * @param documentId
+     * @param membershipId
+     * @param editedBy
+     * @param borrowDate
+     * @param dueDate
+     * @return
      */
-    public void borrowDocument(String documentId, int membershipId, int editedBy, String borrowDate, String dueDate) {
+    public String borrowDocument(String documentId, int membershipId, int editedBy, String borrowDate, String dueDate) {
         //thiết lập cho phần document
         Document document = combined_document.getDocument(documentId);
+    
+        if (document == null) {
+            return "Can't find this document in database";
+        }
+    
+        //check xem tài liệu đã được mượn chưa trong cơ sở dữ liệu, nếu chưa thì set thành mượn rồi
         if (document instanceof Book) {
-            loanManagement.borrowBook((Book) document);
+            Book book = (Book) document;  // Ép kiểu document thành Book
+            if (book.getIsAvailable()) {  // Kiểm tra nếu sách có sẵn
+                loanManagement.borrowBook(book);
+            } else {
+                return "Book is not available.";
+            }
         } else if (document instanceof Magazine) {
-            loanManagement.borrowMagazine((Magazine) document);
+            Magazine magazine = (Magazine) document;  // Ép kiểu document thành Magazine
+            if (magazine.getIsAvailable()) {  // Kiểm tra nếu tạp chí có sẵn
+                loanManagement.borrowMagazine(magazine);
+            } else {
+                return "Magazine is not available.";
+            }
         } else if (document instanceof Newspaper) {
-            loanManagement.borrowNewspaper((Newspaper) document);
+            Newspaper newspaper = (Newspaper) document;  // Ép kiểu document thành Newspaper
+            if (newspaper.getIsAvailable()) {  // Kiểm tra nếu báo có sẵn
+                loanManagement.borrowNewspaper(newspaper);
+            } else {
+                return "Newspaper is not available.";
+            }
         }
         
         //thiết lập cho phần bookTransaction
@@ -57,7 +79,7 @@ public class DocumentTransaction extends LibraryService {
         combined_document.updateCombinedDocument();
         String sql = "INSERT INTO bookTransaction (document_id, membershipId, edited_by, borrowDate, dueDate, status) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
-        
+    
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             // Set các tham số cho câu lệnh SQL
@@ -67,53 +89,72 @@ public class DocumentTransaction extends LibraryService {
             pstmt.setString(4, borrowDate);
             pstmt.setString(5, dueDate);
             pstmt.setString(6, "borrowed");  // Trạng thái khi mượn tài liệu
-
+    
             // Thực thi câu lệnh
             pstmt.executeUpdate();
-            System.out.println("Document borrowed successfully.");
+            return "Document borrowed successfully.";
         } catch (SQLException e) {
-            System.err.println("Error borrowing document: " + e.getMessage());
+            return "Error borrowing document: " + e.getMessage();
         }
     }
-
+    
     /**
-     * Xử lý trả tài liệu
-     * @param documentId Mã tài liệu
-     * @param membershipId ID thành viên trả tài liệu
-     * @param editedBy ID nhân viên xử lý giao dịch
-     * @param returnDate Ngày trả tài liệu
+     * 
+     * @param documentId
+     * @param membershipId
+     * @return
      */
-    public void returnDocument(String documentId, int membershipId, int editedBy) {
+    public String returnDocument(String documentId, int membershipId) {
         //thiết lập cho phần document
         Document document = combined_document.getDocument(documentId);
-        if (document instanceof Book) {
-            loanManagement.returnBook((Book) document);
-        } else if (document instanceof Magazine) {
-            loanManagement.returnMagazine((Magazine) document);
-        } else if (document instanceof Newspaper) {
-            loanManagement.returnNewspaper((Newspaper) document);
-        }
 
+        if (document == null) {
+            return "Can't find this document in database";
+        }
+    
         String sql = "UPDATE bookTransaction SET returnDate = DATE('now'), status = 'returned' " +
-                     "WHERE document_id = ? AND membershipId = ? AND edited_by = ? AND returnDate IS NULL";           
-        
+                     "WHERE document_id = ? AND membershipId = ? AND returnDate IS NULL AND status = 'borrowed'";           
+    
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             // Set các tham số cho câu lệnh SQL
             pstmt.setString(1, documentId);
             pstmt.setInt(2, membershipId);
-            pstmt.setInt(3, editedBy);
-
+    
             // Thực thi câu lệnh
             int rowsAffected = pstmt.executeUpdate();
-
+    
             if (rowsAffected > 0) {
-                System.out.println("Document returned successfully.");
+                if (document instanceof Book) {
+                    Book book = (Book) document;  // Ép kiểu document thành Book
+                    if (!book.getIsAvailable()) {  // Kiểm tra xem đúng là mượn hay chưa
+                        loanManagement.returnBook(book);
+                    } else {
+                        return "Book is available. It haven't borrowed before.";
+                    }
+                } else if (document instanceof Magazine) {
+                    Magazine magazine = (Magazine) document;  // Ép kiểu document thành Magazine
+                    if (!magazine.getIsAvailable()) {  // Kiểm tra xem đúng là mượn hay chưa
+                        loanManagement.returnMagazine(magazine);
+                    } else {
+                        return "Magazine is available. It haven't borrowed before.";
+                    }
+                } else if (document instanceof Newspaper) {
+                    Newspaper newspaper = (Newspaper) document;  // Ép kiểu document thành Newspaper
+                    if (!newspaper.getIsAvailable()) {  // Kiểm tra xem đúng là mượn hay chưa
+                        loanManagement.returnNewspaper(newspaper);
+                    } else {
+                        return "Newspaper is available. It haven't borrowed before.";
+                    }
+                }
+
+                return "Document returned successfully.";
             } else {
-                System.out.println("No matching transaction found or document already returned.");
+                return "No matching transaction found or document already returned.";
             }
         } catch (SQLException e) {
-            System.err.println("Error returning document: " + e.getMessage());
+            return "Error returning document: " + e.getMessage();
         }
     }
+    
 }

@@ -21,7 +21,7 @@ public abstract class Document {
         this.id = "";
         this.name = "No name";
         this.group = "Default";
-        this.isAvailable = false;
+        this.isAvailable = true;
         this.imagePreview = "";
     }
 
