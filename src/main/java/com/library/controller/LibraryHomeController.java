@@ -30,7 +30,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javafx.event.EventHandler;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.stage.Stage;
 
@@ -379,32 +378,6 @@ public class LibraryHomeController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private ObservableList<Book> getBookListFilter(String keyWord) {
-        return bookManagement.getAllBooksFilter(keyWord);
-    }
-    
-    private void loadBookListAsync(String keyWord) {
-        Task<ObservableList<Book>> task = new Task<>() {
-            @Override
-            protected ObservableList<Book> call() {
-                System.out.println("Running loadBookListAsync()...");
-                return getBookListFilter(keyWord);
-            }
-        };
-
-        task.setOnSucceeded(event -> {
-            System.out.println("Succeeded: loadBookListAsync()");
-            bookTable.setItems(task.getValue());
-        });
-
-        task.setOnFailed(event -> {
-            System.out.println("Failed to load book list.");
-        });
-
-        executor.startNewThread(task);
-
     }
 
 }
