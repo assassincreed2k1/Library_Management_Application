@@ -92,6 +92,7 @@ public class DocumentBorrowController {
         }
 
         // Lấy thông tin tài liệu
+        combinedDocument.updateCombinedDocument();
         document = combinedDocument.getDocument(documentID);
         if (document == null) {
             inforDocTextArea.setText("Not found.");

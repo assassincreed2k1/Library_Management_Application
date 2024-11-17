@@ -39,28 +39,21 @@ public class CombinedDocument extends LibraryService {
     }
 
     public void updateCombinedDocument() {
-        // Delete all data and insert updated data
-        String deleteDataSQL = "DELETE FROM combined_documents;";
-        String insertDataSQL = """
-                INSERT INTO combined_documents (id, name, genre, document_type)
+        String insertOrReplaceSQL = """
+                INSERT OR REPLACE INTO combined_documents (id, name, document_type)
                 SELECT id, name, 'book' AS document_type FROM Books
                 UNION ALL
                 SELECT id, name, 'magazine' AS document_type FROM Magazines
                 UNION ALL
                 SELECT id, name, 'news' AS document_type FROM Newspaper;
                 """;
-
+    
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement()) {
-
-            // Delete existing data
-            stmt.execute(deleteDataSQL);
-            System.out.println("All data deleted from combined_documents.");
-
-            // Insert new data
-            stmt.execute(insertDataSQL);
-            System.out.println("New data inserted into combined_documents.");
-
+    
+            stmt.execute(insertOrReplaceSQL);
+            System.out.println("Combined documents table updated with INSERT OR REPLACE.");
+    
         } catch (SQLException e) {
             System.err.println("Error updating combined_documents table: " + e.getMessage());
         }
@@ -83,14 +76,20 @@ public class CombinedDocument extends LibraryService {
                 String type = rs.getString("document_type");
                 
                 // Dựa vào document_type, tạo đối tượng Document phù hợp
-                if ("Book".equalsIgnoreCase(type)) {
+                if ("book".equals(type)) {
                     document = new Book();
-                } else if ("Magazine".equalsIgnoreCase(type)) {
+                } else if ("magazine".equals(type)) {
                     document = new Magazine(); 
-                } else if ("News".equalsIgnoreCase(type)) {
+                } else if ("news".equals(type)) {
                     document = new Newspaper(); // Giả sử bạn có lớp News
                 }
-                document = document.getInforFromDatabase(document.getID());
+                // Nếu `document` đã được khởi tạo, lấy thông tin từ database
+                if (document != null) {
+                    System.out.println(document.getClass().getName()); //test ok
+                    document = document.getInforFromDatabase(documentId);
+                } else {
+                    throw new IllegalArgumentException("Invalid document type: " + type);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
