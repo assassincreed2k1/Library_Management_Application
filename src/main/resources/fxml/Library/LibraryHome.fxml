@@ -93,7 +93,7 @@
                               <Font size="23.0" />
                            </font>
                         </Label>
-                        <Hyperlink alignment="CENTER" layoutX="832.0" layoutY="8.0" prefHeight="30.0" prefWidth="70.0" text="More">
+                        <Hyperlink fx:id="moreButton" alignment="CENTER" layoutX="832.0" layoutY="8.0" prefHeight="30.0" prefWidth="70.0" text="More">
                            <font>
                               <Font size="17.0" />
                            </font>
