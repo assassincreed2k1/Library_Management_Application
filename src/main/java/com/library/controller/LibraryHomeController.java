@@ -217,18 +217,18 @@ public class LibraryHomeController {
             default:
                 break;
         }
-
         try {
             switchTo(fxmlFile);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+
         }
     }
 
     // Handle Add Document action --Need Fix
     private void handleAddDocument() {
         try {
-            switchTo("/fxml/Library/Tools/AddDocument.fxml");
+            openNewWindow("/fxml/Library/Tools/AddDocument.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -362,6 +362,22 @@ public class LibraryHomeController {
         loadImageTask.setOnFailed(event -> System.out.println("Failed to load image: " + imageUrl));
 
         new Thread(loadImageTask).start();
+    }
+
+    private void openNewWindow(String name) {
+        try {
+            // Tải file FXML
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(name));
+            Scene scene = new Scene(fxmlLoader.load());
+
+            // Tạo Stage mới
+            Stage newStage = new Stage();
+            newStage.setTitle("New Window");
+            newStage.setScene(scene);
+            newStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
