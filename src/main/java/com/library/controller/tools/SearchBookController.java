@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -13,12 +12,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-
-import java.io.IOException;
 
 import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
@@ -28,14 +21,11 @@ import com.library.service.ServiceManager;
 public class SearchBookController {
 
     private BookManagement bookManagement;
-
     private BackgroundService executor;
+    public static String keyword;
 
     @FXML
     private AnchorPane taskBar;
-
-    @FXML
-    Button exitButton;
 
     @FXML
     private TableView<Book> bookTable;
@@ -79,24 +69,15 @@ public class SearchBookController {
 
         prevImage.setOnMouseClicked(event -> showPreview());
 
-        exitButton.setOnAction(event -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
-                Parent root = loader.load();
-
-                Stage stage = (Stage) exitButton.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
         loadBookListAsync();
     }
 
+    public static void setKeyWord(String keyword) {
+        SearchBookController.keyword = keyword;
+
+    }
+
     private void loadBookListAsync() {
-        String keyword ="";
         Task<ObservableList<Book>> task = new Task<>() {
             @Override
             protected ObservableList<Book> call() {

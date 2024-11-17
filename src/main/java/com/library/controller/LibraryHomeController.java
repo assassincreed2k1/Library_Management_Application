@@ -9,6 +9,7 @@ import com.library.service.BookManagement;
 import com.library.model.doc.Book;
 import com.library.service.LibraryService;
 import com.library.service.ServiceManager;
+import com.library.controller.tools.SearchBookController;
 
 import javafx.event.ActionEvent;
 
@@ -28,6 +29,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.TextField;
 
 import javafx.event.EventHandler;
 import javafx.concurrent.Task;
@@ -77,6 +79,9 @@ public class LibraryHomeController {
 
     @FXML
     private AnchorPane toolsPane;
+
+    @FXML
+    private TextField searchTextField;
 
     @FXML
     private Button searchButton;
@@ -167,6 +172,7 @@ public class LibraryHomeController {
         setComboBoxHandler(magazinesComboBox);
         setComboBoxHandler(newspapersComboBox);
 
+        searchButton.setOnAction(event-> handleSearchDocuments());
         addDocumentButton.setOnAction(event -> handleAddDocument());
         removeDocumentButton.setOnAction(event -> handleRemoveDocument());
         updateDocumentButton.setOnAction(event -> handleUpdateDocument());
@@ -225,6 +231,21 @@ public class LibraryHomeController {
         } catch (Exception e) {
             e.printStackTrace();
 
+        }
+    }
+
+    private void handleSearchDocuments() {
+        String keyword = searchTextField.getText().trim().toLowerCase();
+
+        if (keyword.isEmpty()) {
+            throw new IllegalArgumentException("Search field cannot be empty");
+        }
+
+        SearchBookController.setKeyWord(keyword);
+        try {
+            openNewWindow("/fxml/Library/Tools/SearchBook.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
