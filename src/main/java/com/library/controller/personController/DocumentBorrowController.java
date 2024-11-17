@@ -92,19 +92,32 @@ public class DocumentBorrowController {
         }
 
         // Lấy thông tin tài liệu
-        combinedDocument.updateCombinedDocument();
-        document = combinedDocument.getDocument(documentID);
+        combinedDocument.updateCombinedDocument(); //update các dữ liệu mới vào bảng tổng hợp này 
+        document = combinedDocument.getDocument(documentID); //lấy thông document từ cơ sở dữ liệu vào đây
+
         if (document == null) {
             inforDocTextArea.setText("Not found.");
             showNotification("Document not found.", Color.RED);
             confirmButton.setDisable(true);
         } else {
             if (document instanceof Book) {
-                inforDocTextArea.setText(((Book) document).getDetails());
+                if (documentType.equals("Book")) {
+                    inforDocTextArea.setText(((Book) document).getDetails());
+                } else {
+                    inforDocTextArea.setText("Invalid ID. This is for another one.");
+                }  
             } else if (document instanceof Magazine) {
-                inforDocTextArea.setText(((Magazine) document).getDetails());
+                if (documentType.equals("Magazine")) {
+                    inforDocTextArea.setText(((Magazine) document).getDetails());
+                } else {
+                    inforDocTextArea.setText("Invalid ID. This is for another one.");
+                }
             } else if (document instanceof Newspaper) {
-                inforDocTextArea.setText(((Newspaper) document).getDetails());
+                if (documentType.equals("Newspaper")) {
+                    inforDocTextArea.setText(((Newspaper) document).getDetails());
+                } else {
+                    inforDocTextArea.setText("Invalid ID. This is for another one.");
+                }
             }
             confirmButton.setDisable(false); // Kích hoạt nút Confirm nếu tìm thấy tài liệu
         }
@@ -129,14 +142,15 @@ public class DocumentBorrowController {
                 String borrowDate = localDate.toString();
                 String dueDate = localDate.plusDays(7).toString(); //7 is default, can change !
 
-                if (documentTransaction.borrowDocument(documentID, Integer.parseInt(memberID.substring(1)), editedBy, borrowDate, dueDate)) {
-                    showNotification("Document borrowed successfully.", Color.GREEN);
-                } else showNotification(("Document borrowed failed"), Color.RED);
+                // Thực hiện mượn document
+                String notification = documentTransaction.borrowDocument(documentID, Integer.parseInt(memberID.substring(1)), 
+                                                                        editedBy, borrowDate, dueDate);
+                showNotification(notification, Color.BLACK);
                 
             } else if ("Return".equals(transactionType)) {
-                // Thực hiện trả tài liệu
-                documentTransaction.returnDocument(documentID, Integer.parseInt(memberID.substring(1)), editedBy);
-                showNotification("Document returned successfully.", Color.GREEN);
+                // Thực hiện trả document
+                String notification = documentTransaction.returnDocument(documentID, Integer.parseInt(memberID.substring(1)));
+                showNotification(notification, Color.BLACK);
             }
         } catch (Exception e) {
             showNotification("Error: " + e.getMessage(), Color.RED);
