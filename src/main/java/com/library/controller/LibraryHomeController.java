@@ -79,6 +79,9 @@ public class LibraryHomeController {
     private AnchorPane toolsPane;
 
     @FXML
+    private Button searchButton;
+
+    @FXML
     private Button addDocumentButton;
 
     @FXML
