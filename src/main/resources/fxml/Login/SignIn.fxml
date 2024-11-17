@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:controller="com.library.controller.SignInController" prefHeight="402.0" prefWidth="556.0" styleClass="box-mini" stylesheets="@LoginStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="402.0" prefWidth="556.0" styleClass="box-mini" stylesheets="@LoginStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.SignInController">
    <children>
       <TextField fx:id="usernameField" layoutX="137.0" layoutY="145.0" prefHeight="42.0" prefWidth="276.0" promptText="Username">
          <font>
@@ -56,6 +56,7 @@
             </ImageView>
          </graphic>
       </Button>
+      <Label fx:id="errorLabel" layoutX="137.0" layoutY="275.0" prefHeight="20.0" prefWidth="276.0" textFill="red" text="" />
    </children>
    <stylesheets>
       <URL value="@../../css/LoginStyle.css" />

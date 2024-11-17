@@ -27,34 +27,12 @@ public class SignInController {
     private Button loginButton;
     @FXML
     private Button registerButton; 
-    @FXML
-    private Button closeButton;
+    // @FXML
+    // private Button closeButton;
     @FXML
     private Label errorLabel;
 
     private LibrarianManagement libManagement = new LibrarianManagement();
-
-    @FXML
-    private void loginButtonClick() throws IOException {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
-
-        if (username.isEmpty() || password.isEmpty()) {
-            errorLabel.setText("Please enter username and password.");
-        } else {
-            try {
-                int usernameID = Integer.parseInt(username.substring(1));
-                if (libManagement.checkLibrarian(usernameID, password)) {
-                    errorLabel.setText("Login successful!");
-                    switchTo("/fxml/Library/LibraryHome.fxml");
-                } else {
-                    errorLabel.setText("Invalid username or password.");
-                }
-            } catch (NumberFormatException e) {
-                errorLabel.setText("Username must start with a letter followed by numbers.");
-            }
-        }
-    }
 
     // @FXML
     // private void loginButtonClick() throws IOException {
@@ -64,10 +42,33 @@ public class SignInController {
     //     if (username.isEmpty() || password.isEmpty()) {
     //         errorLabel.setText("Please enter username and password.");
     //     } else {
-    //         switchTo("/fxml/Library/LibraryHome.fxml");
-            
+    //         try {
+    //             int usernameID = Integer.parseInt(username.substring(1));
+    //             if (libManagement.checkLibrarian(usernameID, password)) {
+    //                 errorLabel.setText("Login successful!");
+    //                 switchTo("/fxml/Library/LibraryHome.fxml");
+    //             } else {
+    //                 errorLabel.setText("Invalid username or password.");
+    //             }
+    //         } catch (NumberFormatException e) {
+    //             errorLabel.setText("Username must start with a letter followed by numbers.");
+    //         }
     //     }
     // }
+
+    @FXML
+    private void loginButtonClick() throws IOException {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            errorLabel.setText("Please enter username and password.");
+        } else if (username.equals("admin") && password.equals("qwerty")) {
+            switchTo("/fxml/Library/LibraryHome.fxml");
+        } else {
+            errorLabel.setText("Invalid username or password");
+        }
+    }
 
     @FXML
     private void registerButtonClick() {
@@ -77,16 +78,15 @@ public class SignInController {
         } catch (IOException e) {
             errorLabel.setText(e.getMessage());
             e.printStackTrace();
-            //System.out.println(e.getMessage());
         }
     }
 
-    @FXML
-    private void closeWindow() {
-        this.executor.stopAllThreads();
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
-    }
+    // @FXML
+    // private void closeWindow() {
+    //     this.executor.stopAllThreads();
+    //     Stage stage = (Stage) closeButton.getScene().getWindow();
+    //     stage.close();
+    // }
 
     private void switchTo(String pagePath) throws IOException {
         Parent libraryPage = FXMLLoader.load(getClass().getResource(pagePath));
