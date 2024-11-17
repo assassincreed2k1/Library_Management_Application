@@ -250,6 +250,9 @@ public class BookController {
             VBox editPane = new VBox(10);
             editPane.setPadding(new Insets(10));
 
+            Label bookIdLabel = new Label("ID: " + selectedBook.getID());
+            bookIdLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
             TextField titleField = new TextField(selectedBook.getName());
             TextField authorField = new TextField(selectedBook.getAuthor());
             TextField genreField = new TextField(selectedBook.getGroup());
@@ -257,6 +260,9 @@ public class BookController {
             TextField isbnField = new TextField(selectedBook.getISBN());
             CheckBox availabilityCheckBox = new CheckBox("Available");
             availabilityCheckBox.setSelected(selectedBook.getIsAvailable());
+
+            Label statusLabel = new Label();
+            statusLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
 
             Button updateThisBookButton = new Button("Update This Book");
             updateThisBookButton.setOnAction(e -> {
@@ -267,9 +273,15 @@ public class BookController {
                 selectedBook.setISBN(isbnField.getText());
                 selectedBook.setIsAvailable(availabilityCheckBox.isSelected());
 
-                this.bookManagement.updateDocuments(selectedBook);
-                bookTable.setItems(getBookList());
-                editStage.close();
+                try {
+                    this.bookManagement.updateDocuments(selectedBook);
+                    bookTable.setItems(getBookList());
+                    statusLabel.setText("Book updated successfully!");
+                    statusLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14px;");
+                } catch (Exception ex) {
+                    statusLabel.setText("Failed to update book.");
+                    statusLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
+                }
             });
 
             Button updateMatchingIsbnButton = new Button("Update All by ISBN");
@@ -281,12 +293,19 @@ public class BookController {
                 selectedBook.setISBN(isbnField.getText());
                 selectedBook.setIsAvailable(availabilityCheckBox.isSelected());
 
-                this.bookManagement.updateDocumentMatchingISBN(selectedBook);
-                bookTable.setItems(getBookList());
-                editStage.close();
+                try {
+                    this.bookManagement.updateDocumentMatchingISBN(selectedBook);
+                    bookTable.setItems(getBookList());
+                    statusLabel.setText("All books with matching ISBN updated successfully!");
+                    statusLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14px;");
+                } catch (Exception ex) {
+                    statusLabel.setText("Failed to update books by ISBN.");
+                    statusLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
+                }
             });
 
             editPane.getChildren().addAll(
+                    bookIdLabel,
                     new Label("Title:"), titleField,
                     new Label("Author:"), authorField,
                     new Label("Genre:"), genreField,
@@ -294,12 +313,13 @@ public class BookController {
                     new Label("ISBN:"), isbnField,
                     availabilityCheckBox,
                     updateThisBookButton,
-                    updateMatchingIsbnButton);
+                    updateMatchingIsbnButton,
+                    statusLabel);
 
-            Scene editScene = new Scene(editPane, 400, 400);
+            Scene editScene = new Scene(editPane, 400, 500);
             editStage.setScene(editScene);
 
-            editStage.show(); 
+            editStage.show();
         });
 
         moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel, publishDateLabel, isbnLabel,

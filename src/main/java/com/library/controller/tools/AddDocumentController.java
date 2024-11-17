@@ -137,14 +137,20 @@ public class AddDocumentController {
             publishDateField.setLayoutY(startY + spacing * 4);
             publishDateField.setPrefWidth(fieldWidth);
 
+            TextField quantityField = new TextField();
+            quantityField.setPromptText("Enter Quantity");
+            quantityField.setLayoutX(startX);
+            quantityField.setLayoutY(startY + spacing * 5);
+            quantityField.setPrefWidth(fieldWidth);
+
             Label errorLabel = new Label();
             errorLabel.setLayoutX(startX);
-            errorLabel.setLayoutY(startY + spacing * 5);
+            errorLabel.setLayoutY(startY + spacing * 6);
             errorLabel.setTextFill(javafx.scene.paint.Color.RED);
 
             inputPane.getChildren().addAll(isbnField, titleField,
                     authorField, genreField,
-                    publishDateField, errorLabel);
+                    publishDateField, quantityField, errorLabel);
 
             Service<JSONObject> bookInfoService = new Service<>() {
                 @Override
@@ -227,25 +233,41 @@ public class AddDocumentController {
                 String author = authorField.getText();
                 String genre = genreField.getText();
                 String publishDate = publishDateField.getText();
+                String quantityText = quantityField.getText();
+
+                int quantity = 0;
+                try {
+                    quantity = Integer.parseInt(quantityText);
+                    if (quantity <= 0) {
+                        throw new NumberFormatException();
+                    }
+                } catch (NumberFormatException e) {
+                    errorLabel.setTextFill(javafx.scene.paint.Color.RED);
+                    errorLabel.setText("Please enter a valid quantity.");
+                    return;
+                }
 
                 if (isbn.isEmpty() || title.isEmpty() || author.isEmpty()
                         || genre.isEmpty() || publishDate.isEmpty()) {
                     errorLabel.setTextFill(javafx.scene.paint.Color.RED);
                     errorLabel.setText("Please fill in all fields.");
                 } else {
-                    Book newBook = new Book();
-                    newBook.setID(libraryService.generateID());
-                    newBook.setName(title);
-                    newBook.setAuthor(author);
-                    newBook.setGroup(genre);
-                    newBook.setPublishDate(publishDate);
-                    newBook.setISBN(isbn);
-                    newBook.setIsAvailable(true);
-                    newBook.setImagePreview(docImagePreview.getImage().getUrl());
+                    for (int i = 0; i < quantity; i++) {
+                        Book newBook = new Book();
+                        newBook.setID(libraryService.generateID());
+                        newBook.setName(title);
+                        newBook.setAuthor(author);
+                        newBook.setGroup(genre);
+                        newBook.setPublishDate(publishDate);
+                        newBook.setISBN(isbn);
+                        newBook.setIsAvailable(true);
+                        newBook.setImagePreview(docImagePreview.getImage().getUrl());
 
-                    bookManagement.addDocuments(newBook);
+                        bookManagement.addDocuments(newBook); 
+                    }
+
                     errorLabel.setTextFill(javafx.scene.paint.Color.GREEN);
-                    errorLabel.setText("Successfully added to the library");
+                    errorLabel.setText("Successfully added " + quantity + " books to the library");
                 }
             });
 
