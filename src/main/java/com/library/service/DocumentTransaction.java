@@ -41,16 +41,42 @@ public class DocumentTransaction extends LibraryService {
      * @param borrowDate Ngày mượn
      * @param dueDate Ngày đến hạn
      */
-    public void borrowDocument(String documentId, int membershipId, int editedBy, String borrowDate, String dueDate) {
+    public boolean borrowDocument(String documentId, int membershipId, int editedBy, String borrowDate, String dueDate) {
         //thiết lập cho phần document
         Document document = combined_document.getDocument(documentId);
-        if (document instanceof Book) {
-            loanManagement.borrowBook((Book) document);
-        } else if (document instanceof Magazine) {
-            loanManagement.borrowMagazine((Magazine) document);
-        } else if (document instanceof Newspaper) {
-            loanManagement.borrowNewspaper((Newspaper) document);
+
+        if (document == null) {
+            System.out.println("Can't find this book in database");
+            return false;
         }
+
+        //check xem tài liệu đã được mượn chưa trong cơ sở dữ liệu, nếu chưa thì set thành mượn rồi
+        if (document instanceof Book) {
+            Book book = (Book) document;  // Ép kiểu document thành Book
+            if (book.getIsAvailable()) {  // Kiểm tra nếu sách có sẵn
+                loanManagement.borrowBook(book);
+            } else {
+                System.out.println("Book is not available.");
+                return false;
+            }
+        } else if (document instanceof Magazine) {
+            Magazine magazine = (Magazine) document;  // Ép kiểu document thành Magazine
+            if (magazine.getIsAvailable()) {  // Kiểm tra nếu tạp chí có sẵn
+                loanManagement.borrowMagazine(magazine);
+            } else {
+                System.out.println("Magazine is not available.");
+                return false;
+            }
+        } else if (document instanceof Newspaper) {
+            Newspaper newspaper = (Newspaper) document;  // Ép kiểu document thành Newspaper
+            if (newspaper.getIsAvailable()) {  // Kiểm tra nếu báo có sẵn
+                loanManagement.borrowNewspaper(newspaper);
+            } else {
+                System.out.println("Newspaper is not available.");
+                return false;
+            }
+        }
+        
         
         //thiết lập cho phần bookTransaction
         //merging all documents before check
@@ -73,7 +99,10 @@ public class DocumentTransaction extends LibraryService {
             System.out.println("Document borrowed successfully.");
         } catch (SQLException e) {
             System.err.println("Error borrowing document: " + e.getMessage());
+            return false;
         }
+
+        return true;
     }
 
     /**

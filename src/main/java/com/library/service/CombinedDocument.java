@@ -39,21 +39,28 @@ public class CombinedDocument extends LibraryService {
     }
 
     public void updateCombinedDocument() {
-        String insertOrReplaceSQL = """
-                INSERT OR REPLACE INTO combined_documents (id, name, document_type)
+        // Delete all data and insert updated data
+        String deleteDataSQL = "DELETE FROM combined_documents;";
+        String insertDataSQL = """
+                INSERT INTO combined_documents (id, name, document_type)
                 SELECT id, name, 'book' AS document_type FROM Books
                 UNION ALL
                 SELECT id, name, 'magazine' AS document_type FROM Magazines
                 UNION ALL
                 SELECT id, name, 'news' AS document_type FROM Newspaper;
                 """;
-    
+
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement()) {
-    
-            stmt.execute(insertOrReplaceSQL);
-            System.out.println("Combined documents table updated with INSERT OR REPLACE.");
-    
+
+            // Delete existing data
+            stmt.execute(deleteDataSQL);
+            System.out.println("All data deleted from combined_documents.");
+
+            // Insert new data
+            stmt.execute(insertDataSQL);
+            System.out.println("New data inserted into combined_documents.");
+
         } catch (SQLException e) {
             System.err.println("Error updating combined_documents table: " + e.getMessage());
         }

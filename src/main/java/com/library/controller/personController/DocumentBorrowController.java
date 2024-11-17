@@ -129,8 +129,10 @@ public class DocumentBorrowController {
                 String borrowDate = localDate.toString();
                 String dueDate = localDate.plusDays(7).toString(); //7 is default, can change !
 
-                documentTransaction.borrowDocument(documentID, Integer.parseInt(memberID.substring(1)), editedBy, borrowDate, dueDate);
-                showNotification("Document borrowed successfully.", Color.GREEN);
+                if (documentTransaction.borrowDocument(documentID, Integer.parseInt(memberID.substring(1)), editedBy, borrowDate, dueDate)) {
+                    showNotification("Document borrowed successfully.", Color.GREEN);
+                } else showNotification(("Document borrowed failed"), Color.RED);
+                
             } else if ("Return".equals(transactionType)) {
                 // Thực hiện trả tài liệu
                 documentTransaction.returnDocument(documentID, Integer.parseInt(memberID.substring(1)), editedBy);
