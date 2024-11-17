@@ -21,7 +21,7 @@ import javafx.collections.ObservableList;
 public class BookManagement extends LibraryService {
 
     /**
-     * Constructs a {@code BookManagement} object.
+     * Constructs a {@code BookManagement} object. 
      * It creates the Books table if it doesn't already exist.
      */
     public BookManagement() {
