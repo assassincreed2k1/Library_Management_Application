@@ -57,7 +57,6 @@ public class LibraryHomeController {
     @FXML
     private Label usernameLabel;
 
-    // Mini Boxes
     @FXML
     private AnchorPane documentsPane;
 
@@ -107,7 +106,7 @@ public class LibraryHomeController {
     private Button showAllButton;
 
     @FXML
-    private Hyperlink moreButton;
+    private Hyperlink moreBooks1, moreBooks2;
 
     @FXML
     private TabPane tabPane;
@@ -156,6 +155,9 @@ public class LibraryHomeController {
     private Label[] oldestGenres;
     private Label[] oldestAvailables;
 
+    @FXML
+    private Hyperlink[] moreListBooks;
+
     // Main Content
     @FXML
     private ImageView mainImageView;
@@ -175,6 +177,8 @@ public class LibraryHomeController {
         this.oldestAuthors = new Label[] { oldestAuthor1, oldestAuthor2, oldestAuthor3, oldestAuthor4 };
         this.oldestGenres = new Label[] { oldestGenre1, oldestGenre2, oldestGenre3, oldestGenre4 };
         this.oldestAvailables = new Label[] { oldestAvailable1, oldestAvailable2, oldestAvailable3, oldestAvailable4 };
+
+        this.moreListBooks = new Hyperlink[] { moreBooks1, moreBooks2 };
 
         this.libraryService = ServiceManager.getLibraryService();
         this.bookManagement = ServiceManager.getBookManagement();
@@ -200,20 +204,22 @@ public class LibraryHomeController {
         setComboBoxHandler(magazinesComboBox);
         setComboBoxHandler(newspapersComboBox);
 
-        searchButton.setOnAction(event-> handleSearchDocuments());
+        searchButton.setOnAction(event -> handleSearchDocuments());
         addDocumentButton.setOnAction(event -> handleAddDocument());
         removeDocumentButton.setOnAction(event -> handleRemoveDocument());
         updateDocumentButton.setOnAction(event -> handleUpdateDocument());
         checkAvailabilityButton.setOnAction(event -> handleCheckAvailability());
         documentAddressButton.setOnAction(event -> handleDocumentAddress());
         showAllButton.setOnAction(event -> handleShowAll());
-        moreButton.setOnAction(event -> {
-            try {
-                switchTo("/fxml/Documents/Books.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        for (int i = 0; i < 2; i++) {
+            moreListBooks[i].setOnAction(event -> {
+                try {
+                    switchTo("/fxml/Documents/Books.fxml");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
 
     }
 
@@ -424,7 +430,7 @@ public class LibraryHomeController {
             bookIDs[i] = id <= latestBookID ? String.format("%09d", id) : "";
         }
 
-        ImageView[] imageViews = { oldestDoc1, oldestDoc2, oldestDoc3, oldestDoc4};
+        ImageView[] imageViews = { oldestDoc1, oldestDoc2, oldestDoc3, oldestDoc4 };
 
         for (int i = 0; i < bookIDs.length; i++) {
             String currentID = bookIDs[i];
@@ -478,11 +484,11 @@ public class LibraryHomeController {
 
     private void openNewWindow(String name) {
         try {
-            //Load file FXML
+            // Load file FXML
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(name));
             Scene scene = new Scene(fxmlLoader.load());
 
-            //Create new Window
+            // Create new Window
             Stage newStage = new Stage();
             newStage.setTitle("New Window");
             newStage.setScene(scene);
