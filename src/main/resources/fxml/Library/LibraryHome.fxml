@@ -224,7 +224,7 @@
                               <ImageView fx:id="oldestDoc1" fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                               <Label fx:id="oldestAuthor1" layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
                               <Label fx:id="oldestGenre1" layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label fx:id="oldestAvalible1" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <Label fx:id="oldestAvailable1" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
                               <Label fx:id="oldestName1" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
                            </children>
                         </AnchorPane>
@@ -233,7 +233,7 @@
                               <ImageView fx:id="oldestDoc2" fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                               <Label fx:id="oldestAuthor2" layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
                               <Label fx:id="oldestGenre2" layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label fx:id="oldestAvalible2" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <Label fx:id="oldestAvailable2" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
                               <Label fx:id="oldestName2" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
                            </children>
                         </AnchorPane>
@@ -242,7 +242,7 @@
                               <ImageView fx:id="oldestDoc3" fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                               <Label fx:id="oldestAuthor3" layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
                               <Label fx:id="oldestGenre3" layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label fx:id="oldestAvalible3" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <Label fx:id="oldestAvailable3" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
                               <Label fx:id="oldestName3" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
                            </children>
                         </AnchorPane>
@@ -251,7 +251,7 @@
                               <ImageView fx:id="oldestDoc4" fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                               <Label fx:id="oldestAuthor4" layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
                               <Label fx:id="oldestGenre4" layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label fx:id="oldestAvalible4" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <Label fx:id="oldestAvailable4" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
                               <Label fx:id="oldestName4" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
                            </children>
                         </AnchorPane>
