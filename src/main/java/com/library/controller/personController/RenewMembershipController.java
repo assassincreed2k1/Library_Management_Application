@@ -1,7 +1,7 @@
 package com.library.controller.personController;
 
 import com.library.model.Person.Member;
-import com.library.model.helpMethod.PersonIdHandle;
+import com.library.model.helpers.PersonIdHandle;
 import com.library.service.MemberManagement;
 
 import javafx.fxml.FXML;

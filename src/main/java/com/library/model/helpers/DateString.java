@@ -1,4 +1,4 @@
-package com.library.model.helpMethod;
+package com.library.model.helpers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,4 +34,18 @@ public class DateString {
         return null;
     }
     
+    public static boolean isValidDate (String date) {
+        if (date == null || date.isEmpty()) {
+            return false;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false); //khong cho phep cac gia tri khong hop le
+
+        try {
+            sdf.parse(date); // Thu parse chuoi thanh ngay thang, neu bi exception thi false
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
 }

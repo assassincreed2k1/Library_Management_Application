@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.library.model.Person.Librarian;
-import com.library.model.helpMethod.DateString;
+import com.library.model.helpers.DateString;
 
 public class LibrarianManagement extends LibraryService {
     private PersonIDManagement librarianIdManagement = new PersonIDManagement("LibrarianID");
@@ -37,8 +37,12 @@ public class LibrarianManagement extends LibraryService {
      * @param lib The Librarian object containing the librarian's details to be
      *            added.
      */
-    public void addLibrarian(Librarian lib) {
+    public boolean addLibrarian(Librarian lib) {
+        if (lib == null) {
+            return false;
+        }
         int newId = librarianIdManagement.getID(); // Lấy ID hiện tại từ PersonIDManagement
+        
         String sql_statement = "INSERT INTO Librarian "
                 + "(employeeId, name, address, dateOfBirth, phoneNumber, gender, position, password) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -59,8 +63,10 @@ public class LibrarianManagement extends LibraryService {
 
             librarianIdManagement.increaseID(); // Tăng ID cho lần sử dụng tiếp theo
             System.out.println("Data inserted successfully with ID: " + newId);
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
     }
 

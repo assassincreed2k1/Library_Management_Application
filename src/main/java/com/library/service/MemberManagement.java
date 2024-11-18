@@ -7,9 +7,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 import com.library.model.Person.Member;
-import com.library.model.helpMethod.DateString;
+import com.library.model.helpers.DateString;
 
 public class MemberManagement extends LibraryService {
 
@@ -40,8 +41,13 @@ public class MemberManagement extends LibraryService {
      * Adds a new member to the database.
      * @param member The Member object containing member's details to be added.
      */
-    public void addMember(Member member) {
-        int newId = memberIdManagement.getID(); // Retrieve new ID from PersonIDManagement
+    public boolean addMember(Member member) {
+        if (member == null) {
+            return false;
+        }
+
+        int newId = memberIdManagement.getID(); //lay id tu bang member id
+
         String sql_statement = "INSERT INTO Member "
                 + "(membershipId, name, address, dateOfBirth, phoneNumber, gender, joinDate, expiryDate) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -64,8 +70,10 @@ public class MemberManagement extends LibraryService {
 
             memberIdManagement.increaseID();
             System.out.println("Member added successfully with ID: " + newId);
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
     }
     

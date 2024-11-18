@@ -16,8 +16,12 @@ public class PersonIDManagement extends LibraryService {
                 + ");");
     }
 
+    /**
+     * increase id, use after adding, start from 1.
+     * 
+     */
     public void increaseID() {
-        try (Connection conn = DriverManager.getConnection("jdbc:your_database_url", "username", "password")) {
+        try (Connection conn = DriverManager.getConnection(url)) {
             int currentID = getID();
             int newID = currentID + 1;
 
@@ -32,9 +36,13 @@ public class PersonIDManagement extends LibraryService {
         }
     }
 
+    /**
+     * get person id in a table that manage id.
+     * @return int ID
+     */
     public int getID() {
         int id = 0;
-        try (Connection conn = DriverManager.getConnection("jdbc:your_database_url", "username", "password")) {
+        try (Connection conn = DriverManager.getConnection(url)) {
             String query = "SELECT id FROM " + table;
             try (PreparedStatement pstmt = conn.prepareStatement(query);
                     ResultSet rs = pstmt.executeQuery()) {
