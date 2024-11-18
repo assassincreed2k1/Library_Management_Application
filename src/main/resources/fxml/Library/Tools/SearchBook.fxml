@@ -41,7 +41,7 @@
       <ScrollPane layoutY="94.0" prefHeight="707.0" prefWidth="910.0">
          <content>
             <TableView fx:id="bookTable" prefHeight="706.0" prefWidth="908.0">
-                <columns>
+               <columns>
                   <TableColumn prefWidth="117.0" text="ID" />
                   <TableColumn fx:id="titleColumn" prefWidth="164.0" text="Book Title" />
                   <TableColumn fx:id="authorColumn" prefWidth="135.0" text="Author" />
