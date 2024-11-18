@@ -41,12 +41,14 @@
       <ScrollPane layoutY="94.0" prefHeight="707.0" prefWidth="910.0">
          <content>
             <TableView fx:id="bookTable" prefHeight="706.0" prefWidth="908.0">
-                <columns>
-                  <TableColumn fx:id="titleColumn" prefWidth="192.0" text="Book Title" />
-                  <TableColumn fx:id="authorColumn" prefWidth="152.0" text="Author" />
-                  <TableColumn fx:id="genreColumn" prefWidth="166.0" text="Genre" />
-                  <TableColumn fx:id="publishDateColumn" prefWidth="176.0" text="Publish Date" />
-                  <TableColumn fx:id="isbnColumn" prefWidth="213.0" text="ISBN" />
+               <columns>
+                  <TableColumn prefWidth="117.0" text="ID" />
+                  <TableColumn fx:id="titleColumn" prefWidth="164.0" text="Book Title" />
+                  <TableColumn fx:id="authorColumn" prefWidth="135.0" text="Author" />
+                  <TableColumn fx:id="genreColumn" prefWidth="139.0" text="Genre" />
+                  <TableColumn fx:id="publishDateColumn" prefWidth="126.0" text="Publish Date" />
+                  <TableColumn fx:id="isbnColumn" prefWidth="124.0" text="ISBN" />
+                  <TableColumn prefWidth="90.0" text="Is Available" />
                </columns>
             </TableView>
          </content>
