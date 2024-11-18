@@ -94,11 +94,6 @@
                               <Font size="23.0" />
                            </font>
                         </Label>
-                        <Hyperlink fx:id="moreButton" alignment="CENTER" layoutX="832.0" layoutY="8.0" prefHeight="30.0" prefWidth="70.0" text="More">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Hyperlink>
                         <AnchorPane layoutY="47.0" prefHeight="322.0" prefWidth="200.0" styleClass="card">
                            <children>
                               <ImageView fx:id="latestDoc1" fitHeight="245.0" fitWidth="177.0" layoutX="14.0" pickOnBounds="true" preserveRatio="false" styleClass="image-view" />
@@ -108,7 +103,7 @@
                               <Label fx:id="latestName1" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
                               <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
                               <Label layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="38.0" text="Genre: " />
-                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="63.0" text="Availible:  " />
+                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="63.0" text="Available:" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="231.0" layoutY="47.0" prefHeight="322.0" prefWidth="200.0" styleClass="card">
@@ -120,17 +115,17 @@
                               <Label fx:id="latestName2" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
                               <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
                               <Label layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="38.0" text="Genre: " />
-                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="63.0" text="Availible:  " />
+                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="63.0" text="Available:" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="473.0" layoutY="47.0" prefHeight="322.0" prefWidth="200.0" styleClass="card">
                            <children>
-                              <ImageView fx:id="latestDoc3" fitHeight="245.0" fitWidth="170.0" layoutX="16.0" pickOnBounds="true" preserveRatio="false" styleClass="image-view" />
+                              <ImageView fx:id="latestDoc3" fitHeight="245.0" fitWidth="177.0" layoutX="12.0" pickOnBounds="true" preserveRatio="false" styleClass="image-view" />
                               <Label fx:id="latestAuthor3" layoutX="56.0" layoutY="267.0" prefHeight="17.0" prefWidth="128.0" />
                               <Label fx:id="latestGenre3" layoutX="52.0" layoutY="284.0" prefHeight="17.0" prefWidth="127.0" />
                               <Label fx:id="latestAvailable3" layoutX="63.0" layoutY="302.0" prefHeight="17.0" prefWidth="126.0" />
                               <Label fx:id="latestName3" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
-                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="63.0" text="Availible:  " />
+                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="63.0" text="Available:" />
                               <Label layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="38.0" text="Genre: " />
                               <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
                            </children>
@@ -142,7 +137,7 @@
                               <Label fx:id="latestGenre4" layoutX="54.0" layoutY="284.0" prefHeight="17.0" prefWidth="125.0" />
                               <Label fx:id="latestAvailable4" layoutX="75.0" layoutY="302.0" prefHeight="17.0" prefWidth="114.0" />
                               <Label fx:id="latestName4" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
-                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="63.0" text="Availible:  " />
+                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="63.0" text="Available:" />
                               <Label layoutX="7.0" layoutY="285.0" prefHeight="17.0" prefWidth="38.0" text="Genre: " />
                               <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
                            </children>
@@ -160,44 +155,39 @@
                               <Font size="23.0" />
                            </font>
                         </Label>
-                        <Hyperlink alignment="CENTER" layoutX="832.0" layoutY="8.0" prefHeight="30.0" prefWidth="70.0" text="More">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Hyperlink>
                         <AnchorPane layoutY="47.0" prefHeight="322.0" prefWidth="200.0" styleClass="card">
                            <children>
-                              <ImageView fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="245.0" fitWidth="177.0" layoutX="12.0" pickOnBounds="true" preserveRatio="false" styleClass="image-view"/>
                               <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
                               <Label layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Available:  " />
                               <Label alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="231.0" layoutY="47.0" prefHeight="322.0" prefWidth="200.0" styleClass="card">
                            <children>
-                              <ImageView fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="245.0" fitWidth="177.0" layoutX="12.0" pickOnBounds="true" preserveRatio="false" styleClass="image-view" />
                               <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
                               <Label layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Available:  " />
                               <Label alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="473.0" layoutY="47.0" prefHeight="322.0" prefWidth="200.0" styleClass="card">
                            <children>
-                              <ImageView fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="245.0" fitWidth="177.0" layoutX="12.0" pickOnBounds="true" preserveRatio="false" styleClass="image-view" />
                               <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
                               <Label layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Available:  " />
                               <Label alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="695.0" layoutY="47.0" prefHeight="322.0" prefWidth="200.0" styleClass="card">
                            <children>
-                              <ImageView fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="245.0" fitWidth="177.0" layoutX="12.0" pickOnBounds="true" preserveRatio="false" styleClass="image-view" />
                               <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
                               <Label layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <Label layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Available:  " />
                               <Label alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
                            </children>
                         </AnchorPane>
@@ -214,45 +204,57 @@
                               <Font size="23.0" />
                            </font>
                         </Label>
-                        <Hyperlink alignment="CENTER" layoutX="832.0" layoutY="8.0" prefHeight="30.0" prefWidth="70.0" text="More">
+                        <Hyperlink fx:id="moreButton" alignment="CENTER" layoutX="832.0" layoutY="8.0" prefHeight="30.0" prefWidth="70.0" text="More">
                            <font>
                               <Font size="17.0" />
                            </font>
                         </Hyperlink>
                         <AnchorPane layoutY="47.0" prefHeight="322.0" prefWidth="200.0" styleClass="card">
                            <children>
-                              <ImageView fx:id="oldestDoc1" fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                              <Label fx:id="oldestAuthor1" layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
-                              <Label fx:id="oldestGenre1" layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label fx:id="oldestAvailable1" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <ImageView fx:id="oldestDoc1" fitHeight="245.0" fitWidth="177.0" layoutX="12.0" pickOnBounds="true" preserveRatio="false" styleClass="image-view" />
+                              <Label fx:id="oldestAuthor1" layoutX="67.0" layoutY="267.0" prefHeight="17.0" prefWidth="130.0" />
+                              <Label fx:id="oldestGenre1" layoutX="68.0" layoutY="284.0" prefHeight="17.0" prefWidth="125.0" />
+                              <Label fx:id="oldestAvailable1" layoutX="69.0" layoutY="302.0" prefHeight="17.0" prefWidth="123.0" />
                               <Label fx:id="oldestName1" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
+                              <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
+                              <Label layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="38.0" text="Genre: " />
+                              <Label layoutX="9.0" layoutY="302.0" prefHeight="17.0" prefWidth="58.0" text="Available:" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="231.0" layoutY="47.0" prefHeight="322.0" prefWidth="200.0" styleClass="card">
                            <children>
-                              <ImageView fx:id="oldestDoc2" fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                              <Label fx:id="oldestAuthor2" layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
-                              <Label fx:id="oldestGenre2" layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label fx:id="oldestAvailable2" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <ImageView fx:id="oldestDoc2" fitHeight="245.0" fitWidth="177.0" layoutX="12.0" pickOnBounds="true" preserveRatio="false" styleClass="image-view" />
+                              <Label fx:id="oldestAuthor2" layoutX="64.0" layoutY="267.0" prefHeight="17.0" prefWidth="120.0" />
+                              <Label fx:id="oldestGenre2" layoutX="66.0" layoutY="284.0" prefHeight="17.0" prefWidth="113.0" />
+                              <Label fx:id="oldestAvailable2" layoutX="67.0" layoutY="302.0" prefHeight="17.0" prefWidth="122.0" />
                               <Label fx:id="oldestName2" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
+                              <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
+                              <Label layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="38.0" text="Genre: " />
+                              <Label layoutX="9.0" layoutY="302.0" prefHeight="17.0" prefWidth="58.0" text="Available:" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="473.0" layoutY="47.0" prefHeight="322.0" prefWidth="200.0" styleClass="card">
                            <children>
-                              <ImageView fx:id="oldestDoc3" fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                              <Label fx:id="oldestAuthor3" layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
-                              <Label fx:id="oldestGenre3" layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label fx:id="oldestAvailable3" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <ImageView fx:id="oldestDoc3" fitHeight="245.0" fitWidth="177.0" layoutX="12.0" pickOnBounds="true" preserveRatio="false" styleClass="image-view" />
+                              <Label fx:id="oldestAuthor3" layoutX="67.0" layoutY="267.0" prefHeight="17.0" prefWidth="117.0" />
+                              <Label fx:id="oldestGenre3" layoutX="66.0" layoutY="284.0" prefHeight="17.0" prefWidth="113.0" />
+                              <Label fx:id="oldestAvailable3" layoutX="67.0" layoutY="302.0" prefHeight="17.0" prefWidth="122.0" />
                               <Label fx:id="oldestName3" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
+                              <Label layoutX="6.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
+                              <Label layoutX="6.0" layoutY="284.0" prefHeight="17.0" prefWidth="38.0" text="Genre: " />
+                              <Label layoutX="7.0" layoutY="302.0" prefHeight="17.0" prefWidth="58.0" text="Available:" />
                            </children>
                         </AnchorPane>
                         <AnchorPane layoutX="695.0" layoutY="47.0" prefHeight="322.0" prefWidth="200.0" styleClass="card">
                            <children>
-                              <ImageView fx:id="oldestDoc4" fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                              <Label fx:id="oldestAuthor4" layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="176.0" text="Author:" />
-                              <Label fx:id="oldestGenre4" layoutX="8.0" layoutY="284.0" prefHeight="17.0" prefWidth="171.0" text="Genre: " />
-                              <Label fx:id="oldestAvailable4" layoutX="8.0" layoutY="302.0" prefHeight="17.0" prefWidth="181.0" text="Availible:  " />
+                              <ImageView fx:id="oldestDoc4" fitHeight="245.0" fitWidth="177.0" layoutX="12.0" pickOnBounds="true" preserveRatio="false" styleClass="image-view" />
+                              <Label fx:id="oldestAuthor4" layoutX="68.0" layoutY="267.0" prefHeight="17.0" prefWidth="116.0" />
+                              <Label fx:id="oldestGenre4" layoutX="68.0" layoutY="284.0" prefHeight="17.0" prefWidth="111.0" />
+                              <Label fx:id="oldestAvailable4" layoutX="70.0" layoutY="302.0" prefHeight="17.0" prefWidth="119.0" />
                               <Label fx:id="oldestName4" alignment="CENTER" layoutX="52.0" layoutY="248.0" prefHeight="17.0" prefWidth="97.0" text="NAME" textAlignment="CENTER" />
+                              <Label layoutX="9.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
+                              <Label layoutX="9.0" layoutY="284.0" prefHeight="17.0" prefWidth="38.0" text="Genre: " />
+                              <Label layoutX="10.0" layoutY="302.0" prefHeight="17.0" prefWidth="58.0" text="Available:" />
                            </children>
                         </AnchorPane>
                      </children>

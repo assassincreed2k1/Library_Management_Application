@@ -382,6 +382,7 @@ public class LibraryHomeController {
             if (currentID != "") {
                 Book book = bookManagement.getDocument(currentID);
                 this.latestNames[i].setText(book.getName());
+                this.latestNames[i].setStyle("-fx-font-weight: bold;");
                 this.latestAuthors[i].setText(book.getAuthor());
                 this.latestGenres[i].setText(book.getGroup());
                 if (book.getIsAvailable()) {
@@ -430,6 +431,7 @@ public class LibraryHomeController {
             if (currentID != "") {
                 Book book = bookManagement.getDocument(currentID);
                 this.oldestNames[i].setText(book.getName());
+                this.oldestNames[i].setStyle("-fx-font-weight: bold;");
                 this.oldestAuthors[i].setText(book.getAuthor());
                 this.oldestGenres[i].setText(book.getGroup());
                 if (book.getIsAvailable()) {
