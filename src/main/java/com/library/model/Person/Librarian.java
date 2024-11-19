@@ -93,8 +93,8 @@ public class Librarian extends Person {
     /**
      * add librarian to database.
      */
-    public void addLibrarian() {
-        libManagement.addLibrarian(this);
+    public boolean addLibrarian() {
+        return libManagement.addLibrarian(this);
     }
 
     /**

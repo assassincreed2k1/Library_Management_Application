@@ -1,4 +1,4 @@
-package com.library.model.helpMethod;
+package com.library.model.helpers;
 
 import com.library.model.Person.Admin;
 import com.library.model.Person.Librarian;

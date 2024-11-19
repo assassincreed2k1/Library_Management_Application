@@ -4,7 +4,7 @@ import com.library.model.Person.Admin;
 import com.library.model.Person.Librarian;
 import com.library.model.Person.Member;
 import com.library.model.Person.Person;
-import com.library.model.helpMethod.PersonIdHandle;
+import com.library.model.helpers.PersonIdHandle;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

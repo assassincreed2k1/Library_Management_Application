@@ -98,8 +98,8 @@ public class Member extends Person {
                             super.getDetails(), membershipId, joinDate, expiryDate);  // Change %s to %d for membershipId
     }
 
-    public void addMember() {
-        memManagement.addMember(this);
+    public boolean addMember() {
+        return memManagement.addMember(this);
     }
 
     public void deleteMember() {
