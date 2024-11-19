@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
+import com.library.controller.tools.UpdateDocumentController;
 import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
@@ -85,8 +86,8 @@ public class BookController {
 
         exitButton.setOnAction(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
-                Parent root = loader.load();
+                FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
+                Parent root = editPage.load();
 
                 Stage stage = (Stage) exitButton.getScene().getWindow();
                 stage.setScene(new Scene(root));
@@ -243,6 +244,7 @@ public class BookController {
         availabilityLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         editButton.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
 
+        /* 
         editButton.setOnAction(event -> {
             Stage editStage = new Stage();
             editStage.setTitle("Edit Book Information");
@@ -320,6 +322,24 @@ public class BookController {
             editStage.setScene(editScene);
 
             editStage.show();
+        });
+        */
+        
+        editButton.setOnAction(event -> {
+            try {
+                FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/updateDocument.fxml"));
+                Parent root = editPage.load();
+
+                UpdateDocumentController controller = editPage.getController();
+                controller.setCallerController(this);
+                controller.setSelectedDocument(selectedBook);
+                Stage stage = new Stage();
+                stage.setTitle("Update Document");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel, publishDateLabel, isbnLabel,
