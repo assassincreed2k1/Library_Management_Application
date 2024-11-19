@@ -26,7 +26,7 @@ public class MemberManagement extends LibraryService {
      */
     public MemberManagement() {
         super.createList("CREATE TABLE IF NOT EXISTS Member ("
-                + "membershipId INTEGER PRIMARY KEY, "
+                + "membershipId INTEGER PRIMARY KEY, " // sửa thành char(7)
                 + "name VARCHAR(255), "
                 + "address VARCHAR(255), "
                 + "dateOfBirth DATE, "
@@ -46,7 +46,7 @@ public class MemberManagement extends LibraryService {
             return false;
         }
 
-        int newId = memberIdManagement.getID(); //lay id tu bang member id
+        int newId = memberIdManagement.getID(); //lay id tu bang member id + đổi thành String "M" + Sriong.format("M%06");
 
         String sql_statement = "INSERT INTO Member "
                 + "(membershipId, name, address, dateOfBirth, phoneNumber, gender, joinDate, expiryDate) "
@@ -58,7 +58,7 @@ public class MemberManagement extends LibraryService {
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setInt(1, newId);
+            pstmt.setInt(1, newId); //đổi 
             pstmt.setString(2, member.getName());
             pstmt.setString(3, member.getAddress());
             pstmt.setDate(4, birth);
