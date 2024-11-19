@@ -1,8 +1,13 @@
 package com.library.controller.personController;
 
 import com.library.model.Person.Member;
+import com.library.model.helpers.DateString;
+import com.library.model.helpers.MessageUtil;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -116,31 +121,59 @@ public class UpdateMemberController {
     // Hàm này sẽ được gọi khi nhấn nút Update
     @FXML
     private void onUpdate() {
-        // Cập nhật thông tin của member từ các trường đã chỉnh sửa
-        member.setName(nameTextField.getText().isEmpty() ? member.getName() : nameTextField.getText());
-        member.setAddress(addressTextField.getText().isEmpty() ? member.getAddress() : addressTextField.getText());
-        member.setDateOfBirth(dobTextField.getText().isEmpty() ? member.getDateOfBirth() : dobTextField.getText());
-        member.setGender(genderComboBox.getValue() == null ? member.getGender() : genderComboBox.getValue());
-        member.setJoinDate(joinDateTextField.getText().isEmpty() ? member.getJoinDate() : joinDateTextField.getText());
-        member.setExpiryDate(expiryDateTextField.getText().isEmpty() ? member.getExpiryDate() : expiryDateTextField.getText());
+        String name = nameTextField.getText();
+        String address = addressTextField.getText();
+        String dob = dobTextField.getText();
+        String gender = genderComboBox.getValue();
+        String join = joinDateTextField.getText();
+        String expiry = expiryDateTextField.getText();
+        
+        // Tạo một task mới để thực hiện cập nhật
+        Task<Void> updateTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                //xử lý các ngoại lệ liên quan tới nhập liệu
+                if (!(dob.isEmpty() || dob == null) && !DateString.isValidDate(dob)) {
+                    throw new Exception("Invalid Date of birth format.");
+                } else if (!(join.isEmpty()) || join == null && !DateString.isValidDate(join)) {
+                    throw new Exception("Invalid Join date format.");
+                } else if (!(expiry.isEmpty() || expiry == null) && !DateString.isValidDate(expiry)) {
+                    throw new Exception("Invalid Expiry date format.");
+                }
 
-        member.updateMember();
+                member.setName(name.isEmpty() ? member.getName() : name);
+                member.setAddress(address.isEmpty() ? member.getAddress() : address);
+                member.setDateOfBirth(dob.isEmpty() ? member.getDateOfBirth() : dob);
+                member.setGender(gender == null ? member.getGender() : gender);
+                member.setJoinDate(join.isEmpty() ? member.getJoinDate() : join);
+                member.setExpiryDate(expiry.isEmpty() ? member.getExpiryDate() : expiry);
 
-        // Hiển thị thông báo thành công
-        showNotification("Member updated successfully.", Color.GREEN);
+                member.updateMember(); //cập nhật member trên cơ sở dữ liệu
 
-        // Thực hiện các bước cần thiết sau khi cập nhật thông tin
-        System.out.println("Member updated: " + member.getDetails());
-    }
+                return null; 
+            }
 
-    private void showNotification(String message, Color color) {
-        notification.setText(message);
-        notification.setFill(color);
+            @Override
+            protected void succeeded() {
+                // Hiển thị thông báo thành công trên luồng chính
+                Platform.runLater(() -> {
+                    MessageUtil.showMessage(notification, "Member updated successfully.", "green");
+                    System.out.println("Member updated: " + member.getDetails());
+                });
+            }
 
-        // Sử dụng Timeline để xóa thông báo sau 2 giây
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> notification.setText("")));
-        timeline.setCycleCount(1);
-        timeline.play();
+            @Override
+            protected void failed() {
+                // Hiển thị thông báo lỗi trên luồng chính
+                Platform.runLater(() -> {
+                    MessageUtil.showMessage(notification, "Failed to update member. Error: " + getException().getMessage(), "red");
+                });
+            }
+        };
+
+        MessageUtil.showMessage(notification, "Processing update. Please wait.", "blue");
+        // Chạy Task trên một luồng riêng
+        new Thread(updateTask).start();
     }
 
     // Hàm initialize được gọi khi controller được load
