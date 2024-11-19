@@ -244,6 +244,7 @@ public class BookController {
         availabilityLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         editButton.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
 
+        /* 
         editButton.setOnAction(event -> {
             Stage editStage = new Stage();
             editStage.setTitle("Edit Book Information");
@@ -322,24 +323,24 @@ public class BookController {
 
             editStage.show();
         });
+        */
+        
+        editButton.setOnAction(event -> {
+            try {
+                FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/updateDocument.fxml"));
+                Parent root = editPage.load();
 
-        // editButton.setOnAction(event -> {
-        // try {
-        // FXMLLoader editPage = new
-        // FXMLLoader(getClass().getResource("/fxml/Library/Tools/updateDocument.fxml"));
-        // Parent root = editPage.load();
-
-        // UpdateDocumentController controller = editPage.getController();
-        // controller.setCallerController(this);
-        // controller.setSelectedDocument(selectedBook);
-        // Stage stage = new Stage();
-        // stage.setTitle("Update Document");
-        // stage.setScene(new Scene(root));
-        // stage.show();
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-        // });
+                UpdateDocumentController controller = editPage.getController();
+                controller.setCallerController(this);
+                controller.setSelectedDocument(selectedBook);
+                Stage stage = new Stage();
+                stage.setTitle("Update Document");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel, publishDateLabel, isbnLabel,
                 availabilityLabel, editButton);
