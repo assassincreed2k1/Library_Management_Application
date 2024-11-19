@@ -4,7 +4,7 @@ package com.library.model.Person;
  * This class saves information of the logged-in user
  */
 public class User {
-    private static String id; 
+    private static String id; //consider changing to int 
     private static String type; 
 
     // Set the user ID and type based on login

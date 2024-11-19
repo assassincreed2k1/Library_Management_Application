@@ -167,9 +167,9 @@ public class MemberManagement extends LibraryService {
     public void renewCard(int membershipId, String addDate) {
         String sql_statement = "UPDATE Member "
                              + "SET expiryDate = DATE(CASE "
-                             + "WHEN expiryDate IS NOT NULL AND expiryDate > (strftime('%s', 'now') * 1000) THEN expiryDate "
-                             + "WHEN expiryDate IS NULL THEN (strftime('%s', 'now') * 1000) "
-                             + "ELSE (strftime('%s', 'now') * 1000) END, ?) "
+                             + "WHEN expiryDate IS NOT NULL AND expiryDate > DATE('now') THEN expiryDate "
+                             + "WHEN expiryDate IS NULL THEN DATE('now') "
+                             + "ELSE DATE('now') END, ?) "
                              + "WHERE membershipId = ?";
     
         try (Connection conn = DriverManager.getConnection(url);
