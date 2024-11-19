@@ -324,18 +324,24 @@ public class BookController {
             editStage.show();
         });
         */
-        
+
         editButton.setOnAction(event -> {
             try {
                 FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/updateDocument.fxml"));
                 Parent root = editPage.load();
 
-                UpdateDocumentController controller = editPage.getController();
-                controller.setCallerController(this);
-                controller.setSelectedDocument(selectedBook);
+                UpdateDocumentController upcontroller = editPage.getController();
+                upcontroller.setCallerController(this);
+                upcontroller.setSelectedDocument(selectedBook);
+                
                 Stage stage = new Stage();
                 stage.setTitle("Update Document");
                 stage.setScene(new Scene(root));
+
+                stage.setOnCloseRequest(event2 -> {
+                    bookTable.setItems(getBookList());
+                });
+
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();

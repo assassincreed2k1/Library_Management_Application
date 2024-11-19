@@ -16,7 +16,7 @@
     </children>
 
     <!-- Stylesheet -->
-    <stylesheets>
+    <!-- <stylesheets>
         <URL value="@../../../css/BasicUI.css" />
-    </stylesheets>
+    </stylesheets> -->
 </AnchorPane>
