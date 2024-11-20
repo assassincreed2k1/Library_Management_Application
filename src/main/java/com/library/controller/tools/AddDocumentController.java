@@ -10,15 +10,10 @@ import com.library.service.NewsPaperManagament;
 import com.library.service.ServiceManager;
 import com.library.service.LibraryService;
 
-import java.io.IOException;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -27,7 +22,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import javafx.concurrent.Task;
 import javafx.concurrent.Service;
@@ -45,8 +39,8 @@ public class AddDocumentController {
     @FXML
     private ImageView iconImageView;
 
-    @FXML
-    private Button exitButton;
+    // @FXML
+    // private Button exitButton;
 
     @FXML
     private Button addButton;
@@ -76,21 +70,21 @@ public class AddDocumentController {
             createInputFields(newValue);
         });
 
-        exitButton.setOnAction(event -> onExitButtonClicked());
+        //exitButton.setOnAction(event -> onExitButtonClicked());
     }
 
-    private void onExitButtonClicked() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
-            Parent root = loader.load();
+    // private void onExitButtonClicked() {
+    //     try {
+    //         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
+    //         Parent root = loader.load();
 
-            Stage stage = (Stage) exitButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    //         Stage stage = (Stage) exitButton.getScene().getWindow();
+    //         stage.setScene(new Scene(root));
+    //         stage.show();
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
     private void createInputFields(String documentType) {
         getDocumentInfoPane.getChildren().removeIf(node -> node instanceof AnchorPane

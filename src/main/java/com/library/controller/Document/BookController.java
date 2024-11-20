@@ -330,10 +330,11 @@ public class BookController {
                 FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/updateDocument.fxml"));
                 Parent root = editPage.load();
 
-                UpdateDocumentController upcontroller = editPage.getController();
-                upcontroller.setCallerController(this);
-                upcontroller.setSelectedDocument(selectedBook);
-                
+                UpdateDocumentController upController = editPage.getController();
+                upController.setCallerController(this);
+                upController.setSelectedDocument(selectedBook);
+                upController.setup();
+
                 Stage stage = new Stage();
                 stage.setTitle("Update Document");
                 stage.setScene(new Scene(root));

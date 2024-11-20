@@ -23,44 +23,56 @@ public class UpdateDocumentController {
     private Object selectedDocument;
 
     @FXML
-    private VBox fieldContainer;
+    private VBox mainBox;
 
     @FXML
     public void initialize() {
-        fieldContainer = new VBox(10);
-        fieldContainer.setPadding(new Insets(10));
-        fieldContainer.setAlignment(Pos.CENTER);
-
-        setup();
+        mainBox.setPadding(new Insets(10));
+        //mainBox.setAlignment(Pos.CENTER);
     }
 
     public void setCallerController(Object callerController) {
+        System.out.println("Setting callerController: " + callerController);
         this.callerController = callerController;
     }
 
     public void setSelectedDocument(Object selectedDocument) {
+        System.out.println("Setting selectedDocument: " + selectedDocument);
         this.selectedDocument = selectedDocument;
     }
 
-    private void setup() {
+    public void setup() {
+        if (callerController == null || selectedDocument == null) {
+            System.out.println("CallerController or SelectedDocument is not set yet.");
+            return;
+        }
+
         if (callerController instanceof BookController) {
             bookSetup();
+            System.out.print("Running " + callerController.getClass().getSimpleName() + " setup");
         } else if (callerController instanceof MagazineController) {
             magazineSetup();
+            System.out.print("Running " + callerController.getClass().getSimpleName() + " setup");
         } else if (callerController instanceof NewspaperController) {
             newspaperSetup();
+            System.out.println("Running newspaperSetup setup");
         } else {
             System.out.println("Invalid caller controller");
         }
     }
 
     private void bookSetup() {
+        if (mainBox == null) {
+            System.out.println("mainBox = null");
+            return;
+        }
+
         Book selectedBook = (Book) selectedDocument;
         BookManagement bookManagement = ServiceManager.getBookManagement();
-    
+
         Label bookIdLabel = new Label("ID: " + selectedBook.getID());
         bookIdLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-    
+
         TextField titleField = new TextField(selectedBook.getName());
         TextField authorField = new TextField(selectedBook.getAuthor());
         TextField genreField = new TextField(selectedBook.getGroup());
@@ -68,13 +80,13 @@ public class UpdateDocumentController {
         TextField isbnField = new TextField(selectedBook.getISBN());
         CheckBox availabilityCheckBox = new CheckBox("Available");
         availabilityCheckBox.setSelected(selectedBook.getIsAvailable());
-    
+
         Label statusLabel = new Label();
         statusLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-    
+
         Button updateThisBookButton = new Button("Update This Book");
         Button updateMatchingIsbnButton = new Button("Update All by ISBN");
-    
+
         updateThisBookButton.setOnAction(e -> {
             selectedBook.setName(titleField.getText());
             selectedBook.setAuthor(authorField.getText());
@@ -82,7 +94,7 @@ public class UpdateDocumentController {
             selectedBook.setPublishDate(publishDateField.getText());
             selectedBook.setISBN(isbnField.getText());
             selectedBook.setIsAvailable(availabilityCheckBox.isSelected());
-    
+
             try {
                 bookManagement.updateDocuments(selectedBook);
                 statusLabel.setText("Book updated successfully!");
@@ -92,7 +104,7 @@ public class UpdateDocumentController {
                 statusLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
             }
         });
-    
+
         updateMatchingIsbnButton.setOnAction(e -> {
             selectedBook.setName(titleField.getText());
             selectedBook.setAuthor(authorField.getText());
@@ -100,7 +112,7 @@ public class UpdateDocumentController {
             selectedBook.setPublishDate(publishDateField.getText());
             selectedBook.setISBN(isbnField.getText());
             selectedBook.setIsAvailable(availabilityCheckBox.isSelected());
-    
+
             try {
                 bookManagement.updateDocumentMatchingISBN(selectedBook);
                 statusLabel.setText("All books with matching ISBN updated successfully!");
@@ -110,23 +122,8 @@ public class UpdateDocumentController {
                 statusLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
             }
         });
-    
-        VBox.setMargin(bookIdLabel, new Insets(10, 0, 5, 0));
-        VBox.setMargin(titleField, new Insets(0, 0, 5, 0));
-        VBox.setMargin(authorField, new Insets(0, 0, 5, 0));
-        VBox.setMargin(genreField, new Insets(0, 0, 5, 0));
-        VBox.setMargin(publishDateField, new Insets(0, 0, 5, 0));
-        VBox.setMargin(isbnField, new Insets(0, 0, 5, 0));
-        VBox.setMargin(availabilityCheckBox, new Insets(10, 0, 10, 0));
-        VBox.setMargin(updateThisBookButton, new Insets(20, 0, 5, 0));
-        VBox.setMargin(updateMatchingIsbnButton, new Insets(10, 0, 10, 0));
-        VBox.setMargin(statusLabel, new Insets(10, 0, 0, 0));
-    
-        fieldContainer.setAlignment(Pos.CENTER);
-        fieldContainer.setSpacing(10);
-        fieldContainer.setPadding(new Insets(10));
-    
-        fieldContainer.getChildren().addAll(
+
+        mainBox.getChildren().addAll(
                 bookIdLabel,
                 new Label("Title:"), titleField,
                 new Label("Author:"), authorField,
@@ -138,7 +135,6 @@ public class UpdateDocumentController {
                 updateMatchingIsbnButton,
                 statusLabel);
     }
-    
 
     private void magazineSetup() {
         Magazine selectedMagazine = (Magazine) selectedDocument;
@@ -174,7 +170,7 @@ public class UpdateDocumentController {
             }
         });
 
-        fieldContainer.getChildren().addAll(
+        mainBox.getChildren().addAll(
                 magazineIdLabel,
                 new Label("Title:"), titleField,
                 new Label("Genre:"), genreField,
@@ -185,7 +181,49 @@ public class UpdateDocumentController {
     }
 
     private void newspaperSetup() {
+        Newspaper selectedNewspaper = (Newspaper) selectedDocument;
 
+        Label newspaperIdLabel = new Label("ID: " + selectedNewspaper.getID());
+        newspaperIdLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        TextField nameField = new TextField(selectedNewspaper.getName());
+        TextField groupField = new TextField(selectedNewspaper.getGroup());
+        TextField sourceField = new TextField(selectedNewspaper.getSource());
+        TextField regionField = new TextField(selectedNewspaper.getRegion());
+        CheckBox availabilityCheckBox = new CheckBox("Available");
+        availabilityCheckBox.setSelected(selectedNewspaper.getIsAvailable());
+
+        Label statusLabel = new Label();
+        statusLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+
+        Button updateNewspaperButton = new Button("Update This Newspaper");
+
+        updateNewspaperButton.setOnAction(e -> {
+            selectedNewspaper.setName(nameField.getText());
+            selectedNewspaper.setGroup(groupField.getText());
+            selectedNewspaper.setSource(sourceField.getText());
+            selectedNewspaper.setRegion(regionField.getText());
+            selectedNewspaper.setIsAvailable(availabilityCheckBox.isSelected());
+
+            try {
+                ServiceManager.getNewsPaperManagament().updateDocuments(selectedNewspaper);
+                statusLabel.setText("Newspaper updated successfully!");
+                statusLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14px;");
+            } catch (Exception ex) {
+                statusLabel.setText("Failed to update newspaper.");
+                statusLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
+            }
+        });
+
+        mainBox.getChildren().addAll(
+                newspaperIdLabel,
+                new Label("Name:"), nameField,
+                new Label("Group:"), groupField,
+                new Label("Source:"), sourceField,
+                new Label("Region:"), regionField,
+                availabilityCheckBox,
+                updateNewspaperButton,
+                statusLabel);
     }
 
 }
