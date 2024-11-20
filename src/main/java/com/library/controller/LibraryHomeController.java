@@ -21,8 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
@@ -45,14 +43,10 @@ public class LibraryHomeController {
     private BookManagement bookManagement;
     private DocumentDisplayManager latestDocsManager;
     private DocumentDisplayManager oldestDocsManager;
+
     public static Map<String, Image> imageCache = new HashMap<>();
 
     // Taskbar Components
-    @FXML
-    private MenuButton keyMenuButton;
-    private MenuItem updateMenuItem;
-    private MenuItem logOutMenuItem;
-
     @FXML
     private ImageView iconImageView;
 
@@ -61,6 +55,9 @@ public class LibraryHomeController {
 
     @FXML
     private Label subtitleLabel;
+
+    @FXML
+    private Button logOutButton;
 
     @FXML
     private Label usernameLabel;
@@ -163,11 +160,6 @@ public class LibraryHomeController {
      */
     @FXML
     public void initialize() {
-        logOutMenuItem = new MenuItem();
-        updateMenuItem = new MenuItem();
-        this.keyMenuButton = new MenuButton("Menu");
-        this.keyMenuButton.getItems().addAll(updateMenuItem, logOutMenuItem);
-
         this.latestNames = new Label[] { latestName1, latestName2, latestName3, latestName4 };
         this.latestAuthors = new Label[] { latestAuthor1, latestAuthor2, latestAuthor3, latestAuthor4 };
         this.latestGenres = new Label[] { latestGenre1, latestGenre2, latestGenre3, latestGenre4 };
@@ -185,7 +177,7 @@ public class LibraryHomeController {
         this.libraryService = ServiceManager.getLibraryService();
         this.bookManagement = ServiceManager.getBookManagement();
 
-        // this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
+        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
 
         this.latestDocsManager = new DocumentDisplayManager(bookManagement, libraryService,
                 latestImageViews, latestNames, latestAuthors, latestGenres, latestAvailables);
@@ -193,7 +185,7 @@ public class LibraryHomeController {
         this.oldestDocsManager = new DocumentDisplayManager(bookManagement, libraryService,
                 oldestImageViews, oldestNames, oldestAuthors, oldestGenres, oldestAvailables);
 
-        // this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
+        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
 
         setupComboBoxes();
         setupButtons();
@@ -208,7 +200,7 @@ public class LibraryHomeController {
     }
 
     private void setupButtons() {
-        logOutMenuItem.setOnAction(event -> handleLogOut());
+        logOutButton.setOnAction(event -> handleLogOut());
 
         setComboBoxHandler(booksComboBox);
         setComboBoxHandler(magazinesComboBox);
@@ -328,7 +320,7 @@ public class LibraryHomeController {
     // Switch to another page
     private void switchTo(String pagePath) throws IOException {
         Parent libraryPage = FXMLLoader.load(getClass().getResource(pagePath));
-        Stage stage = (Stage) iconImageView.getScene().getWindow();
+        Stage stage = (Stage) logOutButton.getScene().getWindow();
         Scene scene = new Scene(libraryPage);
         stage.setScene(scene);
         stage.show();

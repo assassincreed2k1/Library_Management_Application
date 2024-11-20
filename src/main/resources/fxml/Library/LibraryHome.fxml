@@ -6,8 +6,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -18,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.LibraryHomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.LibraryHomeController">
    <children>
       <AnchorPane prefHeight="93.0" prefWidth="1311.0" styleClass="taskbar">
          <children>
@@ -36,6 +34,11 @@
                   <Font name="Bodoni MT Bold Italic" size="18.0" />
                </font>
             </Label>
+            <Button fx:id="logOutButton" layoutX="1217.0" layoutY="30.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="80.0" text="Log Out">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
             <TextField fx:id="searchTextField" layoutX="463.0" layoutY="34.0" prefHeight="25.0" prefWidth="335.0" promptText="Search" />
             <Label fx:id="usernameLabel" layoutX="1018.0" layoutY="18.0" prefHeight="52.0" prefWidth="176.0" style="-fx-text-fill: #ebeb15;" text="username" textFill="#ebeb15">
                <font>
@@ -44,12 +47,6 @@
             </Label>
             <ComboBox fx:id="typeComboBox" layoutX="375.0" layoutY="34.0" prefHeight="25.0" prefWidth="88.0" promptText=" Type" />
             <Button fx:id="searchButton" layoutX="798.0" layoutY="34.0" mnemonicParsing="false" text="Search" />
-            <MenuButton fx:id="keyMenuButton" layoutX="1231.0" layoutY="29.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Menu">
-              <items>
-                <MenuItem fx:id="updateMenuItem" mnemonicParsing="false" text="Update" />
-                <MenuItem fx:id="logOutMenuItem" mnemonicParsing="false" text="Log out" />
-              </items>
-            </MenuButton>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="10.0" layoutY="110.0" prefHeight="253.0" prefWidth="252.0" styleClass="mini-box">
