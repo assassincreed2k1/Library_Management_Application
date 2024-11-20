@@ -8,26 +8,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.library.model.Person.Librarian;
-import com.library.model.helpMethod.DateString;
+import com.library.model.helpers.DateString;
 
 public class LibrarianManagement extends LibraryService {
     private PersonIDManagement librarianIdManagement = new PersonIDManagement("LibrarianID");
 
     /**
      * Constructor for LibrarianManagement class. It initializes the Librarian table
-     * in the database
-     * if it doesn't already exist.
+     * in the database if it doesn't already exist.
      */
     public LibrarianManagement() {
         super.createList("CREATE TABLE IF NOT EXISTS Librarian ("
-                + "employeeId INTEGER PRIMARY KEY, "
+                + "employeeId CHAR(7) PRIMARY KEY, "
                 + "name VARCHAR(255), "
                 + "address VARCHAR(255), "
-                + "dateOfBirth DATE,  "
-                + "phoneNumber VARCHAR(11),  "
-                + "gender VARCHAR(6),  "
+                + "dateOfBirth DATE, "
+                + "phoneNumber VARCHAR(11), "
+                + "gender VARCHAR(6), "
                 + "position VARCHAR(255), "
-                + "password VARCHAR(255) "
+                + "password VARCHAR(255)"
                 + ");");
     }
 
@@ -37,8 +36,13 @@ public class LibrarianManagement extends LibraryService {
      * @param lib The Librarian object containing the librarian's details to be
      *            added.
      */
-    public void addLibrarian(Librarian lib) {
-        int newId = librarianIdManagement.getID(); // Lấy ID hiện tại từ PersonIDManagement
+    public boolean addLibrarian(Librarian lib) {
+        if (lib == null) {
+            System.err.println("Librarian object is null.");
+            return false;
+        }
+
+        String newId = String.format("L%06d", librarianIdManagement.getID());
         String sql_statement = "INSERT INTO Librarian "
                 + "(employeeId, name, address, dateOfBirth, phoneNumber, gender, position, password) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -46,8 +50,9 @@ public class LibrarianManagement extends LibraryService {
         Date birth = lib.getDateOfBirth() != null ? DateString.toSqlDate(lib.getDateOfBirth()) : null;
 
         try (Connection conn = DriverManager.getConnection(url);
-                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setInt(1, newId); // Sử dụng ID từ PersonIDManagement
+             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+
+            pstmt.setString(1, newId); // Sử dụng ID với tiền tố 'L'
             pstmt.setString(2, lib.getName());
             pstmt.setString(3, lib.getAddress());
             pstmt.setDate(4, birth);
@@ -58,9 +63,12 @@ public class LibrarianManagement extends LibraryService {
             pstmt.executeUpdate();
 
             librarianIdManagement.increaseID(); // Tăng ID cho lần sử dụng tiếp theo
-            System.out.println("Data inserted successfully with ID: " + newId);
+            System.out.println("Librarian added successfully with ID: " + newId);
+            return true;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("Error adding librarian: " + e.getMessage());
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -70,6 +78,11 @@ public class LibrarianManagement extends LibraryService {
      * @param lib The Librarian object containing the updated details.
      */
     public void updateLibrarian(Librarian lib) {
+        if (lib == null || lib.getEmployeeId() == null) {
+            System.err.println("Invalid librarian object or employee ID.");
+            return;
+        }
+
         String sql_stmt = "UPDATE Librarian SET "
                 + "name = ?, "
                 + "address = ?, "
@@ -83,7 +96,8 @@ public class LibrarianManagement extends LibraryService {
         Date birth = lib.getDateOfBirth() != null ? DateString.toSqlDate(lib.getDateOfBirth()) : null;
 
         try (Connection conn = DriverManager.getConnection(url);
-                PreparedStatement pstmt = conn.prepareStatement(sql_stmt)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql_stmt)) {
+
             pstmt.setString(1, lib.getName());
             pstmt.setString(2, lib.getAddress());
             pstmt.setDate(3, birth);
@@ -91,11 +105,13 @@ public class LibrarianManagement extends LibraryService {
             pstmt.setString(5, lib.getGender());
             pstmt.setString(6, lib.getPosition());
             pstmt.setString(7, lib.getPassword());
-            pstmt.setInt(8, lib.getEmployeeId());
+            pstmt.setString(8, lib.getEmployeeId());
             pstmt.executeUpdate();
-            System.out.println("Librarian updated successfully");
+
+            System.out.println("Librarian updated successfully.");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error updating librarian: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -104,16 +120,24 @@ public class LibrarianManagement extends LibraryService {
      * 
      * @param employeeId The ID of the librarian to be removed.
      */
-    public void removeLibrarian(int employeeId) {
+    public void removeLibrarian(String employeeId) {
+        if (employeeId == null || employeeId.isEmpty()) {
+            System.err.println("Invalid employee ID.");
+            return;
+        }
+
         String sql_statement = "DELETE FROM Librarian WHERE employeeId = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
-                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setInt(1, employeeId);
-            pstmt.executeUpdate();
-            System.out.println("Librarian deleted successfully");
+             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+
+            pstmt.setString(1, employeeId);
+            int rowsDeleted = pstmt.executeUpdate();
+
+            System.out.println(rowsDeleted + " librarian(s) deleted successfully.");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("Error removing librarian: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -125,18 +149,24 @@ public class LibrarianManagement extends LibraryService {
      * @return A Librarian object containing the librarian's information, or null if
      *         not found.
      */
-    public Librarian getLibrarianInfo(int employeeId) {
+    public Librarian getLibrarianInfo(String employeeId) {
+        if (employeeId == null || employeeId.isEmpty()) {
+            System.err.println("Invalid employee ID.");
+            return null;
+        }
+
         String sql_statement = "SELECT * FROM Librarian WHERE employeeId = ?";
         Librarian lib = null;
 
         try (Connection conn = DriverManager.getConnection(url);
-                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setInt(1, employeeId);
+             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+
+            pstmt.setString(1, employeeId);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 lib = new Librarian();
-                lib.setEmployeeId(rs.getInt("employeeId"));
+                lib.setEmployeeId(rs.getString("employeeId"));
                 lib.setName(rs.getString("name"));
                 lib.setAddress(rs.getString("address"));
                 lib.setDateOfBirth(rs.getDate("dateOfBirth") != null ? rs.getDate("dateOfBirth").toString() : null);
@@ -146,7 +176,8 @@ public class LibrarianManagement extends LibraryService {
                 lib.setPassword(rs.getString("password"));
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("Error fetching librarian info: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return lib;
@@ -161,18 +192,25 @@ public class LibrarianManagement extends LibraryService {
      * @return true if a librarian with the given ID and password exists, false
      *         otherwise.
      */
-    public boolean checkLibrarian(int id, String password) {
+    public boolean checkLibrarian(String id, String password) {
+        if (id == null || password == null || id.isEmpty() || password.isEmpty()) {
+            System.err.println("Invalid ID or password.");
+            return false;
+        }
+
         String sql_statement = "SELECT * FROM Librarian WHERE employeeId = ? AND password = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
-                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            pstmt.setInt(1, id);
+             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+
+            pstmt.setString(1, id);
             pstmt.setString(2, password);
 
             ResultSet rs = pstmt.executeQuery();
             return rs.next();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println("Error checking librarian: " + e.getMessage());
+            e.printStackTrace();
         }
         return false;
     }

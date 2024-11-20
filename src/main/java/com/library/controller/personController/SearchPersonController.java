@@ -4,10 +4,13 @@ import com.library.model.Person.Admin;
 import com.library.model.Person.Librarian;
 import com.library.model.Person.Member;
 import com.library.model.Person.Person;
-import com.library.model.helpMethod.PersonIdHandle;
+import com.library.model.helpers.MessageUtil;
+import com.library.model.helpers.PersonIdHandle;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -37,7 +40,9 @@ public class SearchPersonController {
     private Button removeButton;
 
     @FXML
-    private Text notification;
+    private Text messageText;
+
+    private Person person = null;
 
     @FXML
     public void initialize() {
@@ -52,54 +57,94 @@ public class SearchPersonController {
 
     private void onSearch() {
         String personID = idTextField.getText();
-
+    
         if (personID.isEmpty()) {
-            showNotification("Please enter a member ID.", Color.RED);
+            MessageUtil.showMessage(messageText, "Please enter a member ID.", "red");
         } else {
-            Person person = PersonIdHandle.getPerson(personID);
-            if (person == null) {
-                informationTextField.setText("Not Found!");
-                updateButton.setDisable(true);
-                removeButton.setDisable(true);
-            } else {
-                informationTextField.setText(person.getDetails());
-                updateButton.setDisable(false);
-                removeButton.setDisable(false);
-            }
+            // Tạo một task mới để thực hiện tìm kiếm
+            Task<Void> searchTask = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    person = PersonIdHandle.getPerson(personID);
+                    return null;
+                }
+    
+                @Override
+                protected void succeeded() {
+                    // Cập nhật giao diện người dùng
+                    if (person == null) {
+                        informationTextField.setText("Not Found!");
+                    } else {
+                        informationTextField.setText(person.getDetails());
+                    }
+                    MessageUtil.showMessage(messageText, "Searched successfully", "green");
+                    updateButton.setDisable(false);
+                    removeButton.setDisable(false);
+                }
+    
+                @Override
+                protected void failed() {
+                    super.failed();
+                    MessageUtil.showMessage(messageText, "An error occurred during search. Error: " + getException().getMessage(), "red");
+                    updateButton.setDisable(true);
+                    removeButton.setDisable(true);
+                }
+            };
+    
+            MessageUtil.showMessage(messageText, "Searching. Please wait.... ", "blue");
+            // Chạy Task trên một luồng riêng
+            Thread thread = new Thread(searchTask);
+            thread.setDaemon(true);
+            thread.start();
         }
     }
-
+    
     private void onRemove() {
-        String personID = idTextField.getText();
-
-        if (personID.isEmpty()) {
-            showNotification("Please enter ID.", Color.RED);
-        } else {
-            Person person = PersonIdHandle.getPerson(personID);
-            if (person == null) {
-                informationTextField.setText("Not Found!");
-            } else if (person instanceof Admin) {
-                showNotification("You don't have access to delete admin.", Color.RED);
-            } else if (person instanceof Librarian) {
-                showNotification("You don't have access to delete librarian", Color.RED);
-            } else {
-                if (person instanceof Member) {
+        if (person == null) {
+            MessageUtil.showMessage(messageText, "Can't find this member.", "red");
+            return;
+        } 
+    
+        Task<Void> removeTask = new Task<Void>() {   
+            @Override 
+            protected Void call() throws Exception {
+                // Kiểm tra loại người dùng và xử lý xóa
+                if (person instanceof Admin) {
+                    throw new Exception("You don't have access to remove Admin.");
+                } else if (person instanceof Librarian) {
+                    throw new Exception("You don't have access to remove Librarian.");
+                } else if (person instanceof Member) {
                     Member member = (Member) person;
                     member.deleteMember();
+                } else {
+                    throw new Exception("Unknown person type.");
                 }
-                showNotification("Person removed successfully.", Color.GREEN);
+                return null; // Phải trả về null để không có lỗi biên dịch
+            }  
+    
+            @Override
+            protected void succeeded() {
+                MessageUtil.showMessage(messageText, "Person removed successfully.", "green");
                 informationTextField.clear();
                 updateButton.setDisable(true);
                 removeButton.setDisable(true);
             }
-        }
+    
+            @Override
+            protected void failed() {
+                MessageUtil.showMessage(messageText, "Fail to remove this member. Error: " + getException().getMessage(), "red");
+            }
+        };
+    
+        MessageUtil.showMessage(messageText, "Finding member information. Please wait: ", "blue");
+        // Chạy Task trên một luồng riêng
+        Thread thread = new Thread(removeTask);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     private void onUpdate() {
-        String personID = idTextField.getText();
-        Person person = PersonIdHandle.getPerson(personID);
-    
-        if (!personID.isEmpty() && person != null) {
+        if (person != null) {
             if (person instanceof Member) {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DemoPerson/UpdateMember.fxml"));
@@ -116,21 +161,10 @@ public class SearchPersonController {
                     e.printStackTrace();
                 }
             } else{
-                showNotification("You don't have access to update", Color.RED);
+                MessageUtil.showMessage(messageText, "You don't have access to update", "red");
             }
         } else {
-            showNotification("Invalid ID for update.", Color.RED);
+            MessageUtil.showMessage(messageText, "Invalid ID for update.", "red");
         }
-    }
-    
-
-    private void showNotification(String message, Color color) {
-        notification.setText(message);
-        notification.setFill(color);
-
-        // Sử dụng Timeline để xóa thông báo sau 2 giây
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> notification.setText("")));
-        timeline.setCycleCount(1);
-        timeline.play();
     }
 }
