@@ -277,9 +277,7 @@ public class BookController {
                 Parent root = delPage.load();
 
                 RemoveDocumentController rmController = delPage.getController();
-                rmController.setCallerController(this);
-                rmController.setSelectedDocument(selectedBook);
-                rmController.setup();
+                rmController.setup(selectedBook);
 
                 Stage stage = new Stage();
                 stage.setTitle("Remove Document");
