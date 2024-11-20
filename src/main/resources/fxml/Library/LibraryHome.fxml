@@ -6,12 +6,14 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.LibraryHomeController">
@@ -81,7 +83,6 @@
             <Button layoutX="5.0" layoutY="225.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Update User" />
          </children>
       </AnchorPane>
-      <ImageView fitHeight="253.0" fitWidth="434.0" layoutX="394.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
       <TabPane layoutX="292.0" layoutY="394.0" prefHeight="462.0" prefWidth="1018.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="booksTab" text="BOOKS">
@@ -523,10 +524,25 @@
                   </TabPane>
                </content>
             </Tab>
-        </tabs>
+         </tabs>
       </TabPane>
-      <ImageView fitHeight="253.0" fitWidth="434.0" layoutX="394.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fitHeight="253.0" fitWidth="472.0" layoutX="717.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
+      <ScrollPane layoutX="291.0" layoutY="110.0" prefHeight="253.0" prefWidth="1004.0" styleClass="mini-box">
+         <content>
+            <HBox prefHeight="239.0" prefWidth="1004.0" />
+            <children>
+                     <ImageView fx:id="myImageView1" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView2" fitHeight="176.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView3" fitHeight="174.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView4" fitHeight="175.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView5" fitHeight="174.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView6" fitHeight="175.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView7" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView8" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView9" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView10" fitHeight="174.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true" />
+            </children>
+         </content>
+      </ScrollPane>
    </children>
    <stylesheets>
       <URL value="@../../css/BasicUI.css" />
