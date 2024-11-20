@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.LibraryHomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.LibraryHomeController">
    <children>
       <AnchorPane prefHeight="93.0" prefWidth="1311.0" styleClass="taskbar">
          <children>
@@ -40,7 +40,7 @@
                </font>
             </Button>
             <TextField fx:id="searchTextField" layoutX="463.0" layoutY="34.0" prefHeight="25.0" prefWidth="335.0" promptText="Search" />
-            <Label layoutX="1120.0" layoutY="18.0" prefHeight="52.0" prefWidth="97.0" style="-fx-text-fill: #ebeb15;" text="Username" textFill="#ebeb15">
+            <Label fx:id="usernameLabel" layoutX="1018.0" layoutY="18.0" prefHeight="52.0" prefWidth="176.0" style="-fx-text-fill: #ebeb15;" text="username" textFill="#ebeb15">
                <font>
                   <Font size="20.0" />
                </font>

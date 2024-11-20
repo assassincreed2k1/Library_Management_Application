@@ -59,4 +59,13 @@ public class User {
 
         return "User not found";
     }
+    public static String getLastName() {
+        Person person = PersonIdHandle.getPerson(id);
+        String fullName = person.getName();
+
+        String[] nameParts = fullName.split("\\s+"); //tách tên cho vào mảng, có dấu cách thì tách
+
+        return nameParts[nameParts.length - 1]; //lấy phần tử cuối
+    }
+    
 }
