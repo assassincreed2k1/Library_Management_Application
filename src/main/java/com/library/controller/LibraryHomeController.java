@@ -342,25 +342,28 @@ public class LibraryHomeController {
     }
 
     private void showLatestDocs() {
-        Book latestBook = bookManagement.getDocument(libraryService.getCurrentID());
-        if (latestBook == null) {
-            System.out.println("Latest Book is Empty");
-            return;
-        }
-        String[] bookIDs = new String[4];
-        bookIDs[0] = latestBook.getID();
+        int numOfLatestBook = 4;
+        int currentIdDoc = Integer.parseInt(libraryService.getCurrentID());
 
-        for (int i = 1; i < 4; i++) {
-            int id = Integer.parseInt(latestBook.getID()) - i;
-            bookIDs[i] = id > 0 ? String.format("%09d", id) : "";
+        Book[] bookList = new Book[numOfLatestBook];
+
+        while (currentIdDoc > 0) {
+            String id = String.format("%09d", currentIdDoc);
+            if (bookManagement.getDocument(id) != null) {
+                bookList[4 - numOfLatestBook] = bookManagement.getDocument(id);
+                numOfLatestBook--;
+                if (numOfLatestBook <= 0) {
+                    break;
+                }
+            }
+            currentIdDoc--;
         }
 
         ImageView[] imageViews = { latestDoc1, latestDoc2, latestDoc3, latestDoc4 };
 
-        for (int i = 0; i < bookIDs.length; i++) {
-            String currentID = bookIDs[i];
-            if (currentID != "") {
-                Book book = bookManagement.getDocument(currentID);
+        for (int i = 0; i < bookList.length; i++) {
+            Book book = bookList[i];
+            if (book != null) {
                 this.latestNames[i].setText(book.getName());
                 this.latestNames[i].setStyle("-fx-font-weight: bold;");
                 this.latestAuthors[i].setText(book.getAuthor());
