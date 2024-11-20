@@ -6,12 +6,14 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.LibraryHomeController">
@@ -60,8 +62,7 @@
             <ComboBox fx:id="booksComboBox" layoutX="9.0" layoutY="45.0" prefHeight="38.0" prefWidth="235.0" promptText="Books" styleClass="ChoiceBox" />
             <ComboBox fx:id="magazinesComboBox" layoutX="9.0" layoutY="83.0" prefHeight="38.0" prefWidth="235.0" promptText="Magazines" styleClass="ChoiceBox" />
             <ComboBox fx:id="newspapersComboBox" layoutX="9.0" layoutY="121.0" prefHeight="38.0" prefWidth="235.0" promptText="Newspapers" styleClass="ChoiceBox" />
-            <ComboBox fx:id="videosComboBox" layoutX="9.0" layoutY="159.0" prefHeight="38.0" prefWidth="235.0" promptText="Videos" styleClass="ChoiceBox" />
-            <ComboBox fx:id="albumsComboBox" layoutX="9.0" layoutY="197.0" prefHeight="38.0" prefWidth="235.0" promptText="Albums" styleClass="ChoiceBox" />
+            <Button fx:id="showAllButton" layoutX="9.0" layoutY="159.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="235.0" styleClass="ChoiceBox" text="Show All" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="toolsPane" layoutX="10.0" layoutY="393.0" prefHeight="284.0" prefWidth="252.0" styleClass="mini-box">
@@ -77,12 +78,11 @@
             <Button fx:id="addDocumentButton" layoutX="5.0" layoutY="47.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Add Documents" />
             <Button fx:id="removeDocumentButton" layoutX="5.0" layoutY="85.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Remove Documents" />
             <Button fx:id="updateDocumentButton" layoutX="5.0" layoutY="119.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Update Documents" />
-            <Button fx:id="checkAvailabilityButton" layoutX="5.0" layoutY="153.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Check Book Available" />
-            <Button fx:id="documentAddressButton" layoutX="5.0" layoutY="187.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Document's Address" />
-            <Button fx:id="showAllButton" layoutX="5.0" layoutY="225.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Show All" />
+            <Button layoutX="5.0" layoutY="153.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Add User" />
+            <Button layoutX="5.0" layoutY="187.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Remove User" />
+            <Button layoutX="5.0" layoutY="225.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Update User" />
          </children>
       </AnchorPane>
-      <ImageView fitHeight="253.0" fitWidth="434.0" layoutX="394.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
       <TabPane layoutX="292.0" layoutY="394.0" prefHeight="462.0" prefWidth="1018.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab fx:id="booksTab" text="BOOKS">
@@ -524,10 +524,25 @@
                   </TabPane>
                </content>
             </Tab>
-        </tabs>
+         </tabs>
       </TabPane>
-      <ImageView fitHeight="253.0" fitWidth="434.0" layoutX="394.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fitHeight="253.0" fitWidth="472.0" layoutX="717.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true" />
+      <ScrollPane layoutX="291.0" layoutY="110.0" prefHeight="253.0" prefWidth="1004.0" styleClass="mini-box">
+         <content>
+            <HBox prefHeight="239.0" prefWidth="1004.0" />
+            <children>
+                     <ImageView fx:id="myImageView1" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView2" fitHeight="176.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView3" fitHeight="174.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView4" fitHeight="175.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView5" fitHeight="174.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView6" fitHeight="175.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView7" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView8" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView9" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView10" fitHeight="174.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true" />
+            </children>
+         </content>
+      </ScrollPane>
    </children>
    <stylesheets>
       <URL value="@../../css/BasicUI.css" />
