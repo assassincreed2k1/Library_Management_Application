@@ -162,7 +162,7 @@ public class DocumentBorrowController {
     
         String memberID = memberIDTextField.getText().trim();
         String documentID = documentIDTextField.getText().trim();
-        int editedBy = 1; // sau này vào ứng dụng được rồi thì sửa sau
+        String editedBy = "default"; // sau này vào ứng dụng được rồi thì sửa sau
     
         Task<String> task = new Task<String>() {
             @Override
@@ -173,11 +173,11 @@ public class DocumentBorrowController {
                     String dueDate = localDate.plusDays(30).toString(); //30 is default, can change !
     
                     // Thực hiện mượn document
-                    return documentTransaction.borrowDocument(documentID, Integer.parseInt(memberID.substring(1)), 
+                    return documentTransaction.borrowDocument(documentID, memberID, 
                                                                 editedBy, borrowDate, dueDate);
                 } else if ("Return".equals(transactionType)) {
                     // Thực hiện trả document
-                    return documentTransaction.returnDocument(documentID, Integer.parseInt(memberID.substring(1)));
+                    return documentTransaction.returnDocument(documentID, memberID);
                 }
                 return "Invalid transaction type.";
             }

@@ -22,9 +22,9 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         ServiceManager.initialize();
 
-        // Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/docBorrow.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
-        // Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/ExpiryCard.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login/SignIn.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/DocBorrow.fxml"));
         Scene scene = new Scene(root);
         
         setDragEvent(root, stage);
