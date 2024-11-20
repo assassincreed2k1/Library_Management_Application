@@ -14,13 +14,19 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.fxml.FXML;
+//import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+//import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Dialog;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import javafx.concurrent.Task;
@@ -57,6 +63,8 @@ public class AddDocumentController {
     @FXML
     private ImageView docImagePreview;
 
+    private final String defDocImgPrevUrl = "/img/Add.png";
+
     @FXML
     public void initialize() {
         this.bookManagement = ServiceManager.getBookManagement();
@@ -69,22 +77,51 @@ public class AddDocumentController {
         documentTypeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             createInputFields(newValue);
         });
-
-        //exitButton.setOnAction(event -> onExitButtonClicked());
     }
 
-    // private void onExitButtonClicked() {
-    //     try {
-    //         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
-    //         Parent root = loader.load();
+    private void setDocImagePreview() {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Set Image Preview");
+        dialog.setHeaderText("Enter the image URL below:");
 
-    //         Stage stage = (Stage) exitButton.getScene().getWindow();
-    //         stage.setScene(new Scene(root));
-    //         stage.show();
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
+        TextField urlField = new TextField();
+        urlField.setPromptText("Enter image URL");
+        Label errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 12px;");
+        errorLabel.setWrapText(true);
+
+        VBox content = new VBox(10, urlField, errorLabel);
+        dialog.getDialogPane().setContent(content);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == ButtonType.OK) {
+                return urlField.getText().trim();
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(url -> {
+            if (url.isEmpty()) {
+                errorLabel.setText("URL cannot be empty.");
+                docImagePreview.setImage(null);
+            } else {
+                try {
+                    Image image = new Image(url, false);
+                    if (!image.isError()) {
+                        docImagePreview.setImage(image);
+                        errorLabel.setText("");
+                    } else {
+                        errorLabel.setText("Invalid image URL. Please enter a valid URL.");
+                        docImagePreview.setImage(null);
+                    }
+                } catch (Exception e) {
+                    errorLabel.setText("An error occurred while loading the image. Please check the URL.");
+                    docImagePreview.setImage(null);
+                }
+            }
+        });
+    }
 
     private void createInputFields(String documentType) {
         getDocumentInfoPane.getChildren().removeIf(node -> node instanceof AnchorPane
@@ -199,6 +236,10 @@ public class AddDocumentController {
                         if (!prevImgUrl.isEmpty()) {
                             docImagePreview.setImage(new Image(prevImgUrl));
                             docImagePreview.setPreserveRatio(true);
+                            docImagePreview.setOnMouseClicked(null);
+                        } else {
+                            docImagePreview.setImage(null);
+                            docImagePreview.setOnMouseClicked(event2 -> setDocImagePreview());
                         }
                     }
 
@@ -213,6 +254,8 @@ public class AddDocumentController {
             bookInfoService.setOnFailed(event -> {
                 errorLabel.setText("Error loading data from API");
                 errorLabel.setTextFill(javafx.scene.paint.Color.RED);
+                docImagePreview.setImage(null);
+                docImagePreview.setOnMouseClicked(event2 -> setDocImagePreview());
             });
 
             isbnField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -255,9 +298,14 @@ public class AddDocumentController {
                         newBook.setPublishDate(publishDate);
                         newBook.setISBN(isbn);
                         newBook.setIsAvailable(true);
-                        newBook.setImagePreview(docImagePreview.getImage().getUrl());
+                        if (docImagePreview.getImage() != null) {
+                            newBook.setImagePreview(docImagePreview.getImage().getUrl());
+                            docImagePreview.setImage(null);
+                        } else {
+                            newBook.setImagePreview("");
+                        }
 
-                        bookManagement.addDocuments(newBook); 
+                        bookManagement.addDocuments(newBook);
                     }
 
                     errorLabel.setTextFill(javafx.scene.paint.Color.GREEN);
