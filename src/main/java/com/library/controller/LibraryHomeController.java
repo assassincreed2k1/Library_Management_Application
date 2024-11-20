@@ -73,6 +73,12 @@ public class LibraryHomeController {
     private ComboBox<String> newspapersComboBox;
 
     @FXML
+    private ComboBox<String> videosComboBox;
+
+    @FXML
+    private ComboBox<String> albumsComboBox;
+
+    @FXML
     private AnchorPane toolsPane;
 
     @FXML
@@ -89,6 +95,12 @@ public class LibraryHomeController {
 
     @FXML
     private Button updateDocumentButton;
+
+    @FXML
+    private Button checkAvailabilityButton;
+
+    @FXML
+    private Button documentAddressButton;
 
     @FXML
     private Button showAllButton;
@@ -181,6 +193,8 @@ public class LibraryHomeController {
         booksComboBox.getItems().addAll("All Books");
         magazinesComboBox.getItems().addAll("All Magazines");
         newspapersComboBox.getItems().addAll("All Newspapers");
+        videosComboBox.getItems().addAll("All Videos");
+        albumsComboBox.getItems().addAll("All Albums");
     }
 
     private void setupButtons() {
@@ -194,6 +208,8 @@ public class LibraryHomeController {
         addDocumentButton.setOnAction(event -> handleAddDocument());
         removeDocumentButton.setOnAction(event -> handleRemoveDocument());
         updateDocumentButton.setOnAction(event -> handleUpdateDocument());
+        checkAvailabilityButton.setOnAction(event -> handleCheckAvailability());
+        documentAddressButton.setOnAction(event -> handleDocumentAddress());
         showAllButton.setOnAction(event -> handleShowAll());
         for (int i = 0; i < 2; i++) {
             moreListBooks[i].setOnAction(event -> {
@@ -290,6 +306,16 @@ public class LibraryHomeController {
         System.out.println("Updating a document...");
     }
 
+    // Handle Check Availability action
+    private void handleCheckAvailability() {
+        System.out.println("Checking document availability...");
+    }
+
+    // Handle Document Address action
+    private void handleDocumentAddress() {
+        System.out.println("Getting document's address...");
+    }
+
     // Handle Show All action -- Need Fix
     private void handleShowAll() {
         System.out.println("Showing all documents...");
@@ -342,28 +368,25 @@ public class LibraryHomeController {
     }
 
     private void showLatestDocs() {
-        int numOfLatestBook = 4;
-        int currentIdDoc = Integer.parseInt(libraryService.getCurrentID());
+        Book latestBook = bookManagement.getDocument(libraryService.getCurrentID());
+        if (latestBook == null) {
+            System.out.println("Latest Book is Empty");
+            return;
+        }
+        String[] bookIDs = new String[4];
+        bookIDs[0] = latestBook.getID();
 
-        Book[] bookList = new Book[numOfLatestBook];
-
-        while (currentIdDoc > 0) {
-            String id = String.format("%09d", currentIdDoc);
-            if (bookManagement.getDocument(id) != null) {
-                bookList[4 - numOfLatestBook] = bookManagement.getDocument(id);
-                numOfLatestBook--;
-                if (numOfLatestBook <= 0) {
-                    break;
-                }
-            }
-            currentIdDoc--;
+        for (int i = 1; i < 4; i++) {
+            int id = Integer.parseInt(latestBook.getID()) - i;
+            bookIDs[i] = id > 0 ? String.format("%09d", id) : "";
         }
 
         ImageView[] imageViews = { latestDoc1, latestDoc2, latestDoc3, latestDoc4 };
 
-        for (int i = 0; i < bookList.length; i++) {
-            Book book = bookList[i];
-            if (book != null) {
+        for (int i = 0; i < bookIDs.length; i++) {
+            String currentID = bookIDs[i];
+            if (currentID != "") {
+                Book book = bookManagement.getDocument(currentID);
                 this.latestNames[i].setText(book.getName());
                 this.latestNames[i].setStyle("-fx-font-weight: bold;");
                 this.latestAuthors[i].setText(book.getAuthor());
@@ -374,12 +397,14 @@ public class LibraryHomeController {
                     this.latestAvailables[i].setText("No");
                 }
 
-                String linkImg = book.getImagePreview();
-                if (linkImg != "") {
+                String isbn = libraryService.getBookISBN(currentID);
+                if (isbn != null) {
+                    String imageUrl = APIService.getCoverBookURL(isbn);
+
                     // Use cache first, then load async if necessary
-                    Image cachedImage = getCachedImage(linkImg);
+                    Image cachedImage = getCachedImage(imageUrl);
                     if (cachedImage.getProgress() < 1.0) {
-                        loadImageAsync(linkImg, imageViews[i]);
+                        loadImageAsync(imageUrl, imageViews[i]);
                     } else {
                         imageViews[i].setImage(cachedImage);
                     }
@@ -391,28 +416,26 @@ public class LibraryHomeController {
     }
 
     private void showOldestDocs() {
-        int numOfOldestBook = 4;
-        int currentIdDoc = 1;
-        int latestID = Integer.parseInt(libraryService.getCurrentID());
-        Book[] bookList = new Book[numOfOldestBook];
+        Book latestBook = bookManagement.getDocument(libraryService.getCurrentID());
+        if (latestBook == null) {
+            System.out.println("BookList is Empty");
+            return;
+        }
+        int latestBookID = Integer.parseInt(latestBook.getID());
+        String[] bookIDs = new String[4];
+        bookIDs[0] = "000000001";
 
-        while (currentIdDoc > 0 && currentIdDoc < latestID) {
-            String id = String.format("%09d", currentIdDoc);
-            if (bookManagement.getDocument(id)!=null) {
-                bookList[4-numOfOldestBook] = bookManagement.getDocument(id);
-                numOfOldestBook--;
-                if (numOfOldestBook <= 0) {
-                    break;
-                }
-            }
-            currentIdDoc++;
+        for (int i = 1; i < 4; i++) {
+            int id = 1 + i;
+            bookIDs[i] = id <= latestBookID ? String.format("%09d", id) : "";
         }
 
         ImageView[] imageViews = { oldestDoc1, oldestDoc2, oldestDoc3, oldestDoc4 };
 
-        for (int i = 0; i < bookList.length; i++) {
-            Book book = bookList[i];
-            if (book != null) {
+        for (int i = 0; i < bookIDs.length; i++) {
+            String currentID = bookIDs[i];
+            if (currentID != "") {
+                Book book = bookManagement.getDocument(currentID);
                 this.oldestNames[i].setText(book.getName());
                 this.oldestNames[i].setStyle("-fx-font-weight: bold;");
                 this.oldestAuthors[i].setText(book.getAuthor());
@@ -423,12 +446,14 @@ public class LibraryHomeController {
                     this.oldestAvailables[i].setText("No");
                 }
 
-                String linkImg = book.getImagePreview();
-                if (linkImg != "") {
+                String isbn = libraryService.getBookISBN(currentID);
+                if (isbn != null) {
+                    String imageUrl = APIService.getCoverBookURL(isbn);
+
                     // Use cache first, then load async if necessary
-                    Image cachedImage = getCachedImage(linkImg);
+                    Image cachedImage = getCachedImage(imageUrl);
                     if (cachedImage.getProgress() < 1.0) {
-                        loadImageAsync(linkImg, imageViews[i]);
+                        loadImageAsync(imageUrl, imageViews[i]);
                     } else {
                         imageViews[i].setImage(cachedImage);
                     }

@@ -31,6 +31,10 @@ public class User {
         return "A".equalsIgnoreCase(type);
     }
 
+    public static boolean isMember() {
+        return "M".equalsIgnoreCase(type);
+    }
+
     /**
      * clear all information when log out.
      */

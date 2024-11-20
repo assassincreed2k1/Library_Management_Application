@@ -5,17 +5,12 @@ import com.library.model.Person.User;
 import com.library.model.helpers.DateString;
 import com.library.model.helpers.MessageUtil;
 import com.library.model.helpers.PhoneNumber;
-import com.library.service.LibrarianManagement;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 public class AddLibrarianController {
 
@@ -36,17 +31,15 @@ public class AddLibrarianController {
     @FXML
     private Button addButton;
 
-    private LibrarianManagement librarianManagement;
-
-    public AddLibrarianController() {
-        librarianManagement = new LibrarianManagement();
-    }
-
     @FXML
     private void initialize() {
         genderComboBox.getItems().addAll("Male", "Female");
-
-        addButton.setOnAction((event -> addToDataBase()));
+        
+        if (User.isAdmin()) {
+            addButton.setOnAction((event -> addToDataBase()));
+        } else {
+            MessageUtil.showMessage(messageText, "You don't have access to add Librarian.", "red");
+        }
     }
 
     private void addToDataBase() {

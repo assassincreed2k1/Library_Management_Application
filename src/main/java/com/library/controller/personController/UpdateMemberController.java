@@ -3,9 +3,6 @@ package com.library.controller.personController;
 import com.library.model.Person.Member;
 import com.library.model.helpers.DateString;
 import com.library.model.helpers.MessageUtil;
-
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -17,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class UpdateMemberController {
 

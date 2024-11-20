@@ -16,11 +16,11 @@ import javafx.stage.Stage;
 import com.library.model.Person.Person;
 import com.library.model.Person.User;
 import com.library.model.helpers.PersonIdHandle;
-import com.library.service.BackgroundService;
-import com.library.service.ServiceManager;
+// import com.library.service.BackgroundService;
+// import com.library.service.ServiceManager;
 
 public class SignInController {
-    private BackgroundService executor = ServiceManager.getBackgroundService();
+    //private BackgroundService executor = ServiceManager.getBackgroundService();
 
     @FXML
     private TextField usernameField;

@@ -1,22 +1,18 @@
 package com.library.controller.personController;
 
 import com.library.model.Person.Member;
+import com.library.model.Person.User;
 import com.library.model.helpers.DateString;
 import com.library.model.helpers.MessageUtil;
 import com.library.model.helpers.PhoneNumber;
 
-// import com.library.service.MemberManagement;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+
 import javafx.concurrent.Task;
-// import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 public class AddMemberController {
 
@@ -46,7 +42,11 @@ public class AddMemberController {
         // Cài đặt giá trị mặc định cho ComboBox Gender
         genderComboBox.getItems().addAll("Male", "Female");
 
-        addButton.setOnAction((event -> addToDataBase()));
+        if (!User.isMember()) {
+            addButton.setOnAction((event -> addToDataBase()));
+        } else {
+            MessageUtil.showMessage(messageText, "You don't have access to add member.", "red");
+        }
     }
 
     private void addToDataBase() {
