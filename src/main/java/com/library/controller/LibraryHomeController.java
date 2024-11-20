@@ -6,6 +6,7 @@ import java.util.Map;
 
 // import com.library.service.APIService;
 import com.library.service.BookManagement;
+import com.library.model.Person.User;
 import com.library.model.doc.Book;
 import com.library.service.LibraryService;
 import com.library.service.ServiceManager;
@@ -171,6 +172,8 @@ public class LibraryHomeController {
         this.libraryService = ServiceManager.getLibraryService();
         this.bookManagement = ServiceManager.getBookManagement();
 
+        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
+
         setupComboBoxes();
         setupButtons();
         setUpTabPane();
@@ -212,6 +215,7 @@ public class LibraryHomeController {
         System.out.println("Logging out...");
         try {
             showAlert("Log Out", "Are you sure you want to log out?");
+            User.clearUser(); //xoá thông tin User trước khi ra khỏi
             switchTo("/fxml/Login/SignIn.fxml");
         } catch (IOException e) {
             e.printStackTrace();
