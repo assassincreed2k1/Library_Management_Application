@@ -1,5 +1,7 @@
 package com.library.model.Person;
 
+import com.library.model.helpers.PersonIdHandle;
+
 /**
  * This class saves information of the logged-in user
  */
@@ -29,11 +31,32 @@ public class User {
         return "A".equalsIgnoreCase(type);
     }
 
+    public static boolean isMember() {
+        return "M".equalsIgnoreCase(type);
+    }
+
     /**
      * clear all information when log out.
      */
     public static void clearUser() {
         id = null;
         type = null;
+    }
+
+    public static String getDetails() {
+        Person person = PersonIdHandle.getPerson(id);
+
+        if (type.equals("L")) {
+            Librarian librarian = (Librarian) person;
+            return librarian.getDetails();
+        } else if (type.equals( "M")) {
+            Member member = (Member) person;
+            return member.getDetails();
+        } else if (type.equals("A")) {
+            Admin admin = (Admin) person;
+            return admin.getDetails();
+        }
+
+        return "User not found";
     }
 }

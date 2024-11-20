@@ -42,14 +42,8 @@ public class PersonIdHandle {
             }
             return librarian;
         } else if (type.equals("A")) {
-            Admin admin = new Admin();
-            try {
-                //admin = admin.getInforFromDatabase(id); -> error
-            } catch (Exception e) {
-                System.out.println("Error fetching admin information: " + e.getMessage());
-                return null;
-            }
-            return admin;
+            return new Admin(); //Admin là giá trị cố định nên khongo xử lý lỗi
+            
         }
 
         System.out.println("Invalid ID type.");

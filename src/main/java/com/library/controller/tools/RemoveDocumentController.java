@@ -9,7 +9,7 @@ import com.library.service.ServiceManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.geometry.Pos;
+// import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 
 public class RemoveDocumentController {

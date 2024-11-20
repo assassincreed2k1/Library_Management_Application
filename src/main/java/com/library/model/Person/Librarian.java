@@ -5,7 +5,6 @@ import com.library.service.LibrarianManagement;
 public class Librarian extends Person {
     private String employeeId; 
     private String position;  
-    private String password; 
 
     private LibrarianManagement libManagement = new LibrarianManagement();
 
@@ -15,7 +14,6 @@ public class Librarian extends Person {
     public Librarian() {
         this.employeeId = ""; 
         this.position = "";   
-        this.password = "";   
     }
 
     /**
@@ -28,14 +26,12 @@ public class Librarian extends Person {
      * @param phoneNumber The phone number of the librarian
      * @param employeeId  The unique ID for the librarian
      * @param position    The position of the librarian
-     * @param password    The password for the librarian's account
      */
     public Librarian(String name, String address, String gender, String dateOfBirth, 
-                    String phoneNumber, String employeeId, String position, String password) {
+                    String phoneNumber, String employeeId, String position) {
         super(name, address, gender, dateOfBirth, phoneNumber);
         this.employeeId = employeeId; 
         this.position = position;       
-        this.password = password;       
     }
 
     /**
@@ -52,7 +48,6 @@ public class Librarian extends Person {
                     String phoneNumber, String position) {
         super(name, address, gender, dateOfBirth, phoneNumber);
         this.position = position;    
-        this.password = "00001111"; //default password, u can change if u like       
     }
 
     public String getEmployeeId() {
@@ -69,14 +64,6 @@ public class Librarian extends Person {
 
     public void setPosition(String position) {
         this.position = position; 
-    }
-
-    public String getPassword() {
-        return password; 
-    }
-
-    public void setPassword(String password) {
-        this.password = password; 
     }
 
     /**
