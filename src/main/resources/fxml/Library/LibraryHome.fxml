@@ -44,10 +44,10 @@
             </Label>
             <ComboBox fx:id="typeComboBox" layoutX="375.0" layoutY="34.0" prefHeight="25.0" prefWidth="88.0" promptText=" Type" />
             <Button fx:id="searchButton" layoutX="798.0" layoutY="34.0" mnemonicParsing="false" text="Search" />
-            <MenuButton layoutX="1231.0" layoutY="29.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Menu">
+            <MenuButton fx:id="keyMenuButton" layoutX="1231.0" layoutY="29.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="74.0" text="Menu">
               <items>
-                <MenuItem mnemonicParsing="false" text="Update" />
-                <MenuItem mnemonicParsing="false" text="Log out" />
+                <MenuItem fx:id="updateMenuItem" mnemonicParsing="false" text="Update" />
+                <MenuItem fx:id="logOutMenuItem" mnemonicParsing="false" text="Log out" />
               </items>
             </MenuButton>
          </children>

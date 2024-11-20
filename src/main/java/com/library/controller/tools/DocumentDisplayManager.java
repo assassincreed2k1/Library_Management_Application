@@ -3,11 +3,11 @@ package com.library.controller.tools;
 import com.library.service.BookManagement;
 import com.library.model.doc.Book;
 import com.library.service.LibraryService;
-
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import com.library.controller.LibraryHomeController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,6 @@ public class DocumentDisplayManager {
     private Label[] authors;
     private Label[] genres;
     private Label[] availables;
-    private final Map<String, Image> imageCache = new HashMap<>();
 
     /**
      * Constructor for DocumentDisplayManager.
@@ -117,11 +116,11 @@ public class DocumentDisplayManager {
      * @return the Image object, either from the cache or newly loaded.
      */
     private Image getCachedImage(String imageUrl) {
-        if (imageCache.containsKey(imageUrl)) {
-            return imageCache.get(imageUrl);
+        if (LibraryHomeController.imageCache.containsKey(imageUrl)) {
+            return LibraryHomeController.imageCache.get(imageUrl);
         }
         Image image = new Image(imageUrl, true);
-        imageCache.put(imageUrl, image);
+        LibraryHomeController.imageCache.put(imageUrl, image);
         return image;
     }
 
@@ -141,7 +140,7 @@ public class DocumentDisplayManager {
 
         loadImageTask.setOnSucceeded(event -> {
             Image image = loadImageTask.getValue();
-            imageCache.put(imageUrl, image); // Cache the loaded image
+            LibraryHomeController.imageCache.put(imageUrl, image); // Cache the loaded image
             imageView.setImage(image);
         });
 
