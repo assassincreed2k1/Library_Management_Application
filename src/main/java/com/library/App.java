@@ -48,7 +48,6 @@ public class App extends Application {
             stage.setY(event.getScreenY() - yOffset);
         });
     }
-
     public static void main(String[] args) {
         launch(args);
     }
