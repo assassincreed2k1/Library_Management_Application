@@ -76,7 +76,7 @@ public class AddLibrarianController {
                 }
 
                 Librarian librarian = new Librarian(name, address, gender, dob, phone, position);
-                if (librarian.addLibrarian()) {
+                if (!librarian.addLibrarian()) {
                     throw new Exception("Error when adding librarian to database");
                 }
                 return null;

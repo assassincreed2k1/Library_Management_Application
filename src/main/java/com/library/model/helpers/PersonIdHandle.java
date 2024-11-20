@@ -6,58 +6,53 @@ import com.library.model.Person.Member;
 import com.library.model.Person.Person;
 
 public class PersonIdHandle {
+    /**
+     * Retrieves a person object (Member, Librarian, or Admin) based on their ID.
+     * 
+     * @param id The ID of the person, starting with "M" (Member), "L" (Librarian), or "A" (Admin),
+     *           followed by a 6-digit numeric value (e.g., "M000001").
+     * @return A {@link Person} object corresponding to the ID, or null if the ID is invalid or not found.
+     */
     public static Person getPerson(String id) {
-        // Kiểm tra độ dài của id để tránh lỗi ngoài phạm vi
-        if (id == null || id.length() < 10) {
+        // Validate ID format (should be 7 characters: 1 letter + 6 digits)
+        if (id == null || !id.matches("^[MLA]\\d{6}$")) {
             System.out.println("Invalid ID format.");
             return null;
         }
-        
-        String type = String.valueOf(id.charAt(0));
-        int ordinal;
-        
-        try {
-            ordinal = Integer.parseInt(id.substring(1));
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid ID number format.");
-            return null;
-        }
-        
+
+        String type = id.substring(0, 1); // Extract the first character to identify the type
+
+        // Determine the type and retrieve the corresponding person from the database
         if (type.equals("M")) {
-            Member mem = new Member();
+            Member member = new Member();
             try {
-                mem = mem.getInforFromDatabase(ordinal);
-                mem.getDetails(); //test
-                System.out.println(ordinal); //test
+                member = member.getInforFromDatabase(id);
             } catch (Exception e) {
                 System.out.println("Error fetching member information: " + e.getMessage());
                 return null;
             }
-            return mem;
+            return member;
         } else if (type.equals("L")) {
-            Librarian lib = new Librarian();
+            Librarian librarian = new Librarian();
             try {
-                lib = lib.getInforFromDatabase(ordinal);
-                lib.getDetails(); //test
+                librarian = librarian.getInforFromDatabase(id);
             } catch (Exception e) {
                 System.out.println("Error fetching librarian information: " + e.getMessage());
                 return null;
             }
-            return lib;
+            return librarian;
         } else if (type.equals("A")) {
             Admin admin = new Admin();
             try {
-                //chu xet den
-                admin = (Admin)admin.getInforFromDatabase(ordinal);
+                //admin = admin.getInforFromDatabase(id); -> error
             } catch (Exception e) {
-                System.out.println("Error fetching librarian information: " + e.getMessage());
+                System.out.println("Error fetching admin information: " + e.getMessage());
                 return null;
             }
             return admin;
         }
-        
+
         System.out.println("Invalid ID type.");
         return null;
     }
-    
 }

@@ -16,7 +16,7 @@ public class MessageUtil {
         messageText.setText(message);
         messageText.setStyle("-fx-fill: " + color + ";");
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> messageText.setText("")));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> messageText.setText("")));
         timeline.play();
     }
 }

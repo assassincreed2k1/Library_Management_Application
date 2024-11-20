@@ -27,8 +27,8 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <TextField fx:id="MemberIDTextField" layoutX="122.0" layoutY="98.0" />
-      <TextField fx:id="DocumentIDTextField" layoutX="123.0" layoutY="180.0" />
+      <TextField fx:id="memberIDTextField" layoutX="122.0" layoutY="98.0" />
+      <TextField fx:id="documentIDTextField" layoutX="123.0" layoutY="180.0" />
       <Text layoutX="15.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Document ID:" />
       <TextArea fx:id="inforMemTextArea" layoutX="41.0" layoutY="220.0" prefHeight="129.0" prefWidth="224.0" promptText="Information of Member" />
       <TextArea fx:id="inforDocTextArea" layoutX="298.0" layoutY="221.0" prefHeight="129.0" prefWidth="224.0" promptText="Information of Document" />

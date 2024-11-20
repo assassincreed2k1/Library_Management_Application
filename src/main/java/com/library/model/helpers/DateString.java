@@ -2,6 +2,8 @@ package com.library.model.helpers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class DateString {
@@ -10,7 +12,7 @@ public class DateString {
      * @param dateString String date
      * @return java.util.Date date
      */
-    private static Date convertStringToDate(String dateString) {
+    public static Date convertStringToDate(String dateString) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date date = formatter.parse(dateString);
@@ -34,18 +36,28 @@ public class DateString {
         return null;
     }
     
-    public static boolean isValidDate (String date) {
+    public static boolean isValidDate(String date) {
         if (date == null || date.isEmpty()) {
             return false;
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        sdf.setLenient(false); //khong cho phep cac gia tri khong hop le
+
+        // Sử dụng LocalDate để làm chuẩn
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         try {
-            sdf.parse(date); // Thu parse chuoi thanh ngay thang, neu bi exception thi false
+            // Parse chuỗi ngày sang LocalDate
+            LocalDate parsedDate = LocalDate.parse(date, formatter);
+
+            // So sánh với ngày hiện tại và giới hạn 1900-01-01
+            LocalDate minDate = LocalDate.of(1900, 1, 1);
+            LocalDate today = LocalDate.now();
+
+            if (parsedDate.isBefore(minDate) || parsedDate.isAfter(today)) {
+                return false;
+            }
             return true;
-        } catch (ParseException e) {
-            return false;
+        } catch (Exception e) {
+            return false; 
         }
-    }
+    } 
 }
