@@ -23,9 +23,9 @@ public class App extends Application {
         ServiceManager.initialize();
 
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login/SignIn.fxml"));
-        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/DocBorrow.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Books.fxml"));
+        // Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Books.fxml"));
         Scene scene = new Scene(root); 
         
         setDragEvent(root, stage);
@@ -49,6 +49,7 @@ public class App extends Application {
             stage.setY(event.getScreenY() - yOffset);
         });
     }
+
     public static void main(String[] args) {
         launch(args);
     }
