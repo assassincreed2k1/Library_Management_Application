@@ -42,7 +42,7 @@ public class PersonIdHandle {
             }
             return librarian;
         } else if (type.equals("A")) {
-            Admin admin = new Admin();
+            Admin admin = Admin.INSTANCE; //only one admin
             try {
                 //admin = admin.getInforFromDatabase(id); -> error
             } catch (Exception e) {
