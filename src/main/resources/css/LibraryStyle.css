@@ -1,21 +1,5 @@
-.background-main {
-    -fx-background-color: #E0E0E0;
-}
-
-.taskbar {
-    -fx-background-color: linear-gradient(to top, #194c19, #034803);
-}
-
-.mini-taskbar {
-    -fx-background-color: #336633;
-}
-
-.text-taskbar {
-    -fx-text-fill: #ffffff;
-}
-
 .mini-box {
-    -fx-background-color: #F0F0F0;
+    -fx-background-color: #f0f0f0;
     -fx-background-radius: 5px;
 }
 
@@ -43,4 +27,9 @@
 .card {
     -fx-background-color: #ffffff;
     -fx-border-color: lightgray transparent;
+}
+
+.image-view {
+-fx-fit-to-width: 177px;
+-fx-fit-to-height: 245px;   
 }

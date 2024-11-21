@@ -1,5 +1,7 @@
 package com.library.model.doc;
 
+import com.library.service.BookManagement;
+
 /**
  * Class Book
  * 
@@ -13,12 +15,13 @@ public class Book extends Document {
     private String isbn;
     private String author;
     private String publishDate; 
+    private BookManagement bookManagement = new BookManagement();
 
     /**
      * Default Book:
      * 
      * @param Name       "No name"
-     * @param Group      "Default"
+     * @param Group      "Default" (genre)
      * @param ID         "Invalid"
      * @param isbn       ""
      * @param author     "None"
@@ -78,5 +81,21 @@ public class Book extends Document {
 
     public void setPublishDate(String publishDate) {
         this.publishDate = publishDate;
+    }
+
+    @Override
+    public String getDetails() {
+        return String.format("%s\nISBN: %s\nAuthor: %s\nPublish date: %s\n",
+                                    super.getDetails(), this.isbn, this.author, this.publishDate);
+    }
+
+    public Book getInforFromDatabase(String id) {
+        System.out.println(id);
+        Book bookFromDB = bookManagement.getDocument(id);
+
+        if (bookFromDB == null) {
+            System.out.println("Can't find this book in database");
+        } 
+        return bookFromDB;
     }
 }

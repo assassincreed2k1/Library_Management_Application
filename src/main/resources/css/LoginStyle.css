@@ -1,0 +1,22 @@
+.background-main {
+    -fx-background-color: linear-gradient(to bottom right, #ffffff, #e0e0e0); 
+}
+
+.box-mini {
+    -fx-alignment: center;
+    -fx-background-color: linear-gradient(to bottom right, #0b240b, #034803);
+}
+
+.box-mini .label {
+    -fx-text-fill: rgb(211, 211, 211);
+}
+
+.box-mini .text-field {
+    -fx-font-size: 16px;
+}
+
+.box-mini Button {
+    -fx-background-radius: 15px;
+    -fx-text-fill: rgb(22, 21, 21);
+    -fx-font-size: 18px;
+}

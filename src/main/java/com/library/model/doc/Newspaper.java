@@ -1,5 +1,7 @@
 package com.library.model.doc;
 
+import com.library.service.NewsPaperManagament;
+
 /**
  * The {@code Newspaper} class represents a type of {@link Document}.
  * 
@@ -11,6 +13,8 @@ package com.library.model.doc;
 public class Newspaper extends Document {
     private String source;
     private String region;
+
+    private NewsPaperManagament newsManagament = new NewsPaperManagament();
 
     /**
      * Default constructor for the {@code Newspaper} class.
@@ -69,5 +73,20 @@ public class Newspaper extends Document {
      */
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    @Override
+    public String getDetails() {
+        return String.format("%s\nSource: %s\nRegion: 5s\n", 
+                            super.getDetails(), this.source, this.region);
+    }
+
+    public Newspaper getInforFromDatabase(String id) {
+        Newspaper newsFromDB = newsManagament.getDocument(id);
+
+        if (newsFromDB == null) {
+            System.out.println("Can't find this book in database");
+        } 
+        return newsFromDB;
     }
 }

@@ -1,41 +1,75 @@
 package com.library.model.Person;
 
+import com.library.service.MemberManagement;
+
 public class Member extends Person {
-    private String membershipId;
+    private int membershipId;  // Changed to int
     private String joinDate;
     private String expiryDate;
 
+    private MemberManagement memManagement = new MemberManagement();
+
+    /**
+     * Default constructor for Member.
+     */
     public Member() {
         super();
-        membershipId = "";
+        membershipId = 0;
         joinDate = "";
         expiryDate = "";
     }
 
     /**
-     * constructor for member who has full information.
+     * Constructor for member who has full information.
      * @param name is String
      * @param address is String
      * @param dateOfBirth is String
      * @param phoneNumber is String
      * @param gender is String 
-     * @param membershipId is String
+     * @param membershipId is int
      * @param joinDate is String
      * @param expiryDate is String
      */
     public Member(String name, String address, String dateOfBirth, String phoneNumber, 
-                String gender, String membershipId, String joinDate, String expiryDate) {
+                String gender, int membershipId, String joinDate, String expiryDate) {
         super(name, address, gender, dateOfBirth, phoneNumber);
         this.membershipId = membershipId;
         this.joinDate = joinDate;
         this.expiryDate = expiryDate;
     }
 
-    public String getMembershipId() {
+    /**
+     * Constructor for Member like Person.
+     * @param name String name
+     * @param address String address
+     * @param dateOfBirth String dateOfBirth
+     * @param phoneNumber String phoneNumber
+     * @param gender String gender
+     */
+    public Member(String name, String address, String dateOfBirth, String phoneNumber,
+                String gender) {
+        super(name, address, gender, dateOfBirth, phoneNumber);
+    }
+
+    /**
+     * Copy constructor of Member class.
+     * @param other Member other
+     */
+    public Member(Member other) {
+        super(other.getName(), other.getAddress(), other.getGender(), 
+              other.getDateOfBirth(), other.getPhoneNumber());
+        
+        this.membershipId = other.membershipId;
+        this.joinDate = other.joinDate;
+        this.expiryDate = other.expiryDate;
+    }
+    
+
+    public int getMembershipId() {
         return membershipId;
     }
 
-    public void setMembershipId(String membershipId) {
+    public void setMembershipId(int membershipId) {
         this.membershipId = membershipId;
     }
 
@@ -60,7 +94,36 @@ public class Member extends Person {
      */
     @Override
     public String getDetails() {
-        return String.format("%s\nMembership ID: %s\nJoin Date: %s\nExpiry Date: %s\n",
-                            super.getDetails(), membershipId, joinDate, expiryDate);
+        return String.format("%sMembership ID: M%09d\nJoin Date: %s\nExpiry Date: %s\n",
+                            super.getDetails(), membershipId, joinDate, expiryDate);  // Change %s to %d for membershipId
+    }
+
+    public void addMember() {
+        memManagement.addMember(this);
+    }
+
+    public void deleteMember() {
+        memManagement.removeMember(this.membershipId);  // Pass membershipId as int
+    }
+
+    public void updateMember() {
+        memManagement.updateMember(this);
+    }
+
+    public Member getInforFromDatabase(int id) {
+        Member memberFromDB = memManagement.getMemberInfo(id);
+        
+        // If no member is found, return null or display an error message
+        if (memberFromDB == null) {
+            System.out.println("No member found with ID: " + id);
+            return null;
+        }
+        return memberFromDB;  // Return the retrieved Member object
+    }  
+
+    public void renewMembership(String addDate) {
+        System.out.println(addDate);
+        memManagement.renewCard(this.membershipId, addDate);
+        
     }
 }

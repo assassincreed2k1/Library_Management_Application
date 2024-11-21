@@ -2,34 +2,36 @@ package com.library.model.doc;
 
 /**
  * The {@code Document} class represents a document with an ID, name, group,
- * and availability status.
+ * availability status, and an image preview.
  */
-class Document {
+public abstract class Document {
     private String id;
     private String name;
     private String group;
     private boolean isAvailable;
+    private String imagePreview;
 
     /**
-     * Default constructor for the {@code Document} class. Initializes the
-     * document with a generated ID, default name, default group, and sets
-     * it as not available.
+     * Default constructor for the {@code Document} class.
+     * Initializes the document with an empty ID, default name ("No name"),
+     * default group ("Default"), sets availability to false, and initializes
+     * an empty image preview.
      */
     public Document() {
         this.id = "";
         this.name = "No name";
         this.group = "Default";
-        this.isAvailable = false;
+        this.isAvailable = true;
+        this.imagePreview = "";
     }
 
     /**
-     * Constructs a {@code Document} with the specified name, group, and
-     * sets the availability status to true.
-     * 
-     * @param name     The name of the document.
-     * @param group    The group or category the document belongs to.
-     * @param quantity The number of copies of the document (not used in this
-     *                 context).
+     * Constructs a {@code Document} with the specified name and group,
+     * and sets the availability status to true. The ID is initialized as empty,
+     * and the image preview is not set.
+     *
+     * @param name  The name of the document.
+     * @param group The group or category the document belongs to.
      */
     public Document(String name, String group) {
         this.id = "";
@@ -37,8 +39,15 @@ class Document {
         this.group = group;
         this.isAvailable = true;
     }
-    
-    // for find or get doc
+
+    /**
+     * Constructs a {@code Document} with the specified ID, name, and group,
+     * and sets the availability status to true. The image preview is not set.
+     *
+     * @param id    The unique identifier of the document.
+     * @param name  The name of the document.
+     * @param group The group or category the document belongs to.
+     */
     public Document(String id, String name, String group) {
         this.id = id;
         this.name = name;
@@ -46,12 +55,18 @@ class Document {
         this.isAvailable = true;
     }
 
+    /**
+     * Sets the ID of this document.
+     *
+     * @param id The ID to set for this document.
+     */
     public void setID(String id) {
         this.id = id;
     }
+
     /**
      * Gets the ID of this document.
-     * 
+     *
      * @return The ID of the document.
      */
     public String getID() {
@@ -60,7 +75,7 @@ class Document {
 
     /**
      * Gets the name of this document.
-     * 
+     *
      * @return The name of the document.
      */
     public String getName() {
@@ -69,8 +84,8 @@ class Document {
 
     /**
      * Sets the name of this document.
-     * 
-     * @param name The new name to set.
+     *
+     * @param name The new name to set for this document.
      */
     public void setName(String name) {
         this.name = name;
@@ -78,8 +93,8 @@ class Document {
 
     /**
      * Gets the group of this document.
-     * 
-     * @return The group of the document.
+     *
+     * @return The group or category of the document.
      */
     public String getGroup() {
         return group;
@@ -87,28 +102,61 @@ class Document {
 
     /**
      * Sets the group of this document.
-     * 
-     * @param group The new group to set.
+     *
+     * @param group The new group to set for this document.
      */
     public void setGroup(String group) {
         this.group = group;
     }
 
     /**
+     * Checks if the document is available.
+     *
+     * @return {@code true} if the document is available, {@code false} otherwise.
+     */
+    public boolean getIsAvailable() {
+        return isAvailable;
+    }
+
+    /**
      * Sets the availability status of this document.
-     * 
-     * @param isAvailable The new availability status to set.
+     *
+     * @param isAvailable {@code true} if the document is available, {@code false} otherwise.
      */
     public void setIsAvailable(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
 
     /**
-     * Gets the availability status of this document.
-     * 
-     * @return {@code true} if the document is available, {@code false} otherwise.
+     * Gets the image preview path or URL for this document.
+     *
+     * @return The image preview path or URL.
      */
-    public boolean getIsAvailable() {
-        return isAvailable;
+    public String getImagePreview() {
+        return imagePreview;
     }
+
+    /**
+     * Sets the image preview path or URL for this document.
+     *
+     * @param imagePreview The new image preview path or URL to set.
+     */
+    public void setImagePreview(String imagePreview) {
+        this.imagePreview = imagePreview;
+    }
+
+    /**
+     * Returns a string representation of the document's details, including its ID, name, group,
+     * availability status, and image preview.
+     *
+     * @return A string containing the document's details.
+     */
+    public String getDetails() {
+        // Trả về thông tin chi tiết về tài liệu dưới dạng chuỗi
+        return String.format("ID: %s\nName: %s\nGroup: %s\nAvailable: %s",
+                            id, name, group, isAvailable ? "Yes" : "No");
+    }
+
+    public abstract Document getInforFromDatabase(String id);
+
 }
