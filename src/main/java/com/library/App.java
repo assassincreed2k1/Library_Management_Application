@@ -26,9 +26,8 @@ public class App extends Application {
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/DocBorrow.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Books.fxml"));
-        // Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/AddMember.fxml"));
-        Scene scene = new Scene(root);
-        stage.setResizable(false);
+        Scene scene = new Scene(root); 
+        
         setDragEvent(root, stage);
 
         stage.initStyle(StageStyle.DECORATED);

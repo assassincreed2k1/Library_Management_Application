@@ -1,7 +1,10 @@
 package com.library.service;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Service class that manages background threads using an ExecutorService.
@@ -69,6 +72,28 @@ public class BackgroundService {
     public void shutdown() {
         if (!executor.isShutdown()) {
             executor.shutdown();
+        }
+    }
+
+    /**
+     * Starts a new background thread to execute the given task with a timeout.
+     * 
+     * @param task The task to be executed in a separate thread.
+     * @param timeout The maximum time to wait for the task to complete.
+     * @param unit The time unit of the timeout argument.
+     * @throws InterruptedException if the thread is interrupted while waiting.
+     */
+    public void startNewThreadWithTimeout(Runnable task, long timeout, TimeUnit unit) throws InterruptedException {
+        Future<?> future = executor.submit(task);
+        try {
+            future.get(timeout, unit);
+        } catch (ExecutionException e) {
+            // Handle exception thrown by the task
+            e.printStackTrace();
+        } catch (java.util.concurrent.TimeoutException e) {
+            // Handle timeout
+            future.cancel(true); // Cancel the task
+            System.out.println("Task timed out and was cancelled.");
         }
     }
 }
