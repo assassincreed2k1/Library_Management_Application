@@ -10,7 +10,6 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.personController.RenewMembershipController">
    <children>
-      <Text layoutX="289.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text layoutX="186.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Membership card renewal">
          <font>
             <Font size="20.0" />
@@ -18,7 +17,8 @@
       </Text>
       <TextField fx:id="membershipIdTextField" layoutX="73.0" layoutY="121.0" prefHeight="25.0" prefWidth="433.0" promptText="Membership ID" />
       <ComboBox fx:id="renewComboBox" layoutX="73.0" layoutY="175.0" prefHeight="25.0" prefWidth="433.0" promptText="Membership renewal" />
-      <Button fx:id="renewButton" layoutX="275.0" layoutY="346.0" mnemonicParsing="false" text="Renew" />
+      <Button fx:id="renewButton" layoutX="263.0" layoutY="361.0" mnemonicParsing="false" text="Renew" />
       <TextArea fx:id="inforMemberTextArea" layoutX="73.0" layoutY="226.0" prefHeight="98.0" prefWidth="455.0" promptText="Information of member" />
+      <Text fx:id="messageText" layoutX="278.0" layoutY="349.0" strokeType="OUTSIDE" strokeWidth="0.0" />
    </children>
 </AnchorPane>

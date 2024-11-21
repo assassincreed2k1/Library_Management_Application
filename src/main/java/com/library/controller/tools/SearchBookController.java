@@ -25,11 +25,42 @@ import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
 import com.library.service.ServiceManager;
 
+/**
+ * Controller for managing the search book interface.
+ * It handles interactions between the user and the application's book
+ * management system.
+ */
 public class SearchBookController {
+    /**
+     * The {@code TextFieldUpdate} class is used to encapsulate the
+     * {@link TextField}
+     * objects for updating book details such as title, author, genre, publish date,
+     * and ISBN.
+     */
+    public class TextFieldUpdate {
+        public TextField titleField;
+        public TextField authorField;
+        public TextField genreField;
+        public TextField publishDateField;
+        public TextField isbnField;
+
+        public TextFieldUpdate(){};
+
+        public TextFieldUpdate(TextField titleField, TextField authorField, TextField genreField,
+                TextField publishDateField, TextField isbnField) {
+            this.titleField = titleField;
+            this.authorField = authorField;
+            this.genreField = genreField;
+            this.publishDateField = publishDateField;
+            this.isbnField = isbnField;
+        }
+        
+    }
 
     private BookManagement bookManagement;
     private BackgroundService executor;
     public static String keyword;
+    private TextFieldUpdate textFieldUpdate;
 
     @FXML
     private AnchorPane taskBar;
@@ -58,11 +89,16 @@ public class SearchBookController {
     @FXML
     private AnchorPane moreInfoPane;
 
-    // This method is called by the FXMLLoader when initialization is complete
+    /**
+     * Initializes the controller after the FXML has been loaded.
+     * Sets up table columns, event handlers, and loads the book list
+     * asynchronously.
+     */
     @FXML
     private void initialize() {
         this.bookManagement = ServiceManager.getBookManagement();
         this.executor = ServiceManager.getBackgroundService();
+        this.textFieldUpdate = new TextFieldUpdate();
 
         // Set up the columns to use properties from the Book class
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -79,11 +115,18 @@ public class SearchBookController {
         loadBookListAsync();
     }
 
+    /**
+     * Sets the keyword to be used for searching books.
+     * 
+     * @param keyword the keyword to search for
+     */
     public static void setKeyWord(String keyword) {
         SearchBookController.keyword = keyword;
-
     }
 
+    /**
+     * Loads the book list asynchronously using a background thread.
+     */
     private void loadBookListAsync() {
         Task<ObservableList<Book>> task = new Task<>() {
             @Override
@@ -103,12 +146,15 @@ public class SearchBookController {
         });
 
         executor.startNewThread(task);
-
     }
 
     private Task<Void> showBookTask;
     private Task<Void> showPrevTask;
 
+    /**
+     * Displays the details of the selected book in the UI.
+     * Cancels any ongoing task before starting a new one.
+     */
     private void showSelectedBookDetails() {
         if (showBookTask != null && showBookTask.isRunning()) {
             System.out.println("Task Cancelled");
@@ -173,6 +219,11 @@ public class SearchBookController {
         executor.startNewThread(showBookTask);
     }
 
+    /**
+     * Displays a preview image for the currently selected book.
+     * If the book does not have a preview image, a default image is displayed
+     * instead.
+     */
     private void showPreview() {
         showPrevTask = new Task<>() {
             @Override
@@ -207,7 +258,12 @@ public class SearchBookController {
         executor.startNewThread(showPrevTask);
     }
 
-     private void updateBookDetails(Book selectedBook) {
+    /**
+     * Updates the details section with information about the selected book.
+     *
+     * @param selectedBook the book whose details are to be displayed
+     */
+    private void updateBookDetails(Book selectedBook) {
         moreInfoPane.getChildren().clear();
 
         Label idLabel = new Label("ID: " + selectedBook.getID());
@@ -228,84 +284,7 @@ public class SearchBookController {
         availabilityLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         editButton.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
 
-        editButton.setOnAction(event -> {
-            Stage editStage = new Stage();
-            editStage.setTitle("Edit Book Information");
-
-            VBox editPane = new VBox(10);
-            editPane.setPadding(new Insets(10));
-
-            Label bookIdLabel = new Label("ID: " + selectedBook.getID());
-            bookIdLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-
-            TextField titleField = new TextField(selectedBook.getName());
-            TextField authorField = new TextField(selectedBook.getAuthor());
-            TextField genreField = new TextField(selectedBook.getGroup());
-            TextField publishDateField = new TextField(selectedBook.getPublishDate());
-            TextField isbnField = new TextField(selectedBook.getISBN());
-            CheckBox availabilityCheckBox = new CheckBox("Available");
-            availabilityCheckBox.setSelected(selectedBook.getIsAvailable());
-
-            Label statusLabel = new Label();
-            statusLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-
-            Button updateThisBookButton = new Button("Update This Book");
-            updateThisBookButton.setOnAction(e -> {
-                selectedBook.setName(titleField.getText());
-                selectedBook.setAuthor(authorField.getText());
-                selectedBook.setGroup(genreField.getText());
-                selectedBook.setPublishDate(publishDateField.getText());
-                selectedBook.setISBN(isbnField.getText());
-                selectedBook.setIsAvailable(availabilityCheckBox.isSelected());
-
-                try {
-                    this.bookManagement.updateDocuments(selectedBook);
-                    bookTable.setItems(getBookList());
-                    statusLabel.setText("Book updated successfully!");
-                    statusLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14px;");
-                } catch (Exception ex) {
-                    statusLabel.setText("Failed to update book.");
-                    statusLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
-                }
-            });
-
-            Button updateMatchingIsbnButton = new Button("Update All by ISBN");
-            updateMatchingIsbnButton.setOnAction(e -> {
-                selectedBook.setName(titleField.getText());
-                selectedBook.setAuthor(authorField.getText());
-                selectedBook.setGroup(genreField.getText());
-                selectedBook.setPublishDate(publishDateField.getText());
-                selectedBook.setISBN(isbnField.getText());
-                selectedBook.setIsAvailable(availabilityCheckBox.isSelected());
-
-                try {
-                    this.bookManagement.updateDocumentMatchingISBN(selectedBook);
-                    bookTable.setItems(getBookList());
-                    statusLabel.setText("All books with matching ISBN updated successfully!");
-                    statusLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14px;");
-                } catch (Exception ex) {
-                    statusLabel.setText("Failed to update books by ISBN.");
-                    statusLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
-                }
-            });
-
-            editPane.getChildren().addAll(
-                    bookIdLabel,
-                    new Label("Title:"), titleField,
-                    new Label("Author:"), authorField,
-                    new Label("Genre:"), genreField,
-                    new Label("Publish Date:"), publishDateField,
-                    new Label("ISBN:"), isbnField,
-                    availabilityCheckBox,
-                    updateThisBookButton,
-                    updateMatchingIsbnButton,
-                    statusLabel);
-
-            Scene editScene = new Scene(editPane, 400, 500);
-            editStage.setScene(editScene);
-
-            editStage.show();
-        });
+        editButton.setOnAction(event -> openEditDialog(selectedBook));
 
         moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel, publishDateLabel, isbnLabel,
                 availabilityLabel, editButton);
@@ -337,11 +316,106 @@ public class SearchBookController {
         prevImage.setImage(new Image(getClass().getResource("/img/prv.png").toExternalForm()));
     }
 
+    /**
+     * Retrieves a filtered list of books based on the provided keyword.
+     *
+     * @param keyword the search keyword used to filter the books
+     * @return an ObservableList of books matching the keyword
+     */
     private ObservableList<Book> getBookList(String keyword) {
         return bookManagement.getAllBooksFilter(keyword);
     }
-    
+
+    /**
+     * Retrieves a complete list of books from the database.
+     *
+     * @return an ObservableList containing all books
+     */
     private ObservableList<Book> getBookList() {
         return bookManagement.getAllBooks();
+    }
+
+    /**
+     * Opens a dialog window for editing the details of the selected book.
+     *
+     * @param selectedBook the book to be edited
+     */
+    private void openEditDialog(Book selectedBook) {
+        Stage editStage = new Stage();
+        editStage.setTitle("Edit Book Information");
+
+        VBox editPane = new VBox(10);
+        editPane.setPadding(new Insets(10));
+
+        Label bookIdLabel = new Label("ID: " + selectedBook.getID());
+        bookIdLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        textFieldUpdate.titleField = new TextField(selectedBook.getName());
+        textFieldUpdate.authorField = new TextField(selectedBook.getAuthor());
+        textFieldUpdate.genreField = new TextField(selectedBook.getGroup());
+        textFieldUpdate.publishDateField = new TextField(selectedBook.getPublishDate());
+        textFieldUpdate.isbnField = new TextField(selectedBook.getISBN());
+        CheckBox availabilityCheckBox = new CheckBox("Available");
+        availabilityCheckBox.setSelected(selectedBook.getIsAvailable());
+
+        Label statusLabel = new Label();
+        statusLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+
+        Button updateThisBookButton = new Button("Update This Book");
+        updateThisBookButton.setOnAction(e -> {
+            updateBook(selectedBook, textFieldUpdate,
+                    availabilityCheckBox, statusLabel, false);
+        });
+
+        Button updateMatchingIsbnButton = new Button("Update All by ISBN");
+        updateMatchingIsbnButton.setOnAction(e -> {
+            updateBook(selectedBook, textFieldUpdate,availabilityCheckBox, statusLabel, true);
+        });
+
+        editPane.getChildren().addAll(bookIdLabel, new Label("Title:"), textFieldUpdate.titleField,
+                new Label("Author:"), textFieldUpdate.authorField,
+                new Label("Genre:"), textFieldUpdate.genreField,
+                new Label("Publish Date:"), textFieldUpdate.publishDateField,
+                new Label("ISBN:"), textFieldUpdate.isbnField,
+                availabilityCheckBox, updateThisBookButton, updateMatchingIsbnButton, statusLabel);
+
+        Scene editScene = new Scene(editPane, 400, 500);
+        editStage.setScene(editScene);
+
+        editStage.show();
+    }
+
+    /**
+     * Updates the book details in the database.
+     *
+     * @param selectedBook         the book being updated
+     * @param textFieldUpdate      all the text field to update book
+     * @param availabilityCheckBox the availability checkbox
+     * @param statusLabel          the status label to display feedback
+     * @param updateByIsbn         whether to update all books with matching ISBN
+     */
+    private void updateBook(Book selectedBook, TextFieldUpdate textFieldUpdate, CheckBox availabilityCheckBox, Label statusLabel,
+            boolean updateByIsbn) {
+        selectedBook.setName(textFieldUpdate.titleField.getText());
+        selectedBook.setAuthor(textFieldUpdate.authorField.getText());
+        selectedBook.setGroup(textFieldUpdate.genreField.getText());
+        selectedBook.setPublishDate(textFieldUpdate.publishDateField.getText());
+        selectedBook.setISBN(textFieldUpdate.isbnField.getText());
+        selectedBook.setIsAvailable(availabilityCheckBox.isSelected());
+
+        try {
+            if (updateByIsbn) {
+                this.bookManagement.updateDocumentMatchingISBN(selectedBook);
+                statusLabel.setText("All books with matching ISBN updated successfully!");
+            } else {
+                this.bookManagement.updateDocuments(selectedBook);
+                statusLabel.setText("Book updated successfully!");
+            }
+            bookTable.setItems(getBookList());
+            statusLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14px;");
+        } catch (Exception ex) {
+            statusLabel.setText("Failed to update book.");
+            statusLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
+        }
     }
 }

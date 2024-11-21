@@ -1,16 +1,18 @@
 package com.library.controller.personController;
 
 import com.library.model.Person.Member;
-import com.library.service.MemberManagement;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
+import com.library.model.Person.User;
+import com.library.model.helpers.DateString;
+import com.library.model.helpers.MessageUtil;
+import com.library.model.helpers.PhoneNumber;
+
+
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 public class AddMemberController {
 
@@ -29,18 +31,22 @@ public class AddMemberController {
     @FXML
     private Button addButton;
 
-    private MemberManagement memberManagement;
+    // private MemberManagement memberManagement;
 
-    public AddMemberController() {
-        memberManagement = new MemberManagement();
-    }
+    // public AddMemberController() {
+    //     memberManagement = new MemberManagement();
+    // }
 
     @FXML
     private void initialize() {
         // Cài đặt giá trị mặc định cho ComboBox Gender
         genderComboBox.getItems().addAll("Male", "Female");
 
-        addButton.setOnAction((event -> addToDataBase()));
+        if (!User.isMember()) {
+            addButton.setOnAction((event -> addToDataBase()));
+        } else {
+            MessageUtil.showMessage(messageText, "You don't have access to add member.", "red");
+        }
     }
 
     private void addToDataBase() {
@@ -53,31 +59,47 @@ public class AddMemberController {
 
         // Kiểm tra các trường bắt buộc có trống không
         if (name.isEmpty() || address.isEmpty() || dob.isEmpty() || phone.isEmpty() || gender == null) {
-            showMessage("Please fill in all required fields.", "red");
+            MessageUtil.showMessage(messageText, "Please fill in all required fields.", "red");
             return;
         }
 
-        // Nếu đầy đủ thông tin thì mới thêm
-        Member member = new Member(name, address, dob, phone, gender);
+        //Tạo task để xử lý đa luồng thêm member, xử lý ngoại lệ - done 
+        Task<Void> addMemberTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                if (!DateString.isValidDate(dob)) {
+                    throw new Exception("Invalid date of birth format.");
+                }
+                if (!PhoneNumber.isValidPhoneNumber(phone)) {
+                    throw new Exception("Invalid phone number format.");
+                }
 
-        try {
-            member.addMember(); // Gọi phương thức addMember
-            showMessage("Member added successfully!", "green");
-            // Xóa thông tin đã nhập nếu thêm thành công
-            clearFields();
-        } catch (Exception e) {
-            // Nếu có lỗi xảy ra, thông báo lỗi
-            showMessage("Failed to add member: " + e.getMessage(), "red");
-        }
-    }
+                Member member = new Member(name, address, dob, phone, gender);
+                if (!member.addMember()) {
+                    throw new Exception("Error when adding member to database.");
+                }
+                return null;
+            }
 
-    private void showMessage(String message, String color) {
-        messageText.setText(message);
-        messageText.setStyle("-fx-fill: " + color + ";");
+            @Override
+            protected void succeeded() {
+                MessageUtil.showMessage(messageText, "Member added successfully!", "green");
+                clearFields();
+            }
 
-        // Tạo Timeline để ẩn thông báo sau 2 giây
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> messageText.setText("")));
-        timeline.play();
+            @Override
+            protected void failed() {
+                MessageUtil.showMessage(messageText, "Failed to add member: " + getException().getMessage(), "red");
+            }
+        };
+
+        // Hiển thị thông báo cho người dùng việc đang thêm 
+        MessageUtil.showMessage(messageText, "Adding member, please wait...", "blue");
+
+        //Chạy task trong một Thread riêng
+        Thread thread = new Thread(addMemberTask);
+        thread.setDaemon(true); // Đảm bảo thread tự động dừng khi ứng dụng kết thúc
+        thread.start();
     }
 
     private void clearFields() {

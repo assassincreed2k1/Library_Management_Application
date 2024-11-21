@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -13,8 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import java.io.IOException;
@@ -23,8 +20,11 @@ import com.library.model.doc.Magazine;
 import com.library.service.BackgroundService;
 import com.library.service.MagazineManagement;
 import com.library.service.ServiceManager;
+import com.library.service.LibraryService;
 
 public class MagazineController {
+
+    private LibraryService libraryService = new LibraryService();
 
     private MagazineManagement magazineManagement;
 
@@ -72,12 +72,8 @@ public class MagazineController {
 
         exitButton.setOnAction(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
-                Parent root = loader.load();
-
-                Stage stage = (Stage) exitButton.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
+                libraryService.switchTo("/fxml/Library/LibraryHome.fxml",
+                        (Stage) exitButton.getScene().getWindow());
             } catch (IOException e) {
                 e.printStackTrace();
             }

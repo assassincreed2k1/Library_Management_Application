@@ -3,7 +3,7 @@ package com.library.model.Person;
 import com.library.service.MemberManagement;
 
 public class Member extends Person {
-    private int membershipId;  // Changed to int
+    private String membershipId;  // Changed to int
     private String joinDate;
     private String expiryDate;
 
@@ -14,7 +14,7 @@ public class Member extends Person {
      */
     public Member() {
         super();
-        membershipId = 0;
+        membershipId = "";
         joinDate = "";
         expiryDate = "";
     }
@@ -31,7 +31,7 @@ public class Member extends Person {
      * @param expiryDate is String
      */
     public Member(String name, String address, String dateOfBirth, String phoneNumber, 
-                String gender, int membershipId, String joinDate, String expiryDate) {
+                String gender, String membershipId, String joinDate, String expiryDate) {
         super(name, address, gender, dateOfBirth, phoneNumber);
         this.membershipId = membershipId;
         this.joinDate = joinDate;
@@ -65,11 +65,11 @@ public class Member extends Person {
     }
     
 
-    public int getMembershipId() {
+    public String getMembershipId() {
         return membershipId;
     }
 
-    public void setMembershipId(int membershipId) {
+    public void setMembershipId(String membershipId) {
         this.membershipId = membershipId;
     }
 
@@ -94,12 +94,12 @@ public class Member extends Person {
      */
     @Override
     public String getDetails() {
-        return String.format("%sMembership ID: M%09d\nJoin Date: %s\nExpiry Date: %s\n",
+        return String.format("%sMembership ID: %s\nJoin Date: %s\nExpiry Date: %s\n",
                             super.getDetails(), membershipId, joinDate, expiryDate);  // Change %s to %d for membershipId
     }
 
-    public void addMember() {
-        memManagement.addMember(this);
+    public boolean addMember() {
+        return memManagement.addMember(this);
     }
 
     public void deleteMember() {
@@ -110,7 +110,7 @@ public class Member extends Person {
         memManagement.updateMember(this);
     }
 
-    public Member getInforFromDatabase(int id) {
+    public Member getInforFromDatabase(String id) {
         Member memberFromDB = memManagement.getMemberInfo(id);
         
         // If no member is found, return null or display an error message

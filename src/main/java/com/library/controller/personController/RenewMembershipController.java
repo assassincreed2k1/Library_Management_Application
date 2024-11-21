@@ -1,14 +1,17 @@
 package com.library.controller.personController;
 
 import com.library.model.Person.Member;
-import com.library.model.helpMethod.PersonIdHandle;
+import com.library.model.helpers.MessageUtil;
+import com.library.model.helpers.PersonIdHandle;
 import com.library.service.MemberManagement;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 public class RenewMembershipController {
 
@@ -25,6 +28,9 @@ public class RenewMembershipController {
 
     @FXML
     private TextArea inforMemberTextArea;
+
+    @FXML
+    private Text messageText;
 
     @FXML
     private void initialize() {
@@ -46,23 +52,46 @@ public class RenewMembershipController {
         }
 
         if (selectedRenewal == null) {
-            inforMemberTextArea.setText("Please select a renewal option.");
+            inforMemberTextArea.setText("Please select a renew time option.");
             return;
         }
+        
+        // Tạo Task để gia hạn thành viên
+        Task<Void> renewalTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                // Lấy thông tin thành viên
+                member = (Member) PersonIdHandle.getPerson(membershipId);
 
-        // Lấy thông tin thành viên
-        member = (Member) PersonIdHandle.getPerson(membershipId);
+                if (member == null) {
+                    throw new Exception("No member found with ID: " + membershipId);
+                } else {
+                    // Gia hạn thẻ thành viên
+                    member.renewMembership(selectedRenewal);
+                    member = member.getInforFromDatabase(member.getMembershipId());
+                    if (member.getExpiryDate() == null) {
+                        throw new Exception("Fail to update expiry date.");
+                    }
+                }
+                return null;
+            }
 
-        if (member == null) {
-            inforMemberTextArea.setText("No member found with ID: " + membershipId);
-        } else {
-            // Gia hạn thẻ thành viên
-            member.renewMembership(selectedRenewal);
-            member = member.getInforFromDatabase(member.getMembershipId());
-            System.out.println(member.getDetails());
+            @Override
+            protected void succeeded() {
+                MessageUtil.showMessage(messageText, "Membership successfully renewed!", "green");
+                inforMemberTextArea.setText(member.getDetails());
+            }
 
-            // Hiển thị thông tin sau khi gia hạn
-            inforMemberTextArea.setText("Membership successfully renewed!\n" + member.getDetails());
-        }
+            @Override
+            protected void failed() {
+                MessageUtil.showMessage(messageText, "Failing to renew card. Error: " + getException().getMessage(), "red");
+            }
+        };
+
+        MessageUtil.showMessage(messageText, "Finding member information. Please wait: ", "blue");
+        // Chạy Task trên một luồng riêng
+        Thread thread = new Thread(renewalTask);
+        thread.setDaemon(true);
+        thread.start();
     }
 }

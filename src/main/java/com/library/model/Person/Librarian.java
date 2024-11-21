@@ -3,9 +3,8 @@ package com.library.model.Person;
 import com.library.service.LibrarianManagement;
 
 public class Librarian extends Person {
-    private int employeeId; 
+    private String employeeId; 
     private String position;  
-    private String password; 
 
     private LibrarianManagement libManagement = new LibrarianManagement();
 
@@ -13,9 +12,8 @@ public class Librarian extends Person {
      * Default constructor for Librarian with no initial values
      */
     public Librarian() {
-        this.employeeId = 0; 
+        this.employeeId = ""; 
         this.position = "";   
-        this.password = "";   
     }
 
     /**
@@ -28,14 +26,12 @@ public class Librarian extends Person {
      * @param phoneNumber The phone number of the librarian
      * @param employeeId  The unique ID for the librarian
      * @param position    The position of the librarian
-     * @param password    The password for the librarian's account
      */
     public Librarian(String name, String address, String gender, String dateOfBirth, 
-                    String phoneNumber, int employeeId, String position, String password) {
+                    String phoneNumber, String employeeId, String position) {
         super(name, address, gender, dateOfBirth, phoneNumber);
         this.employeeId = employeeId; 
         this.position = position;       
-        this.password = password;       
     }
 
     /**
@@ -52,14 +48,13 @@ public class Librarian extends Person {
                     String phoneNumber, String position) {
         super(name, address, gender, dateOfBirth, phoneNumber);
         this.position = position;    
-        this.password = "00001111"; //default password, u can change if u like       
     }
 
-    public int getEmployeeId() {
+    public String getEmployeeId() {
         return employeeId; 
     }
 
-    public void setEmployeeId(int employeeId) {
+    public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId; 
     }
 
@@ -71,14 +66,6 @@ public class Librarian extends Person {
         this.position = position; 
     }
 
-    public String getPassword() {
-        return password; 
-    }
-
-    public void setPassword(String password) {
-        this.password = password; 
-    }
-
     /**
      * Override getDetails to include librarian-specific info
      * 
@@ -86,15 +73,15 @@ public class Librarian extends Person {
      */
     @Override
     public String getDetails() {
-        return String.format("%sEmployee ID: L%09d\nPosition: %s\n",
+        return String.format("%sEmployee ID: %s\nPosition: %s\n",
                 super.getDetails(), employeeId, position);
     }
 
     /**
      * add librarian to database.
      */
-    public void addLibrarian() {
-        libManagement.addLibrarian(this);
+    public boolean addLibrarian() {
+        return libManagement.addLibrarian(this);
     }
 
     /**
@@ -117,7 +104,7 @@ public class Librarian extends Person {
      * @param employeeId ID of the librarian to retrieve.
      * @return Librarian retrieved from the database or null if not found.
      */
-    public Librarian getInforFromDatabase(int employeeId) {
+    public Librarian getInforFromDatabase(String employeeId) {
         Librarian librarianFromDB = libManagement.getLibrarianInfo(employeeId);
 
         if (librarianFromDB == null) {
