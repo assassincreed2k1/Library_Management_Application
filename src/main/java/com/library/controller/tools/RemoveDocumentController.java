@@ -182,7 +182,6 @@ public class RemoveDocumentController {
         mainBox.getChildren().clear();
         mainBox.getChildren().addAll(idField, checkButton, removeButton, statusLabel);
     }
-    
 
     private void setupRemoveNewspaper() {
 
