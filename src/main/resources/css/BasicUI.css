@@ -36,3 +36,10 @@
 .back-button:hover {
     -fx-background-color: rgb(172, 38, 38);
 }
+
+.title {
+    -fx-font-family: "Helvetica"; /* Hoặc font bạn muốn */
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: 336633; /* Màu xanh dương */
+}

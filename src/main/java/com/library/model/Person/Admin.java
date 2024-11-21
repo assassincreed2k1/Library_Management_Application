@@ -1,27 +1,36 @@
 package com.library.model.Person;
 
+import com.library.service.AdminManagement;
+
 public class Admin extends Librarian {
-    // Fixed fields for System Admin's ID and password
-    final private String id;
-    final private String password;
+    private AdminManagement adminManagament;
+
+    public Admin(Admin admin) {
+        super(admin.name, admin.address, admin.gender, admin.dateOfBirth, admin.phoneNumber, admin.position);
+    }
 
     /**
      * Default constructor to initialize the fixed values for System Admin
      */
     public Admin() {
-        // Set fixed ID and password
-        super("admin", "Vietnam", "Male", "2024-20-11", 
-        "1234567890", "A000001", "System Admin");
-        this.id = "A000001";
+        super("admin", "N/A", "N/A", "N/A", "N/A", "System Admin");
         this.password = "admin";
+        this.employeeId = "A000001";
+        adminManagament = new AdminManagement();
     }
 
-    // Getters for id and password (no setters, since these are fixed)
-    public String getId() {
-        return id;
+    public void updateAdmin() {
+        adminManagament.updateAdmin(this);
     }
 
-    public String getPassword() {
-        return password;
+    public Admin getInforFromDatabase() {
+        Admin adminFromDB = adminManagament.getAdminInfo();
+
+        if (adminFromDB == null) {
+            System.out.println("Can't get Admin from database.");
+            return null;
+        } 
+
+        return adminFromDB;
     }
 }
