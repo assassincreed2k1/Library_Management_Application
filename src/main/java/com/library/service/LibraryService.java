@@ -1,5 +1,6 @@
 package com.library.service;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -7,6 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.library.model.doc.Book;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -225,5 +231,14 @@ public class LibraryService {
             System.out.println(e.getMessage());
         }
         return book.getISBN();
+    }
+
+    public void switchTo(String pagePath, Stage CurStage) throws IOException {
+        Parent libraryPage = FXMLLoader.load(getClass().getResource(pagePath));
+        Stage stage = (Stage) CurStage.getScene().getWindow();
+        Scene scene = new Scene(libraryPage);
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 }

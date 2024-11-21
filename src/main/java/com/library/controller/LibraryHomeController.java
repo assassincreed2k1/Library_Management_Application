@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.library.service.BookManagement;
 import com.library.model.Person.User;
-import com.library.model.doc.Book;
 import com.library.service.LibraryService;
 import com.library.service.ServiceManager;
 import com.library.controller.tools.DocumentDisplayManager;
@@ -24,13 +23,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.TextField;
 import javafx.event.EventHandler;
-import javafx.concurrent.Task;
 import javafx.stage.Stage;
 
 /**
@@ -214,7 +211,7 @@ public class LibraryHomeController {
         for (int i = 0; i < 2; i++) {
             moreListBooks[i].setOnAction(event -> {
                 try {
-                    switchTo("/fxml/Documents/Books.fxml");
+                    libraryService.switchTo("/fxml/Documents/Books.fxml", (Stage) iconImageView.getScene().getWindow());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -229,7 +226,7 @@ public class LibraryHomeController {
         try {
             showAlert("Log Out", "Are you sure you want to log out?");
             User.clearUser(); //xoá thông tin User trước khi ra khỏi
-            switchTo("/fxml/Login/SignIn.fxml");
+            libraryService.switchTo("/fxml/Login/SignIn.fxml", (Stage) iconImageView.getScene().getWindow());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -262,7 +259,7 @@ public class LibraryHomeController {
                 break;
         }
         try {
-            switchTo(fxmlFile);
+            libraryService.switchTo(fxmlFile, (Stage) iconImageView.getScene().getWindow());
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -296,7 +293,8 @@ public class LibraryHomeController {
     // Handle Remove Document action --Need Fix
     private void handleRemoveDocument() {
         try {
-            switchTo("/fxml/Library/Tools/RemoveDocument.fxml");
+            libraryService.switchTo("/fxml/Library/Tools/RemoveDocument.fxml",
+                    (Stage) iconImageView.getScene().getWindow());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -311,19 +309,10 @@ public class LibraryHomeController {
     private void handleShowAll() {
         System.out.println("Showing all documents...");
         try {
-            switchTo("/fxml/Documents/Documents.fxml");
+            libraryService.switchTo("/fxml/Documents/Documents.fxml", (Stage) iconImageView.getScene().getWindow());
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    // Switch to another page
-    private void switchTo(String pagePath) throws IOException {
-        Parent libraryPage = FXMLLoader.load(getClass().getResource(pagePath));
-        Stage stage = (Stage) logOutButton.getScene().getWindow();
-        Scene scene = new Scene(libraryPage);
-        stage.setScene(scene);
-        stage.show();
     }
 
     // Helper method to show alerts
@@ -356,6 +345,7 @@ public class LibraryHomeController {
             Stage newStage = new Stage();
             newStage.setTitle("New Window");
             newStage.setScene(scene);
+            newStage.centerOnScreen();
             newStage.show();
         } catch (Exception e) {
             e.printStackTrace();

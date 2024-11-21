@@ -90,6 +90,7 @@ public class DocumentController {
             Stage stage = (Stage) btnAdd.getScene().getWindow();
             Scene scene = new Scene(libraryPage);
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.show();
         }
 }

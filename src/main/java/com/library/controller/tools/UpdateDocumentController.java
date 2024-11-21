@@ -206,7 +206,7 @@ public class UpdateDocumentController {
             selectedNewspaper.setIsAvailable(availabilityCheckBox.isSelected());
 
             try {
-                ServiceManager.getNewsPaperManagament().updateDocuments(selectedNewspaper);
+                ServiceManager.getNewsPaperManagement().updateDocuments(selectedNewspaper);
                 statusLabel.setText("Newspaper updated successfully!");
                 statusLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14px;");
             } catch (Exception ex) {

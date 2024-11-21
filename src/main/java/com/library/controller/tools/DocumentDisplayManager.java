@@ -10,9 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * This class manages the display of document information, including books,
  * in a JavaFX application. It provides functionality to load and display

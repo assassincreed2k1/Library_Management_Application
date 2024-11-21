@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -13,20 +12,21 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import java.io.IOException;
 
 import com.library.model.doc.Newspaper;
 import com.library.service.BackgroundService;
-import com.library.service.NewsPaperManagament;
+import com.library.service.NewsPaperManagement;
 import com.library.service.ServiceManager;
+import com.library.service.LibraryService;
 
 public class NewspaperController {
 
-    private NewsPaperManagament newspaperManagement;
+    private LibraryService libraryService = new LibraryService();
+
+    private NewsPaperManagement newspaperManagement;
     private BackgroundService executor;
 
     @FXML
@@ -59,7 +59,7 @@ public class NewspaperController {
     // This method is called by the FXMLLoader when initialization is complete
     @FXML
     private void initialize() {
-        this.newspaperManagement = ServiceManager.getNewsPaperManagament();
+        this.newspaperManagement = ServiceManager.getNewsPaperManagement();
         this.executor = ServiceManager.getBackgroundService();
 
         // Set up the columns to use properties from the Newspaper class
@@ -75,12 +75,7 @@ public class NewspaperController {
 
         exitButton.setOnAction(event -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
-                Parent root = loader.load();
-
-                Stage stage = (Stage) exitButton.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
+                libraryService.switchTo("/fxml/Library/LibraryHome.fxml", (Stage) exitButton.getScene().getWindow());
             } catch (IOException e) {
                 e.printStackTrace();
             }

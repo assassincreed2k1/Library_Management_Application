@@ -14,7 +14,7 @@ public class ServiceManager {
     private static LibraryService libraryService;
     private static BookManagement bookManagement;
     private static MagazineManagement magazineManagement;
-    private static NewsPaperManagament newsPaperManagament;
+    private static NewsPaperManagement newsPaperManagement;
     private static LibrarianManagement librarianManagement;
     private static LoanManagement loanManagement;
     private static MemberManagement memberManagement;
@@ -35,8 +35,8 @@ public class ServiceManager {
         if (magazineManagement == null) {
             magazineManagement = new MagazineManagement();
         }
-        if (newsPaperManagament == null) {
-            newsPaperManagament = new NewsPaperManagament();
+        if (newsPaperManagement == null) {
+            newsPaperManagement = new NewsPaperManagement();
         }
         if (librarianManagement == null) {
             librarianManagement = new LibrarianManagement();
@@ -84,8 +84,8 @@ public class ServiceManager {
      * 
      * @return the singleton instance of {@link NewsPaperManagament}
      */
-    public static NewsPaperManagament getNewsPaperManagament() {
-        return newsPaperManagament;
+    public static NewsPaperManagement getNewsPaperManagement() {
+        return newsPaperManagement;
     }
 
     /**
