@@ -33,3 +33,39 @@
 -fx-fit-to-width: 177px;
 -fx-fit-to-height: 245px;   
 }
+
+.combo-box-menu {
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+    -fx-background-color: #f0f0f0;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+    -fx-padding: 5;
+    -fx-text-fill: #333333;
+}
+
+.combo-box-menu:hover {
+    -fx-background-color: #e6f7ff;
+    -fx-border-color: #005bb5;
+}
+
+.combo-box-menu:focused {
+    -fx-border-color: #00aaff;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, #00aaff, 5, 0, 0, 0);
+}
+
+.combo-box-menu .arrow {
+    -fx-background-color: #0078d7;
+}
+
+.combo-box-menu .list-cell {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-background-color: #f9f9f9;
+}
+
+.combo-box-menu .list-cell:hover {
+    -fx-background-color: #e6f7ff;
+    -fx-text-fill: #005bb5;
+}

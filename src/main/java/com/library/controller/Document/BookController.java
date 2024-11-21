@@ -30,11 +30,11 @@ import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
 import com.library.service.ServiceManager;
-import com.library.service.LibrarianManagement;
+import com.library.service.LibraryService;
 
 public class BookController {
 
-    private LibrarianManagement librarianManagement = new LibrarianManagement();
+    private LibraryService libraryService = new LibraryService();
 
     private BookManagement bookManagement;
 
@@ -90,7 +90,7 @@ public class BookController {
 
         exitButton.setOnAction(event -> {
             try {
-                librarianManagement.switchTo("/fxml/Library/LibraryHome.fxml", 
+                libraryService.switchTo("/fxml/Library/LibraryHome.fxml", 
                         (Stage) exitButton.getScene().getWindow());
             } catch (IOException e) {
                 e.printStackTrace();

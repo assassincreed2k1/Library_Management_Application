@@ -24,7 +24,7 @@ import com.library.service.LibraryService;
 
 public class MagazineController {
 
-    private LibraryService libraryService;
+    private LibraryService libraryService = new LibraryService();
 
     private MagazineManagement magazineManagement;
 
