@@ -1,12 +1,12 @@
 package com.library.model.Person;
 
 public class Person {
-    private String name;
-    private String address;
-    private String gender;
-    private String dateOfBirth;
-    private String phoneNumber;
-    private String password;
+    protected String name;
+    protected String address;
+    protected String gender;
+    protected String dateOfBirth;
+    protected String phoneNumber;
+    protected String password;
 
     /**
      * Constructor Person no param

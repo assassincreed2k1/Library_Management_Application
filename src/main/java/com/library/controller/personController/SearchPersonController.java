@@ -146,15 +146,32 @@ public class SearchPersonController {
 
     private void onUpdate() {
         if (person != null) {
-            if (person instanceof Member) {
+            if (person instanceof Member && (!User.isMember() 
+                || User.getId().equals(((Member)person).getMembershipId()))) {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DemoPerson/UpdateMember.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Person/UpdateMember.fxml"));
                     Stage stage = (Stage) updateButton.getScene().getWindow();
                     Scene scene = new Scene(loader.load());
         
                     // Lấy controller của UpdateMember và truyền Member vào
                     UpdateMemberController controller = loader.getController();
                     controller.setMember((Member) person);
+        
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (person instanceof Librarian && (User.isAdmin() 
+                    || User.getId().equals(((Librarian)person).getEmployeeId()))) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Person/UpdateLibrarian.fxml"));
+                    Stage stage = (Stage) updateButton.getScene().getWindow();
+                    Scene scene = new Scene(loader.load());
+        
+                    UpdateLibrarianController controller = loader.getController();
+                    controller.setLibrarian((Librarian) person);
+                    controller.setBeforeSceneURL("/fxml/Person/SearchPerson.fxml");
         
                     stage.setScene(scene);
                     stage.show();
