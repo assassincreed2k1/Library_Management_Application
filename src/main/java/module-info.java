@@ -7,7 +7,8 @@ module com.library {
     requires transitive javafx.graphics;
     
     opens com.library to javafx.fxml;
-    opens com.library.controller to javafx.fxml;
+    opens com.library.controller.Menu to javafx.fxml;
+    opens com.library.controller.Library to javafx.fxml;
     opens com.library.controller.personController to javafx.fxml;
     opens com.library.controller.tools to javafx.fxml;
     opens com.library.controller.Document to javafx.fxml;
