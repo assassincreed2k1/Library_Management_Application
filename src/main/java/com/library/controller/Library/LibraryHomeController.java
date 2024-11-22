@@ -285,12 +285,7 @@ public class LibraryHomeController {
 
     // Handle Remove Document action --Need Fix
     private void handleRemoveDocument() {
-        try {
-            libraryService.switchTo("/fxml/Library/Tools/RemoveDocument.fxml",
-                    (Stage) usernameLabel.getScene().getWindow());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        openNewWindow("/fxml/Library/Tools/RemoveDocument.fxml");
     }
 
     // Handle Update Document action

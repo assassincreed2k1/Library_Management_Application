@@ -252,9 +252,7 @@ public class BookController {
                 Parent root = editPage.load();
 
                 UpdateDocumentController upController = editPage.getController();
-                upController.setCallerController(this);
-                upController.setSelectedDocument(selectedBook);
-                upController.setup();
+                upController.setId(selectedBook.getID());
 
                 Stage stage = new Stage();
                 stage.setTitle("Update Document");
@@ -276,8 +274,8 @@ public class BookController {
                 Parent root = delPage.load();
 
                 RemoveDocumentController rmController = delPage.getController();
-                rmController.setup(selectedBook);
-
+                rmController.setId(selectedBook.getID());
+                
                 Stage stage = new Stage();
                 stage.setTitle("Remove Document");
                 stage.setScene(new Scene(root));

@@ -1,15 +1,14 @@
 package com.library.controller.tools;
 
+import com.library.model.doc.Document;
 import com.library.model.doc.Book;
 import com.library.model.doc.Magazine;
 import com.library.model.doc.Newspaper;
-import com.library.service.BookManagement;
-import com.library.service.ServiceManager;
 
+import com.library.service.ServiceManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-// import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 
 public class RemoveDocumentController {
@@ -17,9 +16,6 @@ public class RemoveDocumentController {
     @FXML
     private VBox mainBox;
 
-    private final BookManagement bookManagement = ServiceManager.getBookManagement();
-
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
     @FXML
     private TextField idField;
 
@@ -32,218 +28,118 @@ public class RemoveDocumentController {
     @FXML
     private Label statusLabel;
 
+    private Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
     @FXML
     public void initialize() {
         mainBox.setPadding(new Insets(20));
         mainBox.setSpacing(10);
+        setupUI();
     }
 
-    public void setup(Object selectedDocument) {
-        if (selectedDocument instanceof Book) {
-            Book selectedBook = (Book) selectedDocument;
-            idField.setText(selectedBook.getID());
-            setupRemoveBook();
-        } else if (selectedDocument instanceof Magazine) {
-            Magazine selectedMagazine = (Magazine) selectedDocument;
-            idField.setText(selectedMagazine.getID());
-            setupRemoveMagazine();
-        } else if (selectedDocument instanceof Newspaper) {
-            Newspaper selectedNewspaper = (Newspaper) selectedDocument;
-            idField.setText(selectedNewspaper.getID());
-            setupRemoveNewspaper();
+    public void setId(String id) {
+        this.idField.setText(id);
+        checkButton.fire();
+    }
+
+    private void setupUI() {
+        statusLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        statusLabel.setWrapText(true);
+
+        checkButton.setOnAction(event -> handleCheckAction());
+        removeButton.setOnAction(event -> handleRemoveAction());
+    }
+
+    private void handleCheckAction() {
+        String id = idField.getText().trim();
+        if (id.isEmpty()) {
+            updateStatus("Please enter an ID.", "red");
+            return;
+        }
+
+        Document document = findDocumentById(id);
+        if (document != null) {
+            updateStatus("Document found:\n" + documentDetails(document), "green");
         } else {
-            System.out.println("Invalid document type.");
+            updateStatus("No document found with ID: " + id, "red");
         }
     }
 
-    private void setupRemoveBook() {
-        statusLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        statusLabel.setWrapText(true);
+    private void handleRemoveAction() {
+        String id = idField.getText().trim();
+        if (id.isEmpty()) {
+            updateStatus("Please enter an ID to remove.", "red");
+            return;
+        }
 
-        checkButton.setOnAction(event -> {
-            String id = idField.getText().trim();
-            if (id.isEmpty()) {
-                statusLabel.setText("Please enter an ID.");
-                statusLabel.setStyle("-fx-text-fill: red;");
+        alert.setTitle("Confirm Removal");
+        alert.setHeaderText("Are you sure you want to remove this document?");
+        alert.setContentText("Document ID: " + id);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                Document document = findDocumentById(id);
+                if (document != null) {
+                    removeDocument(document);
+                    updateStatus("Document with ID " + id + " removed successfully.", "green");
+                    idField.clear();
+                } else {
+                    updateStatus("No document found with ID: " + id, "red");
+                }
             } else {
-                Book foundBook = bookManagement.getDocument(id);
-                if (foundBook != null) {
-                    statusLabel.setText("Book found:\nName: " + foundBook.getName()
-                            + "\nAuthor: " + foundBook.getAuthor()
-                            + "\nGenre: " + foundBook.getGroup()
-                            + "\nPublish Date: " + foundBook.getPublishDate()
-                            + "\nISBN: " + foundBook.getISBN());
-                    statusLabel.setStyle("-fx-text-fill: green;");
-                } else {
-                    statusLabel.setText("No book found with ID: " + id);
-                    statusLabel.setStyle("-fx-text-fill: red;");
-                }
+                updateStatus("Removal canceled.", "orange");
             }
         });
-
-        removeButton.setOnAction(event -> {
-            String id = idField.getText().trim();
-            if (id.isEmpty()) {
-                statusLabel.setText("Please enter an ID to remove.");
-                statusLabel.setStyle("-fx-text-fill: red;");
-                return;
-            }
-            alert.setTitle("Confirm Removal");
-            alert.setHeaderText("Are you sure you want to remove this book?");
-            alert.setContentText("Book ID: " + id);
-
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        Book foundBook = bookManagement.getDocument(id);
-                        if (foundBook != null) {
-                            bookManagement.removeDocument(foundBook);
-                            statusLabel.setText("Book with ID " + id + " removed successfully.");
-                            statusLabel.setStyle("-fx-text-fill: green;");
-                            idField.clear();
-                        } else {
-                            statusLabel.setText("No book found with ID: " + id);
-                            statusLabel.setStyle("-fx-text-fill: red;");
-                        }
-                    } catch (Exception e) {
-                        statusLabel.setText("Failed to remove book.");
-                        statusLabel.setStyle("-fx-text-fill: red;");
-                        e.printStackTrace();
-                    }
-                } else {
-                    statusLabel.setText("Removal canceled.");
-                    statusLabel.setStyle("-fx-text-fill: orange;");
-                }
-            });
-        });
-        mainBox.getChildren().clear();
-        mainBox.getChildren().addAll(idField, checkButton, removeButton, statusLabel);
-    }
-    
-    private void setupRemoveMagazine() {
-
-        statusLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        statusLabel.setWrapText(true);
-    
-        checkButton.setOnAction(event -> {
-            String id = idField.getText().trim();
-            if (id.isEmpty()) {
-                statusLabel.setText("Please enter an ID.");
-                statusLabel.setStyle("-fx-text-fill: red;");
-            } else {
-                Magazine foundMagazine = ServiceManager.getMagazineManagement().getDocument(id);
-                if (foundMagazine != null) {
-                    statusLabel.setText("Magazine found:\nTitle: " + foundMagazine.getName()
-                            + "\nGenre: " + foundMagazine.getGroup()
-                            + "\nPublisher: " + foundMagazine.getPublisher());
-                    statusLabel.setStyle("-fx-text-fill: green;");
-                } else {
-                    statusLabel.setText("No magazine found with ID: " + id);
-                    statusLabel.setStyle("-fx-text-fill: red;");
-                }
-            }
-        });
-    
-        removeButton.setOnAction(event -> {
-            String id = idField.getText().trim();
-            if (id.isEmpty()) {
-                statusLabel.setText("Please enter an ID to remove.");
-                statusLabel.setStyle("-fx-text-fill: red;");
-                return;
-            }
-            alert.setTitle("Confirm Removal");
-            alert.setHeaderText("Are you sure you want to remove this magazine?");
-            alert.setContentText("Magazine ID: " + id);
-    
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        Magazine foundMagazine = ServiceManager.getMagazineManagement().getDocument(id);
-                        if (foundMagazine != null) {
-                            ServiceManager.getMagazineManagement().removeDocument(foundMagazine);
-                            statusLabel.setText("Magazine with ID " + id + " removed successfully.");
-                            statusLabel.setStyle("-fx-text-fill: green;");
-                            idField.clear();
-                        } else {
-                            statusLabel.setText("No magazine found with ID: " + id);
-                            statusLabel.setStyle("-fx-text-fill: red;");
-                        }
-                    } catch (Exception e) {
-                        statusLabel.setText("Failed to remove magazine.");
-                        statusLabel.setStyle("-fx-text-fill: red;");
-                        e.printStackTrace();
-                    }
-                } else {
-                    statusLabel.setText("Removal canceled.");
-                    statusLabel.setStyle("-fx-text-fill: orange;");
-                }
-            });
-        });
-        mainBox.getChildren().clear();
-        mainBox.getChildren().addAll(idField, checkButton, removeButton, statusLabel);
     }
 
-    private void setupRemoveNewspaper() {
+    private Document findDocumentById(String id) {
+        Document document = ServiceManager.getBookManagement().getDocument(id);
+        if (document == null) {
+            document = ServiceManager.getMagazineManagement().getDocument(id);
+        }
+        if (document == null) {
+            document = ServiceManager.getNewsPaperManagement().getDocument(id);
+        }
+        return document;
+    }
 
-        statusLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        statusLabel.setWrapText(true);
-    
-        checkButton.setOnAction(event -> {
-            String id = idField.getText().trim();
-            if (id.isEmpty()) {
-                statusLabel.setText("Please enter an ID.");
-                statusLabel.setStyle("-fx-text-fill: red;");
-            } else {
-                Newspaper foundNewspaper = ServiceManager.getNewsPaperManagement().getDocument(id);
-                if (foundNewspaper != null) {
-                    statusLabel.setText("Newspaper found:\nName: " + foundNewspaper.getName()
-                            + "\nGroup: " + foundNewspaper.getGroup()
-                            + "\nSource: " + foundNewspaper.getSource()
-                            + "\nRegion: " + foundNewspaper.getRegion());
-                    statusLabel.setStyle("-fx-text-fill: green;");
-                } else {
-                    statusLabel.setText("No newspaper found with ID: " + id);
-                    statusLabel.setStyle("-fx-text-fill: red;");
-                }
+    private void removeDocument(Document document) {
+        try {
+            if (document instanceof Book) {
+                ServiceManager.getBookManagement().removeDocument((Book) document);
+            } else if (document instanceof Magazine) {
+                ServiceManager.getMagazineManagement().removeDocument((Magazine) document);
+            } else if (document instanceof Newspaper) {
+                ServiceManager.getNewsPaperManagement().removeDocument((Newspaper) document);
             }
-        });
-    
-        removeButton.setOnAction(event -> {
-            String id = idField.getText().trim();
-            if (id.isEmpty()) {
-                statusLabel.setText("Please enter an ID to remove.");
-                statusLabel.setStyle("-fx-text-fill: red;");
-                return;
-            }
-            alert.setTitle("Confirm Removal");
-            alert.setHeaderText("Are you sure you want to remove this newspaper?");
-            alert.setContentText("Newspaper ID: " + id);
-    
-            alert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        Newspaper foundNewspaper = ServiceManager.getNewsPaperManagement().getDocument(id);
-                        if (foundNewspaper != null) {
-                            ServiceManager.getNewsPaperManagement().removeDocument(foundNewspaper);
-                            statusLabel.setText("Newspaper with ID " + id + " removed successfully.");
-                            statusLabel.setStyle("-fx-text-fill: green;");
-                            idField.clear();
-                        } else {
-                            statusLabel.setText("No newspaper found with ID: " + id);
-                            statusLabel.setStyle("-fx-text-fill: red;");
-                        }
-                    } catch (Exception e) {
-                        statusLabel.setText("Failed to remove newspaper.");
-                        statusLabel.setStyle("-fx-text-fill: red;");
-                        e.printStackTrace();
-                    }
-                } else {
-                    statusLabel.setText("Removal canceled.");
-                    statusLabel.setStyle("-fx-text-fill: orange;");
-                }
-            });
-        });
-        mainBox.getChildren().clear();
-        mainBox.getChildren().addAll(idField, checkButton, removeButton, statusLabel);
+        } catch (Exception e) {
+            updateStatus("Failed to remove document.", "red");
+            e.printStackTrace();
+        }
+    }
+
+    private String documentDetails(Document document) {
+        if (document instanceof Book book) {
+            return "Name: " + book.getName() +
+                    "\nAuthor: " + book.getAuthor() +
+                    "\nGenre: " + book.getGroup() +
+                    "\nPublish Date: " + book.getPublishDate() +
+                    "\nISBN: " + book.getISBN();
+        } else if (document instanceof Magazine magazine) {
+            return "Title: " + magazine.getName() +
+                    "\nGenre: " + magazine.getGroup() +
+                    "\nPublisher: " + magazine.getPublisher();
+        } else if (document instanceof Newspaper newspaper) {
+            return "Name: " + newspaper.getName() +
+                    "\nGroup: " + newspaper.getGroup() +
+                    "\nSource: " + newspaper.getSource() +
+                    "\nRegion: " + newspaper.getRegion();
+        }
+        return "Unknown document type.";
+    }
+
+    private void updateStatus(String message, String color) {
+        statusLabel.setText(message);
+        statusLabel.setStyle("-fx-text-fill: " + color + ";");
     }
 }
