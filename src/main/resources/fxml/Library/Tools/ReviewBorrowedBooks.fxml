@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="642.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+
+      <!-- Taskbar Section -->
+      <AnchorPane prefHeight="67.0" prefWidth="642.0" styleClass="taskbar">
+         <children>
+            <!-- Application Icon -->
+            <ImageView fitHeight="45.0" fitWidth="52.0" layoutX="14.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/icon.png" />
+               </image>
+            </ImageView>
+
+            <!-- Header Title -->
+            <Label layoutX="248.0" layoutY="14.0" text="Review Book">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+
+      <!-- Content Section -->
+      <AnchorPane layoutY="67.0" prefHeight="533.0" prefWidth="642.0">
+         <children>
+
+            <!-- Star Rating -->
+            <HBox fx:id="starRatingBox" layoutX="247.0" layoutY="50.0" prefHeight="35.0" prefWidth="147.0" spacing="5">
+               <children>
+                  <!-- Individual Stars -->
+                  <Label styleClass="star" text="★" />
+                  <Label styleClass="star" text="★" />
+                  <Label styleClass="star" text="★" />
+                  <Label styleClass="star" text="☆" />
+                  <Label styleClass="star" text="☆" />
+               </children>
+            </HBox>
+
+            <!-- Comment Section -->
+            <VBox layoutX="50.0" layoutY="120.0" spacing="15.0">
+               <children>
+
+                  <!-- Comment Input -->
+                  <TextArea fx:id="commentTextArea" prefHeight="100.0" prefWidth="540.0" promptText="Write your comment here..." />
+
+                  <!-- Submit Button -->
+                  <Button fx:id="submitCommentButton" prefWidth="150.0" styleClass="primary-button" text="Submit Review" />
+
+                  <!-- Display Comments -->
+                  <VBox fx:id="commentsBox" spacing="10.0">
+                     <children>
+                        <!-- Placeholder for existing comments -->
+                        <Label styleClass="placeholder" text="No reviews yet. Be the first to leave a comment!" />
+                     </children>
+                  </VBox>
+
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+
+   <!-- Stylesheets -->
+   <stylesheets>
+      <URL value="@../../../css/BasicUI.css" />
+      <URL value="@../../../css/Tools.css" />
+      <URL value="@../../../css/ReviewStyle.css" />
+   </stylesheets>
+</AnchorPane>
