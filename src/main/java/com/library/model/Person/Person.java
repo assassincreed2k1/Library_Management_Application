@@ -6,9 +6,10 @@ public class Person {
     private String gender;
     private String dateOfBirth;
     private String phoneNumber;
+    private String password;
 
     /**
-     * constructor Person no param
+     * Constructor Person no param
      */
     public Person() {
         name = "";
@@ -16,22 +17,24 @@ public class Person {
         gender = "";
         dateOfBirth = "";
         phoneNumber = "";
+        password = "123456"; //default
     }
 
     /**
-     * constructor for person who has all information.
+     * Constructor for person who has all information.
      * @param name is String
      * @param address is String
      * @param gender is String
      * @param dateOfBirth is String
      * @param phoneNumber is String
      */
-    public Person(String name, String address, String gender, String dateOfBirth, String phoneNumber) { 
+    public Person(String name, String address, String gender, String dateOfBirth, String phoneNumber) {
         this.name = name;
         this.address = address;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
+        this.password = "123456";
     }
 
     public String getName() {
@@ -74,14 +77,20 @@ public class Person {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     /**
-     * return String will all information of Person.
+     * Return String with all information of Person (excluding password for security).
      * @return is String
      */
     public String getDetails() {
         return String.format("Name: %s\nGender: %s\nAddress: %s\nPhone Number: %s\n",
                             name, gender, address, phoneNumber);
     }
-
-
 }

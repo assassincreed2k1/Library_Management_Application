@@ -59,6 +59,13 @@ public class Book extends Document {
         this.publishDate = publishDate;
     }
 
+    public Book(String id, String name, String group, boolean isAvailable, String isbn, String author, String publishDate) {
+        super(id, name, group, isAvailable); // Gọi constructor của Document
+        this.isbn = isbn;
+        this.author = author;
+        this.publishDate = publishDate;
+    }
+
     public String getISBN() {
         return isbn;
     }

@@ -1,6 +1,6 @@
 package com.library.model.doc;
 
-import com.library.service.NewsPaperManagament;
+import com.library.service.NewsPaperManagement;
 
 /**
  * The {@code Newspaper} class represents a type of {@link Document}.
@@ -14,7 +14,7 @@ public class Newspaper extends Document {
     private String source;
     private String region;
 
-    private NewsPaperManagament newsManagament = new NewsPaperManagament();
+    private NewsPaperManagement newsManagament = new NewsPaperManagement();
 
     /**
      * Default constructor for the {@code Newspaper} class.
@@ -35,6 +35,22 @@ public class Newspaper extends Document {
      */
     public Newspaper(String id, String name, String group, String source, String region) {
         super(id, name, group);
+        this.source = source;
+        this.region = region;
+    }
+
+    /**
+     * Constructs a {@code Newspaper} with the specified name, group, quantity,
+     * available source, and region.
+     * @param id ID of the newspaper.
+     * @param name The name of the newpaper.
+     * @param group The group of the newpaper.
+     * @param isAvailable The available of the newpaper.
+     * @param source The source of the newpaper.
+     * @param region The region of the newpaper.
+     */
+    public Newspaper(String id, String name, String group, boolean isAvailable, String source, String region) {
+        super(id, name, group, isAvailable);
         this.source = source;
         this.region = region;
     }

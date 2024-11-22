@@ -1,117 +1,146 @@
- package com.library;
+package com.library.service;
 
- import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
- import com.library.model.doc.Book;
- import com.library.model.doc.Newspaper;
- import com.library.model.doc.Magazine;
- import org.junit.jupiter.api.BeforeEach;
- import org.junit.jupiter.api.Test;
- import org.mockito.MockedStatic;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
- import java.sql.Connection;
- import java.sql.PreparedStatement;
- import java.sql.SQLException;
+import org.junit.jupiter.api.*;
 
- public class LoanManagementTest {
-     private LoanManagement loanManagement;
+import com.library.model.doc.Book;
+import com.library.model.doc.Newspaper;
+import com.library.model.doc.Magazine;
 
-     @BeforeEach
-     void setUp() {
-         loanManagement = new LoanManagement();
-     }
+class LoanManagementTest {
+    private static LoanManagement loanManagement;
+    private static Connection connection;
 
-     @Test
-     void testBorrowBook_Success() throws SQLException {
-         Book book = mock(Book.class);
-         when(book.getIsAvailable()).thenReturn(true);
-         when(book.getID()).thenReturn("123");
+    @BeforeAll
+    static void setupDatabase() throws SQLException {
+        // Tạo cơ sở dữ liệu SQLite tạm
+        connection = DriverManager.getConnection(LoanManagement.getUrl());
+        try (Statement stmt = connection.createStatement()) {
+            // Tạo bảng Books
+            stmt.execute("CREATE TABLE IF NOT EXISTS Books (id TEXT PRIMARY KEY, isAvailable BOOLEAN)");
+            stmt.execute("CREATE TABLE IF NOT EXISTS Newspaper (id TEXT PRIMARY KEY, isAvailable BOOLEAN)");
+            stmt.execute("CREATE TABLE IF NOT EXISTS Magazines (id TEXT PRIMARY KEY, isAvailable BOOLEAN)");
 
-         try (MockedStatic<DriverManager> driverManagerMock = mockStatic(DriverManager.class)) {
-             Connection mockConnection = mock(Connection.class);
-             PreparedStatement mockStatement = mock(PreparedStatement.class);
+            // Thêm dữ liệu mẫu
+            stmt.execute("INSERT INTO Books (id, isAvailable) VALUES ('book1', 1)");
+            stmt.execute("INSERT INTO Newspaper (id, isAvailable) VALUES ('newspaper1', 1)");
+            stmt.execute("INSERT INTO Magazines (id, isAvailable) VALUES ('magazine1', 1)");
+        }
+        loanManagement = new LoanManagement();
+    }
 
-             driverManagerMock.when(() -> DriverManager.getConnection(anyString())).thenReturn(mockConnection);
-             when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
+    @AfterAll
+    static void cleanupDatabase() throws SQLException {
+        // Đóng kết nối
+        connection.close();
+    }
 
-             loanManagement.borrowBook(book);
+    @Test
+    void testBorrowBook_Success() {
+        // Arrange
+        Book book = new Book("book1", true);
 
-             verify(mockStatement).setBoolean(1, false);
-             verify(mockStatement).setString(2, "123");
-             verify(mockStatement).executeUpdate();
-         }
-     }
+        // Act
+        loanManagement.borrowBook(book);
 
-     @Test
-     void testBorrowBook_AlreadyBorrowed() {
-         Book book = mock(Book.class);
-         when(book.getIsAvailable()).thenReturn(false);
+        // Assert
+        boolean isAvailable = isBookAvailable("book1");
+        assertFalse(isAvailable, "The book should be marked as not available.");
+    }
 
-         loanManagement.borrowBook(book);
+    @Test
+    void testReturnBook_Success() {
+        // Arrange
+        Book book = new Book("book1", false);
 
-         // No interaction with database
-         verifyNoInteractions(DriverManager.class);
-     }
+        // Act
+        loanManagement.returnBook(book);
 
-     @Test
-     void testReturnBook_Success() throws SQLException {
-         Book book = mock(Book.class);
-         when(book.getID()).thenReturn("123");
+        // Assert
+        boolean isAvailable = isBookAvailable("book1");
+        assertTrue(isAvailable, "The book should be marked as available.");
+    }
 
-         try (MockedStatic<DriverManager> driverManagerMock = mockStatic(DriverManager.class)) {
-             Connection mockConnection = mock(Connection.class);
-             PreparedStatement mockStatement = mock(PreparedStatement.class);
+    @Test
+    void testBorrowNewspaper_Success() {
+        // Arrange
+        Newspaper newspaper = new Newspaper("newspaper1", true);
 
-             driverManagerMock.when(() -> DriverManager.getConnection(anyString())).thenReturn(mockConnection);
-             when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
+        // Act
+        loanManagement.borrowNewspaper(newspaper);
 
-             loanManagement.returnBook(book);
+        // Assert
+        boolean isAvailable = isNewspaperAvailable("newspaper1");
+        assertFalse(isAvailable, "The newspaper should be marked as not available.");
+    }
 
-             verify(mockStatement).setBoolean(1, true);
-             verify(mockStatement).setString(2, "123");
-             verify(mockStatement).executeUpdate();
-         }
-     }
+    @Test
+    void testReturnNewspaper_Success() {
+        // Arrange
+        Newspaper newspaper = new Newspaper("newspaper1", false);
 
-     @Test
-     void testBorrowNewspaper_Success() throws SQLException {
-         Newspaper newspaper = mock(Newspaper.class);
-         when(newspaper.getIsAvailable()).thenReturn(true);
-         when(newspaper.getID()).thenReturn("456");
+        // Act
+        loanManagement.returnNewspaper(newspaper);
 
-         try (MockedStatic<DriverManager> driverManagerMock = mockStatic(DriverManager.class)) {
-             Connection mockConnection = mock(Connection.class);
-             PreparedStatement mockStatement = mock(PreparedStatement.class);
+        // Assert
+        boolean isAvailable = isNewspaperAvailable("newspaper1");
+        assertTrue(isAvailable, "The newspaper should be marked as available.");
+    }
 
-             driverManagerMock.when(() -> DriverManager.getConnection(anyString())).thenReturn(mockConnection);
-             when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
+    @Test
+    void testBorrowMagazine_Success() {
+        // Arrange
+        Magazine magazine = new Magazine("magazine1", true);
 
-             loanManagement.borrowNewspaper(newspaper);
+        // Act
+        loanManagement.borrowMagazine(magazine);
 
-             verify(mockStatement).setBoolean(1, false);
-             verify(mockStatement).setString(2, "456");
-             verify(mockStatement).executeUpdate();
-         }
-     }
+        // Assert
+        boolean isAvailable = isMagazineAvailable("magazine1");
+        assertFalse(isAvailable, "The magazine should be marked as not available.");
+    }
 
-     @Test
-     void testBorrowMagazine_Success() throws SQLException {
-         Magazine magazine = mock(Magazine.class);
-         when(magazine.getIsAvailable()).thenReturn(true);
-         when(magazine.getID()).thenReturn("789");
+    @Test
+    void testReturnMagazine_Success() {
+        // Arrange
+        Magazine magazine = new Magazine("magazine1", false);
 
-         try (MockedStatic<DriverManager> driverManagerMock = mockStatic(DriverManager.class)) {
-             Connection mockConnection = mock(Connection.class);
-             PreparedStatement mockStatement = mock(PreparedStatement.class);
+        // Act
+        loanManagement.returnMagazine(magazine);
 
-             driverManagerMock.when(() -> DriverManager.getConnection(anyString())).thenReturn(mockConnection);
-             when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
+        // Assert
+        boolean isAvailable = isMagazineAvailable("magazine1");
+        assertTrue(isAvailable, "The magazine should be marked as available.");
+    }
 
-             loanManagement.borrowMagazine(magazine);
+    // Helper methods to check availability in the database
+    private boolean isBookAvailable(String id) {
+        return checkAvailability("Books", id);
+    }
 
-             verify(mockStatement).setBoolean(1, false);
-             verify(mockStatement).setString(2, "789");
-             verify(mockStatement).executeUpdate();
-         }
-     }
- }
+    private boolean isNewspaperAvailable(String id) {
+        return checkAvailability("Newspaper", id);
+    }
+
+    private boolean isMagazineAvailable(String id) {
+        return checkAvailability("Magazines", id);
+    }
+
+    private boolean checkAvailability(String table, String id) {
+        try (Statement stmt = connection.createStatement()) {
+            var rs = stmt.executeQuery("SELECT isAvailable FROM " + table + " WHERE id = '" + id + "'");
+            if (rs.next()) {
+                return rs.getBoolean("isAvailable");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+}

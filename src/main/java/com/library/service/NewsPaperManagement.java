@@ -11,9 +11,9 @@ import com.library.model.doc.Newspaper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class NewsPaperManagament extends LibraryService {
+public class NewsPaperManagement extends LibraryService {
 
-    public NewsPaperManagament() {
+    public NewsPaperManagement() {
         // Create listNewspaper
         createList("CREATE TABLE IF NOT EXISTS Newspaper ("
                 + "id VARCHAR(255) PRIMARY KEY, "

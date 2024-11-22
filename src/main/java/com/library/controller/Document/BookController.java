@@ -6,7 +6,7 @@ import javafx.concurrent.Task;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
+// import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -14,23 +14,27 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+// import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
+// import javafx.scene.control.CheckBox;
+// import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
+import com.library.controller.tools.RemoveDocumentController;
 import com.library.controller.tools.UpdateDocumentController;
 import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
 import com.library.service.ServiceManager;
+import com.library.service.LibrarianManagement;
 
 public class BookController {
+
+    private LibrarianManagement librarianManagement = new LibrarianManagement();
 
     private BookManagement bookManagement;
 
@@ -86,12 +90,8 @@ public class BookController {
 
         exitButton.setOnAction(event -> {
             try {
-                FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
-                Parent root = editPage.load();
-
-                Stage stage = (Stage) exitButton.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
+                librarianManagement.switchTo("/fxml/Library/LibraryHome.fxml", 
+                        (Stage) exitButton.getScene().getWindow());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -234,6 +234,7 @@ public class BookController {
         Label isbnLabel = new Label("ISBN: " + selectedBook.getISBN());
         Label availabilityLabel = new Label("Available: " + (selectedBook.getIsAvailable() ? "Yes" : "No"));
         Button editButton = new Button("Edit");
+        Button deleteButton = new Button("Delete");
 
         idLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         titleLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
@@ -243,106 +244,56 @@ public class BookController {
         isbnLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         availabilityLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         editButton.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        deleteButton.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
 
         editButton.setOnAction(event -> {
-            Stage editStage = new Stage();
-            editStage.setTitle("Edit Book Information");
+            try {
+                FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/updateDocument.fxml"));
+                Parent root = editPage.load();
 
-            VBox editPane = new VBox(10);
-            editPane.setPadding(new Insets(10));
+                UpdateDocumentController upController = editPage.getController();
+                upController.setCallerController(this);
+                upController.setSelectedDocument(selectedBook);
+                upController.setup();
 
-            Label bookIdLabel = new Label("ID: " + selectedBook.getID());
-            bookIdLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+                Stage stage = new Stage();
+                stage.setTitle("Update Document");
+                stage.setScene(new Scene(root));
 
-            TextField titleField = new TextField(selectedBook.getName());
-            TextField authorField = new TextField(selectedBook.getAuthor());
-            TextField genreField = new TextField(selectedBook.getGroup());
-            TextField publishDateField = new TextField(selectedBook.getPublishDate());
-            TextField isbnField = new TextField(selectedBook.getISBN());
-            CheckBox availabilityCheckBox = new CheckBox("Available");
-            availabilityCheckBox.setSelected(selectedBook.getIsAvailable());
-
-            Label statusLabel = new Label();
-            statusLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-
-            Button updateThisBookButton = new Button("Update This Book");
-            updateThisBookButton.setOnAction(e -> {
-                selectedBook.setName(titleField.getText());
-                selectedBook.setAuthor(authorField.getText());
-                selectedBook.setGroup(genreField.getText());
-                selectedBook.setPublishDate(publishDateField.getText());
-                selectedBook.setISBN(isbnField.getText());
-                selectedBook.setIsAvailable(availabilityCheckBox.isSelected());
-
-                try {
-                    this.bookManagement.updateDocuments(selectedBook);
+                stage.setOnCloseRequest(event2 -> {
                     bookTable.setItems(getBookList());
-                    statusLabel.setText("Book updated successfully!");
-                    statusLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14px;");
-                } catch (Exception ex) {
-                    statusLabel.setText("Failed to update book.");
-                    statusLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
-                }
-            });
+                });
 
-            Button updateMatchingIsbnButton = new Button("Update All by ISBN");
-            updateMatchingIsbnButton.setOnAction(e -> {
-                selectedBook.setName(titleField.getText());
-                selectedBook.setAuthor(authorField.getText());
-                selectedBook.setGroup(genreField.getText());
-                selectedBook.setPublishDate(publishDateField.getText());
-                selectedBook.setISBN(isbnField.getText());
-                selectedBook.setIsAvailable(availabilityCheckBox.isSelected());
-
-                try {
-                    this.bookManagement.updateDocumentMatchingISBN(selectedBook);
-                    bookTable.setItems(getBookList());
-                    statusLabel.setText("All books with matching ISBN updated successfully!");
-                    statusLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14px;");
-                } catch (Exception ex) {
-                    statusLabel.setText("Failed to update books by ISBN.");
-                    statusLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
-                }
-            });
-
-            editPane.getChildren().addAll(
-                    bookIdLabel,
-                    new Label("Title:"), titleField,
-                    new Label("Author:"), authorField,
-                    new Label("Genre:"), genreField,
-                    new Label("Publish Date:"), publishDateField,
-                    new Label("ISBN:"), isbnField,
-                    availabilityCheckBox,
-                    updateThisBookButton,
-                    updateMatchingIsbnButton,
-                    statusLabel);
-
-            Scene editScene = new Scene(editPane, 400, 500);
-            editStage.setScene(editScene);
-
-            editStage.show();
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
-        // editButton.setOnAction(event -> {
-        // try {
-        // FXMLLoader editPage = new
-        // FXMLLoader(getClass().getResource("/fxml/Library/Tools/updateDocument.fxml"));
-        // Parent root = editPage.load();
+        deleteButton.setOnAction(event -> {
+            try {
+                FXMLLoader delPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/removeDocument.fxml"));
+                Parent root = delPage.load();
 
-        // UpdateDocumentController controller = editPage.getController();
-        // controller.setCallerController(this);
-        // controller.setSelectedDocument(selectedBook);
-        // Stage stage = new Stage();
-        // stage.setTitle("Update Document");
-        // stage.setScene(new Scene(root));
-        // stage.show();
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-        // });
+                RemoveDocumentController rmController = delPage.getController();
+                rmController.setup(selectedBook);
+
+                Stage stage = new Stage();
+                stage.setTitle("Remove Document");
+                stage.setScene(new Scene(root));
+
+                stage.setOnCloseRequest(event2 -> {
+                    bookTable.setItems(getBookList());
+                });
+
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel, publishDateLabel, isbnLabel,
-                availabilityLabel, editButton);
+                availabilityLabel, editButton, deleteButton);
 
         idLabel.setLayoutX(5);
         idLabel.setLayoutY(0);
@@ -367,6 +318,9 @@ public class BookController {
 
         editButton.setLayoutX(5);
         editButton.setLayoutY(160);
+        
+        deleteButton.setLayoutX(200);
+        deleteButton.setLayoutY(160);
 
         prevImage.setImage(new Image(getClass().getResource("/img/prv.png").toExternalForm()));
     }
