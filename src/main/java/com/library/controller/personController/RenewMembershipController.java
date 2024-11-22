@@ -79,6 +79,7 @@ public class RenewMembershipController {
             @Override
             protected void succeeded() {
                 MessageUtil.showMessage(messageText, "Membership successfully renewed!", "green");
+                member = member.getInforFromDatabase(membershipId);
                 inforMemberTextArea.setText(member.getDetails());
             }
 

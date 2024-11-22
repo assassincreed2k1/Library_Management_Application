@@ -3,6 +3,7 @@ package com.library.controller.personController;
 import java.time.LocalDate;
 
 import com.library.model.Person.Member;
+import com.library.model.Person.User;
 import com.library.model.doc.Book;
 import com.library.model.doc.Document;
 import com.library.model.doc.Magazine;
@@ -164,7 +165,7 @@ public class DocumentBorrowController {
     
         String memberID = memberIDTextField.getText().trim();
         String documentID = documentIDTextField.getText().trim();
-        String editedBy = "default"; // sau này vào ứng dụng được rồi thì sửa sau
+        String editedBy = User.getId(); // sau này vào ứng dụng được rồi thì sửa sau
     
         Task<String> task = new Task<String>() {
             @Override

@@ -152,8 +152,8 @@ public class MemberManagement extends LibraryService {
                 member.setPhoneNumber(rs.getString("phoneNumber"));
                 member.setGender(rs.getString("gender"));
                 member.setJoinDate(rs.getDate("joinDate") != null ? rs.getDate("joinDate").toString() : null);
-                member.setExpiryDate(rs.getDate("expiryDate") != null ? rs.getDate("expiryDate").toString() : null);
-                member.setPassword(rs.getString("password")); // Lấy password
+                member.setExpiryDate(rs.getString("expiryDate") != null ? rs.getString("expiryDate") : null);
+                member.setPassword(rs.getString("password"));
             }
         } catch (SQLException e) {
             System.err.println("Error fetching member info: " + e.getMessage());

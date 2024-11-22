@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.sql.ResultSet;
 
 import com.library.model.doc.Book;
@@ -251,4 +253,36 @@ public class BookManagement extends LibraryService {
         return filteredBooks;
     }
 
+    public HashMap<String, Integer> getPopularBook() {
+        HashMap<String, Integer> popularBooks = new HashMap<>();
+        String sql_statement = """
+                select b.isbn, count(*) as borrowed_total
+                from Books b
+                join bookTransaction t on t.document_id = b.id
+                group by b.isbn
+                having count(*) > 0
+                order by borrowed_total desc
+                limit 10;
+                """;
+    
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+    
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String isbn = rs.getString("isbn"); 
+                    int borrowedTotal = rs.getInt("borrowed_total");  
+                    popularBooks.put(isbn, borrowedTotal); 
+                }
+            }
+    
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        for (Map.Entry<String, Integer> book : popularBooks.entrySet()) {
+            System.out.println(book.getKey() + " " + book.getValue());
+        }
+
+        return popularBooks;
+    }    
 }
