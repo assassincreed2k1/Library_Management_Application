@@ -51,6 +51,7 @@ public class App extends Application {
             stage.setY(event.getScreenY() - yOffset);
         });
     }
+
     public static void main(String[] args) {
         User.setUser("A000001");
         launch(args);

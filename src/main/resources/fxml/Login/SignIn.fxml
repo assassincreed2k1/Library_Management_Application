@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="402.0" prefWidth="556.0" styleClass="box-mini" stylesheets="@LoginStyle.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.SignInController">
+<AnchorPane prefHeight="402.0" prefWidth="556.0" styleClass="box-mini" stylesheets="@LoginStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.SignInController">
    <children>
       <TextField fx:id="usernameField" layoutX="137.0" layoutY="145.0" prefHeight="42.0" prefWidth="276.0" promptText="Username">
          <font>
@@ -46,15 +46,6 @@
          <font>
             <Font size="19.0" />
          </font>
-      </Button>
-      <Button id="remove_background" layoutX="511.0" layoutY="2.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="40.0">
-         <graphic>
-            <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" styleClass="exit-button">
-               <image>
-                  <Image url="@../../img/Log_in/X.png" />
-               </image>
-            </ImageView>
-         </graphic>
       </Button>
       <Label fx:id="errorLabel" layoutX="137.0" layoutY="275.0" prefHeight="20.0" prefWidth="276.0" text="" textFill="red" />
    </children>

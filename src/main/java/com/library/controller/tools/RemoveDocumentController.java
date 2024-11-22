@@ -182,7 +182,6 @@ public class RemoveDocumentController {
         mainBox.getChildren().clear();
         mainBox.getChildren().addAll(idField, checkButton, removeButton, statusLabel);
     }
-    
 
     private void setupRemoveNewspaper() {
 
@@ -195,7 +194,7 @@ public class RemoveDocumentController {
                 statusLabel.setText("Please enter an ID.");
                 statusLabel.setStyle("-fx-text-fill: red;");
             } else {
-                Newspaper foundNewspaper = ServiceManager.getNewsPaperManagament().getDocument(id);
+                Newspaper foundNewspaper = ServiceManager.getNewsPaperManagement().getDocument(id);
                 if (foundNewspaper != null) {
                     statusLabel.setText("Newspaper found:\nName: " + foundNewspaper.getName()
                             + "\nGroup: " + foundNewspaper.getGroup()
@@ -223,9 +222,9 @@ public class RemoveDocumentController {
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     try {
-                        Newspaper foundNewspaper = ServiceManager.getNewsPaperManagament().getDocument(id);
+                        Newspaper foundNewspaper = ServiceManager.getNewsPaperManagement().getDocument(id);
                         if (foundNewspaper != null) {
-                            ServiceManager.getNewsPaperManagament().removeDocument(foundNewspaper);
+                            ServiceManager.getNewsPaperManagement().removeDocument(foundNewspaper);
                             statusLabel.setText("Newspaper with ID " + id + " removed successfully.");
                             statusLabel.setStyle("-fx-text-fill: green;");
                             idField.clear();

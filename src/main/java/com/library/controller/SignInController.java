@@ -1,12 +1,11 @@
 package com.library.controller;
 
+import com.library.service.LibraryService;
+
 import java.io.IOException;
 
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
@@ -21,6 +20,8 @@ import com.library.model.helpers.PersonIdHandle;
 
 public class SignInController {
     //private BackgroundService executor = ServiceManager.getBackgroundService();
+    private Person person = null;
+    private LibraryService libraryService = new LibraryService();
 
     @FXML
     private TextField usernameField;
@@ -34,8 +35,6 @@ public class SignInController {
     // private Button closeButton;
     @FXML
     private Label errorLabel;
-
-    Person person = null;
 
     @FXML
     private void loginButtonClick() throws IOException {
@@ -65,7 +64,7 @@ public class SignInController {
                 User.setUser(username);
                 try{
                     System.out.println(User.getDetails()); //test user
-                    switchTo("/fxml/Library/LibraryHome.fxml");
+                    libraryService.switchTo("/fxml/Library/LibraryHome.fxml", (Stage) usernameField.getScene().getWindow());
                 } catch (IOException e) {
                     errorLabel.setText("Faild to load the next scene. Error: " + e.getMessage());
                 }
@@ -98,7 +97,7 @@ public class SignInController {
     private void registerButtonClick() {
         errorLabel.setText("Register button clicked.");
         try {
-            switchTo("/fxml/Login/SignUp.fxml");
+            libraryService.switchTo("/fxml/Login/SignUp.fxml", (Stage) usernameField.getScene().getWindow());
         } catch (IOException e) {
             errorLabel.setText(e.getMessage());
             e.printStackTrace();
@@ -112,11 +111,4 @@ public class SignInController {
     //     stage.close();
     // }
 
-    private void switchTo(String pagePath) throws IOException {
-        Parent libraryPage = FXMLLoader.load(getClass().getResource(pagePath));
-        Stage stage = (Stage) usernameField.getScene().getWindow();
-        Scene scene = new Scene(libraryPage);
-        stage.setScene(scene);
-        stage.show();
-    }
 }
