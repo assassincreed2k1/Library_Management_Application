@@ -1,7 +1,7 @@
 package com.library.controller.tools;
 
 import com.library.service.BookManagement;
-import com.library.controller.Library.LibraryController;
+import com.library.controller.Library.LibraryHomeController;
 import com.library.model.doc.Book;
 import com.library.service.LibraryService;
 
@@ -114,11 +114,11 @@ public class DocumentDisplayManager {
      * @return the Image object, either from the cache or newly loaded.
      */
     private Image getCachedImage(String imageUrl) {
-        if (LibraryController.imageCache.containsKey(imageUrl)) {
-            return LibraryController.imageCache.get(imageUrl);
+        if (LibraryHomeController.imageCache.containsKey(imageUrl)) {
+            return LibraryHomeController.imageCache.get(imageUrl);
         }
         Image image = new Image(imageUrl, true);
-        LibraryController.imageCache.put(imageUrl, image);
+        LibraryHomeController.imageCache.put(imageUrl, image);
         return image;
     }
 
@@ -138,7 +138,7 @@ public class DocumentDisplayManager {
 
         loadImageTask.setOnSucceeded(event -> {
             Image image = loadImageTask.getValue();
-            LibraryController.imageCache.put(imageUrl, image); // Cache the loaded image
+            LibraryHomeController.imageCache.put(imageUrl, image); // Cache the loaded image
             imageView.setImage(image);
         });
 

@@ -4,38 +4,33 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.library.service.BookManagement;
-import com.library.model.Person.User;
-import com.library.service.LibraryService;
-import com.library.service.ServiceManager;
 import com.library.controller.tools.DocumentDisplayManager;
 import com.library.controller.tools.SearchBookController;
+import com.library.model.Person.User;
+import com.library.service.BookManagement;
+import com.library.service.LibraryService;
+import com.library.service.ServiceManager;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.TextField;
-import javafx.event.EventHandler;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-/**
- * Controller class for managing the library's home page.
- * It handles interactions with the UI components and manages library data.
- */
-public class LibraryController {
-
+public class LibraryForBorrowerController {
     private LibraryService libraryService;
     private BookManagement bookManagement;
     private DocumentDisplayManager latestDocsManager;
@@ -72,9 +67,6 @@ public class LibraryController {
 
     @FXML
     private Button searchButton;
-
-    @FXML
-    private Button addDocumentButton, removeDocumentButton, updateDocumentButton;
 
     @FXML
     private Button showAllButton;
@@ -190,24 +182,9 @@ public class LibraryController {
         setComboBoxHandler(magazinesComboBox);
         setComboBoxHandler(newspapersComboBox);
         setComboBoxHandler(menuComboBox);
-
-        if (addDocumentButton != null) {
-            addDocumentButton.setOnAction(event -> handleAddDocument());
-
-        }
-        if (removeDocumentButton != null) {
-            removeDocumentButton.setOnAction(event -> handleRemoveDocument());
-        }
-
-        if (updateDocumentButton != null) {
-            updateDocumentButton.setOnAction(event -> handleUpdateDocument());
-        }
-
         searchButton.setOnAction(event -> handleSearchDocuments());
         showAllButton.setOnAction(event -> handleShowAll());
-        if (borrowedBooksButton != null) {
-            borrowedBooksButton.setOnAction(event -> handleShowBorrowedBook());
-        }
+        borrowedBooksButton.setOnAction(event -> handleBorrowBookButton());
 
         for (int i = 0; i < 2; i++) {
             moreListBooks[i].setOnAction(event -> {
@@ -283,43 +260,20 @@ public class LibraryController {
         }
     }
 
-    // Handle Add Document action --Need Fix
-    private void handleAddDocument() {
-        try {
-            openNewWindow("/fxml/Library/Tools/AddDocument.fxml");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Handle Remove Document action --Need Fix
-    private void handleRemoveDocument() {
-        try {
-            libraryService.switchTo("/fxml/Library/Tools/RemoveDocument.fxml",
-                    (Stage) usernameLabel.getScene().getWindow());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Handle Update Document action
-    private void handleUpdateDocument() {
-        System.out.println("Updating a document...");
-    }
-
-    private void handleShowBorrowedBook() {
-        try {
-            libraryService.switchTo("/fxml/Library/Tools/BorrowingHistory.fxml", (Stage) usernameLabel.getScene().getWindow());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     // Handle Show All action -- Need Fix
     private void handleShowAll() {
         System.out.println("Showing all documents...");
         try {
             libraryService.switchTo("/fxml/Documents/Documents.fxml", (Stage) usernameLabel.getScene().getWindow());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Borrow Books
+    private void handleBorrowBookButton() {
+        try {
+            libraryService.switchTo("/fxml/Library/Tools/BorrowingHistory.fxml", (Stage) usernameLabel.getScene().getWindow());
         } catch (IOException e) {
             e.printStackTrace();
         }
