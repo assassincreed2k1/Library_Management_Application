@@ -3,6 +3,7 @@ package com.library.controller.personController;
 import java.time.LocalDate;
 
 import com.library.model.Person.Member;
+import com.library.model.Person.User;
 import com.library.model.doc.Book;
 import com.library.model.doc.Document;
 import com.library.model.doc.Magazine;
@@ -91,10 +92,17 @@ public class DocumentBorrowController {
                 member = (Member) PersonIdHandle.getPerson(memberID);
 
                 if (member == null) {
+                    
                     inforMemTextArea.setText("Not found");
                     throw new IllegalArgumentException("Not exists member with id: " + memberID);
 
                 }
+
+                if (member.getExpiryDate() == null || LocalDate.parse(member.getExpiryDate()).isBefore(LocalDate.now())) {
+                    inforMemTextArea.setText("Card has expired!");
+                    throw new Exception("This member needs to be renewed before borrowing");
+                }
+                
 
                 Platform.runLater(() -> inforMemTextArea.setText(member.getDetails()));
 
@@ -157,7 +165,7 @@ public class DocumentBorrowController {
     
         String memberID = memberIDTextField.getText().trim();
         String documentID = documentIDTextField.getText().trim();
-        String editedBy = "default"; // sau này vào ứng dụng được rồi thì sửa sau
+        String editedBy = User.getId(); // sau này vào ứng dụng được rồi thì sửa sau
     
         Task<String> task = new Task<String>() {
             @Override

@@ -63,8 +63,11 @@ public class SignInController {
             protected void succeeded() {
                 User.setUser(username);
                 try{
-                    System.out.println(User.getDetails()); //test user
-                    libraryService.switchTo("/fxml/Library/LibraryHome.fxml", (Stage) usernameField.getScene().getWindow());
+                    if (User.isMember()) {
+                        libraryService.switchTo("/fxml/Library/LibraryForBorrower.fxml", (Stage) usernameField.getScene().getWindow());
+                    } else {
+                        libraryService.switchTo("/fxml/Library/LibraryHome.fxml", (Stage) usernameField.getScene().getWindow());
+                    } 
                 } catch (IOException e) {
                     errorLabel.setText("Faild to load the next scene. Error: " + e.getMessage());
                 }
