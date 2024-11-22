@@ -14,8 +14,15 @@ import com.library.model.doc.Magazine;
 import com.library.model.doc.Newspaper;
 
 public class CombinedDocument extends LibraryService {
+    private String url;
+
     public CombinedDocument() {
         // Create combined_documents table
+        createCombinedDocumentsTable();
+    }
+
+    public CombinedDocument(String url) {
+        this.url = url;
         createCombinedDocumentsTable();
     }
 
