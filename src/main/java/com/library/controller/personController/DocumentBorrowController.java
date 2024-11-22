@@ -91,12 +91,13 @@ public class DocumentBorrowController {
                 member = (Member) PersonIdHandle.getPerson(memberID);
 
                 if (member == null) {
+                    
                     inforMemTextArea.setText("Not found");
                     throw new IllegalArgumentException("Not exists member with id: " + memberID);
 
                 }
 
-                if (LocalDate.parse(member.getExpiryDate()).isBefore(LocalDate.now())) {
+                if (member.getExpiryDate() == null || LocalDate.parse(member.getExpiryDate()).isBefore(LocalDate.now())) {
                     inforMemTextArea.setText("Card has expired!");
                     throw new Exception("This member needs to be renewed before borrowing");
                 }
