@@ -1,3 +1,4 @@
+
 package com.library.service;
 
 import java.time.LocalDate;
@@ -30,7 +31,8 @@ public class MemberManagement extends LibraryService {
                 + "phoneNumber VARCHAR(11), "
                 + "gender VARCHAR(6), "
                 + "joinDate DATE NOT NULL, "
-                + "expiryDate DATE"
+                + "expiryDate DATE, "
+                + "password VARCHAR(255) NOT NULL"
                 + ");");
     }
 
@@ -42,12 +44,12 @@ public class MemberManagement extends LibraryService {
 
         String newId = String.format("M%06d", memberIdManagement.getID());
         String sql_statement = "INSERT INTO Member "
-                + "(membershipId, name, address, dateOfBirth, phoneNumber, gender, joinDate, expiryDate) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                + "(membershipId, name, address, dateOfBirth, phoneNumber, gender, joinDate, expiryDate, password) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url);
              PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-            
+
             pstmt.setString(1, newId);
             pstmt.setString(2, member.getName());
             pstmt.setString(3, member.getAddress());
@@ -56,6 +58,7 @@ public class MemberManagement extends LibraryService {
             pstmt.setString(6, member.getGender());
             pstmt.setDate(7, member.getJoinDate() != null ? DateString.toSqlDate(member.getJoinDate()) : Date.valueOf(LocalDate.now()));
             pstmt.setDate(8, member.getExpiryDate() != null ? DateString.toSqlDate(member.getExpiryDate()) : null);
+            pstmt.setString(9, member.getPassword()); 
 
             pstmt.executeUpdate();
             memberIdManagement.increaseID();
@@ -100,7 +103,8 @@ public class MemberManagement extends LibraryService {
                 + "phoneNumber = ?, "
                 + "gender = ?, "
                 + "joinDate = ?, "
-                + "expiryDate = ? "
+                + "expiryDate = ?, "
+                + "password = ? " 
                 + "WHERE membershipId = ?";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -113,7 +117,8 @@ public class MemberManagement extends LibraryService {
             pstmt.setString(5, member.getGender());
             pstmt.setDate(6, member.getJoinDate() != null ? DateString.toSqlDate(member.getJoinDate()) : null);
             pstmt.setDate(7, member.getExpiryDate() != null ? DateString.toSqlDate(member.getExpiryDate()) : null);
-            pstmt.setString(8, member.getMembershipId());
+            pstmt.setString(8, member.getPassword()); // Cập nhật password
+            pstmt.setString(9, member.getMembershipId());
 
             int rowsUpdated = pstmt.executeUpdate();
             System.out.println(rowsUpdated + " member(s) updated successfully.");
@@ -148,6 +153,7 @@ public class MemberManagement extends LibraryService {
                 member.setGender(rs.getString("gender"));
                 member.setJoinDate(rs.getDate("joinDate") != null ? rs.getDate("joinDate").toString() : null);
                 member.setExpiryDate(rs.getDate("expiryDate") != null ? rs.getDate("expiryDate").toString() : null);
+                member.setPassword(rs.getString("password")); // Lấy password
             }
         } catch (SQLException e) {
             System.err.println("Error fetching member info: " + e.getMessage());

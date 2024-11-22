@@ -96,6 +96,12 @@ public class DocumentBorrowController {
 
                 }
 
+                if (LocalDate.parse(member.getExpiryDate()).isBefore(LocalDate.now())) {
+                    inforMemTextArea.setText("Card has expired!");
+                    throw new Exception("This member needs to be renewed before borrowing");
+                }
+                
+
                 Platform.runLater(() -> inforMemTextArea.setText(member.getDetails()));
 
                 // Kiểm tra thông tin của tài liệu
