@@ -6,6 +6,13 @@
             "name": "App",
             "request": "launch",
             "mainClass": "com.library/com.library.App",
+            "projectName": "libgmr-app"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "com.library/com.library.App",
             "projectName": "library-app"
         },
         {

@@ -34,7 +34,7 @@ import javafx.stage.Stage;
  * Controller class for managing the library's home page.
  * It handles interactions with the UI components and manages library data.
  */
-public class LibraryHomeController {
+public class LibraryController {
 
     private LibraryService libraryService;
     private BookManagement bookManagement;
@@ -74,16 +74,13 @@ public class LibraryHomeController {
     private Button searchButton;
 
     @FXML
-    private Button addDocumentButton;
-
-    @FXML
-    private Button removeDocumentButton;
-
-    @FXML
-    private Button updateDocumentButton;
+    private Button addDocumentButton, removeDocumentButton, updateDocumentButton;
 
     @FXML
     private Button showAllButton;
+
+    @FXML
+    private Button borrowedBooksButton;
 
     @FXML
     private Hyperlink moreBooks1, moreBooks2;
@@ -194,11 +191,24 @@ public class LibraryHomeController {
         setComboBoxHandler(newspapersComboBox);
         setComboBoxHandler(menuComboBox);
 
+        if (addDocumentButton != null) {
+            addDocumentButton.setOnAction(event -> handleAddDocument());
+
+        }
+        if (removeDocumentButton != null) {
+            removeDocumentButton.setOnAction(event -> handleRemoveDocument());
+        }
+
+        if (updateDocumentButton != null) {
+            updateDocumentButton.setOnAction(event -> handleUpdateDocument());
+        }
+
         searchButton.setOnAction(event -> handleSearchDocuments());
-        addDocumentButton.setOnAction(event -> handleAddDocument());
-        removeDocumentButton.setOnAction(event -> handleRemoveDocument());
-        updateDocumentButton.setOnAction(event -> handleUpdateDocument());
         showAllButton.setOnAction(event -> handleShowAll());
+        if (borrowedBooksButton != null) {
+            borrowedBooksButton.setOnAction(event -> handleShowBorrowedBook());
+        }
+
         for (int i = 0; i < 2; i++) {
             moreListBooks[i].setOnAction(event -> {
                 try {
@@ -219,7 +229,7 @@ public class LibraryHomeController {
                 if (selectedPage == "Log Out") {
                     System.out.println("Logging out...");
                     try {
-                        showAlert("Log Out", "Are you sure you want to log out?");
+                        showAlert("Log Out", "Logging out!");
                         User.clearUser(); // xoá thông tin User trước khi ra khỏi
                         libraryService.switchTo("/fxml/Login/SignIn.fxml",
                                 (Stage) usernameLabel.getScene().getWindow());
@@ -249,7 +259,6 @@ public class LibraryHomeController {
                 break;
             default:
                 break;
-                
         }
         try {
             libraryService.switchTo(fxmlFile, (Stage) usernameLabel.getScene().getWindow());
@@ -296,6 +305,14 @@ public class LibraryHomeController {
     // Handle Update Document action
     private void handleUpdateDocument() {
         System.out.println("Updating a document...");
+    }
+
+    private void handleShowBorrowedBook() {
+        try {
+            libraryService.switchTo("/fxml/Library/Tools/BorrowingHistory.fxml", (Stage) usernameLabel.getScene().getWindow());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Handle Show All action -- Need Fix

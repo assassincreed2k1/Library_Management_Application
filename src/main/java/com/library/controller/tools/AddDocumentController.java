@@ -3,6 +3,7 @@ package com.library.controller.tools;
 import java.lang.Exception;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.library.model.doc.Book;
 import com.library.model.doc.Magazine;
@@ -36,6 +37,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import javafx.concurrent.Task;
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 
 public class AddDocumentController {
@@ -113,14 +115,14 @@ public class AddDocumentController {
                         docImagePreview.setOnMouseClicked(event -> setDocImagePreview());
                     } else {
                         docImagePreview.setImage(img);
-                        errorLabel.setText("Image set successfully."); 
-                        errorLabel.setTextFill(Color.GREEN); 
+                        errorLabel.setText("Image set successfully.");
+                        errorLabel.setTextFill(Color.GREEN);
                         docImagePreview.setOnMouseClicked(null);
                     }
                 } else {
                     docImagePreview.setImage(defaultDocImgPrev);
                     errorLabel.setText("Invalid image URL format.");
-                    errorLabel.setTextFill(Color.RED); 
+                    errorLabel.setTextFill(Color.RED);
                     docImagePreview.setOnMouseClicked(event -> setDocImagePreview());
                 }
             }
@@ -181,6 +183,7 @@ public class AddDocumentController {
                 publishDateField, quantityField, errorLabel);
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
         Service<JSONObject> bookInfoService = new Service<>() {
             @Override
             protected Task<JSONObject> createTask() {
@@ -192,6 +195,16 @@ public class AddDocumentController {
                 };
             }
         };
+
+        scheduler.schedule(() -> {
+            if (bookInfoService.isRunning()) {
+                bookInfoService.cancel(); 
+                Platform.runLater(() -> {
+                    errorLabel.setText("Service timed out.");
+                    errorLabel.setTextFill(javafx.scene.paint.Color.RED);
+                });
+            }
+        }, 5, TimeUnit.SECONDS);
 
         bookInfoService.setOnRunning(event -> {
             errorLabel.setText("Loading book from API...");
@@ -247,6 +260,7 @@ public class AddDocumentController {
                 errorLabel.setText("Not Found in API");
                 errorLabel.setTextFill(javafx.scene.paint.Color.RED);
             }
+            scheduler.shutdown();
         });
 
         bookInfoService.setOnFailed(event -> {
@@ -254,6 +268,7 @@ public class AddDocumentController {
             errorLabel.setTextFill(javafx.scene.paint.Color.RED);
             docImagePreview.setImage(defaultDocImgPrev);
             docImagePreview.setOnMouseClicked(event2 -> setDocImagePreview());
+            scheduler.shutdown();
         });
 
         isbnField.textProperty().addListener((observable, oldValue, newValue) -> {

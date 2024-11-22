@@ -56,6 +56,21 @@ public abstract class Document {
     }
 
     /**
+     * Constructs a  Document with the specified ID, name, group
+     * and avalid.
+     * @param id The unique identifier of the document.
+     * @param name The name of the document.
+     * @param group The group or category the docment belongs to.
+     * @param isAvailable The avaliable is true.
+     */
+    public Document(String id, String name, String group, boolean isAvailable) {
+        this.id = id;
+        this.name = name;
+        this.group = group;
+        this.isAvailable = isAvailable;
+    }
+
+    /**
      * Sets the ID of this document.
      *
      * @param id The ID to set for this document.

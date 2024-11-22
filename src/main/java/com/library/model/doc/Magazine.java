@@ -35,6 +35,20 @@ public class Magazine extends Document {
     }
 
     /**
+     * Construcs a code Magazine with the spwcified id, name, group, available, publisher.
+     * 
+     * @param id ID of the magazine.
+     * @param name the name of the magazine.
+     * @param group the group or categogy the magazine belongs to.
+     * @param isAvailable the available of the magazine.
+     * @param publisher the publisher of the magazine.
+     */
+    public Magazine(String id, String name, String group, Boolean isAvailable, String publisher) {
+        super(id, name, group, isAvailable);
+        this.publisher = publisher;
+    }
+
+    /**
      * Gets the publisher of this magazine.
      * 
      * @return The publisher of the magazine.
