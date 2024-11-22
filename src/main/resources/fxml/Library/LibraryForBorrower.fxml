@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.Library.LibraryHomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.Library.LibraryForBorrowerController">
    <children>
       <AnchorPane prefHeight="93.0" prefWidth="1311.0" styleClass="taskbar">
          <children>
@@ -59,24 +59,6 @@
             <ComboBox fx:id="magazinesComboBox" layoutX="9.0" layoutY="83.0" prefHeight="38.0" prefWidth="235.0" promptText="Magazines" styleClass="ChoiceBox" />
             <ComboBox fx:id="newspapersComboBox" layoutX="9.0" layoutY="121.0" prefHeight="38.0" prefWidth="235.0" promptText="Newspapers" styleClass="ChoiceBox" />
             <Button fx:id="showAllButton" layoutX="9.0" layoutY="159.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="235.0" styleClass="ChoiceBox" text="Show All" />
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="toolsPane" layoutX="10.0" layoutY="393.0" prefHeight="284.0" prefWidth="252.0" styleClass="mini-box">
-         <children>
-            <Label alignment="CENTER" layoutX="5.0" layoutY="9.0" prefHeight="38.0" prefWidth="243.0" styleClass="mini-taskbar" text="TOOLS">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <padding>
-                  <Insets left="10.0" top="6.0" />
-               </padding>
-            </Label>
-            <Button fx:id="addDocumentButton" layoutX="5.0" layoutY="47.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Add Documents" />
-            <Button fx:id="removeDocumentButton" layoutX="5.0" layoutY="85.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Remove Documents" />
-            <Button fx:id="updateDocumentButton" layoutX="5.0" layoutY="119.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Update Documents" />
-            <ComboBox layoutX="5.0" layoutY="153.0" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" />
-            <ComboBox layoutX="5.0" layoutY="187.0" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" />
-            <ComboBox layoutX="5.0" layoutY="221.0" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" />
          </children>
       </AnchorPane>
       <TabPane layoutX="292.0" layoutY="394.0" prefHeight="462.0" prefWidth="1018.0" tabClosingPolicy="UNAVAILABLE">
@@ -539,6 +521,19 @@
             </children>
          </content>
       </ScrollPane>
+      <AnchorPane layoutX="10.0" layoutY="394.0" prefHeight="146.0" prefWidth="252.0" styleClass="mini-box">
+         <children>
+            <Label alignment="CENTER" layoutX="9.0" layoutY="7.0" prefHeight="38.0" prefWidth="235.0" styleClass="mini-taskbar" text="Borrowing History">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" top="6.0" />
+               </padding>
+            </Label>
+            <Button fx:id="borrowedBooksButton" layoutX="9.0" layoutY="45.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="235.0" styleClass="ChoiceBox" text="Borrowed Books" />
+         </children>
+      </AnchorPane>
    </children>
    <stylesheets>
       <URL value="@../../css/BasicUI.css" />

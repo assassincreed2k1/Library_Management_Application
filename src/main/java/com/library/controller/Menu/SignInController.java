@@ -1,4 +1,4 @@
-package com.library.controller;
+package com.library.controller.Menu;
 
 import com.library.service.LibraryService;
 
