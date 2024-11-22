@@ -10,6 +10,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
+import com.library.model.Person.User;
 import com.library.service.ServiceManager;
 
 public class App extends Application {
@@ -24,8 +25,9 @@ public class App extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login/SignIn.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
-        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/DemoPerson/DocBorrow.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Person/DocBorrow.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Books.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Person/SearchPerson.fxml"));
         Scene scene = new Scene(root); 
         
         setDragEvent(root, stage);
@@ -51,6 +53,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        User.setUser("A000001");
         launch(args);
     }
 }

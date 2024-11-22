@@ -40,6 +40,22 @@ public class Newspaper extends Document {
     }
 
     /**
+     * Constructs a {@code Newspaper} with the specified name, group, quantity,
+     * available source, and region.
+     * @param id ID of the newspaper.
+     * @param name The name of the newpaper.
+     * @param group The group of the newpaper.
+     * @param isAvailable The available of the newpaper.
+     * @param source The source of the newpaper.
+     * @param region The region of the newpaper.
+     */
+    public Newspaper(String id, String name, String group, boolean isAvailable, String source, String region) {
+        super(id, name, group, isAvailable);
+        this.source = source;
+        this.region = region;
+    }
+
+    /**
      * Gets the source of this newspaper.
      * 
      * @return The source of the newspaper.
