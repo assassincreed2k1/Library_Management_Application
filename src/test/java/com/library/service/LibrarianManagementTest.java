@@ -1,7 +1,6 @@
-package com.library;
+package com.library.service;
 
 import com.library.model.Person.Librarian;
-import com.library.service.LibrarianManagement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +18,8 @@ public class LibrarianManagementTest {
     public void testAddLibrarian() {
         Librarian librarian = new Librarian();
         librarian.setEmployeeId("E001");
-        librarian.setName("John Doe");
-        librarian.setAddress("123 Main St");
+        librarian.setName("Nguyen Van A");
+        librarian.setAddress("123 Xuan Thuy");
         librarian.setDateOfBirth("1985-04-01");
         librarian.setPhoneNumber("0123456789");
         librarian.setGender("male");
@@ -32,8 +31,8 @@ public class LibrarianManagementTest {
         // Verify that the librarian was added correctly
         Librarian retrievedLibrarian = librarianManagement.getLibrarianInfo("E001");
         assertNotNull(retrievedLibrarian);
-        assertEquals("John Doe", retrievedLibrarian.getName());
-        assertEquals("123 Main St", retrievedLibrarian.getAddress());
+        assertEquals("Nguyen Van A", retrievedLibrarian.getName());
+        assertEquals("123 Xuan Thuy", retrievedLibrarian.getAddress());
         assertEquals("1985-04-01", retrievedLibrarian.getDateOfBirth());
         assertEquals("0123456789", retrievedLibrarian.getPhoneNumber());
         assertEquals("male", retrievedLibrarian.getGender());
@@ -43,24 +42,24 @@ public class LibrarianManagementTest {
 
     @Test
     public void testUpdateLibrarian() {
-        Librarian librarian = new Librarian("Jane Doe", "456 Elm St", "female", "1990-05-05", "0987654321", "E002", "Assistant Librarian", "password456");
+        Librarian librarian = new Librarian("Tran Thi B", "456 Xuan Thuy", "female", "1990-05-05", "0987654321", "E002", "Assistant Librarian", "password456");
         librarianManagement.addLibrarian(librarian);
 
         // Update the librarian's details
-        librarian.setAddress("789 Oak St");
+        librarian.setAddress("789 Pham Van Dong");
         librarian.setPosition("Senior Assistant Librarian");
         librarianManagement.updateLibrarian(librarian);
 
         // Verify that the librarian's information has been updated
         Librarian updatedLibrarian = librarianManagement.getLibrarianInfo("E002");
         assertNotNull(updatedLibrarian);
-        assertEquals("789 Oak St", updatedLibrarian.getAddress());
+        assertEquals("789 Pham Van Dong", updatedLibrarian.getAddress());
         assertEquals("Senior Assistant Librarian", updatedLibrarian.getPosition());
     }
 
     @Test
     public void testRemoveLibrarian() {
-        Librarian librarian = new Librarian("Jim Beam", "321 Pine St", "male", "1980-11-11", "1234567890", "E003", "Librarian", "password789");
+        Librarian librarian = new Librarian("Ha Van C", "321 Hoa Lac", "male", "1980-11-11", "1234567890", "E003", "Librarian", "password789");
         librarianManagement.addLibrarian(librarian);
 
         // Remove the librarian
