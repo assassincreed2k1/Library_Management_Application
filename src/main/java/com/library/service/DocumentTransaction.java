@@ -16,6 +16,14 @@ public class DocumentTransaction extends LibraryService {
     private CombinedDocument combined_document = new CombinedDocument();
     private LoanManagement loanManagement = new LoanManagement();
 
+    public void setCombinedDocument(CombinedDocument combined_document) {
+        this.combined_document = combined_document;
+    }
+
+    public void setLoanManagement(LoanManagement loanManagement) {
+        this.loanManagement = loanManagement;
+    }
+
     public DocumentTransaction() {
         String sql = "CREATE TABLE IF NOT EXISTS bookTransaction (" +
                      "idTransaction INTEGER PRIMARY KEY AUTOINCREMENT, " +

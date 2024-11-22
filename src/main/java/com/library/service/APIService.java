@@ -50,7 +50,7 @@ public class APIService {
      * @return a JSONObject containing the response data, or null if the request
      *         fails.
      */
-    private static JSONObject getJsonResponse(String urlString) {
+    static JSONObject getJsonResponse(String urlString) {
         try {
             URI uri = URI.create(urlString); // Create URI from the string
             URL url = uri.toURL(); // Convert URI to URL
