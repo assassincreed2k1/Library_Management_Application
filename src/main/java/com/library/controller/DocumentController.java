@@ -6,16 +6,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+// import javafx.scene.control.ComboBox;
+// import javafx.scene.control.Label;
 
 import java.io.IOException;
 
-import javafx.scene.layout.AnchorPane;
+// import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
+// import javafx.scene.image.ImageView;
 
 public class DocumentController {
 
@@ -90,6 +90,7 @@ public class DocumentController {
             Stage stage = (Stage) btnAdd.getScene().getWindow();
             Scene scene = new Scene(libraryPage);
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.show();
         }
 }

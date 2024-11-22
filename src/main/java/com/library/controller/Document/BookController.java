@@ -6,7 +6,7 @@ import javafx.concurrent.Task;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
+// import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -14,13 +14,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+// import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
+// import javafx.scene.control.CheckBox;
+// import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
@@ -30,8 +30,11 @@ import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
 import com.library.service.ServiceManager;
+import com.library.service.LibraryService;
 
 public class BookController {
+
+    private LibraryService libraryService = new LibraryService();
 
     private BookManagement bookManagement;
 
@@ -87,12 +90,8 @@ public class BookController {
 
         exitButton.setOnAction(event -> {
             try {
-                FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
-                Parent root = editPage.load();
-
-                Stage stage = (Stage) exitButton.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
+                libraryService.switchTo("/fxml/Library/LibraryHome.fxml", 
+                        (Stage) exitButton.getScene().getWindow());
             } catch (IOException e) {
                 e.printStackTrace();
             }

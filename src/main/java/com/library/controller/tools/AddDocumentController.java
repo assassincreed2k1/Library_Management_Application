@@ -11,7 +11,7 @@ import com.library.model.doc.Newspaper;
 import com.library.service.APIService;
 import com.library.service.BookManagement;
 import com.library.service.MagazineManagement;
-import com.library.service.NewsPaperManagament;
+import com.library.service.NewsPaperManagement;
 import com.library.service.ServiceManager;
 import com.library.service.LibraryService;
 
@@ -44,7 +44,7 @@ public class AddDocumentController {
 
     private BookManagement bookManagement;
     private MagazineManagement magazineManagement;
-    private NewsPaperManagament newsPaperManagament;
+    private NewsPaperManagement newsPaperManagament;
     private LibraryService libraryService;
 
     @FXML
@@ -85,7 +85,7 @@ public class AddDocumentController {
     public void initialize() {
         this.bookManagement = ServiceManager.getBookManagement();
         this.magazineManagement = ServiceManager.getMagazineManagement();
-        this.newsPaperManagament = ServiceManager.getNewsPaperManagament();
+        this.newsPaperManagament = ServiceManager.getNewsPaperManagement();
         this.libraryService = ServiceManager.getLibraryService();
 
         inputPane = new AnchorPane();

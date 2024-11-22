@@ -1,14 +1,27 @@
 package com.library.model.Person;
 
 public class Admin extends Librarian {
-    //instance => only one object
-    public static final Admin INSTANCE = new Admin("admin", "Vietnam", "Male", 
-                                                   "2024-20-11", "1234567890", 
-                                                   "A000001", "System Admin");
+    // Fixed fields for System Admin's ID and password
+    final private String id;
+    final private String password;
 
-    //private in order to prevent create modify admin infor
-    private Admin(String name, String address, String gender, String dateOfBirth, 
-                  String phoneNumber, String employeeId, String position) {
-        super(name, address, gender, dateOfBirth, phoneNumber, employeeId, position);
+    /**
+     * Default constructor to initialize the fixed values for System Admin
+     */
+    public Admin() {
+        // Set fixed ID and password
+        super("admin", "Vietnam", "Male", "2024-20-11", 
+        "1234567890", "A000001", "System Admin");
+        this.id = "A000001";
+        this.password = "admin";
+    }
+
+    // Getters for id and password (no setters, since these are fixed)
+    public String getId() {
+        return id;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

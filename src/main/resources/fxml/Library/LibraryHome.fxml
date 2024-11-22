@@ -34,19 +34,15 @@
                   <Font name="Bodoni MT Bold Italic" size="18.0" />
                </font>
             </Label>
-            <Button fx:id="logOutButton" layoutX="1217.0" layoutY="30.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="80.0" text="Log Out">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Button>
             <TextField fx:id="searchTextField" layoutX="463.0" layoutY="34.0" prefHeight="25.0" prefWidth="335.0" promptText="Search" />
-            <Label layoutX="1120.0" layoutY="18.0" prefHeight="52.0" prefWidth="97.0" style="-fx-text-fill: #ebeb15;" text="Username" textFill="#ebeb15">
+            <Label fx:id="usernameLabel" layoutX="1018.0" layoutY="18.0" prefHeight="52.0" prefWidth="176.0" style="-fx-text-fill: #ebeb15;" text="username" textFill="#ebeb15">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
             <ComboBox fx:id="typeComboBox" layoutX="375.0" layoutY="34.0" prefHeight="25.0" prefWidth="88.0" promptText=" Type" />
             <Button fx:id="searchButton" layoutX="798.0" layoutY="34.0" mnemonicParsing="false" text="Search" />
+            <ComboBox fx:id="menuComboBox" layoutX="1189.0" layoutY="24.0" prefHeight="40.0" prefWidth="101.0" promptText="Menu" styleClass="combo-box-menu" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="10.0" layoutY="110.0" prefHeight="253.0" prefWidth="252.0" styleClass="mini-box">
@@ -78,9 +74,9 @@
             <Button fx:id="addDocumentButton" layoutX="5.0" layoutY="47.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Add Documents" />
             <Button fx:id="removeDocumentButton" layoutX="5.0" layoutY="85.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Remove Documents" />
             <Button fx:id="updateDocumentButton" layoutX="5.0" layoutY="119.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Update Documents" />
-            <Button layoutX="5.0" layoutY="153.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Add User" />
-            <Button layoutX="5.0" layoutY="187.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Remove User" />
-            <Button layoutX="5.0" layoutY="225.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Update User" />
+            <ComboBox layoutX="5.0" layoutY="153.0" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" />
+            <ComboBox layoutX="5.0" layoutY="187.0" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" />
+            <ComboBox layoutX="5.0" layoutY="221.0" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" />
          </children>
       </AnchorPane>
       <TabPane layoutX="292.0" layoutY="394.0" prefHeight="462.0" prefWidth="1018.0" tabClosingPolicy="UNAVAILABLE">

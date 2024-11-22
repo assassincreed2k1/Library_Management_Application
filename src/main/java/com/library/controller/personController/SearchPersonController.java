@@ -4,12 +4,10 @@ import com.library.model.Person.Admin;
 import com.library.model.Person.Librarian;
 import com.library.model.Person.Member;
 import com.library.model.Person.Person;
+import com.library.model.Person.User;
 import com.library.model.helpers.MessageUtil;
 import com.library.model.helpers.PersonIdHandle;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,10 +15,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class SearchPersonController {
 
@@ -112,7 +108,12 @@ public class SearchPersonController {
                 if (person instanceof Admin) {
                     throw new Exception("You don't have access to remove Admin.");
                 } else if (person instanceof Librarian) {
-                    throw new Exception("You don't have access to remove Librarian.");
+                    if (User.isAdmin()) {
+                        Librarian librarian = (Librarian) person;
+                        librarian.deleteLibrarian();
+                    } else {
+                        throw new Exception("You don't have access to remove Librarian.");
+                    }
                 } else if (person instanceof Member) {
                     Member member = (Member) person;
                     member.deleteMember();

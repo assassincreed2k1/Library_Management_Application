@@ -7,7 +7,7 @@ import java.net.URI;
 import java.net.URL;
 import org.json.JSONObject;
 
-import javafx.scene.image.Image;
+// import javafx.scene.image.Image;
 
 /**
  * APIService class to interact with the Open Library API.

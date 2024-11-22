@@ -1,6 +1,6 @@
 package com.library.model.doc;
 
-import com.library.service.NewsPaperManagament;
+import com.library.service.NewsPaperManagement;
 
 /**
  * The {@code Newspaper} class represents a type of {@link Document}.
@@ -14,7 +14,7 @@ public class Newspaper extends Document {
     private String source;
     private String region;
 
-    private NewsPaperManagament newsManagament = new NewsPaperManagament();
+    private NewsPaperManagement newsManagament = new NewsPaperManagement();
 
     /**
      * Default constructor for the {@code Newspaper} class.

@@ -3,7 +3,6 @@ package com.library.controller.personController;
 import java.time.LocalDate;
 
 import com.library.model.Person.Member;
-import com.library.model.Person.User;
 import com.library.model.doc.Book;
 import com.library.model.doc.Document;
 import com.library.model.doc.Magazine;
@@ -13,8 +12,6 @@ import com.library.model.helpers.PersonIdHandle;
 import com.library.service.CombinedDocument;
 import com.library.service.DocumentTransaction;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -22,9 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 public class DocumentBorrowController {
     private Member member = null;

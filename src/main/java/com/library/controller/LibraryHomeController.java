@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.library.service.APIService;
 import com.library.service.BookManagement;
-import com.library.model.doc.Book;
+import com.library.model.Person.User;
 import com.library.service.LibraryService;
 import com.library.service.ServiceManager;
+import com.library.controller.tools.DocumentDisplayManager;
 import com.library.controller.tools.SearchBookController;
 
 import javafx.event.ActionEvent;
@@ -23,13 +23,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.TextField;
 import javafx.event.EventHandler;
-import javafx.concurrent.Task;
 import javafx.stage.Stage;
 
 /**
@@ -40,19 +38,10 @@ public class LibraryHomeController {
 
     private LibraryService libraryService;
     private BookManagement bookManagement;
+    private DocumentDisplayManager latestDocsManager;
+    private DocumentDisplayManager oldestDocsManager;
 
-    // Taskbar Components
-    @FXML
-    private ImageView iconImageView;
-
-    @FXML
-    private Label titleLabel;
-
-    @FXML
-    private Label subtitleLabel;
-
-    @FXML
-    private Button logOutButton;
+    public static Map<String, Image> imageCache = new HashMap<>();
 
     @FXML
     private Label usernameLabel;
@@ -62,6 +51,9 @@ public class LibraryHomeController {
 
     @FXML
     private ComboBox<String> typeComboBox;
+
+    @FXML
+    private ComboBox<String> menuComboBox;
 
     @FXML
     private ComboBox<String> booksComboBox;
@@ -137,18 +129,17 @@ public class LibraryHomeController {
     private Label[] latestAuthors;
     private Label[] latestGenres;
     private Label[] latestAvailables;
+    private ImageView[] latestImageViews = { latestDoc1, latestDoc2, latestDoc3, latestDoc4 };
 
     private Label[] oldestNames;
     private Label[] oldestAuthors;
     private Label[] oldestGenres;
     private Label[] oldestAvailables;
+    private ImageView[] oldestImageViews = { oldestDoc1, oldestDoc2, oldestDoc3, oldestDoc4 };
+
 
     @FXML
     private Hyperlink[] moreListBooks;
-
-    // Main Content
-    @FXML
-    private ImageView mainImageView;
 
     /**
      * Initializes the controller and sets up the necessary components.
@@ -160,16 +151,28 @@ public class LibraryHomeController {
         this.latestAuthors = new Label[] { latestAuthor1, latestAuthor2, latestAuthor3, latestAuthor4 };
         this.latestGenres = new Label[] { latestGenre1, latestGenre2, latestGenre3, latestGenre4 };
         this.latestAvailables = new Label[] { latestAvailable1, latestAvailable2, latestAvailable3, latestAvailable4 };
+        this.latestImageViews = new ImageView[] { latestDoc1, latestDoc2, latestDoc3, latestDoc4 };
 
         this.oldestNames = new Label[] { oldestName1, oldestName2, oldestName3, oldestName4 };
         this.oldestAuthors = new Label[] { oldestAuthor1, oldestAuthor2, oldestAuthor3, oldestAuthor4 };
         this.oldestGenres = new Label[] { oldestGenre1, oldestGenre2, oldestGenre3, oldestGenre4 };
         this.oldestAvailables = new Label[] { oldestAvailable1, oldestAvailable2, oldestAvailable3, oldestAvailable4 };
+        this.oldestImageViews = new ImageView[] { oldestDoc1, oldestDoc2, oldestDoc3, oldestDoc4 };
 
         this.moreListBooks = new Hyperlink[] { moreBooks1, moreBooks2 };
 
         this.libraryService = ServiceManager.getLibraryService();
         this.bookManagement = ServiceManager.getBookManagement();
+
+        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
+
+        this.latestDocsManager = new DocumentDisplayManager(bookManagement, libraryService,
+                latestImageViews, latestNames, latestAuthors, latestGenres, latestAvailables);
+
+        this.oldestDocsManager = new DocumentDisplayManager(bookManagement, libraryService,
+                oldestImageViews, oldestNames, oldestAuthors, oldestGenres, oldestAvailables);
+
+        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
 
         setupComboBoxes();
         setupButtons();
@@ -177,18 +180,19 @@ public class LibraryHomeController {
     }
 
     private void setupComboBoxes() {
+        menuComboBox.getItems().addAll("Update Infor", "Log Out");
         typeComboBox.getItems().addAll("Books", "Magazines", "Newspapers");
         booksComboBox.getItems().addAll("All Books");
         magazinesComboBox.getItems().addAll("All Magazines");
         newspapersComboBox.getItems().addAll("All Newspapers");
+        
     }
 
     private void setupButtons() {
-        logOutButton.setOnAction(event -> handleLogOut());
-
         setComboBoxHandler(booksComboBox);
         setComboBoxHandler(magazinesComboBox);
         setComboBoxHandler(newspapersComboBox);
+        setComboBoxHandler(menuComboBox);
 
         searchButton.setOnAction(event -> handleSearchDocuments());
         addDocumentButton.setOnAction(event -> handleAddDocument());
@@ -198,7 +202,7 @@ public class LibraryHomeController {
         for (int i = 0; i < 2; i++) {
             moreListBooks[i].setOnAction(event -> {
                 try {
-                    switchTo("/fxml/Documents/Books.fxml");
+                    libraryService.switchTo("/fxml/Documents/Books.fxml", (Stage) usernameLabel.getScene().getWindow());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -206,24 +210,26 @@ public class LibraryHomeController {
         }
 
     }
-
-    // Handle LogOut action -- Need Fix
-    private void handleLogOut() {
-        System.out.println("Logging out...");
-        try {
-            showAlert("Log Out", "Are you sure you want to log out?");
-            switchTo("/fxml/Login/SignIn.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    
     private void setComboBoxHandler(ComboBox<String> comboBox) {
         comboBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 String selectedPage = comboBox.getValue();
-                switchToPage(selectedPage);
+                if (selectedPage == "Log Out") {
+                    System.out.println("Logging out...");
+                    try {
+                        showAlert("Log Out", "Are you sure you want to log out?");
+                        User.clearUser(); // xoá thông tin User trước khi ra khỏi
+                        libraryService.switchTo("/fxml/Login/SignIn.fxml",
+                                (Stage) usernameLabel.getScene().getWindow());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    switchToPage(selectedPage);
+                }
             }
         });
     }
@@ -243,9 +249,10 @@ public class LibraryHomeController {
                 break;
             default:
                 break;
+                
         }
         try {
-            switchTo(fxmlFile);
+            libraryService.switchTo(fxmlFile, (Stage) usernameLabel.getScene().getWindow());
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -279,7 +286,8 @@ public class LibraryHomeController {
     // Handle Remove Document action --Need Fix
     private void handleRemoveDocument() {
         try {
-            switchTo("/fxml/Library/Tools/RemoveDocument.fxml");
+            libraryService.switchTo("/fxml/Library/Tools/RemoveDocument.fxml",
+                    (Stage) usernameLabel.getScene().getWindow());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -294,19 +302,10 @@ public class LibraryHomeController {
     private void handleShowAll() {
         System.out.println("Showing all documents...");
         try {
-            switchTo("/fxml/Documents/Documents.fxml");
+            libraryService.switchTo("/fxml/Documents/Documents.fxml", (Stage) usernameLabel.getScene().getWindow());
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    // Switch to another page
-    private void switchTo(String pagePath) throws IOException {
-        Parent libraryPage = FXMLLoader.load(getClass().getResource(pagePath));
-        Stage stage = (Stage) logOutButton.getScene().getWindow();
-        Scene scene = new Scene(libraryPage);
-        stage.setScene(scene);
-        stage.show();
     }
 
     // Helper method to show alerts
@@ -319,142 +318,14 @@ public class LibraryHomeController {
     }
 
     private void setUpTabPane() {
-        showLatestDocs();
+        latestDocsManager.showDocuments(Integer.parseInt(libraryService.getCurrentID()), true);
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
             if (newTab == latestBooks) {
-                showLatestDocs();
+                latestDocsManager.showDocuments(Integer.parseInt(libraryService.getCurrentID()), true);
             } else if (newTab == oldestBooks) {
-                showOldestDocs();
+                oldestDocsManager.showDocuments(1, false);
             }
         });
-    }
-
-    // Show Cover of Latest Documents --Need Fix: Add database
-    private final Map<String, Image> imageCache = new HashMap<>();
-
-    private Image getCachedImage(String imageUrl) {
-        if (imageCache.containsKey(imageUrl)) {
-            return imageCache.get(imageUrl);
-        }
-        Image image = new Image(imageUrl, true);
-        imageCache.put(imageUrl, image);
-        return image;
-    }
-
-    private void showLatestDocs() {
-        int numOfLatestBook = 4;
-        int currentIdDoc = Integer.parseInt(libraryService.getCurrentID());
-
-        Book[] bookList = new Book[numOfLatestBook];
-
-        while (currentIdDoc > 0) {
-            String id = String.format("%09d", currentIdDoc);
-            if (bookManagement.getDocument(id) != null) {
-                bookList[4 - numOfLatestBook] = bookManagement.getDocument(id);
-                numOfLatestBook--;
-                if (numOfLatestBook <= 0) {
-                    break;
-                }
-            }
-            currentIdDoc--;
-        }
-
-        ImageView[] imageViews = { latestDoc1, latestDoc2, latestDoc3, latestDoc4 };
-
-        for (int i = 0; i < bookList.length; i++) {
-            Book book = bookList[i];
-            if (book != null) {
-                this.latestNames[i].setText(book.getName());
-                this.latestNames[i].setStyle("-fx-font-weight: bold;");
-                this.latestAuthors[i].setText(book.getAuthor());
-                this.latestGenres[i].setText(book.getGroup());
-                if (book.getIsAvailable()) {
-                    this.latestAvailables[i].setText("Yes");
-                } else {
-                    this.latestAvailables[i].setText("No");
-                }
-
-                String linkImg = book.getImagePreview();
-                if (linkImg != "") {
-                    // Use cache first, then load async if necessary
-                    Image cachedImage = getCachedImage(linkImg);
-                    if (cachedImage.getProgress() < 1.0) {
-                        loadImageAsync(linkImg, imageViews[i]);
-                    } else {
-                        imageViews[i].setImage(cachedImage);
-                    }
-                }
-            } else {
-                System.out.println("Current Book is Empty");
-            }
-        }
-    }
-
-    private void showOldestDocs() {
-        int numOfOldestBook = 4;
-        int currentIdDoc = 1;
-        int latestID = Integer.parseInt(libraryService.getCurrentID());
-        Book[] bookList = new Book[numOfOldestBook];
-
-        while (currentIdDoc > 0 && currentIdDoc < latestID) {
-            String id = String.format("%09d", currentIdDoc);
-            if (bookManagement.getDocument(id)!=null) {
-                bookList[4-numOfOldestBook] = bookManagement.getDocument(id);
-                numOfOldestBook--;
-                if (numOfOldestBook <= 0) {
-                    break;
-                }
-            }
-            currentIdDoc++;
-        }
-
-        ImageView[] imageViews = { oldestDoc1, oldestDoc2, oldestDoc3, oldestDoc4 };
-
-        for (int i = 0; i < bookList.length; i++) {
-            Book book = bookList[i];
-            if (book != null) {
-                this.oldestNames[i].setText(book.getName());
-                this.oldestNames[i].setStyle("-fx-font-weight: bold;");
-                this.oldestAuthors[i].setText(book.getAuthor());
-                this.oldestGenres[i].setText(book.getGroup());
-                if (book.getIsAvailable()) {
-                    this.oldestAvailables[i].setText("Yes");
-                } else {
-                    this.oldestAvailables[i].setText("No");
-                }
-
-                String linkImg = book.getImagePreview();
-                if (linkImg != "") {
-                    // Use cache first, then load async if necessary
-                    Image cachedImage = getCachedImage(linkImg);
-                    if (cachedImage.getProgress() < 1.0) {
-                        loadImageAsync(linkImg, imageViews[i]);
-                    } else {
-                        imageViews[i].setImage(cachedImage);
-                    }
-                }
-            } else {
-                System.out.println("Current Book is Empty");
-            }
-        }
-    }
-
-    private void loadImageAsync(String imageUrl, ImageView imageView) {
-        Task<Image> loadImageTask = new Task<>() {
-            @Override
-            protected Image call() throws Exception {
-                return new Image(imageUrl, true);
-            }
-        };
-
-        loadImageTask.setOnSucceeded(event -> {
-            Image image = loadImageTask.getValue();
-            imageCache.put(imageUrl, image); // Cache the loaded image
-            imageView.setImage(image);
-        });
-        loadImageTask.setOnFailed(event -> System.out.println("Failed to load image: " + imageUrl));
-
-        new Thread(loadImageTask).start();
     }
 
     private void openNewWindow(String name) {
@@ -467,6 +338,7 @@ public class LibraryHomeController {
             Stage newStage = new Stage();
             newStage.setTitle("New Window");
             newStage.setScene(scene);
+            newStage.centerOnScreen();
             newStage.show();
         } catch (Exception e) {
             e.printStackTrace();
