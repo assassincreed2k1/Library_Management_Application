@@ -9,6 +9,7 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.collections.ObservableList;
 
 /**
  * This class manages the display of document information, including books,
@@ -47,6 +48,10 @@ public class DocumentDisplayManager {
         this.availables = availables;
     }
 
+    public DocumentDisplayManager(ImageView[] imageViews) {
+        this.imageViews = imageViews;
+    }
+
     /**
      * Displays a set of documents based on the given starting ID and direction.
      *
@@ -75,6 +80,26 @@ public class DocumentDisplayManager {
         }
 
         displayBooks(bookList);
+    }
+
+    public void showDocumentsImg(ObservableList<Book> bookList, int size) {
+        for (int i = 0; i < size; i++) {
+            Book book = bookList.get(i);
+            if (book != null) {
+                String linkImg = book.getImagePreview();
+                if (!linkImg.isEmpty()) {
+                    Image cachedImage = getCachedImage(linkImg);
+                    if (cachedImage.getProgress() < 1.0) {
+                        loadImageAsync(linkImg, imageViews[i]);
+                    } else {
+                        imageViews[i].setImage(cachedImage);
+                    }
+                }
+            } else {
+                System.out.println("Current Book's Cover is Empty");
+            }
+
+        }
     }
 
     /**
@@ -146,4 +171,5 @@ public class DocumentDisplayManager {
 
         new Thread(loadImageTask).start();
     }
+
 }

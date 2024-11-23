@@ -2,7 +2,8 @@
     "cSpell.words": [
         "prve"
     ],
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.debug.settings.onBuildFailureProceed": true,
+    "java.configuration.updateBuildConfiguration": "interactive"
 } // {
 //     "java.home": "C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.4.7-hotspot",
 //     "java.configuration.updateBuildConfiguration": "interactive",

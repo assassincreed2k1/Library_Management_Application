@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.sql.ResultSet;
 
 import com.library.model.doc.Book;
@@ -253,36 +251,39 @@ public class BookManagement extends LibraryService {
         return filteredBooks;
     }
 
-    public HashMap<String, Integer> getPopularBook() {
-        HashMap<String, Integer> popularBooks = new HashMap<>();
+    public ObservableList<Book> getPopularBooks() {
+        ObservableList<Book> popularBooks = FXCollections.observableArrayList();
         String sql_statement = """
-                select b.isbn, count(*) as borrowed_total
-                from Books b
-                join bookTransaction t on t.document_id = b.id
-                group by b.isbn
-                having count(*) > 0
-                order by borrowed_total desc
-                limit 10;
+                SELECT b.*, COUNT(*) AS borrowed_total
+                FROM Books b
+                JOIN bookTransaction t ON t.document_id = b.id
+                GROUP BY b.id
+                HAVING COUNT(*) > 0
+                ORDER BY borrowed_total DESC
+                LIMIT 10;
                 """;
-    
+
         try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-    
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    String isbn = rs.getString("isbn"); 
-                    int borrowedTotal = rs.getInt("borrowed_total");  
-                    popularBooks.put(isbn, borrowedTotal); 
-                }
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement);
+                ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Book book = new Book();
+                book.setID(rs.getString("id"));
+                book.setName(rs.getString("name"));
+                book.setGroup(rs.getString("bookGroup"));
+                book.setAuthor(rs.getString("author"));
+                book.setPublishDate(rs.getString("publishDate"));
+                book.setISBN(rs.getString("ISBN"));
+                book.setIsAvailable(rs.getBoolean("isAvailable"));
+                book.setImagePreview(rs.getString("imagePreview"));
+
+                popularBooks.add(book);
             }
-    
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        for (Map.Entry<String, Integer> book : popularBooks.entrySet()) {
-            System.out.println(book.getKey() + " " + book.getValue());
-        }
 
         return popularBooks;
-    }    
+    }
+
 }
