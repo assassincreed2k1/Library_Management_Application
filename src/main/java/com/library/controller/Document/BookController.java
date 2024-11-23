@@ -3,7 +3,7 @@ package com.library.controller.Document;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 // import javafx.geometry.Insets;
@@ -20,6 +20,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
+
+//import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 import java.io.IOException;
 
@@ -78,7 +81,8 @@ public class BookController {
     private Task<Void> showBookTask;
     private Task<Void> showPrevTask;
     private final Image defaultImagePrv = new Image(getClass().getResource("/img/prv.png").toExternalForm());
-    //private final Image defaultErrImagePrv = new Image(getClass().getResource("/img/prve.png").toExternalForm());
+    // private final Image defaultErrImagePrv = new
+    // Image(getClass().getResource("/img/prve.png").toExternalForm());
     private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/noprv.png").toExternalForm());
 
     // This method is called by the FXMLLoader when initialization is complete
@@ -138,17 +142,17 @@ public class BookController {
                 Platform.runLater(() -> updateBookDetails(selectedBook));
                 return null;
             }
-    
+
             @Override
             protected void succeeded() {
                 System.out.println("showBookTask(): Succeeded!");
             }
-    
+
             @Override
             protected void cancelled() {
                 System.out.println("showBookTask(): Task Cancelled");
             }
-    
+
             @Override
             protected void failed() {
                 System.out.println("showBookTask(): Task Error");
@@ -237,101 +241,80 @@ public class BookController {
     private void updateBookDetails(Book selectedBook) {
         moreInfoPane.getChildren().clear();
 
-        Label idLabel = new Label("ID: " + selectedBook.getID());
-        Label titleLabel = new Label("Title: " + selectedBook.getName());
-        Label authorLabel = new Label("Author: " + selectedBook.getAuthor());
-        Label genreLabel = new Label("Genre: " + selectedBook.getGroup());
-        Label publishDateLabel = new Label("Publish Date: " + selectedBook.getPublishDate());
-        Label isbnLabel = new Label("ISBN: " + selectedBook.getISBN());
-        Label availabilityLabel = new Label("Available: " + (selectedBook.getIsAvailable() ? "Yes" : "No"));
-        Button editButton = new Button("Edit");
-        Button deleteButton = new Button("Delete");
+        Label idLabel = createStyledLabel("ID: " + selectedBook.getID(), 5, 0);
+        Label titleLabel = createStyledLabel("Title: " + selectedBook.getName(), 5, 20);
+        Label authorLabel = createStyledLabel("Author: " + selectedBook.getAuthor(), 5, 40);
+        Label genreLabel = createStyledLabel("Genre: " + selectedBook.getGroup(), 5, 60);
+        Label publishDateLabel = createStyledLabel("Publish Date: "
+                + selectedBook.getPublishDate(), 5, 80);
+        Label isbnLabel = createStyledLabel("ISBN: "
+                + selectedBook.getISBN(), 5, 100);
+        Label availabilityLabel = createStyledLabel("Available: "
+                + (selectedBook.getIsAvailable() ? "Yes" : "No"), 5, 120);
 
-        idLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        titleLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        authorLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        genreLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        publishDateLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        isbnLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        availabilityLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        editButton.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        deleteButton.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        Button editButton = createStyledButton("Edit", 5, 160, event -> openEditPage(selectedBook));
+        Button deleteButton = createStyledButton("Delete", 200, 160, event -> openDeletePage(selectedBook));
 
-        editButton.setOnAction(event -> {
-            try {
-                FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/updateDocument.fxml"));
-                Parent root = editPage.load();
-
-                UpdateDocumentController upController = editPage.getController();
-                upController.setId(selectedBook.getID());
-
-                Stage stage = new Stage();
-                stage.setTitle("Update Document");
-                stage.setScene(new Scene(root));
-
-                stage.setOnCloseRequest(event2 -> {
-                    bookTable.setItems(bookManagement.getAllBooks());
-                });
-
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        deleteButton.setOnAction(event -> {
-            try {
-                FXMLLoader delPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/removeDocument.fxml"));
-                Parent root = delPage.load();
-
-                RemoveDocumentController rmController = delPage.getController();
-                rmController.setId(selectedBook.getID());
-
-                Stage stage = new Stage();
-                stage.setTitle("Remove Document");
-                stage.setScene(new Scene(root));
-
-                stage.setOnCloseRequest(event2 -> {
-                    bookTable.setItems(bookManagement.getAllBooks());
-                });
-
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel, publishDateLabel, isbnLabel,
-                availabilityLabel, editButton, deleteButton);
-
-        idLabel.setLayoutX(5);
-        idLabel.setLayoutY(0);
-
-        titleLabel.setLayoutX(5);
-        titleLabel.setLayoutY(20);
-
-        authorLabel.setLayoutX(5);
-        authorLabel.setLayoutY(40);
-
-        genreLabel.setLayoutX(5);
-        genreLabel.setLayoutY(60);
-
-        publishDateLabel.setLayoutX(5);
-        publishDateLabel.setLayoutY(80);
-
-        isbnLabel.setLayoutX(5);
-        isbnLabel.setLayoutY(100);
-
-        availabilityLabel.setLayoutX(5);
-        availabilityLabel.setLayoutY(120);
-
-        editButton.setLayoutX(5);
-        editButton.setLayoutY(160);
-
-        deleteButton.setLayoutX(200);
-        deleteButton.setLayoutY(160);
+        moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel,
+                publishDateLabel, isbnLabel, availabilityLabel, editButton, deleteButton);
 
         prevImage.setImage(defaultImagePrv);
         prevImage.setOnMouseClicked(event -> showPreview());
     }
+
+    private Label createStyledLabel(String text, double x, double y) {
+        Label label = new Label(text);
+        label.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        label.setLayoutX(x);
+        label.setLayoutY(y);
+        return label;
+    }
+
+    private Button createStyledButton(String text, double x, double y, EventHandler<ActionEvent> eventHandler) {
+        Button button = new Button(text);
+        button.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        button.setLayoutX(x);
+        button.setLayoutY(y);
+        button.setOnAction(eventHandler);
+        return button;
+    }
+
+    private void openEditPage(Book selectedBook) {
+        try {
+            FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/updateDocument.fxml"));
+            Parent root = editPage.load();
+
+            UpdateDocumentController upController = editPage.getController();
+            upController.setId(selectedBook.getID());
+
+            Stage stage = new Stage();
+            stage.setTitle("Update Document");
+            stage.setScene(new Scene(root));
+
+            stage.setOnCloseRequest(event -> bookTable.setItems(bookManagement.getAllBooks()));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openDeletePage(Book selectedBook) {
+        try {
+            FXMLLoader delPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/removeDocument.fxml"));
+            Parent root = delPage.load();
+
+            RemoveDocumentController rmController = delPage.getController();
+            rmController.setId(selectedBook.getID());
+
+            Stage stage = new Stage();
+            stage.setTitle("Remove Document");
+            stage.setScene(new Scene(root));
+
+            stage.setOnCloseRequest(event -> bookTable.setItems(bookManagement.getAllBooks()));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
