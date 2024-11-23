@@ -36,6 +36,18 @@ public class Book extends Document {
     }
 
     /**
+     * Default Book with ID and avalid.
+     * @param id ID
+     * @param isAvailable avalid.
+     */
+    public Book(String id, boolean isAvailable) {
+        super(id, "Unknown", "Unknown", isAvailable); // Gọi constructor của Document với giá trị mặc định cho name và group
+        this.isbn = "";
+        this.author = "Unknown";
+        this.publishDate = "Unknown Date";
+    }
+
+    /**
      * Book:
      * 
      * @param Name       Name of the book
@@ -59,6 +71,17 @@ public class Book extends Document {
         this.publishDate = publishDate;
     }
 
+    /**
+     * Book.
+     * 
+     * @param id ID of the book.
+     * @param name name of the book.
+     * @param group group of book.
+     * @param isAvailable Available of book.
+     * @param isbn ISBN of the book.
+     * @param author Author of the book.
+     * @param publishDate PublishDate of the book.
+     */
     public Book(String id, String name, String group, boolean isAvailable, String isbn, String author, String publishDate) {
         super(id, name, group, isAvailable); // Gọi constructor của Document
         this.isbn = isbn;

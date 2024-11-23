@@ -1,11 +1,10 @@
-package com.library;
+package com.library.service;
 
 
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import com.library.model.Person.Member;
-import com.library.service.MemberManagement;
 
 public class MemberManagementTest {
 
@@ -20,8 +19,8 @@ public class MemberManagementTest {
     public void testAddMember() {
         Member member = new Member();
         member.setMembershipId("M003");
-        member.setName("Alice Smith");
-        member.setAddress("125 Main St, Cityville");
+        member.setName("Duong Thi D");
+        member.setAddress("125 Xuan Thuy, Cau Giay");
         member.setDateOfBirth("1990-05-15");
         member.setPhoneNumber("0987654321");
         member.setGender("female");
@@ -32,8 +31,8 @@ public class MemberManagementTest {
     
         Member retrievedMember = memberManagement.getMemberInfo("M003");
         assertNotNull(retrievedMember);
-        assertEquals("Alice Smith", retrievedMember.getName());
-        assertEquals("125 Main St, Cityville", retrievedMember.getAddress());
+        assertEquals("Duong Thi D", retrievedMember.getName());
+        assertEquals("125 Xuan Thuy, Cau Giay", retrievedMember.getAddress());
         assertEquals("1990-05-15", retrievedMember.getDateOfBirth());
         assertEquals("0987654321", retrievedMember.getPhoneNumber());
         assertEquals("female", retrievedMember.getGender());
@@ -47,8 +46,8 @@ public class MemberManagementTest {
         // Giả sử member đã tồn tại
         Member member = new Member();
         member.setMembershipId("M001");
-        member.setName("Jane Doe");
-        member.setAddress("456 Main St");
+        member.setName("Tran Thi B");
+        member.setAddress("456 Xuan Thuy");
         member.setDateOfBirth("1992-02-02");
         member.setPhoneNumber("0987654321");
         member.setGender("female");
@@ -59,8 +58,8 @@ public class MemberManagementTest {
 
         // Kiểm tra nếu member đã được cập nhật thành công
         Member updatedMember = memberManagement.getMemberInfo("M001");
-        assertEquals("Jane Doe", updatedMember.getName());
-        assertEquals("456 Main St", updatedMember.getAddress());
+        assertEquals("Tran Thi B", updatedMember.getName());
+        assertEquals("456 Xuan Thuy", updatedMember.getAddress());
     }
 
     @Test
@@ -86,7 +85,7 @@ public class MemberManagementTest {
         // Thêm member để lấy thông tin
         Member member = new Member();
         member.setMembershipId(membershipId);
-        member.setName("John Doe");
+        member.setName("Tran Thi B");
         memberManagement.addMember(member);
 
         Member retrievedMember = memberManagement.getMemberInfo(membershipId);

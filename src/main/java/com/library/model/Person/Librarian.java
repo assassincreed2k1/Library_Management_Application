@@ -35,6 +35,12 @@ public class Librarian extends Person {
         this.position = position;       
     }
 
+    public Librarian(String name, String address, String gender, String dateOfBirth, 
+                    String phoneNumber, String employeeId, String password, String position) {
+        super(name, address, gender, dateOfBirth, phoneNumber, password);
+        this.employeeId = employeeId; 
+        this.position = position;       
+    }
     /**
      * Constructor for Librarian when adding.
      * 

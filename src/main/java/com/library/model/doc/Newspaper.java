@@ -24,6 +24,19 @@ public class Newspaper extends Document {
         super();
     }
 
+     /**
+     * Constructs a {@code Newspaper} with the specified ID and availability status.
+     * Initializes other fields with default values.
+     * 
+     * @param id          The ID of the newspaper.
+     * @param isAvailable The availability status of the newspaper.
+     */
+    public Newspaper(String id, boolean isAvailable) {
+        super(id, "Unknown", "Unknown", isAvailable); // Gọi constructor của Document với giá trị mặc định cho name và group
+        this.source = "Unknown";
+        this.region = "Unknown";
+    }
+
     /**
      * Constructs a {@code Newspaper} with the specified name, group, quantity,
      * source, and region.
