@@ -284,5 +284,43 @@ public class BookManagement extends LibraryService {
         }
 
         return popularBooks;
+    }  
+
+    public HashMap<String, Integer> getRecommentBook(String genre) {
+        HashMap<String, Integer> recommentBooks = new HashMap<>();
+        String sql_statement = """
+            select b.isbn, count(*) as borrowed_total
+            from Books b
+            join bookTransaction t on t.document_id = b.id
+            where b.bookGroup = ?
+            group by b.isbn
+            order by borrowed_total desc
+            limit 10
+        """;
+    
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+    
+            // Thiết lập giá trị cho tham số ?
+            pstmt.setString(1, genre);
+    
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String isbn = rs.getString("isbn");
+                    int borrowedTotal = rs.getInt("borrowed_total");
+                    recommentBooks.put(isbn, borrowedTotal);
+                }
+            }
+    
+        } catch (SQLException e) {
+            System.err.println("Database error: " + e.getMessage());
+        }
+    
+        // In kết quả để kiểm tra
+        for (Map.Entry<String, Integer> book : recommentBooks.entrySet()) {
+            System.out.println(book.getKey() + ": " + book.getValue());
+        }
+    
+        return recommentBooks;
     }    
 }
