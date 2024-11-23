@@ -80,6 +80,15 @@ public abstract class Document {
     }
 
     /**
+     * Sets the ID of this document.
+     *
+     * @param id The ID to set for this document.
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
      * Gets the ID of this document.
      *
      * @return The ID of the document.
@@ -87,6 +96,16 @@ public abstract class Document {
     public String getID() {
         return id;
     }
+
+    /**
+     * Gets the ID of this document.
+     *
+     * @return The ID of the document.
+     */
+    public String getId() {
+        return id;
+    }
+    
 
     /**
      * Gets the name of this document.
