@@ -65,6 +65,15 @@ public class LibraryHomeController {
     private ComboBox<String> newspapersComboBox;
 
     @FXML
+    private ComboBox<String> addUserComboBox;
+
+    @FXML
+    private ComboBox<String> updateUserComboBox;
+
+    @FXML
+    private ComboBox<String> borrowCardComboBox;
+
+    @FXML
     private AnchorPane toolsPane;
 
     @FXML
@@ -74,16 +83,13 @@ public class LibraryHomeController {
     private Button searchButton;
 
     @FXML
-    private Button addDocumentButton;
-
-    @FXML
-    private Button removeDocumentButton;
-
-    @FXML
-    private Button updateDocumentButton;
+    private Button addDocumentButton, removeDocumentButton, updateDocumentButton;
 
     @FXML
     private Button showAllButton;
+
+    @FXML
+    private Button searchUserButton;
 
     @FXML
     private Hyperlink moreBooks1, moreBooks2;
@@ -137,7 +143,6 @@ public class LibraryHomeController {
     private Label[] oldestAvailables;
     private ImageView[] oldestImageViews = { oldestDoc1, oldestDoc2, oldestDoc3, oldestDoc4 };
 
-
     @FXML
     private Hyperlink[] moreListBooks;
 
@@ -185,7 +190,9 @@ public class LibraryHomeController {
         booksComboBox.getItems().addAll("All Books");
         magazinesComboBox.getItems().addAll("All Magazines");
         newspapersComboBox.getItems().addAll("All Newspapers");
-        
+        addUserComboBox.getItems().addAll("Add Librarian", "Add Member");
+        updateUserComboBox.getItems().addAll("Update Librarian", "Update Member");
+        borrowCardComboBox.getItems().addAll("Borrow/Return Documents", "Membership Card Renewal");
     }
 
     private void setupButtons() {
@@ -193,12 +200,17 @@ public class LibraryHomeController {
         setComboBoxHandler(magazinesComboBox);
         setComboBoxHandler(newspapersComboBox);
         setComboBoxHandler(menuComboBox);
+        setComboBoxHandler(addUserComboBox);
+        setComboBoxHandler(updateUserComboBox);
+        setComboBoxHandler(borrowCardComboBox);
 
-        searchButton.setOnAction(event -> handleSearchDocuments());
         addDocumentButton.setOnAction(event -> handleAddDocument());
         removeDocumentButton.setOnAction(event -> handleRemoveDocument());
         updateDocumentButton.setOnAction(event -> handleUpdateDocument());
+        searchButton.setOnAction(event -> handleSearchDocuments());
         showAllButton.setOnAction(event -> handleShowAll());
+        searchUserButton.setOnAction(event-> handleSearchUser());
+
         for (int i = 0; i < 2; i++) {
             moreListBooks[i].setOnAction(event -> {
                 try {
@@ -210,7 +222,7 @@ public class LibraryHomeController {
         }
 
     }
-    
+
     private void setComboBoxHandler(ComboBox<String> comboBox) {
         comboBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -219,15 +231,14 @@ public class LibraryHomeController {
                 if (selectedPage == "Log Out") {
                     System.out.println("Logging out...");
                     try {
-                        showAlert("Log Out", "Are you sure you want to log out?");
+                        showAlert("Log Out", "Logging out!");
                         User.clearUser(); // xoá thông tin User trước khi ra khỏi
                         libraryService.switchTo("/fxml/Login/SignIn.fxml",
                                 (Stage) usernameLabel.getScene().getWindow());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                else {
+                } else {
                     switchToPage(selectedPage);
                 }
             }
@@ -236,26 +247,64 @@ public class LibraryHomeController {
 
     // Handle Switch Page
     private void switchToPage(String pageName) {
+        boolean isCreateNewWindow = true;
         String fxmlFile = "";
         switch (pageName) {
             case "All Books":
+                isCreateNewWindow = false;
                 fxmlFile = "/fxml/Documents/Books.fxml";
                 break;
             case "All Magazines":
+                isCreateNewWindow = false;
                 fxmlFile = "/fxml/Documents/Magazines.fxml";
                 break;
             case "All Newspapers":
+                isCreateNewWindow = false;
                 fxmlFile = "/fxml/Documents/Newspapers.fxml";
+                break;
+            case "Add Librarian":
+                fxmlFile = "/fxml/Person/AddLibrarian.fxml";
+                break;
+            case "Add Member":
+                fxmlFile = "/fxml/Person/AddMember.fxml";
+                break;
+            case "Update Librarian":
+                fxmlFile = "/fxml/Person/UpdateLibrarian.fxml";
+                break;
+            case "Update Member":
+                fxmlFile = "/fxml/Person/UpdateMember.fxml";
+                break;
+            case "Borrow/Return Documents":
+                fxmlFile = "/fxml/Person/DocBorrow.fxml";
+                break;
+            case "Membership Card Renewal":
+                fxmlFile = "/fxml/Person/ExpiryCard.fxml";
                 break;
             default:
                 break;
-                
         }
+        if (isCreateNewWindow) {
+            try {
+                openNewWindow(fxmlFile);
+                libraryService.switchTo("/fxml/Library/LibraryHome.fxml", (Stage) usernameLabel.getScene().getWindow());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                libraryService.switchTo(fxmlFile, (Stage) usernameLabel.getScene().getWindow());
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+        }
+    }
+
+    private void handleSearchUser() {
         try {
-            libraryService.switchTo(fxmlFile, (Stage) usernameLabel.getScene().getWindow());
+            openNewWindow("/fxml/Person/SearchPerson.fxml");
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 

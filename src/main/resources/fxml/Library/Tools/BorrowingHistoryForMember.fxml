@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@../../../css/BasicUI.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@../../../css/BasicUI.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <!-- TaskBar -->
       <AnchorPane fx:id="taskBar" prefHeight="94.0" prefWidth="1210.0" styleClass="taskbar">
@@ -43,13 +43,13 @@
          <content>
             <TableView fx:id="bookTable" prefHeight="706.0" prefWidth="908.0">
                <columns>
-                  <TableColumn prefWidth="126.0" text="ID" />
-                  <TableColumn fx:id="titleColumn" prefWidth="144.0" text="Book Title" />
-                  <TableColumn prefWidth="89.0" text="Is Available" />
-                  <TableColumn fx:id="authorColumn" prefWidth="143.0" text="Author" />
-                  <TableColumn fx:id="genreColumn" prefWidth="135.0" text="Genre" />
-                  <TableColumn fx:id="publishDateColumn" prefWidth="101.0" text="Publish Date" />
-                  <TableColumn fx:id="isbnColumn" prefWidth="157.0" text="ISBN" />
+                  <TableColumn prefWidth="103.0" text="ID Trasnsaction" />
+                  <TableColumn fx:id="titleColumn" prefWidth="228.0" text="Book Title" />
+                  <TableColumn fx:id="isbnColumn" prefWidth="83.0" text="ISBN" />
+                  <TableColumn prefWidth="102.0" text="Document ID" />
+                  <TableColumn fx:id="authorColumn" prefWidth="69.0" text="Star" />
+                  <TableColumn fx:id="genreColumn" prefWidth="165.0" text="Borrowed Date" />
+                  <TableColumn fx:id="publishDateColumn" prefWidth="145.0" text="Returned Date" />
                </columns>
             </TableView>
          </content>

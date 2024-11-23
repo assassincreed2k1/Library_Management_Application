@@ -2,6 +2,7 @@ module com.library {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires org.apache.pdfbox;
 
     requires transitive org.json;
     requires transitive javafx.graphics;
