@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@../../../css/BasicUI.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@../../../css/BasicUI.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.tools.BorrowingHistoryControllerForEmployee">
    <children>
       <!-- TaskBar -->
       <AnchorPane fx:id="taskBar" prefHeight="94.0" prefWidth="1210.0" styleClass="taskbar">
@@ -30,11 +32,13 @@
                   <Font name="Bodoni MT Bold Italic" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="438.0" layoutY="19.0" text="Borrowing History">
+            <Label layoutX="346.0" layoutY="23.0" text="Borrowing History">
                <font>
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
+            <TextField layoutX="736.0" layoutY="38.0" prefHeight="25.0" prefWidth="340.0" promptText="Enter transaction ID, member ID, document ID,..." />
+            <Button layoutX="1097.0" layoutY="37.0" mnemonicParsing="false" text="Search" />
          </children>
       </AnchorPane>
 
@@ -43,27 +47,19 @@
          <content>
             <TableView fx:id="bookTable" prefHeight="706.0" prefWidth="908.0">
                <columns>
-                  <TableColumn prefWidth="126.0" text="ID" />
-                  <TableColumn fx:id="titleColumn" prefWidth="144.0" text="Book Title" />
-                  <TableColumn prefWidth="89.0" text="Is Available" />
-                  <TableColumn fx:id="authorColumn" prefWidth="143.0" text="Author" />
-                  <TableColumn fx:id="genreColumn" prefWidth="135.0" text="Genre" />
-                  <TableColumn fx:id="publishDateColumn" prefWidth="101.0" text="Publish Date" />
-                  <TableColumn fx:id="isbnColumn" prefWidth="157.0" text="ISBN" />
+                  <TableColumn prefWidth="103.0" text="ID Trasnsaction" />
+                  <TableColumn prefWidth="135.0" text="Document ID" />
+                  <TableColumn fx:id="authorColumn" prefWidth="132.0" text="Member ID" />
+                  <TableColumn fx:id="isbnColumn" prefWidth="133.0" text="ISBN" />
+                  <TableColumn fx:id="genreColumn" prefWidth="151.0" text="Borrowed Date" />
+                  <TableColumn fx:id="publishDateColumn" prefWidth="138.0" text="Returned Date" />
+                  <TableColumn prefWidth="103.0" text="Edited by" />
                </columns>
             </TableView>
          </content>
       </ScrollPane>
-
-      <ImageView fx:id="prevImage" fitHeight="365.0" fitWidth="279.0" layoutX="917.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true" />
-
-      <Label layoutX="959.0" layoutY="493.0" text="MORE INFORMATION">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-
-      <AnchorPane fx:id="moreInfoPane" layoutX="917.0" layoutY="523.0" prefHeight="200.0" prefWidth="279.0" />
-      <Button layoutX="1014.0" layoutY="735.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="86.0" text="Review" />
+      <Button layoutX="1017.0" layoutY="736.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="86.0" text="Return" />
+      <TextArea fx:id="documentTextArea" layoutX="928.0" layoutY="127.0" prefHeight="276.0" prefWidth="264.0" promptText="Information of document" />
+      <TextArea fx:id="memberTextArea" layoutX="928.0" layoutY="429.0" prefHeight="276.0" prefWidth="264.0" promptText="Information of member" />
    </children>
 </AnchorPane>
