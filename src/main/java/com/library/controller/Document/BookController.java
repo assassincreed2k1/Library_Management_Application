@@ -19,8 +19,7 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-// import javafx.scene.control.CheckBox;
-// import javafx.scene.control.TextField;
+import javafx.scene.control.TableCell;
 
 import java.io.IOException;
 
@@ -50,6 +49,12 @@ public class BookController {
     private TableView<Book> bookTable;
 
     @FXML
+    private TableColumn<Book, String> idColumn;
+
+    @FXML
+    private TableColumn<Book, Boolean> isAvailableColumn;
+
+    @FXML
     private TableColumn<Book, String> titleColumn;
 
     @FXML
@@ -70,6 +75,12 @@ public class BookController {
     @FXML
     private AnchorPane moreInfoPane;
 
+    private Task<Void> showBookTask;
+    private Task<Void> showPrevTask;
+    private final Image defaultImagePrv = new Image(getClass().getResource("/img/prv.png").toExternalForm());
+    //private final Image defaultErrImagePrv = new Image(getClass().getResource("/img/prve.png").toExternalForm());
+    private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/noprv.png").toExternalForm());
+
     // This method is called by the FXMLLoader when initialization is complete
     @FXML
     private void initialize() {
@@ -82,124 +93,81 @@ public class BookController {
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("group"));
         publishDateColumn.setCellValueFactory(new PropertyValueFactory<>("publishDate"));
         isbnColumn.setCellValueFactory(new PropertyValueFactory<>("ISBN"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        isAvailableColumn.setCellValueFactory(new PropertyValueFactory<>("isAvailable"));
 
-        bookTable.setOnMouseClicked(event -> showSelectedBookDetails());
-        bookTable.setOnKeyPressed(event -> showSelectedBookDetails());
+        isAvailableColumn.setCellFactory(column -> new TableCell<Book, Boolean>() {
+            @Override
+            protected void updateItem(Boolean isAvailable, boolean empty) {
+                super.updateItem(isAvailable, empty);
+
+                if (empty || isAvailable == null) {
+                    setText(null);
+                } else {
+                    setText(isAvailable ? "Yes" : "No");
+                }
+            }
+        });
+
+        bookTable.setOnMouseClicked(event -> runShowBookTask());
+        bookTable.setOnKeyPressed(event -> runShowBookTask());
 
         prevImage.setOnMouseClicked(event -> showPreview());
 
         exitButton.setOnAction(event -> {
             try {
-                libraryService.switchTo("/fxml/Library/LibraryHome.fxml", 
+                libraryService.switchTo("/fxml/Library/LibraryHome.fxml",
                         (Stage) exitButton.getScene().getWindow());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
 
+        showBookTask = reShowBookTask();
+        showPrevTask = reShowPrevTask();
+
         loadBookListAsync();
     }
 
-    private void loadBookListAsync() {
-        Task<ObservableList<Book>> task = new Task<>() {
-            @Override
-            protected ObservableList<Book> call() {
-                System.out.println("Running loadBookListAsync()...");
-                return getBookList();
-            }
-        };
-
-        task.setOnSucceeded(event -> {
-            System.out.println("Succeeded: loadBookListAsync()");
-            bookTable.setItems(task.getValue());
-        });
-
-        task.setOnFailed(event -> {
-            System.out.println("Failed to load book list.");
-        });
-
-        executor.startNewThread(task);
-
-    }
-
-    private Task<Void> showBookTask;
-    private Task<Void> showPrevTask;
-
-    private void showSelectedBookDetails() {
-        if (showBookTask != null && showBookTask.isRunning()) {
-            System.out.println("Task Cancelled");
-            showBookTask.cancel();
-        }
-
-        showBookTask = new Task<>() {
+    private Task<Void> reShowBookTask() {
+        return new Task<>() {
             @Override
             protected Void call() {
-                System.out.println("Running new updateBookDetails()...");
-
+                System.out.println("Running new showBookTask()...");
                 Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
-                if (selectedBook != null) {
-                    Platform.runLater(() -> updateBookDetails(selectedBook));
-                }
+                Platform.runLater(() -> updateBookDetails(selectedBook));
                 return null;
             }
-
+    
             @Override
             protected void succeeded() {
-                System.out.println("updateBookDetails(): Succeeded!");
+                System.out.println("showBookTask(): Succeeded!");
             }
-
+    
             @Override
             protected void cancelled() {
-                System.out.println("updateBookDetails(): Task Cancelled");
+                System.out.println("showBookTask(): Task Cancelled");
             }
-
+    
             @Override
             protected void failed() {
-                System.out.println("updateBookDetails(): Task Error");
+                System.out.println("showBookTask(): Task Error");
             }
         };
+    }
 
-        showPrevTask = new Task<>() {
+    private Task<Void> reShowPrevTask() {
+        return new Task<>() {
             @Override
             protected Void call() {
                 System.out.println("Running new showPrevTask()...");
                 Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
                 if (selectedBook != null) {
-                    Platform.runLater(() -> prevImage.setImage(new Image(selectedBook.getImagePreview())));
-                }
-                return null;
-            }
-
-            @Override
-            protected void succeeded() {
-                System.out.println("showPrevTask(): Succeeded!");
-            }
-
-            @Override
-            protected void cancelled() {
-                System.out.println("showPrevTask(): Task Cancelled");
-            }
-
-            @Override
-            protected void failed() {
-                System.out.println("showPrevTask(): Task Error");
-            }
-        };
-
-        executor.startNewThread(showBookTask);
-    }
-
-    private void showPreview() {
-        showPrevTask = new Task<>() {
-            @Override
-            protected Void call() {
-                System.out.println("Running new showPrevTask()...");
-                Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
-                if (selectedBook != null) {
-                    if (selectedBook.getImagePreview() != null || !selectedBook.getImagePreview().isEmpty()) {
-                        Platform.runLater(() -> prevImage.setImage(new Image(selectedBook.getImagePreview())));
+                    Image img = new Image(selectedBook.getImagePreview(), true);
+                    if (!img.isError()) {
+                        Platform.runLater(() -> prevImage.setImage(img));
                     } else {
-                        prevImage.setImage(new Image(getClass().getResource("/img/prve.png").toExternalForm()));
+                        Platform.runLater(() -> prevImage.setImage(defaultNoImagePrv));
                     }
                 }
                 return null;
@@ -218,8 +186,51 @@ public class BookController {
             @Override
             protected void failed() {
                 System.out.println("showPrevTask(): Task Error");
+                Platform.runLater(() -> prevImage.setImage(defaultNoImagePrv));
             }
         };
+    }
+
+    private void loadBookListAsync() {
+        Task<ObservableList<Book>> loadBookListAsyncTask = new Task<>() {
+            @Override
+            protected ObservableList<Book> call() {
+                System.out.println("Running loadBookListAsync()...");
+                return bookManagement.getAllBooks();
+            }
+        };
+
+        loadBookListAsyncTask.setOnSucceeded(event -> {
+            System.out.println("Succeeded: loadBookListAsync()");
+            bookTable.setItems(loadBookListAsyncTask.getValue());
+        });
+
+        loadBookListAsyncTask.setOnFailed(event -> {
+            System.out.println("Failed to load book list.");
+        });
+
+        executor.startNewThread(loadBookListAsyncTask);
+    }
+
+    private void runShowBookTask() {
+        if (showBookTask != null && showBookTask.isRunning()) {
+            System.out.println("Task Cancelled");
+            showBookTask.cancel();
+        }
+
+        showBookTask = reShowBookTask();
+
+        Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
+        if (selectedBook == null) {
+            System.out.println("No book selected.");
+            return;
+        }
+
+        executor.startNewThread(showBookTask);
+    }
+
+    private void showPreview() {
+        showPrevTask = reShowPrevTask();
         executor.startNewThread(showPrevTask);
     }
 
@@ -259,7 +270,7 @@ public class BookController {
                 stage.setScene(new Scene(root));
 
                 stage.setOnCloseRequest(event2 -> {
-                    bookTable.setItems(getBookList());
+                    bookTable.setItems(bookManagement.getAllBooks());
                 });
 
                 stage.show();
@@ -275,13 +286,13 @@ public class BookController {
 
                 RemoveDocumentController rmController = delPage.getController();
                 rmController.setId(selectedBook.getID());
-                
+
                 Stage stage = new Stage();
                 stage.setTitle("Remove Document");
                 stage.setScene(new Scene(root));
 
                 stage.setOnCloseRequest(event2 -> {
-                    bookTable.setItems(getBookList());
+                    bookTable.setItems(bookManagement.getAllBooks());
                 });
 
                 stage.show();
@@ -316,14 +327,11 @@ public class BookController {
 
         editButton.setLayoutX(5);
         editButton.setLayoutY(160);
-        
+
         deleteButton.setLayoutX(200);
         deleteButton.setLayoutY(160);
 
-        prevImage.setImage(new Image(getClass().getResource("/img/prv.png").toExternalForm()));
-    }
-
-    private ObservableList<Book> getBookList() {
-        return bookManagement.getAllBooks();
+        prevImage.setImage(defaultImagePrv);
+        prevImage.setOnMouseClicked(event -> showPreview());
     }
 }

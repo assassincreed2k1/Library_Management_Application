@@ -49,13 +49,13 @@
          <content>
             <TableView fx:id="bookTable" prefHeight="706.0" prefWidth="908.0">
                   <columns>
-                  <TableColumn prefWidth="109.0" text="ID" />
+                     <TableColumn fx:id="idColumn" prefWidth="109.0" text="ID" />
                      <TableColumn fx:id="titleColumn" prefWidth="196.0" text="Book Title" />
                      <TableColumn fx:id="authorColumn" prefWidth="125.0" text="Author" />
                      <TableColumn fx:id="genreColumn" prefWidth="104.0" text="Genre" />
                      <TableColumn fx:id="publishDateColumn" prefWidth="136.0" text="Publish Date" />
                      <TableColumn fx:id="isbnColumn" prefWidth="147.0" text="ISBN" />
-                  <TableColumn prefWidth="81.0" text="Is Available" />
+                     <TableColumn fx:id="isAvailableColumn" prefWidth="81.0" text="Is Available" />
                   </columns>
             </TableView>
          </content>
