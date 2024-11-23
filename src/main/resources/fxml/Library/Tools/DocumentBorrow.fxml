@@ -18,8 +18,8 @@
             <Font size="24.0" />
          </font>
       </Text>
-      <Button fx:id="confirmButton" layoutX="536.0" layoutY="506.0" mnemonicParsing="false" text="Confirm" />
-      <Button fx:id="checkButton" layoutX="286.0" layoutY="506.0" mnemonicParsing="false" text="Check " textAlignment="CENTER" />
+      <Button fx:id="confirmButton" layoutX="396.0" layoutY="506.0" mnemonicParsing="false" text="Confirm" />
+      <Button fx:id="checkButton" layoutX="232.0" layoutY="506.0" mnemonicParsing="false" text="Check " textAlignment="CENTER" />
       <TextArea fx:id="inforMemTextArea" layoutX="443.0" layoutY="287.0" prefHeight="177.0" prefWidth="360.0" promptText="Information of Member" />
       <TextArea fx:id="inforDocTextArea" layoutX="55.0" layoutY="287.0" prefHeight="177.0" prefWidth="360.0" promptText="Information of Document" />
       <GridPane layoutX="64.0" layoutY="145.0" prefHeight="120.0" prefWidth="745.0">
@@ -66,5 +66,6 @@
             <Font size="14.0" />
          </font>
       </Text>
+      <Button fx:id="printButton" layoutX="568.0" layoutY="506.0" mnemonicParsing="false" text="Print" textAlignment="CENTER" />
    </children>
 </AnchorPane>

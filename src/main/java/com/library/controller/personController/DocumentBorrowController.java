@@ -9,6 +9,7 @@ import com.library.model.doc.Document;
 import com.library.model.doc.Magazine;
 import com.library.model.doc.Newspaper;
 import com.library.model.helpers.MessageUtil;
+import com.library.model.helpers.PDFPrinter;
 import com.library.model.helpers.PersonIdHandle;
 import com.library.service.CombinedDocument;
 import com.library.service.DocumentTransaction;
@@ -16,10 +17,12 @@ import com.library.service.DocumentTransaction;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class DocumentBorrowController {
@@ -55,6 +58,9 @@ public class DocumentBorrowController {
     @FXML
     private Button checkButton;
 
+    @FXML
+    private Button printButton;
+
     String memberID = null;
     String documentID = null;
     String documentType = null;
@@ -67,7 +73,9 @@ public class DocumentBorrowController {
 
         confirmButton.setOnAction(event -> onConfirm());
         checkButton.setOnAction(event -> onCheck());
+        printButton.setOnAction(event -> onPrint());
 
+        printButton.setDisable(true);
         confirmButton.setDisable(true); // Vô hiệu hóa nút Confirm trước khi check thông tin
     }
 
@@ -156,13 +164,6 @@ public class DocumentBorrowController {
 
     @FXML
     private void onConfirm() {
-        // String transactionType = typeComboBox.getValue();
-    
-        // if (transactionType == null) {
-        //     MessageUtil.showMessage(notification, "Please select a transaction type.", "red");
-        //     return;
-        // }
-    
         String memberID = memberIDTextField.getText().trim();
         String documentID = documentIDTextField.getText().trim();
         String editedBy = User.getId(); // sau này vào ứng dụng được rồi thì sửa sau
@@ -189,6 +190,7 @@ public class DocumentBorrowController {
             protected void succeeded() {
                 // Gọi khi tác vụ thành công
                 MessageUtil.showMessage(notification, getValue(), "green");
+                printButton.setDisable(false);
             }
     
             @Override
@@ -202,5 +204,27 @@ public class DocumentBorrowController {
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
+    }
+
+    private void onPrint() {
+        VBox contentBox = new VBox();
+        contentBox.setSpacing(10);
+
+        contentBox.getChildren().add(new javafx.scene.control.Label("Information of borrowing "));
+        contentBox.getChildren().add(new javafx.scene.control.Label("\nMember information: "));
+        contentBox.getChildren().add(new javafx.scene.control.Label(member.getDetails()));
+        contentBox.getChildren().add(new javafx.scene.control.Label("\nDocument information: "));
+        contentBox.getChildren().add(new javafx.scene.control.Label(document.getDetails()));
+        contentBox.getChildren().add(new javafx.scene.control.Label("\nTransaction information: "));
+        contentBox.getChildren().add(new javafx.scene.control.Label("Borrowed Date " + LocalDate.now().toString()));
+        contentBox.getChildren().add(new javafx.scene.control.Label("Due Date: " + LocalDate.now().plusDays(30).toString()));
+
+        try {
+            PDFPrinter.printPDF(contentBox, memberID + "_" + documentID + "_" + LocalDate.now().toString());
+            MessageUtil.showMessage(notification, "PDF has been successfully generated", "green");
+        } catch (Exception e) {
+            MessageUtil.showMessage(notification, "Error during PDF generating", "red");
+            e.printStackTrace();
+        }
     }
 }

@@ -25,8 +25,8 @@ public class App extends Application {
         ServiceManager.initialize();
 
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login/SignIn.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/ReviewBorrowedBooks.fxml"));
-        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Person/DocBorrow.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/ReviewBorrowedBooks.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/DocumentBorrow.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Books.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Person/SearchPerson.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryForBorrower.fxml"));
