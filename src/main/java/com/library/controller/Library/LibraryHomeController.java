@@ -65,6 +65,9 @@ public class LibraryHomeController {
     private ComboBox<String> newspapersComboBox;
 
     @FXML
+    private ComboBox<String> addUserComboBox;
+
+    @FXML
     private ComboBox<String> updateUserComboBox;
 
     @FXML
@@ -84,6 +87,9 @@ public class LibraryHomeController {
 
     @FXML
     private Button showAllButton;
+
+    @FXML
+    private Button searchUserButton;
 
     @FXML
     private Hyperlink moreBooks1, moreBooks2;
@@ -184,9 +190,9 @@ public class LibraryHomeController {
         booksComboBox.getItems().addAll("All Books");
         magazinesComboBox.getItems().addAll("All Magazines");
         newspapersComboBox.getItems().addAll("All Newspapers");
-        updateUserComboBox.getItems().addAll("Add Librarian", "Add Member", "Update Librarian", "Update Member");
-        borrowCardComboBox.getItems().addAll("Handle Card", "Renew Card");
-
+        addUserComboBox.getItems().addAll("Add Librarian", "Add Member");
+        updateUserComboBox.getItems().addAll("Update Librarian", "Update Member");
+        borrowCardComboBox.getItems().addAll("Borrow/Return Documents", "Membership Card Renewal");
     }
 
     private void setupButtons() {
@@ -194,6 +200,7 @@ public class LibraryHomeController {
         setComboBoxHandler(magazinesComboBox);
         setComboBoxHandler(newspapersComboBox);
         setComboBoxHandler(menuComboBox);
+        setComboBoxHandler(addUserComboBox);
         setComboBoxHandler(updateUserComboBox);
         setComboBoxHandler(borrowCardComboBox);
 
@@ -202,6 +209,7 @@ public class LibraryHomeController {
         updateDocumentButton.setOnAction(event -> handleUpdateDocument());
         searchButton.setOnAction(event -> handleSearchDocuments());
         showAllButton.setOnAction(event -> handleShowAll());
+        searchUserButton.setOnAction(event-> handleSearchUser());
 
         for (int i = 0; i < 2; i++) {
             moreListBooks[i].setOnAction(event -> {
@@ -266,10 +274,10 @@ public class LibraryHomeController {
             case "Update Member":
                 fxmlFile = "/fxml/Person/UpdateMember.fxml";
                 break;
-            case "Handle Card":
+            case "Borrow/Return Documents":
                 fxmlFile = "/fxml/Person/DocBorrow.fxml";
                 break;
-            case "Renew Card":
+            case "Membership Card Renewal":
                 fxmlFile = "/fxml/Person/ExpiryCard.fxml";
                 break;
             default:
@@ -278,6 +286,7 @@ public class LibraryHomeController {
         if (isCreateNewWindow) {
             try {
                 openNewWindow(fxmlFile);
+                libraryService.switchTo("/fxml/Library/LibraryHome.fxml", (Stage) usernameLabel.getScene().getWindow());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -288,6 +297,14 @@ public class LibraryHomeController {
                 e.printStackTrace();
 
             }
+        }
+    }
+
+    private void handleSearchUser() {
+        try {
+            openNewWindow("/fxml/Person/SearchPerson.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
