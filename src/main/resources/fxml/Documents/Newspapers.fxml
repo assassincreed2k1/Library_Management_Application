@@ -49,10 +49,12 @@
          <content>
             <TableView fx:id="newspaperTable" prefHeight="706.0" prefWidth="908.0">
                   <columns>
+                     <TableColumn fx:id="idColumn" prefWidth="109.0" text="ID" />
                      <TableColumn fx:id="titleColumn" prefWidth="192.0" text="Newspaper Title" />
                      <TableColumn fx:id="genreColumn" prefWidth="152.0" text="Genre" />
                      <TableColumn fx:id="sourceColumn" prefWidth="176.0" text="Source" />
                      <TableColumn fx:id="regionColumn" prefWidth="176.0" text="Region" />
+                     <TableColumn fx:id="isAvailableColumn" prefWidth="81.0" text="Is Available" />
                   </columns>
             </TableView>
          </content>

@@ -19,20 +19,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.fxml.FXML;
-//import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
-//import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Dialog;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -52,9 +47,6 @@ public class AddDocumentController {
 
     @FXML
     private ImageView iconImageView;
-
-    // @FXML
-    // private Button exitButton;
 
     @FXML
     private Button addButton;
@@ -319,7 +311,7 @@ public class AddDocumentController {
                         newBook.setImagePreview(docImagePreview.getImage().getUrl());
                         docImagePreview.setImage(defaultDocImgPrev);
                     } else {
-                        newBook.setImagePreview("/img/Noprev.png");
+                        newBook.setImagePreview("/img/noprev.png");
                     }
 
                     bookManagement.addDocuments(newBook);
