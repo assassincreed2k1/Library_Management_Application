@@ -5,7 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -19,6 +21,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
@@ -44,7 +48,8 @@ public class SearchBookController {
         public TextField publishDateField;
         public TextField isbnField;
 
-        public TextFieldUpdate(){};
+        public TextFieldUpdate() {
+        };
 
         public TextFieldUpdate(TextField titleField, TextField authorField, TextField genreField,
                 TextField publishDateField, TextField isbnField) {
@@ -54,7 +59,7 @@ public class SearchBookController {
             this.publishDateField = publishDateField;
             this.isbnField = isbnField;
         }
-        
+
     }
 
     private BookManagement bookManagement;
@@ -282,6 +287,7 @@ public class SearchBookController {
         Label isbnLabel = new Label("ISBN: " + selectedBook.getISBN());
         Label availabilityLabel = new Label("Available: " + (selectedBook.getIsAvailable() ? "Yes" : "No"));
         Button editButton = new Button("Edit");
+        Button deleteButton = new Button("Delete");
 
         idLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         titleLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
@@ -291,11 +297,34 @@ public class SearchBookController {
         isbnLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         availabilityLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         editButton.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        deleteButton.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
 
         editButton.setOnAction(event -> openEditDialog(selectedBook));
 
+        deleteButton.setOnAction(event -> {
+            try {
+                FXMLLoader delPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/removeDocument.fxml"));
+                Parent root = delPage.load();
+
+                RemoveDocumentController rmController = delPage.getController();
+                rmController.setup(selectedBook);
+
+                Stage stage = new Stage();
+                stage.setTitle("Remove Document");
+                stage.setScene(new Scene(root));
+
+                stage.setOnCloseRequest(event2 -> {
+                    bookTable.setItems(getBookList());
+                });
+
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
         moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel, publishDateLabel, isbnLabel,
-                availabilityLabel, editButton);
+                availabilityLabel, editButton, deleteButton);
 
         idLabel.setLayoutX(5);
         idLabel.setLayoutY(0);
@@ -320,6 +349,9 @@ public class SearchBookController {
 
         editButton.setLayoutX(5);
         editButton.setLayoutY(160);
+
+        deleteButton.setLayoutX(200);
+        deleteButton.setLayoutY(160);
 
         prevImage.setImage(new Image(getClass().getResource("/img/prv.png").toExternalForm()));
     }
@@ -377,7 +409,7 @@ public class SearchBookController {
 
         Button updateMatchingIsbnButton = new Button("Update All by ISBN");
         updateMatchingIsbnButton.setOnAction(e -> {
-            updateBook(selectedBook, textFieldUpdate,availabilityCheckBox, statusLabel, true);
+            updateBook(selectedBook, textFieldUpdate, availabilityCheckBox, statusLabel, true);
         });
 
         editPane.getChildren().addAll(bookIdLabel, new Label("Title:"), textFieldUpdate.titleField,
@@ -402,7 +434,8 @@ public class SearchBookController {
      * @param statusLabel          the status label to display feedback
      * @param updateByIsbn         whether to update all books with matching ISBN
      */
-    private void updateBook(Book selectedBook, TextFieldUpdate textFieldUpdate, CheckBox availabilityCheckBox, Label statusLabel,
+    private void updateBook(Book selectedBook, TextFieldUpdate textFieldUpdate, CheckBox availabilityCheckBox,
+            Label statusLabel,
             boolean updateByIsbn) {
         selectedBook.setName(textFieldUpdate.titleField.getText());
         selectedBook.setAuthor(textFieldUpdate.authorField.getText());

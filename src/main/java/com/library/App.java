@@ -37,6 +37,7 @@ public class App extends Application {
 
         stage.initStyle(StageStyle.DECORATED);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.setOnCloseRequest(event -> {
             ServiceManager.getBackgroundService().stopAllThreads();
         });
