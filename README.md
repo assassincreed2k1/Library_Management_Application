@@ -81,7 +81,8 @@ library-management-system/
 │ │ │ ├── css/ # CSS files for styling the GUI 
 │ │ │ ├── fxml/ # FXML files defining the GUI layout 
 │ │ │ └── img/ # Images used in the application 
-│ ├── test/ │ │ ├── java/ 
+│ ├── test/ 
+│ │ ├── java/ 
 │ │ │ ├── com.library/ # Test cases for different components 
 │ │ │ └── service/ # Unit tests for services 
 ├── module-info.java # Java module configuration 
