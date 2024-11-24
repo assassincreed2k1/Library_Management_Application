@@ -138,6 +138,8 @@ public class HistoryTransactionMember {
             protected Void call() throws SQLException {
                 if (query.equalsIgnoreCase("@Show all")) {
                     bookTable.setItems(fetchTransactions());
+                } else if (query.equalsIgnoreCase("@Not reviewed")) {
+                    bookTable.setItems(fetchNotReviewed());
                 } else {
                     bookTable.setItems(searchTransactions(query));
                 }
@@ -214,7 +216,7 @@ public class HistoryTransactionMember {
     @FXML
     private void onReview() {
         if (document == null) {
-            MessageUtil.showAlert("error", "Can't review because of error", "Error when reviewing");
+            MessageUtil.showAlert("error", "Can't review because of error. Please check!", "Error when reviewing");
             return;
         }
         try {
@@ -233,5 +235,36 @@ public class HistoryTransactionMember {
             e.printStackTrace();
             System.err.println("Error loading MainScene.fxml. Ensure the file path is correct.");
         }
+    }
+
+    private ObservableList<Transaction> fetchNotReviewed() throws SQLException {
+        ObservableList<Transaction> transactions = FXCollections.observableArrayList();
+        String query = """
+                SELECT idTransaction, document_id, borrowDate, dueDate, returnDate, score
+                FROM bookTransaction
+                WHERE membershipId = ? AND score is null;
+                """;
+    
+        try (Connection connection = LibraryService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, User.getId());
+    
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    transactions.add(new Transaction(
+                            resultSet.getInt("idTransaction"),
+                            resultSet.getString("document_id"),
+                            resultSet.getString("borrowDate"),
+                            resultSet.getString("dueDate"),
+                            resultSet.getString("returnDate"),
+                            resultSet.getInt("score")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching transactions: " + e.getMessage());
+            throw e; 
+        }
+        return transactions;
     }
 }
