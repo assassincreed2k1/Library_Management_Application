@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@../../css/BasicUI.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.Document.BookController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@../../css/BasicUI.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.Document.BookController">
    <children>
       <!-- TaskBar -->
       <AnchorPane fx:id="taskBar" prefHeight="94.0" prefWidth="1210.0" styleClass="taskbar">
@@ -61,15 +61,16 @@
          </content>
       </ScrollPane>
 
-      <ImageView fx:id="prevImage" fitHeight="365.0" fitWidth="279.0" layoutX="917.0" layoutY="148.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="prevImage" fitHeight="365.0" fitWidth="279.0" layoutX="917.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true" />
 
-      <Label layoutX="959.0" layoutY="550.0" text="MORE INFORMATION">
+      <Label layoutX="959.0" layoutY="487.0" text="MORE INFORMATION">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
 
-      <AnchorPane fx:id="moreInfoPane" layoutX="921.0" layoutY="587.0" prefHeight="200.0" prefWidth="279.0" />
+      <AnchorPane fx:id="moreInfoPane" layoutX="917.0" layoutY="523.0" prefHeight="200.0" prefWidth="279.0" />
+      <Button fx:id="reviewButton" layoutX="1012.0" layoutY="748.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="89.0" text="See review" />
 
    </children>
 </AnchorPane>

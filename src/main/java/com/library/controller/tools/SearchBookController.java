@@ -20,13 +20,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
 
+import java.io.File;
 import java.io.IOException;
 
+import com.google.zxing.WriterException;
 import com.library.model.doc.Book;
+import com.library.service.APIService;
 import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
-import com.library.service.LibraryService;
 import com.library.service.ServiceManager;
 
 /**
@@ -42,17 +45,12 @@ public class SearchBookController {
      * and ISBN.
      */
     public static String keyword;
-    private LibraryService libraryService = new LibraryService();
 
     private BookManagement bookManagement;
-
     private BackgroundService executor;
 
     @FXML
     private AnchorPane taskBar;
-
-    @FXML
-    Button exitButton;
 
     @FXML
     private TableView<Book> bookTable;
@@ -82,6 +80,9 @@ public class SearchBookController {
     private ImageView prevImage;
 
     @FXML
+    private ImageView qrCodeImageView;
+
+    @FXML
     private AnchorPane moreInfoPane;
 
     private Task<Void> showBookTask;
@@ -94,6 +95,7 @@ public class SearchBookController {
     // This method is called by the FXMLLoader when initialization is complete
     @FXML
     private void initialize() {
+        createQRCodeDirectory();
         this.bookManagement = ServiceManager.getBookManagement();
         this.executor = ServiceManager.getBackgroundService();
 
@@ -123,15 +125,6 @@ public class SearchBookController {
         bookTable.setOnKeyPressed(event -> runShowBookTask());
 
         prevImage.setOnMouseClicked(event -> showPreview());
-
-        exitButton.setOnAction(event -> {
-            try {
-                libraryService.switchTo("/fxml/Library/LibraryHome.fxml",
-                        (Stage) exitButton.getScene().getWindow());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
 
         showBookTask = reShowBookTask();
         showPrevTask = reShowPrevTask();
@@ -330,4 +323,70 @@ public class SearchBookController {
     public static void setKeyWord(String keyString) {
         SearchBookController.keyword = keyString;
     }
+
+    @FXML
+    private void generateQRCode() {
+        Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
+
+        if (selectedBook == null) {
+            showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Please select a book to generate QR code.");
+            return;
+        }
+
+        Task<Void> generateQRCodeTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                String qrData = String.format(
+                        "{ \"bookID\": %s, \"title\": \"%s\", \"author\": \"%s\", \"genre\": \"%s\", \"publishedDate\": \"%s\" }",
+                        selectedBook.getID(),
+                        selectedBook.getName(),
+                        selectedBook.getAuthor(),
+                        selectedBook.getGroup(),
+                        selectedBook.getPublishDate()
+                );
+
+                String filePath = "src/main/resources/img/qr_codes/book_" + selectedBook.getID() + ".png";
+
+                try {
+                    APIService.generateQRCodeImage(qrData, 200, 200, filePath);
+                    Image qrImage = new Image(new File(filePath).toURI().toString());
+                    Platform.runLater(() -> qrCodeImageView.setImage(qrImage));
+                } catch (WriterException | IOException e) {
+                    e.printStackTrace();
+                    Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Error generating QR Code: " + e.getMessage()));
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "QR Code Generated", "QR Code saved successfully."));
+            }
+
+            @Override
+            protected void failed() {
+                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Error generating QR Code."));
+            }
+        };
+
+        Thread qrCodeThread = new Thread(generateQRCodeTask);
+        qrCodeThread.setDaemon(true);
+        qrCodeThread.start();
+    }
+
+    private void createQRCodeDirectory() {
+        File directory = new File("src/main/resources/img/qr_codes");
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
 }

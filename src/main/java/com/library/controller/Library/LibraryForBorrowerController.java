@@ -153,8 +153,6 @@ public class LibraryForBorrowerController {
         this.libraryService = ServiceManager.getLibraryService();
         this.bookManagement = ServiceManager.getBookManagement();
 
-        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
-
         this.latestDocsManager = new DocumentDisplayManager(bookManagement, libraryService,
                 latestImageViews, latestNames, latestAuthors, latestGenres, latestAvailables);
 
@@ -273,7 +271,7 @@ public class LibraryForBorrowerController {
     //Borrow Books
     private void handleBorrowBookButton() {
         try {
-            libraryService.switchTo("/fxml/Library/Tools/BorrowingHistory.fxml", (Stage) usernameLabel.getScene().getWindow());
+            libraryService.switchTo("/fxml/Library/Tools/BorrowingHistoryForMember.fxml", (Stage) usernameLabel.getScene().getWindow());
         } catch (IOException e) {
             e.printStackTrace();
         }

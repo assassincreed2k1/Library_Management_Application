@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.library.service.BookManagement;
+import com.library.model.Person.Librarian;
 import com.library.model.Person.User;
 import com.library.model.doc.Book;
 import com.library.service.LibraryService;
 import com.library.service.ServiceManager;
+import com.library.controller.personController.UpdateLibrarianController;
 import com.library.controller.tools.DocumentDisplayManager;
 import com.library.controller.tools.SearchBookController;
 
@@ -85,13 +87,16 @@ public class LibraryHomeController {
     private Button searchButton;
 
     @FXML
-    private Button addDocumentButton, removeDocumentButton, updateDocumentButton;
+    private Button addDocumentButton, removeDocumentButton;
 
     @FXML
     private Button showAllButton;
 
     @FXML
     private Button searchUserButton;
+
+    @FXML
+    private Button bookTransactionButton;
 
     @FXML
     private Hyperlink moreBooks1, moreBooks2;
@@ -191,7 +196,7 @@ public class LibraryHomeController {
 
         this.trendingDocsManager = new DocumentDisplayManager(trendingImageList);
 
-        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
+        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");  
 
         showTrendingImg();
         setupComboBoxes();
@@ -220,10 +225,10 @@ public class LibraryHomeController {
 
         addDocumentButton.setOnAction(event -> handleAddDocument());
         removeDocumentButton.setOnAction(event -> handleRemoveDocument());
-        updateDocumentButton.setOnAction(event -> handleUpdateDocument());
         searchButton.setOnAction(event -> handleSearchDocuments());
         showAllButton.setOnAction(event -> handleShowAll());
         searchUserButton.setOnAction(event -> handleSearchUser());
+        bookTransactionButton.setOnAction(event -> handleShowTransaction());
 
         for (int i = 0; i < 2; i++) {
             moreListBooks[i].setOnAction(event -> {
@@ -293,10 +298,28 @@ public class LibraryHomeController {
                 fxmlFile = "/fxml/Person/UpdateMember.fxml";
                 break;
             case "Borrow/Return Documents":
-                fxmlFile = "/fxml/Person/DocBorrow.fxml";
+                fxmlFile = "/fxml/Library/Tools/DocumentBorrow.fxml";
                 break;
             case "Membership Card Renewal":
                 fxmlFile = "/fxml/Person/ExpiryCard.fxml";
+                break;
+            case "Update Infor":
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Person/UpdateLibrarian.fxml"));
+                    Stage stage = (Stage) usernameLabel.getScene().getWindow();
+                    Scene scene = new Scene(loader.load());
+        
+                    UpdateLibrarianController controller = loader.getController();
+                    Librarian librarian = new Librarian();
+                    librarian = librarian.getInforFromDatabase(User.getId());
+                    controller.setLibrarian(librarian);
+                    controller.setBeforeSceneURL("/fxml/Library/LibraryHome.fxml");
+        
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }  
                 break;
             default:
                 break;
@@ -321,6 +344,14 @@ public class LibraryHomeController {
     private void handleSearchUser() {
         try {
             openNewWindow("/fxml/Person/SearchPerson.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleShowTransaction() {
+        try {
+            openNewWindow("/fxml/Library/Tools/BorrowingHistoryForEmployee.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -352,11 +383,6 @@ public class LibraryHomeController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    // Handle Update Document action
-    private void handleUpdateDocument() {
-        System.out.println("Updating a document...");
     }
 
     // Handle Show All action -- Need Fix
