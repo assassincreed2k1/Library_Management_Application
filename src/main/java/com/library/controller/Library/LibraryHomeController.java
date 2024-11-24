@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.library.service.BookManagement;
+import com.library.model.Person.Librarian;
 import com.library.model.Person.User;
 import com.library.model.doc.Book;
 import com.library.service.LibraryService;
 import com.library.service.ServiceManager;
+import com.library.controller.personController.UpdateLibrarianController;
 import com.library.controller.tools.DocumentDisplayManager;
 import com.library.controller.tools.SearchBookController;
 
@@ -297,6 +299,24 @@ public class LibraryHomeController {
                 break;
             case "Membership Card Renewal":
                 fxmlFile = "/fxml/Person/ExpiryCard.fxml";
+                break;
+            case "Update Infor":
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Person/UpdateLibrarian.fxml"));
+                    Stage stage = (Stage) usernameLabel.getScene().getWindow();
+                    Scene scene = new Scene(loader.load());
+        
+                    UpdateLibrarianController controller = loader.getController();
+                    Librarian librarian = new Librarian();
+                    librarian = librarian.getInforFromDatabase(User.getId());
+                    controller.setLibrarian(librarian);
+                    controller.setBeforeSceneURL("/fxml/Library/LibraryHome.fxml");
+        
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }  
                 break;
             default:
                 break;
