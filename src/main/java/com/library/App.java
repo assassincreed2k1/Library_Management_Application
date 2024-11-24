@@ -24,15 +24,9 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         ServiceManager.initialize();
 
-<<<<<<< HEAD
         // Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login/SignIn.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Person/DocBorrow.fxml"));
-=======
-        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login/SignIn.fxml"));
-        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/DocumentBorrow.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/BorrowingHistoryForMember.fxml"));
->>>>>>> 52d46eb5478d92cd78f49ec4f3d246a3ad07ca17
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Books.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Person/DocBorrow.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryForBorrower.fxml"));
