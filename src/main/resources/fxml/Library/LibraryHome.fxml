@@ -34,13 +34,12 @@
                   <Font name="Bodoni MT Bold Italic" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="searchTextField" layoutX="463.0" layoutY="34.0" prefHeight="25.0" prefWidth="335.0" promptText="Search" />
+            <TextField fx:id="searchTextField" layoutX="450.0" layoutY="34.0" prefHeight="25.0" prefWidth="348.0" promptText="Search ID, Title, ISBN" />
             <Label fx:id="usernameLabel" layoutX="1018.0" layoutY="18.0" prefHeight="52.0" prefWidth="176.0" style="-fx-text-fill: #ebeb15;" text="username" textFill="#ebeb15">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <ComboBox fx:id="typeComboBox" layoutX="375.0" layoutY="34.0" prefHeight="25.0" prefWidth="88.0" promptText=" Type" />
             <Button fx:id="searchButton" layoutX="798.0" layoutY="34.0" mnemonicParsing="false" text="Search" />
             <ComboBox fx:id="menuComboBox" layoutX="1189.0" layoutY="24.0" prefHeight="40.0" prefWidth="101.0" promptText="Menu" styleClass="combo-box-menu" />
          </children>
@@ -527,16 +526,16 @@
          <content>
             <HBox prefHeight="239.0" prefWidth="1004.0" />
             <children>
-                     <ImageView fx:id="myImageView1" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView2" fitHeight="176.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView3" fitHeight="174.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView4" fitHeight="175.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView5" fitHeight="174.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView6" fitHeight="175.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView7" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView8" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView9" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView10" fitHeight="174.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView1" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView2" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView3" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView4" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView5" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView6" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView7" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView8" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView9" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView10" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
             </children>
          </content>
       </ScrollPane>

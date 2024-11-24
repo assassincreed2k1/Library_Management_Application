@@ -221,7 +221,7 @@ public class BookManagement extends LibraryService {
 
     public ObservableList<Book> getAllBooksFilter(String keyword) {
         ObservableList<Book> filteredBooks = FXCollections.observableArrayList();
-        String sql_statement = "SELECT * FROM Books WHERE name LIKE ? OR ISBN LIKE ?";
+        String sql_statement = "SELECT * FROM Books WHERE id LIKE ? OR name LIKE ? OR ISBN LIKE ?";
 
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
