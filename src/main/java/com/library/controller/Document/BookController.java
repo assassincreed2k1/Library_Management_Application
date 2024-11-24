@@ -86,7 +86,7 @@ public class BookController {
     private final Image defaultImagePrv = new Image(getClass().getResource("/img/prv.png").toExternalForm());
     // private final Image defaultErrImagePrv = new
     // Image(getClass().getResource("/img/prve.png").toExternalForm());
-    private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/noprv.png").toExternalForm());
+    private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/Noprv.png").toExternalForm());
 
     // This method is called by the FXMLLoader when initialization is complete
     @FXML
