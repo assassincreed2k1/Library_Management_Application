@@ -30,6 +30,7 @@ import javafx.event.EventHandler;
 import java.io.IOException;
 
 import com.library.controller.tools.RemoveDocumentController;
+import com.library.controller.tools.ShowReviewBooks;
 import com.library.controller.tools.UpdateDocumentController;
 import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
@@ -50,6 +51,9 @@ public class BookController {
 
     @FXML
     Button exitButton;
+
+    @FXML
+    Button reviewButton;
 
     @FXML
     private TableView<Book> bookTable;
@@ -129,6 +133,8 @@ public class BookController {
                 e.printStackTrace();
             }
         });
+
+        reviewButton.setOnAction(event -> onReview());
 
         showBookTask = reShowBookTask();
         showPrevTask = reShowPrevTask();
@@ -320,4 +326,33 @@ public class BookController {
         }
     }
 
+    public void onReview() {
+        Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
+        if (selectedBook == null) {
+            System.out.println("No book selected!");
+            return;
+        }
+    
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/ShowBooksReview.fxml"));
+            Parent root = loader.load();
+    
+            ShowReviewBooks controller = loader.getController();
+            if (controller != null) {
+                controller.setIsbn(selectedBook.getISBN()); 
+            } else {
+                System.out.println("Controller not found!");
+                return;
+            }
+    
+            Stage stage = (Stage) reviewButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading FXML file!");
+        }
+    }
+    
 }
