@@ -17,10 +17,10 @@ class MagazineManagementTest {
 
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
-        // Sao chép database library.db để làm file thử nghiệm
+        // Copy the database library.db to make test files
         Files.copy(Paths.get("library.db"), Paths.get(TEST_DB), StandardCopyOption.REPLACE_EXISTING);
 
-        // Khởi tạo đối tượng MagazineManagement với file database thử nghiệm
+        // initialize Magazinemangent with test database file
         magazineManagement = new MagazineManagement();
         magazineManagement.setUrl("jdbc:sqlite:" + TEST_DB);
     }
@@ -29,7 +29,7 @@ class MagazineManagementTest {
     void setUp() throws Exception {
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + TEST_DB);
              Statement stmt = conn.createStatement()) {
-            // Xóa và tạo lại bảng Magazines để đảm bảo mỗi bài test có dữ liệu sạch
+            // delete and recreate the Magazines table to make sure each test has clean data
             stmt.execute("DROP TABLE IF EXISTS Magazines");
             stmt.execute("CREATE TABLE Magazines ("
                     + "id VARCHAR(255) PRIMARY KEY, "
@@ -42,7 +42,7 @@ class MagazineManagementTest {
 
     @AfterAll
     static void tearDownAfterClass() throws Exception {
-        // Xóa database thử nghiệm sau khi hoàn tất
+        //Delete test database after completion
         Files.deleteIfExists(Paths.get(TEST_DB));
     }
 

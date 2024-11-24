@@ -17,10 +17,10 @@ class PersonIDManagementTest {
 
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
-        // Sao chép database library.db để làm file thử nghiệm
+        // Copy the database library.db to make test files
         Files.copy(Paths.get("library.db"), Paths.get(TEST_DB), StandardCopyOption.REPLACE_EXISTING);
 
-        // Khởi tạo đối tượng PersonIDManagement với file database thử nghiệm
+        // Initialize Personidmanagement object with test database file
         personIDManagement = new PersonIDManagement(TEST_TABLE);
         personIDManagement.setUrl("jdbc:sqlite:" + TEST_DB);
     }
@@ -29,7 +29,7 @@ class PersonIDManagementTest {
     void setUp() throws Exception {
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + TEST_DB);
              Statement stmt = conn.createStatement()) {
-            // Xóa và tạo lại bảng thử nghiệm
+            // delete and recreated the test table
             stmt.execute("DROP TABLE IF EXISTS " + TEST_TABLE);
             stmt.execute("CREATE TABLE " + TEST_TABLE + " (id INT PRIMARY KEY)");
         }
@@ -37,21 +37,21 @@ class PersonIDManagementTest {
 
     @AfterAll
     static void tearDownAfterClass() throws Exception {
-        // Xóa database thử nghiệm sau khi hoàn tất
+        // delete database test after completion
         Files.deleteIfExists(Paths.get(TEST_DB));
     }
 
     @Test
     void testGetID_InitialID() {
-        // Khi bảng chưa có ID nào, ID khởi tạo phải là 1
+        // When the table has no ID, the initialized ID must be 1
         int initialID = personIDManagement.getID();
         assertEquals(1, initialID);
     }
 
     @Test
     void testGetID_AfterIncrease() {
-        // Tăng ID và kiểm tra giá trị mới
-        personIDManagement.getID(); // Tạo ID ban đầu
+        // increase ID and check new value
+        personIDManagement.getID(); //CreateInitialId
         personIDManagement.increaseID();
         int currentID = personIDManagement.getID();
         assertEquals(2, currentID);
@@ -59,8 +59,8 @@ class PersonIDManagementTest {
 
     @Test
     void testIncreaseID_MultipleTimes() {
-        // Tăng ID nhiều lần và kiểm tra
-        personIDManagement.getID(); // Tạo ID ban đầu
+        // increase ID many times and check
+        personIDManagement.getID(); // Create the original ID
         personIDManagement.increaseID();
         personIDManagement.increaseID();
         personIDManagement.increaseID();
@@ -71,11 +71,11 @@ class PersonIDManagementTest {
 
     @Test
     void testGetID_Persistence() {
-        // Kiểm tra giá trị ID được lưu trữ trong database
-        personIDManagement.getID(); // Tạo ID ban đầu
+        // Check the value of ID stored in database
+        personIDManagement.getID(); // Create the original ID
         personIDManagement.increaseID();
 
-        // Tạo đối tượng mới và kiểm tra ID có được giữ nguyên không
+        // Create new objects and check whether the ID is kept the same
         PersonIDManagement newInstance = new PersonIDManagement(TEST_TABLE);
         newInstance.setUrl("jdbc:sqlite:" + TEST_DB);
         int currentID = newInstance.getID();
