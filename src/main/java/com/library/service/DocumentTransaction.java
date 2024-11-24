@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.library.model.Person.Member;
 import com.library.model.doc.Book;
 import com.library.model.doc.Document;
 import com.library.model.doc.Magazine;
@@ -190,7 +191,7 @@ public class DocumentTransaction extends LibraryService {
         String sql = """
                 SELECT b.isbn, AVG(t.score) AS average_score
                 FROM Books b
-                JOIN bookTransaction t ON t.document_ = b.id
+                JOIN bookTransaction t ON t.document_id = b.id
                 WHERE b.isbn = ?
                 GROUP BY b.isbn;
                 """;
@@ -216,28 +217,41 @@ public class DocumentTransaction extends LibraryService {
 
     public ArrayList<String> getComment(String isbn) {
         String sql = """
-                SELECT t.comment
+                SELECT t.membershipId, t.comment 
                 FROM Books b
-                JOIN bookTransaction t ON t.document_ = b.id
+                JOIN bookTransaction t ON t.document_id = b.id
                 WHERE b.isbn = ?
                 """;
-
+    
         ArrayList<String> comments = new ArrayList<>();
-
+    
         try (Connection conn = DriverManager.getConnection(url);
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    
             stmt.setString(1, isbn);
-
+    
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    comments.add(rs.getString("comment"));
+                    String membershipId = rs.getString("membershipId");
+                    String comment = rs.getString("comment");
+    
+                    // Lấy thông tin thành viên từ database
+                    Member member =new Member();
+                    member = member.getInforFromDatabase(membershipId);
+    
+                    // Kiểm tra nếu member hoặc comment là null
+                    if (member != null && comment != null) {
+                        comments.add(member.getName() + " said: \n\n" + comment);
+                    } else if (comment != null) {
+                        comments.add("Unknown Member said: \n\n" + comment);
+                    }
                 }
             }
-
+    
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+    
         return comments;
     }
-}
+}    

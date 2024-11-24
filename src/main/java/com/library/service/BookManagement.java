@@ -286,4 +286,39 @@ public class BookManagement extends LibraryService {
         return popularBooks;
     }
 
+    public Book getDocumentViaIsbn(String isbn) {
+        String sql_statement = "SELECT * FROM Books WHERE isbn = ?";
+        Book book = null;
+
+        try (Connection conn = DriverManager.getConnection(url);
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
+            pstmt.setString(1, isbn);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String bookId = rs.getString("id");
+                String name = rs.getString("name");
+                String group = rs.getString("bookGroup");
+                String author = rs.getString("author");
+                String publishDate = rs.getString("publishDate");
+                String isbn_ = rs.getString("ISBN");
+                boolean isAvailable = rs.getBoolean("isAvailable");
+                String imagePreview = rs.getString("imagePreview");
+
+                book = new Book();
+                book.setID(bookId);
+                book.setName(name);
+                book.setGroup(group);
+                book.setAuthor(author);
+                book.setPublishDate(publishDate);
+                book.setISBN(isbn_);
+                book.setIsAvailable(isAvailable);
+                book.setImagePreview(imagePreview);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return book;
+    }
+
 }
