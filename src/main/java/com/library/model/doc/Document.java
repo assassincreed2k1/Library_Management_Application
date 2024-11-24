@@ -61,12 +61,23 @@ public abstract class Document {
      * @param id The unique identifier of the document.
      * @param name The name of the document.
      * @param group The group or category the docment belongs to.
-     * @param isAvailable The avaliable is true.
+     * @param isAvailable The avaliable.
      */
     public Document(String id, String name, String group, boolean isAvailable) {
         this.id = id;
         this.name = name;
         this.group = group;
+        this.isAvailable = isAvailable;
+    }
+
+    /**
+     * Constructs a Document with the specified ID, avalid.
+     * 
+     * @param id The ID of the document.
+     * @param isAvailable The avalid of the document.
+     */
+    public Document(String id, boolean isAvailable) {
+        this.id = id;
         this.isAvailable = isAvailable;
     }
 
@@ -80,6 +91,15 @@ public abstract class Document {
     }
 
     /**
+     * Sets the ID of this document.
+     *
+     * @param id The ID to set for this document.
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
      * Gets the ID of this document.
      *
      * @return The ID of the document.
@@ -87,6 +107,16 @@ public abstract class Document {
     public String getID() {
         return id;
     }
+
+    /**
+     * Gets the ID of this document.
+     *
+     * @return The ID of the document.
+     */
+    public String getId() {
+        return id;
+    }
+    
 
     /**
      * Gets the name of this document.

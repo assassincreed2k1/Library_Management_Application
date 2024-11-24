@@ -37,6 +37,24 @@ public class Person {
         this.password = "123456";
     }
 
+    /**
+     * Constructor for person who has all information.
+     * @param name is string
+     * @param address is string
+     * @param gender is string
+     * @param dateOfBirth is string
+     * @param phoneNumber is string
+     * @param password is string
+     */
+    public Person(String name, String address, String gender, String dateOfBirth, String phoneNumber, String password) {
+        this.name = name;
+        this.address = address;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }

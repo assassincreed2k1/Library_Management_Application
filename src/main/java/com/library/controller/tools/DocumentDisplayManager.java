@@ -100,7 +100,6 @@ public class DocumentDisplayManager {
             } else {
                 System.out.println("Current Book's Cover is Empty");
             }
-
         }
     }
 
@@ -141,24 +140,20 @@ public class DocumentDisplayManager {
      * @return the Image object, either from the cache or newly loaded.
      */
     private Image getCachedImage(String imageUrl) {
-        // Kiểm tra xem imageUrl có phải là URL hay không
-        if (!imageUrl.startsWith("http://") && !imageUrl.startsWith("https://")) {
-            // Nếu là đường dẫn cục bộ, chuyển đổi thành URL hợp lệ
+        if (!imageUrl.startsWith("http://")) {
             URL localImageUrl = getClass().getResource(imageUrl);
             if (localImageUrl != null) {
                 imageUrl = localImageUrl.toExternalForm();
             } else {
                 System.out.println("Local image not found: " + imageUrl);
-                return null; // Trả về null nếu không tìm thấy ảnh cục bộ
+                return null; 
             }
         }
 
-        // Kiểm tra trong cache
         if (LibraryHomeController.imageCache.containsKey(imageUrl)) {
             return LibraryHomeController.imageCache.get(imageUrl);
         }
 
-        // Tải ảnh và lưu vào cache
         Image image = new Image(imageUrl, true);
         LibraryHomeController.imageCache.put(imageUrl, image);
         return image;
@@ -171,8 +166,6 @@ public class DocumentDisplayManager {
      * @param imageView the ImageView to display the loaded image.
      */
     private void loadImageAsync(String imageUrl, ImageView imageView) {
-        // Tạo biến final cho imageUrl, vì Task yêu cầu các biến bên ngoài phải là final
-        // hoặc effectively final
         final String finalImageUrl = imageUrl;
 
         Task<Image> loadImageTask = new Task<>() {
@@ -180,19 +173,16 @@ public class DocumentDisplayManager {
             protected Image call() {
                 String urlToLoad = finalImageUrl;
 
-                // Kiểm tra nếu imageUrl là đường dẫn internet
                 if (!urlToLoad.startsWith("http://") && !urlToLoad.startsWith("https://")) {
-                    // Nếu là đường dẫn cục bộ, chuyển thành URL hợp lệ từ resources
                     URL localImageUrl = getClass().getResource(urlToLoad);
                     if (localImageUrl != null) {
                         urlToLoad = localImageUrl.toExternalForm();
                     } else {
                         System.out.println("Local image not found: " + urlToLoad);
-                        return null; // Trả về null nếu không tìm thấy ảnh cục bộ
+                        return null; 
                     }
                 }
 
-                // Tải ảnh từ internet hoặc local resources
                 return new Image(urlToLoad, true);
             }
         };

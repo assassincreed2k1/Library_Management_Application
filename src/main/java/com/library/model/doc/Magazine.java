@@ -22,6 +22,18 @@ public class Magazine extends Document {
     }
 
     /**
+     * Constructs a {@code Magazine} with the specified ID and availability status.
+     * Initializes other fields with default values.
+     * 
+     * @param id          The ID of the magazine.
+     * @param isAvailable The availability status of the magazine.
+     */
+    public Magazine(String id, boolean isAvailable) {
+        super(id, "Unknown", "Unknown", isAvailable); // Gọi constructor của Document với giá trị mặc định cho name và group
+        this.publisher = "Unknown";
+    }
+
+    /**
      * Constructs a {@code Magazine} with the specified name, group, quantity,
      * and publisher.
      * 
