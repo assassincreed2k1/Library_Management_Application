@@ -1,5 +1,6 @@
 package com.library.model.Person;
 
+import com.library.model.helpers.PersonIdHandle;
 import com.library.service.MemberManagement;
 
 public class Member extends Person {
@@ -125,5 +126,14 @@ public class Member extends Person {
         System.out.println(addDate);
         memManagement.renewCard(this.membershipId, addDate);
         
+    }
+
+    public String getLastName() {
+        Person person = PersonIdHandle.getPerson(this.membershipId);
+        String fullName = person.getName();
+
+        String[] nameParts = fullName.split("\\s+");
+
+        return nameParts[nameParts.length - 1]; 
     }
 }
