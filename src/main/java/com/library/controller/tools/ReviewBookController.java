@@ -1,16 +1,22 @@
 package com.library.controller.tools;
 
+import java.io.IOException;
+
 import com.library.model.helpers.MessageUtil;
 import com.library.service.DocumentTransaction;
 
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class ReviewBookController {
     String membershipId;
@@ -25,6 +31,9 @@ public class ReviewBookController {
 
     @FXML
     private Button submitCommentButton;
+
+    @FXML
+    private Button backButton;
 
     @FXML
     private VBox commentsBox;
@@ -50,6 +59,7 @@ public class ReviewBookController {
         setupStarRating();
 
         submitCommentButton.setOnAction(event -> handleSubmitReview());
+        backButton.setOnAction(event -> onBack());
     }
 
     /**
@@ -103,20 +113,17 @@ public class ReviewBookController {
             return;
         }
 
-        // // Add the new review to the comments section
-        // Label newComment = new Label("Rating: " + selectedRating + " stars\n" + comment);
-        // newComment.getStyleClass().add("review-comment");
-        // commentsBox.getChildren().add(newComment);
         Task<Void> handleComment = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                documentTransaction.reviewDocument(documentId, membershipId, selectedRating, comment);
+                MessageUtil.showMessage(messageText, documentTransaction.reviewDocument(documentId, membershipId, selectedRating, comment),
+                                 "black");
                 return null;
             }
 
             @Override
             protected void succeeded() {
-                MessageUtil.showMessage(messageText, "Your comment submited successfully", "green");
+                // MessageUtil.showMessage(messageText, "Your comment submited successfully", "green");
                 commentTextArea.clear();
                 selectedRating = 0;
                 highlightStars(0);
@@ -133,4 +140,19 @@ public class ReviewBookController {
         thread.setDaemon(true);
         thread.start();
     }
+
+    @FXML
+    private void onBack() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/BorrowingHistoryForMember.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error loading MainScene.fxml. Ensure the file path is correct.");
+        }
+    }
+
 }

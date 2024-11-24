@@ -1,66 +1,130 @@
 package com.library.controller.tools;
 
+import com.library.model.Person.Member;
+// import com.library.model.Person.User;
+import com.library.model.doc.Document;
 import com.library.model.helpers.MessageUtil;
+import com.library.model.loanDoc.Transaction;
+import com.library.service.CombinedDocument;
+import com.library.service.DocumentTransaction;
+import com.library.service.LibraryService;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+
+import java.sql.*;
 
 public class HistoryTransactionEmployee {
+    private CombinedDocument combinedDocument = new CombinedDocument();
+    private Member member = null;
+    private Document document = null;
+    private DocumentTransaction documentTransaction = new DocumentTransaction();
+
     @FXML
-    private AnchorPane taskBar;
+    private TableView<Transaction> bookTable;
+    @FXML
+    private TableColumn<Transaction, Integer> idTransactionColumn;
+    @FXML
+    private TableColumn<Transaction, String> documentIdColumn;
+    @FXML
+    private TableColumn<Transaction, String> memberIdColumn;
+    @FXML
+    private TableColumn<Transaction, String> borrowedDateColumn;
+    @FXML
+    private TableColumn<Transaction, String> returnDateColumn;
+    @FXML
+    private TableColumn<Transaction, String> dueDateColumn;
+    @FXML
+    private TableColumn<Transaction, String> editedByColumn;
 
     @FXML
     private TextField searchTextField;
-
     @FXML
     private Button searchButton;
 
     @FXML
-    private TableView<?> bookTable;
-
+    private TextArea documentTextArea;
     @FXML
-    private TableColumn<?, ?> authorColumn;
-
-    @FXML
-    private TableColumn<?, ?> isbnColumn;
-
-    @FXML
-    private TableColumn<?, ?> genreColumn;
-
-    @FXML
-    private TableColumn<?, ?> publishDateColumn;
-
+    private TextArea memberTextArea;
     @FXML
     private Button returnButton;
 
     @FXML
-    private TextArea documentTextArea;
-
-    @FXML
-    private TextArea memberTextArea;
-
-    // Initialize method to configure the controller
-    @FXML
-    public void initialize() {
-        // Add listeners or set default configurations
+    private void initialize() {
         configureTableView();
-        configureSearchField();
+        loadAllTransactions();
+
+        searchButton.setOnAction(event -> onSearch());
+        bookTable.setOnMouseClicked(event -> handleTableClick(event));
+        returnButton.setOnAction(event -> onReturn());
     }
 
     private void configureTableView() {
-        // Set up columns if necessary (binding data models to columns)
-        // Example: authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+        idTransactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
+        documentIdColumn.setCellValueFactory(new PropertyValueFactory<>("documentId"));
+        memberIdColumn.setCellValueFactory(new PropertyValueFactory<>("membershipId"));
+        borrowedDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowedDate"));
+        returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+        dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate")); 
+        editedByColumn.setCellValueFactory(new PropertyValueFactory<>("edited_by"));
     }
 
-    private void configureSearchField() {
-        returnButton.setOnAction(event -> onReturn());
-        searchButton.setOnAction(event -> onSearch());
+    private void loadAllTransactions() {
+        Task<Void> loadTransactionsTask = new Task<Void>() {
+            @Override
+            protected Void call() throws SQLException {
+                ObservableList<Transaction> transactions = fetchTransactions();
+                bookTable.setItems(transactions);
+                return null;
+            }
+    
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+            }
+    
+            @Override
+            protected void failed() {
+                MessageUtil.showAlert("error", "Database Error", "Failed to load transactions.");
+                System.out.println(getException().getMessage());
+            }
+        };
+    
+        Thread thread = new Thread(loadTransactionsTask);
+        thread.setDaemon(true); 
+        thread.start();
+    }
+    
+
+    private ObservableList<Transaction> fetchTransactions() throws SQLException {
+        ObservableList<Transaction> transactions = FXCollections.observableArrayList();
+        String query = """
+                select idTransaction, document_id, membershipId, borrowDate, dueDate, returnDate, edited_by 
+                from bookTransaction;
+                """;;
+
+        try (Connection connection = LibraryService.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                transactions.add(new Transaction(
+                        resultSet.getInt("idTransaction"),
+                        resultSet.getString("document_id"),
+                        resultSet.getString("membershipId"),
+                        resultSet.getString("borrowDate"),
+                        resultSet.getString("dueDate"),
+                        resultSet.getString("returnDate"), 
+                        resultSet.getString("edited_by")
+                ));
+            }
+        }
+        return transactions;
     }
 
     @FXML
@@ -71,38 +135,121 @@ public class HistoryTransactionEmployee {
             return;
         }
 
-        // Logic to search for transactions, members, or documents
-        System.out.println("Search query: " + query);
-        // Example: Call a service or database query method to fetch results
+        Task<Void> searchTask = new Task<>() {
+            @Override
+            protected Void call() throws SQLException{
+                if (query.equalsIgnoreCase("@Show all")) {
+                    bookTable.setItems(fetchTransactions());
+                } else {
+                    bookTable.setItems(searchTransactions(query));
+                }  
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+            }
+
+            @Override
+            protected void failed() {
+                MessageUtil.showAlert("error", "Database error", "Search failed!");
+                System.out.println(getException().getMessage());
+            }
+        };
+
+        Thread thread = new Thread(searchTask);
+        thread.setDaemon(true);
+        thread.start();
     }
 
+    private ObservableList<Transaction> searchTransactions(String query) throws SQLException {
+        ObservableList<Transaction> transactions = FXCollections.observableArrayList();
+        String sql = """
+                select idTransaction, document_id, membershipId, borrowDate, dueDate, returnDate, edited_by 
+                from bookTransaction
+                where idTransaction like ? or document_id like ? or membershipId like ?;
+                """;
+
+        try (Connection connection = LibraryService.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, "%" + query + "%");
+            preparedStatement.setString(2, "%" + query + "%");
+            preparedStatement.setString(3, "%" + query + "%");
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    transactions.add(new Transaction(
+                            resultSet.getInt("idTransaction"),
+                            resultSet.getString("document_id"),
+                            resultSet.getString("membershipId"),
+                            resultSet.getString("borrowDate"),
+                            resultSet.getString("dueDate"),
+                            resultSet.getString("returnDate"), 
+                            resultSet.getString("edited_by")
+                    ));
+                }
+            }
+        }
+        return transactions;
+    }
     @FXML
     private void handleTableClick(MouseEvent event) {
         if (event.getClickCount() == 2) {
-            // Get selected item and show details in text areas
-            Object selectedItem = bookTable.getSelectionModel().getSelectedItem();
-            if (selectedItem != null) {
-                showDocumentDetails(selectedItem);
-                showMemberDetails(selectedItem);
+            Transaction selectedTransaction = bookTable.getSelectionModel().getSelectedItem();
+
+            if (selectedTransaction == null) {
+                return;
             }
+
+            member = new Member();
+            member = member.getInforFromDatabase(selectedTransaction.getMembershipId());
+            if (member == null) {
+                memberTextArea.setText("Not found!");
+                return;
+            }
+    
+            combinedDocument.updateCombinedDocument();
+            document = combinedDocument.getDocument(selectedTransaction.getDocumentId());
+            if (document == null) {
+                documentTextArea.setText("Not found!");
+                return;
+            }
+    
+            documentTextArea.setText(member.getDetails());
+            memberTextArea.setText(document.getDetails());
         }
     }
-
-    private void showDocumentDetails(Object document) {
-        // Populate documentTextArea with details about the selected document
-        documentTextArea.setText("Document details go here...");
-    }
-
-    private void showMemberDetails(Object member) {
-        // Populate memberTextArea with details about the selected member
-        memberTextArea.setText("Member details go here...");
-    }
-
+        
     @FXML
     private void onReturn() {
-        // Logic to process returning a document
-        System.out.println("Return button clicked!");
-    }
+        if (member == null || document == null) {
+            MessageUtil.showAlert("warning", "Invalid query", "Can't find this member or document in database!");
+            return;
+        }
 
+        Task<Void> returnTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                documentTransaction.returnDocument(document.getID(), member.getMembershipId());
+                loadAllTransactions();
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                MessageUtil.showAlert("information", "Return Successful", "The document has been successfully returned.");
+            }
+
+            @Override
+            protected void failed() {
+                MessageUtil.showAlert("error", "Return Failed", "An error occurred while returning the document: " + getException().getMessage());
+            }
+        };
+
+        Thread thread = new Thread(returnTask);
+        thread.setDaemon(true); 
+        thread.start();
+    }
 
 }
