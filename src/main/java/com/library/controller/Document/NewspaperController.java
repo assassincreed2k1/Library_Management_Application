@@ -66,7 +66,7 @@ public class NewspaperController {
     private AnchorPane moreInfoPane;
 
     private final Image defaultImagePrv = new Image(getClass().getResource("/img/prv.png").toExternalForm());
-    private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/Noprv.png").toExternalForm());
+    private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/Noprev.png").toExternalForm());
 
     @FXML
     private void initialize() {

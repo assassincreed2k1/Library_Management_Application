@@ -318,7 +318,7 @@ public class AddDocumentController {
                         newBook.setImagePreview(docImagePreview.getImage().getUrl());
                         docImagePreview.setImage(defaultDocImgPrev);
                     } else {
-                        newBook.setImagePreview("");
+                        newBook.setImagePreview("/img/Noprev.png");
                     }
 
                     bookManagement.addDocuments(newBook);
