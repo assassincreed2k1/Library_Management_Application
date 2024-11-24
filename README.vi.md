@@ -78,10 +78,10 @@ library-management-system/
 │ ├── main/ 
 │ │ ├── java/ 
 │ │ │ ├── com.library/ 
-│ │ │ │ ├── App.java # Điểm vào chính của ứng dụng 
-│ │ │ │ ├── controller/ # Xử lý tương tác người dùng và logic nghiệp vụ 
+│ │ │ │ ├── App.java # Điểm vào chính(main) của ứng dụng 
+│ │ │ │ ├── controller/ # Xử lý tương tác người dùng và logic
 │ │ │ │ ├── model/ # Chứa các mô hình cho tài liệu, người dùng và giao dịch 
-│ │ │ │ └── service/ # Logic nghiệp vụ chính và các dịch vụ 
+│ │ │ │ └── service/ # Logic chính và các dịch vụ 
 │ │ ├── resources/ 
 │ │ │ ├── css/ # Tệp CSS để tạo kiểu cho GUI 
 │ │ │ ├── fxml/ # Tệp FXML xác định giao diện người dùng 
@@ -90,8 +90,8 @@ library-management-system/
 │ │ ├── java/ 
 │ │ │ ├── com.library/ # Các test case cho các thành phần khác nhau 
 │ │ │ └── service/ # Các unit test cho các dịch vụ 
-├── module-info.java # Cấu hình mô-đun Java 
-└── README.md # Tài liệu hướng dẫn dự án
+├── module-info.java # Cấu hình module Java 
+└── README.md 
 ```
 
 ### Các Thư Mục Chính
@@ -104,7 +104,7 @@ library-management-system/
   - **`fxml/`**: Các tệp FXML định nghĩa bố cục giao diện người dùng.
   - **`img/`**: Các biểu tượng và hình ảnh được sử dụng trong ứng dụng.
 - `src/test/java`:
-  - Chứa các tệp test JUnit để kiểm thử các controller và dịch vụ.
+  - Chứa các tệp test JUnit để kiểm thử các controller và service.
 
 ### Các Tệp Quan Trọng
 - `App.java`: Nơi đặt lớp chính(main) của ứng dụng.
@@ -112,7 +112,7 @@ library-management-system/
 
 ## Tác Giả
 
-Dự án được phát triển và duy trì bởi:
+Dự án được phát triển và bảo trì bởi:
 
 - **thanhbt25**
 - **Nghia**
