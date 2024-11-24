@@ -42,9 +42,9 @@
          <content>
             <TableView fx:id="bookTable" prefHeight="706.0" prefWidth="908.0">
                <columns>
-                  <TableColumn prefWidth="126.0" text="ID" />
+                  <TableColumn fx:id="idColumn" prefWidth="126.0" text="ID" />
                   <TableColumn fx:id="titleColumn" prefWidth="144.0" text="Book Title" />
-                  <TableColumn prefWidth="89.0" text="Is Available" />
+                  <TableColumn fx:id="isAvailColumn" prefWidth="89.0" text="Is Available" />
                   <TableColumn fx:id="authorColumn" prefWidth="143.0" text="Author" />
                   <TableColumn fx:id="genreColumn" prefWidth="135.0" text="Genre" />
                   <TableColumn fx:id="publishDateColumn" prefWidth="101.0" text="Publish Date" />

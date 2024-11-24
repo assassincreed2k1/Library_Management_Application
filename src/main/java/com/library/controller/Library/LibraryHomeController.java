@@ -6,11 +6,13 @@ import java.util.Map;
 
 import com.library.service.BookManagement;
 import com.library.model.Person.User;
+import com.library.model.doc.Book;
 import com.library.service.LibraryService;
 import com.library.service.ServiceManager;
 import com.library.controller.tools.DocumentDisplayManager;
 import com.library.controller.tools.SearchBookController;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +31,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.TextField;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.collections.FXCollections;
 
 /**
  * Controller class for managing the library's home page.
@@ -40,6 +43,8 @@ public class LibraryHomeController {
     private BookManagement bookManagement;
     private DocumentDisplayManager latestDocsManager;
     private DocumentDisplayManager oldestDocsManager;
+    private DocumentDisplayManager trendingDocsManager;
+    private ObservableList<Book> trendingBookList = FXCollections.observableArrayList();
 
     public static Map<String, Image> imageCache = new HashMap<>();
 
@@ -48,9 +53,6 @@ public class LibraryHomeController {
 
     @FXML
     private AnchorPane documentsPane;
-
-    @FXML
-    private ComboBox<String> typeComboBox;
 
     @FXML
     private ComboBox<String> menuComboBox;
@@ -101,6 +103,10 @@ public class LibraryHomeController {
     private Tab latestBooks, oldestBooks;
 
     @FXML
+    private ImageView myImageView1, myImageView2, myImageView3, myImageView4, myImageView5, myImageView6, myImageView7,
+            myImageView8, myImageView9, myImageView10;
+
+    @FXML
     private ImageView latestDoc1, latestDoc2, latestDoc3, latestDoc4;
 
     @FXML
@@ -130,18 +136,20 @@ public class LibraryHomeController {
     @FXML
     private Label oldestAvailable1, oldestAvailable2, oldestAvailable3, oldestAvailable4;
 
-    @FXML
+    //Array
+    private ImageView[] trendingImageList;
+
     private Label[] latestNames;
     private Label[] latestAuthors;
     private Label[] latestGenres;
     private Label[] latestAvailables;
-    private ImageView[] latestImageViews = { latestDoc1, latestDoc2, latestDoc3, latestDoc4 };
+    private ImageView[] latestImageViews;
 
     private Label[] oldestNames;
     private Label[] oldestAuthors;
     private Label[] oldestGenres;
     private Label[] oldestAvailables;
-    private ImageView[] oldestImageViews = { oldestDoc1, oldestDoc2, oldestDoc3, oldestDoc4 };
+    private ImageView[] oldestImageViews;
 
     @FXML
     private Hyperlink[] moreListBooks;
@@ -152,6 +160,9 @@ public class LibraryHomeController {
      */
     @FXML
     public void initialize() {
+        this.trendingImageList = new ImageView[] { myImageView1, myImageView2, myImageView3, myImageView4, myImageView5,
+                myImageView6, myImageView7, myImageView8, myImageView9, myImageView10 };
+        
         this.latestNames = new Label[] { latestName1, latestName2, latestName3, latestName4 };
         this.latestAuthors = new Label[] { latestAuthor1, latestAuthor2, latestAuthor3, latestAuthor4 };
         this.latestGenres = new Label[] { latestGenre1, latestGenre2, latestGenre3, latestGenre4 };
@@ -168,6 +179,7 @@ public class LibraryHomeController {
 
         this.libraryService = ServiceManager.getLibraryService();
         this.bookManagement = ServiceManager.getBookManagement();
+        this.trendingBookList = bookManagement.getPopularBooks();
 
         this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
 
@@ -177,8 +189,11 @@ public class LibraryHomeController {
         this.oldestDocsManager = new DocumentDisplayManager(bookManagement, libraryService,
                 oldestImageViews, oldestNames, oldestAuthors, oldestGenres, oldestAvailables);
 
+        this.trendingDocsManager = new DocumentDisplayManager(trendingImageList);
+
         this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
 
+        showTrendingImg();
         setupComboBoxes();
         setupButtons();
         setUpTabPane();
@@ -186,7 +201,6 @@ public class LibraryHomeController {
 
     private void setupComboBoxes() {
         menuComboBox.getItems().addAll("Update Infor", "Log Out");
-        typeComboBox.getItems().addAll("Books", "Magazines", "Newspapers");
         booksComboBox.getItems().addAll("All Books");
         magazinesComboBox.getItems().addAll("All Magazines");
         newspapersComboBox.getItems().addAll("All Newspapers");
@@ -209,7 +223,7 @@ public class LibraryHomeController {
         updateDocumentButton.setOnAction(event -> handleUpdateDocument());
         searchButton.setOnAction(event -> handleSearchDocuments());
         showAllButton.setOnAction(event -> handleShowAll());
-        searchUserButton.setOnAction(event-> handleSearchUser());
+        searchUserButton.setOnAction(event -> handleSearchUser());
 
         for (int i = 0; i < 2; i++) {
             moreListBooks[i].setOnAction(event -> {
@@ -221,6 +235,10 @@ public class LibraryHomeController {
             });
         }
 
+    }
+    
+    private void showTrendingImg() {
+        trendingDocsManager.showDocumentsImg(trendingBookList);
     }
 
     private void setComboBoxHandler(ComboBox<String> comboBox) {
@@ -334,7 +352,11 @@ public class LibraryHomeController {
 
     // Handle Remove Document action --Need Fix
     private void handleRemoveDocument() {
-        openNewWindow("/fxml/Library/Tools/RemoveDocument.fxml");
+        try {
+            openNewWindow("/fxml/Library/Tools/RemoveDocument.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Handle Update Document action

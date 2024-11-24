@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.sql.ResultSet;
 
 import com.library.model.doc.Book;
@@ -223,7 +221,7 @@ public class BookManagement extends LibraryService {
 
     public ObservableList<Book> getAllBooksFilter(String keyword) {
         ObservableList<Book> filteredBooks = FXCollections.observableArrayList();
-        String sql_statement = "SELECT * FROM Books WHERE name LIKE ? OR ISBN LIKE ?";
+        String sql_statement = "SELECT * FROM Books WHERE id LIKE ? OR name LIKE ? OR ISBN LIKE ?";
 
         try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
@@ -253,74 +251,39 @@ public class BookManagement extends LibraryService {
         return filteredBooks;
     }
 
-    public HashMap<String, Integer> getPopularBook() {
-        HashMap<String, Integer> popularBooks = new HashMap<>();
+    public ObservableList<Book> getPopularBooks() {
+        ObservableList<Book> popularBooks = FXCollections.observableArrayList();
         String sql_statement = """
-                select b.isbn, count(*) as borrowed_total
-                from Books b
-                join bookTransaction t on t.document_id = b.id
-                group by b.isbn
-                having count(*) > 0
-                order by borrowed_total desc
-                limit 10;
+                SELECT b.*, COUNT(*) AS borrowed_total
+                FROM Books b
+                JOIN bookTransaction t ON t.document_id = b.id
+                GROUP BY b.id
+                HAVING COUNT(*) > 0
+                ORDER BY borrowed_total DESC
+                LIMIT 10;
                 """;
-    
+
         try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-    
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    String isbn = rs.getString("isbn"); 
-                    int borrowedTotal = rs.getInt("borrowed_total");  
-                    popularBooks.put(isbn, borrowedTotal); 
-                }
+                PreparedStatement pstmt = conn.prepareStatement(sql_statement);
+                ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Book book = new Book();
+                book.setID(rs.getString("id"));
+                book.setName(rs.getString("name"));
+                book.setGroup(rs.getString("bookGroup"));
+                book.setAuthor(rs.getString("author"));
+                book.setPublishDate(rs.getString("publishDate"));
+                book.setISBN(rs.getString("ISBN"));
+                book.setIsAvailable(rs.getBoolean("isAvailable"));
+                book.setImagePreview(rs.getString("imagePreview"));
+
+                popularBooks.add(book);
             }
-    
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        for (Map.Entry<String, Integer> book : popularBooks.entrySet()) {
-            System.out.println(book.getKey() + " " + book.getValue());
-        }
 
         return popularBooks;
-    }  
+    }
 
-    public HashMap<String, Integer> getRecommentBook(String genre) {
-        HashMap<String, Integer> recommentBooks = new HashMap<>();
-        String sql_statement = """
-            select b.isbn, count(*) as borrowed_total
-            from Books b
-            join bookTransaction t on t.document_id = b.id
-            where b.bookGroup = ?
-            group by b.isbn
-            order by borrowed_total desc
-            limit 10
-        """;
-    
-        try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
-    
-            // Thiết lập giá trị cho tham số ?
-            pstmt.setString(1, genre);
-    
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    String isbn = rs.getString("isbn");
-                    int borrowedTotal = rs.getInt("borrowed_total");
-                    recommentBooks.put(isbn, borrowedTotal);
-                }
-            }
-    
-        } catch (SQLException e) {
-            System.err.println("Database error: " + e.getMessage());
-        }
-    
-        // In kết quả để kiểm tra
-        for (Map.Entry<String, Integer> book : recommentBooks.entrySet()) {
-            System.out.println(book.getKey() + ": " + book.getValue());
-        }
-    
-        return recommentBooks;
-    }    
 }

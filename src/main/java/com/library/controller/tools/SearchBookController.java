@@ -69,6 +69,12 @@ public class SearchBookController {
     private TableView<Book> bookTable;
 
     @FXML
+    private TableColumn<Book, String> idColumn;
+
+    @FXML
+    private TableColumn<Book, String> isAvailColumn;
+
+    @FXML
     private TableColumn<Book, String> titleColumn;
 
     @FXML
@@ -101,6 +107,8 @@ public class SearchBookController {
         this.textFieldUpdate = new TextFieldUpdate();
 
         // Set up the columns to use properties from the Book class
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        isAvailColumn.setCellValueFactory(new PropertyValueFactory<>("isAvailable"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("group"));
