@@ -28,7 +28,7 @@ public class App extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryHome.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Person/DocBorrow.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Books.fxml"));
-        // Parent root = FXMLLoader.load(getClass().getResource("/fxml/Person/DocBorrow.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Person/DocBorrow.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryForBorrower.fxml"));
         
         Scene scene = new Scene(root); 

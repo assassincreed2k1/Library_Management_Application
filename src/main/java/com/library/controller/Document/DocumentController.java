@@ -1,96 +1,123 @@
-package com.library.controller.Document;
+// package com.library.controller.Document;
 
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+// import javafx.application.Platform;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Alert.AlertType;
-// import javafx.scene.control.ComboBox;
+// import javafx.collections.ObservableList;
+
+// import javafx.concurrent.Task;
+
+// import javafx.event.ActionEvent;
+
+// import javafx.fxml.FXML;
+// import javafx.fxml.FXMLLoader;
+
 // import javafx.scene.control.Label;
+// import javafx.scene.control.TableColumn;
+// import javafx.scene.control.TableView;
+// import javafx.scene.control.cell.PropertyValueFactory;
+// import javafx.scene.control.Button;
+// import javafx.scene.control.TableCell;
 
-import java.io.IOException;
-
-// import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+// import javafx.scene.image.Image;
 // import javafx.scene.image.ImageView;
+// import javafx.scene.layout.AnchorPane;
+// import javafx.stage.Stage;
+// import javafx.scene.Parent;
+// import javafx.scene.Scene;
 
-public class DocumentController {
+// import javafx.event.EventHandler;
 
-    @FXML
-    private Button btnAdd;
+// import java.io.IOException;
 
-    @FXML
-    private Button btnEdit;
+// import com.library.controller.tools.RemoveDocumentController;
+// import com.library.controller.tools.UpdateDocumentController;
+// import com.library.model.doc.Book;
+// import com.library.service.BackgroundService;
+// import com.library.service.BookManagement;
+// import com.library.service.ServiceManager;
+// import com.library.service.LibraryService;
 
-    @FXML
-    private Button btnDelete;
+// public class DocumentController {
 
-    @FXML
-    private Button btnBack;
+//     @FXML
+//     private AnchorPane taskBar;
 
-    public void initialize() {
-        setupButtons();
-    }
+//     @FXML
+//     private Button exitButton;
 
-    private void setupButtons() {
-        btnAdd.setOnAction(event -> handleAddBook());
-        btnEdit.setOnAction(event -> handleEditBook());
-        btnDelete.setOnAction(event -> handleDeleteBook());
-        btnBack.setOnAction(event -> handleBack());
-    }
+//     @FXML
+//     private TableView<Document> documentTable;
 
-    // Handler for Add Book button
-    @FXML
-    private void handleAddBook() {
-        // Example action for Add Book
-        showAlert("Add Book", "Add Book functionality not implemented yet.");
-    }
+//     @FXML
+//     private TableColumn<Document, String> idColumn;
 
-    // Handler for Edit Book button
-    @FXML
-    private void handleEditBook() {
-        // Example action for Edit Book
-        showAlert("Edit Book", "Edit Book functionality not implemented yet.");
-    }
+//     @FXML
+//     private TableColumn<Document, String> titleColumn;
 
-    // Handler for Delete Book button
-    @FXML
-    private void handleDeleteBook() {
-        // Example action for Delete Book
-        showAlert("Delete Book", "Delete Book functionality not implemented yet.");
-    }
+//     @FXML
+//     private TableColumn<Document, String> genreColumn;
 
-    // Handler for Log Out button
-    @FXML
-    private void handleBack() {
-        // Example action for Log Out
-        // showAlert("Log Out", "Log Out functionality not implemented yet.");
-        try {
-            switchTo("/fxml/Library/LibraryHome.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//     @FXML
+//     private TableColumn<Document, Boolean> isAvailableColumn;
 
-    // Helper method to show alerts
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+//     @FXML
+//     private ImageView prevImage;
 
-        // Switch to another page
-        private void switchTo(String pagePath) throws IOException {
-            Parent libraryPage = FXMLLoader.load(getClass().getResource(pagePath));
-            Stage stage = (Stage) btnAdd.getScene().getWindow();
-            Scene scene = new Scene(libraryPage);
-            stage.setScene(scene);
-            stage.centerOnScreen();
-            stage.show();
-        }
-}
+//     @FXML
+//     private AnchorPane moreInfoPane;
+
+//     private final Image defaultImage = new Image(getClass().getResource("/img/icon.png").toExternalForm());
+
+//     @FXML
+//     private void initialize() {
+//         // Kết nối cột dữ liệu với Document model
+//         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+//         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+//         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+//         isAvailableColumn.setCellValueFactory(new PropertyValueFactory<>("isAvailable"));
+
+//         // Định nghĩa cell factory cho cột IsAvailable
+//         isAvailableColumn.setCellFactory(column -> new TableCell<>() {
+//             @Override
+//             protected void updateItem(Boolean item, boolean empty) {
+//                 super.updateItem(item, empty);
+//                 if (empty || item == null) {
+//                     setText(null);
+//                 } else {
+//                     setText(item ? "Yes" : "No");
+//                 }
+//             }
+//         });
+
+//         // Thiết lập hành động khi click vào dòng trong bảng
+//         documentTable.setOnMouseClicked(event -> showDocumentDetails());
+
+//         exitButton.setOnAction(event -> goBack());
+//     }
+
+//     private void goBack() {
+//         Stage stage = (Stage) exitButton.getScene().getWindow();
+//         stage.close(); 
+//     }
+
+//     private void showDocumentDetails() {
+//         Document selectedDocument = documentTable.getSelectionModel().getSelectedItem();
+//         if (selectedDocument != null) {
+//             moreInfoPane.getChildren().clear();
+//             Label titleLabel = createLabel("Title: " + selectedDocument.getTitle(), 10, 10);
+//             Label genreLabel = createLabel("Genre: " + selectedDocument.getGenre(), 10, 30);
+//             Label availableLabel = createLabel("Available: " + (selectedDocument.getIsAvailable() ? "Yes" : "No"), 10, 50);
+
+//             moreInfoPane.getChildren().addAll(titleLabel, genreLabel, availableLabel);
+
+//             prevImage.setImage(defaultImage); // Đặt ảnh mặc định
+//         }
+//     }
+
+//     private Label createLabel(String text, double x, double y) {
+//         Label label = new Label(text);
+//         label.setLayoutX(x);
+//         label.setLayoutY(y);
+//         return label;
+//     }
+// }
