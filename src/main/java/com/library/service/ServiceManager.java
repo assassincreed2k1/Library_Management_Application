@@ -136,9 +136,6 @@ public class ServiceManager {
      * @return the singleton instance of {@link AdminManagement}
      */
     public static AdminManagement getAdminManagement() {
-        if (adminManagement == null) {
-            adminManagement = new AdminManagement();
-        }
         return adminManagement;
     }
 }

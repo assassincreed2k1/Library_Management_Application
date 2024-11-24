@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@../../css/BasicUI.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.Document.BookController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@../../../css/BasicUI.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.tools.SearchBookController">
    <children>
       <!-- TaskBar -->
       <AnchorPane fx:id="taskBar" prefHeight="94.0" prefWidth="1210.0" styleClass="taskbar">
          <children>
             <ImageView fitHeight="45.0" fitWidth="48.0" layoutX="14.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../img/icon.png" />
+                  <Image url="@../../../img/icon.png" />
                </image>
             </ImageView>
             <Label layoutX="68.0" layoutY="20.0" prefHeight="29.0" prefWidth="170.0" text=" Library Management">
@@ -35,11 +35,6 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-
-            <Button fx:id="exitButton" layoutX="1066.0" layoutY="24.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="101.0" style="-fx-background-color: #FFFFFF;" text="Back" textAlignment="CENTER">
-               <font>
-                  <Font size="20.0" />
-               </font></Button>
 
          </children>
       </AnchorPane>
@@ -70,6 +65,12 @@
       </Label>
 
       <AnchorPane fx:id="moreInfoPane" layoutX="921.0" layoutY="587.0" prefHeight="200.0" prefWidth="279.0" />
+      <ImageView fx:id="qrCodeImageView" fitHeight="256.0" fitWidth="265.0" layoutX="754.0" layoutY="385.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="1003.0" layoutY="101.0" mnemonicParsing="false" onAction="#generateQRCode" text="Get QR Code" textFill="#d00000">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
 
    </children>
 </AnchorPane>

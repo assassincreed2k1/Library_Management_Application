@@ -3,6 +3,8 @@ module com.library {
     requires javafx.fxml;
     requires transitive java.sql;
     requires org.apache.pdfbox;
+    requires com.google.zxing;
+    requires com.google.zxing.javase;
 
     requires transitive org.json;
     requires transitive javafx.graphics;
