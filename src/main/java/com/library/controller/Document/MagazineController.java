@@ -72,7 +72,7 @@ public class MagazineController {
     private Task<Void> showMagazineTask;
     private Task<Void> showPrevTask;
     private final Image defaultImagePrv = new Image(getClass().getResource("/img/prv.png").toExternalForm());
-    private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/noprv.png").toExternalForm());
+    private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/Noprv.png").toExternalForm());
 
     @FXML
     private void initialize() {
