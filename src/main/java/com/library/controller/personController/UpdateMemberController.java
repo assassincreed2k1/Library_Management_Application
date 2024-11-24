@@ -144,7 +144,7 @@ public class UpdateMemberController {
                 member.setJoinDate(join.isEmpty() ? member.getJoinDate() : join);
                 member.setExpiryDate(expiry.isEmpty() ? member.getExpiryDate() : expiry);
 
-                member.updateMember(); //cập nhật member trên cơ sở dữ liệu
+                member.updateMember();
 
                 return null; 
             }
@@ -186,7 +186,7 @@ public class UpdateMemberController {
     @FXML
     public void onBack() {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DemoPerson/SearchPerson.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Person/SearchPerson.fxml"));
             Stage stage = (Stage) updateButton.getScene().getWindow();
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);

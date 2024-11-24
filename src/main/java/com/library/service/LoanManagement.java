@@ -9,12 +9,6 @@ import com.library.model.doc.Newspaper;
 import com.library.model.doc.Magazine;
 
 public class LoanManagement extends LibraryService {
-    private static final String url = "jdbc:sqlite:library.db";
-    
-    public static String getUrl() {
-        return url;
-    }
-
     /**
      * Borrow a book from the library.
      * This method checks if the book is available and, if so, updates its availability status to false in the database.

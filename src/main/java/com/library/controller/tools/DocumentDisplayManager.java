@@ -1,14 +1,17 @@
 package com.library.controller.tools;
 
+import java.net.URL;
+
 import com.library.service.BookManagement;
+import com.library.controller.Library.LibraryHomeController;
 import com.library.model.doc.Book;
 import com.library.service.LibraryService;
-import com.library.controller.LibraryHomeController;
 
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.collections.ObservableList;
 
 /**
  * This class manages the display of document information, including books,
@@ -47,6 +50,10 @@ public class DocumentDisplayManager {
         this.availables = availables;
     }
 
+    public DocumentDisplayManager(ImageView[] imageViews) {
+        this.imageViews = imageViews;
+    }
+
     /**
      * Displays a set of documents based on the given starting ID and direction.
      *
@@ -75,6 +82,25 @@ public class DocumentDisplayManager {
         }
 
         displayBooks(bookList);
+    }
+
+    public void showDocumentsImg(ObservableList<Book> bookList) {
+        for (int i = 0; i < bookList.size(); i++) {
+            Book book = bookList.get(i);
+            if (book != null) {
+                String linkImg = book.getImagePreview();
+                if (!linkImg.isEmpty()) {
+                    Image cachedImage = getCachedImage(linkImg);
+                    if (cachedImage.getProgress() < 1.0) {
+                        loadImageAsync(linkImg, imageViews[i]);
+                    } else {
+                        imageViews[i].setImage(cachedImage);
+                    }
+                }
+            } else {
+                System.out.println("Current Book's Cover is Empty");
+            }
+        }
     }
 
     /**
@@ -114,9 +140,20 @@ public class DocumentDisplayManager {
      * @return the Image object, either from the cache or newly loaded.
      */
     private Image getCachedImage(String imageUrl) {
+        if (!imageUrl.startsWith("http://") && !imageUrl.startsWith("https://")) { // lúc đầu code thiếu https://
+            URL localImageUrl = getClass().getResource(imageUrl);
+            if (localImageUrl != null) {
+                imageUrl = localImageUrl.toExternalForm();
+            } else {
+                System.out.println("From getCachedImage(String imageUrl): Local image not found: " + imageUrl);
+                return null; 
+            }
+        }
+
         if (LibraryHomeController.imageCache.containsKey(imageUrl)) {
             return LibraryHomeController.imageCache.get(imageUrl);
         }
+
         Image image = new Image(imageUrl, true);
         LibraryHomeController.imageCache.put(imageUrl, image);
         return image;
@@ -129,21 +166,40 @@ public class DocumentDisplayManager {
      * @param imageView the ImageView to display the loaded image.
      */
     private void loadImageAsync(String imageUrl, ImageView imageView) {
+        final String finalImageUrl = imageUrl;
+
         Task<Image> loadImageTask = new Task<>() {
             @Override
             protected Image call() {
-                return new Image(imageUrl, true);
+                String urlToLoad = finalImageUrl;
+
+                if (!urlToLoad.startsWith("http://") && !urlToLoad.startsWith("https://")) {
+                    URL localImageUrl = getClass().getResource(urlToLoad);
+                    if (localImageUrl != null) {
+                        urlToLoad = localImageUrl.toExternalForm();
+                    } else {
+                        System.out.println("Local image not found: " + urlToLoad);
+                        return null; 
+                    }
+                }
+
+                return new Image(urlToLoad, true);
             }
         };
 
         loadImageTask.setOnSucceeded(event -> {
             Image image = loadImageTask.getValue();
-            LibraryHomeController.imageCache.put(imageUrl, image); // Cache the loaded image
-            imageView.setImage(image);
+            if (image != null) {
+                LibraryHomeController.imageCache.put(finalImageUrl, image); // Cache the loaded image
+                imageView.setImage(image);
+            } else {
+                System.out.println("Failed to load image: " + finalImageUrl);
+            }
         });
 
-        loadImageTask.setOnFailed(event -> System.out.println("Failed to load image: " + imageUrl));
+        loadImageTask.setOnFailed(event -> System.out.println("Failed to load image: " + finalImageUrl));
 
         new Thread(loadImageTask).start();
     }
+
 }

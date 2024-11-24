@@ -24,7 +24,7 @@ import java.sql.ResultSet;
  * and deleted IDs.
  */
 public class LibraryService {
-    protected final String url = "jdbc:sqlite:db/library.db";
+    protected final static String url = "jdbc:sqlite:db/library.db";
 
     /**
      * Constructor for the LibraryService class. It initializes the database
@@ -233,12 +233,21 @@ public class LibraryService {
         return book.getISBN();
     }
 
-    public void switchTo(String pagePath, Stage CurStage) throws IOException {
-        Parent libraryPage = FXMLLoader.load(getClass().getResource(pagePath));
-        Stage stage = (Stage) CurStage.getScene().getWindow();
-        Scene scene = new Scene(libraryPage);
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
+    public void switchTo(String pagePath, Stage curStage) throws IOException {
+        try {
+            Parent libraryPage = FXMLLoader.load(getClass().getResource(pagePath));
+            Stage stage = (Stage) curStage.getScene().getWindow();
+            Scene scene = new Scene(libraryPage);
+            stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            throw new IOException("Failed to load the page: " + pagePath, e);
+        }
     }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(url);
+    }
+
 }

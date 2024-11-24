@@ -49,9 +49,11 @@
          <content>
             <TableView fx:id="magazineTable" prefHeight="706.0" prefWidth="908.0">
                   <columns>
+                     <TableColumn fx:id="idColumn" prefWidth="109.0" text="ID" />
                      <TableColumn fx:id="titleColumn" prefWidth="320.0" text="Title" />
                      <TableColumn fx:id="genreColumn" prefWidth="290.0" text="Genre" />
                      <TableColumn fx:id="publisherColumn" prefWidth="290.0" text="Publisher" />
+                     <TableColumn fx:id="isAvailableColumn" prefWidth="81.0" text="Is Available" />
                   </columns>
             </TableView>
          </content>

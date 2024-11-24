@@ -33,7 +33,7 @@ public class MagazineManagement extends LibraryService {
                 + "(id, name, magazineGroup, publisher, isAvailable) "
                 + "VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(super.url);
+        try (Connection conn = DriverManager.getConnection(url);
                 PreparedStatement pstmt = conn.prepareStatement(sql_statement)) {
             pstmt.setString(1, mgz.getID());
             pstmt.setString(2, mgz.getName());

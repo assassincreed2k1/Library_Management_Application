@@ -3,19 +3,26 @@ package com.library.controller.Document;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
-
 import java.io.IOException;
 
+import com.library.controller.tools.RemoveDocumentController;
+import com.library.controller.tools.UpdateDocumentController;
 import com.library.model.doc.Newspaper;
 import com.library.service.BackgroundService;
 import com.library.service.NewsPaperManagement;
@@ -25,7 +32,6 @@ import com.library.service.LibraryService;
 public class NewspaperController {
 
     private LibraryService libraryService = new LibraryService();
-
     private NewsPaperManagement newspaperManagement;
     private BackgroundService executor;
 
@@ -37,6 +43,9 @@ public class NewspaperController {
 
     @FXML
     private TableView<Newspaper> newspaperTable;
+
+    @FXML
+    private TableColumn<Newspaper, String> idColumn;
 
     @FXML
     private TableColumn<Newspaper, String> titleColumn;
@@ -56,20 +65,23 @@ public class NewspaperController {
     @FXML
     private AnchorPane moreInfoPane;
 
-    // This method is called by the FXMLLoader when initialization is complete
+    private final Image defaultImagePrv = new Image(getClass().getResource("/img/prv.png").toExternalForm());
+    private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/Noprev.png").toExternalForm());
+
     @FXML
     private void initialize() {
         this.newspaperManagement = ServiceManager.getNewsPaperManagement();
         this.executor = ServiceManager.getBackgroundService();
 
         // Set up the columns to use properties from the Newspaper class
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("group"));
         sourceColumn.setCellValueFactory(new PropertyValueFactory<>("source"));
         regionColumn.setCellValueFactory(new PropertyValueFactory<>("region"));
 
-        newspaperTable.setOnMouseClicked(event -> showSelectedNewspaperDetails());
-        newspaperTable.setOnKeyPressed(event -> showSelectedNewspaperDetails());
+        newspaperTable.setOnMouseClicked(event -> runShowNewspaperTask());
+        newspaperTable.setOnKeyPressed(event -> runShowNewspaperTask());
 
         prevImage.setOnMouseClicked(event -> showPreview());
 
@@ -85,163 +97,143 @@ public class NewspaperController {
     }
 
     private void loadNewspaperListAsync() {
-        Task<ObservableList<Newspaper>> task = new Task<>() {
+        Task<ObservableList<Newspaper>> loadTask = new Task<>() {
             @Override
             protected ObservableList<Newspaper> call() {
                 System.out.println("Running loadNewspaperListAsync()...");
-                return getNewspaperList();
+                return newspaperManagement.getAllNewspapers();
             }
         };
 
-        task.setOnSucceeded(event -> {
+        loadTask.setOnSucceeded(event -> {
             System.out.println("Succeeded: loadNewspaperListAsync()");
-            newspaperTable.setItems(task.getValue());
+            newspaperTable.setItems(loadTask.getValue());
         });
 
-        task.setOnFailed(event -> {
+        loadTask.setOnFailed(event -> {
             System.out.println("Failed to load newspaper list.");
         });
 
-        executor.startNewThread(task);
+        executor.startNewThread(loadTask);
     }
 
-    private Task<Void> showNewspaperTask;
-    private Task<Void> showPrevTask;
+    private void runShowNewspaperTask() {
+        Task<Void> showTask = createShowNewspaperTask();
+        executor.startNewThread(showTask);
+    }
 
-    private void showSelectedNewspaperDetails() {
-        if (showNewspaperTask != null && showNewspaperTask.isRunning()) {
-            System.out.println("Task Cancelled");
-            showNewspaperTask.cancel();
-        }
-
-        showNewspaperTask = new Task<>() {
+    private Task<Void> createShowNewspaperTask() {
+        return new Task<>() {
             @Override
             protected Void call() {
-                System.out.println("Running new updateNewspaperDetails()...");
-
+                System.out.println("Running showNewspaperTask...");
                 Newspaper selectedNewspaper = newspaperTable.getSelectionModel().getSelectedItem();
                 if (selectedNewspaper != null) {
                     Platform.runLater(() -> updateNewspaperDetails(selectedNewspaper));
                 }
                 return null;
             }
-
-            @Override
-            protected void succeeded() {
-                System.out.println("updateNewspaperDetails(): Succeeded!");
-            }
-
-            @Override
-            protected void cancelled() {
-                System.out.println("updateNewspaperDetails(): Task Cancelled");
-            }
-
-            @Override
-            protected void failed() {
-                System.out.println("updateNewspaperDetails(): Task Error");
-            }
         };
-
-        showPrevTask = new Task<>() {
-            @Override
-            protected Void call() {
-                System.out.println("Running new showPrevTask()...");
-                Newspaper selectedNewspaper = newspaperTable.getSelectionModel().getSelectedItem();
-                if (selectedNewspaper != null) {
-                    Platform.runLater(() -> prevImage.setImage(new Image(selectedNewspaper.getImagePreview())));
-                }
-                return null;
-            }
-
-            @Override
-            protected void succeeded() {
-                System.out.println("showPrevTask(): Succeeded!");
-            }
-
-            @Override
-            protected void cancelled() {
-                System.out.println("showPrevTask(): Task Cancelled");
-            }
-
-            @Override
-            protected void failed() {
-                System.out.println("showPrevTask(): Task Error");
-            }
-        };
-
-        executor.startNewThread(showNewspaperTask);
     }
 
     private void showPreview() {
-        showPrevTask = new Task<>() {
+        Task<Void> previewTask = createPreviewTask();
+        executor.startNewThread(previewTask);
+    }
+
+    private Task<Void> createPreviewTask() {
+        return new Task<>() {
             @Override
             protected Void call() {
-                System.out.println("Running new showPrevTask()...");
+                System.out.println("Running showPreviewTask...");
                 Newspaper selectedNewspaper = newspaperTable.getSelectionModel().getSelectedItem();
                 if (selectedNewspaper != null) {
-                    if (selectedNewspaper.getImagePreview() != null || !selectedNewspaper.getImagePreview().isEmpty()) {
-                        Platform.runLater(() -> prevImage.setImage(new Image(selectedNewspaper.getImagePreview())));
-                    } else {
-                        prevImage.setImage(new Image(getClass().getResource("/img/prve.png").toExternalForm()));
-                    }
+                    Image img = new Image(selectedNewspaper.getImagePreview(), true);
+                    Platform.runLater(() -> {
+                        if (!img.isError()) {
+                            prevImage.setImage(img);
+                        } else {
+                            prevImage.setImage(defaultNoImagePrv);
+                        }
+                    });
                 }
                 return null;
             }
-
-            @Override
-            protected void succeeded() {
-                System.out.println("showPrevTask(): Succeeded!");
-            }
-
-            @Override
-            protected void cancelled() {
-                System.out.println("showPrevTask(): Task Cancelled");
-            }
-
-            @Override
-            protected void failed() {
-                System.out.println("showPrevTask(): Task Error");
-            }
         };
-        executor.startNewThread(showPrevTask);
     }
 
     private void updateNewspaperDetails(Newspaper selectedNewspaper) {
         moreInfoPane.getChildren().clear();
 
-        Label idLabel = new Label("ID: " + selectedNewspaper.getID());
-        Label titleLabel = new Label("Title: " + selectedNewspaper.getName());
-        Label genreLabel = new Label("Genre: " + selectedNewspaper.getGroup());
-        Label sourceLabel = new Label("Source: " + selectedNewspaper.getSource());
-        Label regionLabel = new Label("Region: " + selectedNewspaper.getRegion());
+        Label idLabel = createStyledLabel("ID: " + selectedNewspaper.getID(), 5, 0);
+        Label titleLabel = createStyledLabel("Title: " + selectedNewspaper.getName(), 5, 20);
+        Label genreLabel = createStyledLabel("Genre: " + selectedNewspaper.getGroup(), 5, 40);
+        Label sourceLabel = createStyledLabel("Source: " + selectedNewspaper.getSource(), 5, 60);
+        Label regionLabel = createStyledLabel("Region: " + selectedNewspaper.getRegion(), 5, 80);
 
-        idLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        titleLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        genreLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        sourceLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
-        regionLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        Button editButton = createStyledButton("Edit", 5, 120, event -> openEditPage(selectedNewspaper));
+        Button deleteButton = createStyledButton("Delete", 200, 120, event -> openDeletePage(selectedNewspaper));
+
+        moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel, editButton,
+                deleteButton);
 
         moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel);
-
-        idLabel.setLayoutX(5);
-        idLabel.setLayoutY(0);
-
-        titleLabel.setLayoutX(5);
-        titleLabel.setLayoutY(20);
-
-        genreLabel.setLayoutX(5);
-        genreLabel.setLayoutY(40);
-
-        sourceLabel.setLayoutX(5);
-        sourceLabel.setLayoutY(60);
-
-        regionLabel.setLayoutX(5);
-        regionLabel.setLayoutY(80);
-
-        prevImage.setImage(new Image(getClass().getResource("/img/prv.png").toExternalForm()));
+        prevImage.setImage(defaultImagePrv);
     }
 
-    private ObservableList<Newspaper> getNewspaperList() {
-        return newspaperManagement.getAllNewspapers();
+    private Label createStyledLabel(String text, double x, double y) {
+        Label label = new Label(text);
+        label.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        label.setLayoutX(x);
+        label.setLayoutY(y);
+        return label;
     }
+
+    private Button createStyledButton(String text, double x, double y, EventHandler<ActionEvent> eventHandler) {
+        Button button = new Button(text);
+        button.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
+        button.setLayoutX(x);
+        button.setLayoutY(y);
+        button.setOnAction(eventHandler);
+        return button;
+    }
+
+    private void openEditPage(Newspaper selectedNewspaper) {
+        try {
+            FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/updateDocunent.fxml"));
+            Parent root = editPage.load();
+
+            UpdateDocumentController upController = editPage.getController();
+            upController.setId(selectedNewspaper.getID());
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit Newspaper");
+            stage.setScene(new Scene(root));
+
+            stage.setOnCloseRequest(event -> newspaperTable.setItems(newspaperManagement.getAllNewspapers()));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openDeletePage(Newspaper selectedNewspaper) {
+        try {
+            FXMLLoader delPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/removeDocument.fxml"));
+            Parent root = delPage.load();
+
+            RemoveDocumentController rmController = delPage.getController();
+            rmController.setId(selectedNewspaper.getID());
+
+            Stage stage = new Stage();
+            stage.setTitle("Delete Newspaper");
+            stage.setScene(new Scene(root));
+
+            stage.setOnCloseRequest(event -> newspaperTable.setItems(newspaperManagement.getAllNewspapers()));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

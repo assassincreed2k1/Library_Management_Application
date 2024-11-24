@@ -91,6 +91,15 @@ public abstract class Document {
     }
 
     /**
+     * Sets the ID of this document.
+     *
+     * @param id The ID to set for this document.
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
      * Gets the ID of this document.
      *
      * @return The ID of the document.
@@ -98,6 +107,16 @@ public abstract class Document {
     public String getID() {
         return id;
     }
+
+    /**
+     * Gets the ID of this document.
+     *
+     * @return The ID of the document.
+     */
+    public String getId() {
+        return id;
+    }
+    
 
     /**
      * Gets the name of this document.
@@ -167,8 +186,8 @@ public abstract class Document {
      *
      * @param imagePreview The new image preview path or URL to set.
      */
-    public void setImagePreview(String imagePreview) {
-        this.imagePreview = imagePreview;
+    public void setImagePreview(String imagePreviewurl) {
+        this.imagePreview = imagePreviewurl;
     }
 
     /**

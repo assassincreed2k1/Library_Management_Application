@@ -3,8 +3,8 @@ package com.library.model.Person;
 import com.library.service.LibrarianManagement;
 
 public class Librarian extends Person {
-    private String employeeId; 
-    private String position;  
+    protected String employeeId; 
+    protected String position;  
 
     private LibrarianManagement libManagement = new LibrarianManagement();
 
@@ -15,6 +15,7 @@ public class Librarian extends Person {
         this.employeeId = ""; 
         this.position = "";   
     }
+
 
     /**
      * Constructor for Librarian with all information.

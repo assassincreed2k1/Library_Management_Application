@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="962.0" prefWidth="932.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="73.0" prefWidth="932.0" styleClass="taskbar">
+         <children>
+            <Label layoutX="281.0" layoutY="14.0" text="REVIEW">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="9.0" layoutY="83.0" prefHeight="234.0" prefWidth="916.0" styleClass="mini-box">
+         <children>
+            <ImageView fitHeight="211.0" fitWidth="171.0" layoutX="14.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/Noprev.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="9.0" layoutY="421.0" prefHeight="527.0" prefWidth="900.0" styleClass="mini-box">
+         <children>
+            <ScrollPane layoutX="8.0" layoutY="8.0" prefHeight="519.0" prefWidth="892.0" styleClass="mini-box">
+               <content>
+                  <VBox prefHeight="2200.0" prefWidth="850.0" spacing="10.0">
+                     <children>
+                        <AnchorPane prefHeight="200.0" prefWidth="850.0" styleClass="comment">
+                           <children>
+                              <Label layoutX="8.0" layoutY="7.0" prefHeight="35.0" prefWidth="213.0" text="User:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label alignment="CENTER" layoutX="14.0" layoutY="42.0" prefHeight="143.0" prefWidth="858.0" text="Show Comment Here">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="687.0" layoutY="7.0" prefHeight="35.0" prefWidth="180.0" text="Rate:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children></AnchorPane>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+      <Label layoutX="37.0" layoutY="355.0" prefHeight="57.0" prefWidth="85.0" text="RATE: ">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label layoutX="122.0" layoutY="355.0" prefHeight="57.0" prefWidth="85.0" text="?/5">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+   </children>
+   <stylesheets>
+      <URL value="@../../../css/BasicUI.css" />
+      <URL value="@../../../css/LibraryStyle.css" />
+      <URL value="@../../../css/ReviewBookStyle.css" />
+   </stylesheets>
+</AnchorPane>

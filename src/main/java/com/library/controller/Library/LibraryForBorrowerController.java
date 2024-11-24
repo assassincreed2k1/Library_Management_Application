@@ -1,60 +1,42 @@
-package com.library.controller;
+package com.library.controller.Library;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.library.service.BookManagement;
-import com.library.model.Person.User;
-import com.library.service.LibraryService;
-import com.library.service.ServiceManager;
 import com.library.controller.tools.DocumentDisplayManager;
 import com.library.controller.tools.SearchBookController;
+import com.library.model.Person.User;
+import com.library.service.BookManagement;
+import com.library.service.LibraryService;
+import com.library.service.ServiceManager;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.TextField;
-import javafx.event.EventHandler;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-/**
- * Controller class for managing the library's home page.
- * It handles interactions with the UI components and manages library data.
- */
-public class LibraryHomeController {
-
+public class LibraryForBorrowerController {
     private LibraryService libraryService;
     private BookManagement bookManagement;
     private DocumentDisplayManager latestDocsManager;
     private DocumentDisplayManager oldestDocsManager;
 
     public static Map<String, Image> imageCache = new HashMap<>();
-
-    // Taskbar Components
-    @FXML
-    private ImageView iconImageView;
-
-    @FXML
-    private Label titleLabel;
-
-    @FXML
-    private Label subtitleLabel;
-
-    @FXML
-    private Button logOutButton;
 
     @FXML
     private Label usernameLabel;
@@ -64,6 +46,9 @@ public class LibraryHomeController {
 
     @FXML
     private ComboBox<String> typeComboBox;
+
+    @FXML
+    private ComboBox<String> menuComboBox;
 
     @FXML
     private ComboBox<String> booksComboBox;
@@ -84,16 +69,10 @@ public class LibraryHomeController {
     private Button searchButton;
 
     @FXML
-    private Button addDocumentButton;
-
-    @FXML
-    private Button removeDocumentButton;
-
-    @FXML
-    private Button updateDocumentButton;
-
-    @FXML
     private Button showAllButton;
+
+    @FXML
+    private Button borrowedBooksButton;
 
     @FXML
     private Hyperlink moreBooks1, moreBooks2;
@@ -174,15 +153,13 @@ public class LibraryHomeController {
         this.libraryService = ServiceManager.getLibraryService();
         this.bookManagement = ServiceManager.getBookManagement();
 
-        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
-
         this.latestDocsManager = new DocumentDisplayManager(bookManagement, libraryService,
                 latestImageViews, latestNames, latestAuthors, latestGenres, latestAvailables);
 
         this.oldestDocsManager = new DocumentDisplayManager(bookManagement, libraryService,
                 oldestImageViews, oldestNames, oldestAuthors, oldestGenres, oldestAvailables);
 
-        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
+        // this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
 
         setupComboBoxes();
         setupButtons();
@@ -190,28 +167,27 @@ public class LibraryHomeController {
     }
 
     private void setupComboBoxes() {
+        menuComboBox.getItems().addAll("Update Infor", "Log Out");
         typeComboBox.getItems().addAll("Books", "Magazines", "Newspapers");
         booksComboBox.getItems().addAll("All Books");
         magazinesComboBox.getItems().addAll("All Magazines");
         newspapersComboBox.getItems().addAll("All Newspapers");
+        
     }
 
     private void setupButtons() {
-        logOutButton.setOnAction(event -> handleLogOut());
-
         setComboBoxHandler(booksComboBox);
         setComboBoxHandler(magazinesComboBox);
         setComboBoxHandler(newspapersComboBox);
-
+        setComboBoxHandler(menuComboBox);
         searchButton.setOnAction(event -> handleSearchDocuments());
-        addDocumentButton.setOnAction(event -> handleAddDocument());
-        removeDocumentButton.setOnAction(event -> handleRemoveDocument());
-        updateDocumentButton.setOnAction(event -> handleUpdateDocument());
         showAllButton.setOnAction(event -> handleShowAll());
+        borrowedBooksButton.setOnAction(event -> handleBorrowBookButton());
+
         for (int i = 0; i < 2; i++) {
             moreListBooks[i].setOnAction(event -> {
                 try {
-                    libraryService.switchTo("/fxml/Documents/Books.fxml", (Stage) iconImageView.getScene().getWindow());
+                    libraryService.switchTo("/fxml/Documents/Books.fxml", (Stage) usernameLabel.getScene().getWindow());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -219,25 +195,26 @@ public class LibraryHomeController {
         }
 
     }
-
-    // Handle LogOut action -- Need Fix
-    private void handleLogOut() {
-        System.out.println("Logging out...");
-        try {
-            showAlert("Log Out", "Are you sure you want to log out?");
-            User.clearUser(); //xoá thông tin User trước khi ra khỏi
-            libraryService.switchTo("/fxml/Login/SignIn.fxml", (Stage) iconImageView.getScene().getWindow());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    
     private void setComboBoxHandler(ComboBox<String> comboBox) {
         comboBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 String selectedPage = comboBox.getValue();
-                switchToPage(selectedPage);
+                if (selectedPage == "Log Out") {
+                    System.out.println("Logging out...");
+                    try {
+                        showAlert("Log Out", "Logging out!");
+                        User.clearUser(); // xoá thông tin User trước khi ra khỏi
+                        libraryService.switchTo("/fxml/Login/SignIn.fxml",
+                                (Stage) usernameLabel.getScene().getWindow());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    switchToPage(selectedPage);
+                }
             }
         });
     }
@@ -259,7 +236,7 @@ public class LibraryHomeController {
                 break;
         }
         try {
-            libraryService.switchTo(fxmlFile, (Stage) iconImageView.getScene().getWindow());
+            libraryService.switchTo(fxmlFile, (Stage) usernameLabel.getScene().getWindow());
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -281,35 +258,20 @@ public class LibraryHomeController {
         }
     }
 
-    // Handle Add Document action --Need Fix
-    private void handleAddDocument() {
-        try {
-            openNewWindow("/fxml/Library/Tools/AddDocument.fxml");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Handle Remove Document action --Need Fix
-    private void handleRemoveDocument() {
-        try {
-            libraryService.switchTo("/fxml/Library/Tools/RemoveDocument.fxml",
-                    (Stage) iconImageView.getScene().getWindow());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Handle Update Document action
-    private void handleUpdateDocument() {
-        System.out.println("Updating a document...");
-    }
-
     // Handle Show All action -- Need Fix
     private void handleShowAll() {
         System.out.println("Showing all documents...");
         try {
-            libraryService.switchTo("/fxml/Documents/Documents.fxml", (Stage) iconImageView.getScene().getWindow());
+            libraryService.switchTo("/fxml/Documents/Documents.fxml", (Stage) usernameLabel.getScene().getWindow());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Borrow Books
+    private void handleBorrowBookButton() {
+        try {
+            libraryService.switchTo("/fxml/Library/Tools/BorrowingHistoryForMember.fxml", (Stage) usernameLabel.getScene().getWindow());
         } catch (IOException e) {
             e.printStackTrace();
         }

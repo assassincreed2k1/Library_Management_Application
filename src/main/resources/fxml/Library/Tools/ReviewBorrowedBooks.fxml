@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="642.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.tools.ReviewBookController">
+   <children>
+
+      <!-- Taskbar Section -->
+      <AnchorPane prefHeight="67.0" prefWidth="642.0" styleClass="taskbar">
+         <children>
+            <!-- Application Icon -->
+            <ImageView fitHeight="45.0" fitWidth="52.0" layoutX="14.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/icon.png" />
+               </image>
+            </ImageView>
+
+            <!-- Header Title -->
+            <Label layoutX="248.0" layoutY="14.0" text="Review Book">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+
+      <!-- Content Section -->
+      <AnchorPane layoutY="67.0" prefHeight="533.0" prefWidth="642.0">
+         <children>
+
+            <!-- Star Rating -->
+            <HBox fx:id="starRatingBox" layoutX="247.0" layoutY="50.0" prefHeight="35.0" prefWidth="147.0" spacing="5">
+               <children>
+                  <!-- Individual Stars -->
+                  <Label styleClass="star" text="★" />
+                  <Label styleClass="star" text="★" />
+                  <Label styleClass="star" text="★" />
+                  <Label styleClass="star" text="☆" />
+                  <Label styleClass="star" text="☆" />
+               </children>
+            </HBox>
+
+            <!-- Comment Section -->
+            <VBox layoutX="51.0" layoutY="119.0" spacing="15.0">
+               <children>
+
+                  <!-- Comment Input -->
+                  <TextArea fx:id="commentTextArea" prefHeight="100.0" prefWidth="540.0" promptText="Write your comment here..." />
+                  <GridPane alignment="CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+      
+                                    <!-- Submit Button -->
+                        <Button fx:id="submitCommentButton" contentDisplay="CENTER" prefWidth="150.0" styleClass="primary-button" text="Submit Review" />
+                        <Button fx:id="backButton" alignment="CENTER" prefHeight="35.0" prefWidth="166.0" styleClass="primary-button" text="Back" GridPane.columnIndex="1" />
+                     </children>
+                  </GridPane>
+
+               </children>
+            </VBox>
+            <Text fx:id="messageText" layoutX="51.0" layoutY="318.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="540.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </children>
+
+   <!-- Stylesheets -->
+   <stylesheets>
+      <URL value="@../../../css/BasicUI.css" />
+      <URL value="@../../../css/Tools.css" />
+      <URL value="@../../../css/ReviewStyle.css" />
+   </stylesheets>
+</AnchorPane>
