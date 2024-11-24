@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.ResultSet;
 
 import com.library.model.doc.Book;
 import com.library.model.doc.Document;
@@ -156,7 +155,7 @@ public class DocumentTransaction extends LibraryService {
         String sql = """
             UPDATE bookTransaction
             SET score = ?, comment = ?
-            WHERE document_id = ? AND membershipId = ? AND status = 'returned'
+            WHERE document_id = ? AND membershipId = ? AND status = 'returned' AND score is null
         """;
 
         try (Connection conn = DriverManager.getConnection(url);

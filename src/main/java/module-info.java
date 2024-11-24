@@ -6,6 +6,7 @@ module com.library {
 
     requires transitive org.json;
     requires transitive javafx.graphics;
+    opens com.library.model.loanDoc to javafx.base;
     
     opens com.library to javafx.fxml;
     opens com.library.controller.Menu to javafx.fxml;
@@ -14,6 +15,7 @@ module com.library {
     opens com.library.controller.tools to javafx.fxml;
     opens com.library.controller.Document to javafx.fxml;
     opens com.library.model.doc to javafx.base;
+    
 
     exports com.library;
     exports com.library.model.doc to com.library.service;
