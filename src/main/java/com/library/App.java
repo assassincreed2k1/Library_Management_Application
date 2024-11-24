@@ -9,9 +9,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-
-import com.library.model.Person.User;
-
 import com.library.service.ServiceManager;
 
 public class App extends Application {
@@ -57,7 +54,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        User.setUser("M000006");
         launch(args);
     }
 }

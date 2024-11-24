@@ -87,13 +87,16 @@ public class LibraryHomeController {
     private Button searchButton;
 
     @FXML
-    private Button addDocumentButton, removeDocumentButton, updateDocumentButton;
+    private Button addDocumentButton, removeDocumentButton;
 
     @FXML
     private Button showAllButton;
 
     @FXML
     private Button searchUserButton;
+
+    @FXML
+    private Button bookTransactionButton;
 
     @FXML
     private Hyperlink moreBooks1, moreBooks2;
@@ -193,7 +196,7 @@ public class LibraryHomeController {
 
         this.trendingDocsManager = new DocumentDisplayManager(trendingImageList);
 
-        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
+        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");  
 
         showTrendingImg();
         setupComboBoxes();
@@ -222,10 +225,10 @@ public class LibraryHomeController {
 
         addDocumentButton.setOnAction(event -> handleAddDocument());
         removeDocumentButton.setOnAction(event -> handleRemoveDocument());
-        updateDocumentButton.setOnAction(event -> handleUpdateDocument());
         searchButton.setOnAction(event -> handleSearchDocuments());
         showAllButton.setOnAction(event -> handleShowAll());
         searchUserButton.setOnAction(event -> handleSearchUser());
+        bookTransactionButton.setOnAction(event -> handleShowTransaction());
 
         for (int i = 0; i < 2; i++) {
             moreListBooks[i].setOnAction(event -> {
@@ -295,7 +298,7 @@ public class LibraryHomeController {
                 fxmlFile = "/fxml/Person/UpdateMember.fxml";
                 break;
             case "Borrow/Return Documents":
-                fxmlFile = "/fxml/Person/DocBorrow.fxml";
+                fxmlFile = "/fxml/Library/Tools/DocumentBorrow.fxml";
                 break;
             case "Membership Card Renewal":
                 fxmlFile = "/fxml/Person/ExpiryCard.fxml";
@@ -346,6 +349,14 @@ public class LibraryHomeController {
         }
     }
 
+    private void handleShowTransaction() {
+        try {
+            openNewWindow("/fxml/Library/Tools/BorrowingHistoryForEmployee.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void handleSearchDocuments() {
         String keyword = searchTextField.getText().trim().toLowerCase();
 
@@ -372,11 +383,6 @@ public class LibraryHomeController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    // Handle Update Document action
-    private void handleUpdateDocument() {
-        System.out.println("Updating a document...");
     }
 
     // Handle Show All action -- Need Fix
