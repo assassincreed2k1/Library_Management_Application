@@ -207,32 +207,36 @@ public class AddDocumentController {
             JSONObject getAPIBook = bookInfoService.getValue();
             if (getAPIBook != null && getAPIBook.has("ISBN:" + isbnField.getText())) {
                 JSONObject bookData = getAPIBook.getJSONObject("ISBN:" + isbnField.getText());
-
+        
                 titleField.setText(bookData.optString("title", "Unknown Title"));
-
+        
                 JSONArray authorsArray = bookData.getJSONArray("authors");
                 String athString = "";
                 if (authorsArray.length() > 0) {
                     for (int i = 0; i < authorsArray.length(); i++) {
-                        athString += authorsArray.getJSONObject(i).optString("name",
-                                "") + ", ";
+                        athString += authorsArray.getJSONObject(i).optString("name", "") + ", ";
                     }
                     if (!athString.isEmpty()) {
                         athString = athString.substring(0, athString.length() - 2);
                     }
                     authorField.setText(athString);
                 }
-
-                publishDateField.setText(bookData.optString("publish_date",
-                        publishDateField.getText()));
-
+        
+                if (bookData.has("publish_date")) {
+                    publishDateField.setText(bookData.optString("publish_date", ""));
+                } else {
+                    publishDateField.setText("Unknown Publish Date");
+                }
+        
                 if (bookData.has("subjects")) {
                     JSONArray subjectsArray = bookData.getJSONArray("subjects");
                     genreField.setText(subjectsArray.length() > 0
                             ? subjectsArray.getJSONObject(0).optString("name", genreField.getText())
                             : "");
+                } else {
+                    genreField.setText("Unknown Genre");
                 }
-
+        
                 if (bookData.has("cover")) {
                     JSONObject cover = bookData.getJSONObject("cover");
                     String prevImgUrl = cover.optString("medium", "");
@@ -244,8 +248,11 @@ public class AddDocumentController {
                         docImagePreview.setImage(defaultDocImgPrev);
                         docImagePreview.setOnMouseClicked(event2 -> setDocImagePreview());
                     }
+                } else {
+                    docImagePreview.setImage(defaultDocImgPrev);
+                    docImagePreview.setOnMouseClicked(event2 -> setDocImagePreview());
                 }
-
+        
                 errorLabel.setTextFill(javafx.scene.paint.Color.GREEN);
                 errorLabel.setText("Success!");
             } else {
@@ -311,7 +318,7 @@ public class AddDocumentController {
                         newBook.setImagePreview(docImagePreview.getImage().getUrl());
                         docImagePreview.setImage(defaultDocImgPrev);
                     } else {
-                        newBook.setImagePreview("/img/noprev.png");
+                        newBook.setImagePreview("");
                     }
 
                     bookManagement.addDocuments(newBook);

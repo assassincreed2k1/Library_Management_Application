@@ -186,8 +186,8 @@ public abstract class Document {
      *
      * @param imagePreview The new image preview path or URL to set.
      */
-    public void setImagePreview(String imagePreview) {
-        this.imagePreview = imagePreview;
+    public void setImagePreview(String imagePreviewurl) {
+        this.imagePreview = imagePreviewurl;
     }
 
     /**
