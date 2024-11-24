@@ -316,13 +316,12 @@ public class AddDocumentController {
                     newBook.setIsAvailable(true);
                     if (docImagePreview.getImage() != defaultDocImgPrev && docImagePreview.getImage() != null) {
                         newBook.setImagePreview(docImagePreview.getImage().getUrl());
-                        docImagePreview.setImage(defaultDocImgPrev);
                     } else {
                         newBook.setImagePreview("/img/Noprev.png");
                     }
-
                     bookManagement.addDocuments(newBook);
                 }
+                docImagePreview.setImage(defaultDocImgPrev);
 
                 errorLabel.setTextFill(javafx.scene.paint.Color.GREEN);
                 errorLabel.setText("Successfully added " + quantity + " books to the library");
