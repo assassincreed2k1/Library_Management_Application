@@ -19,6 +19,7 @@ public class ServiceManager {
     private static LoanManagement loanManagement;
     private static MemberManagement memberManagement;
     private static BackgroundService backgroundService;
+    private static AdminManagement adminManagement;
 
     /**
      * Initializes all service instances if they haven't been initialized yet.
@@ -49,6 +50,9 @@ public class ServiceManager {
         }
         if (backgroundService == null) {
             backgroundService = new BackgroundService();
+        }
+        if (adminManagement == null) {
+            adminManagement = new AdminManagement();
         }
     }
 
@@ -124,5 +128,17 @@ public class ServiceManager {
      */
     public static BackgroundService getBackgroundService() {
         return backgroundService;
+    }
+
+    /**
+     * Returns the instance of {@link AdminManagement}.
+     * 
+     * @return the singleton instance of {@link AdminManagement}
+     */
+    public static AdminManagement getAdminManagement() {
+        if (adminManagement == null) {
+            adminManagement = new AdminManagement();
+        }
+        return adminManagement;
     }
 }

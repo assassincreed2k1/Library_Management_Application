@@ -331,17 +331,12 @@ public class LibraryHomeController {
 
         if (keyword.isEmpty()) {
             throw new IllegalArgumentException("Search field cannot be empty");
-        }
-
-        SearchBookController.setKeyWord(keyword);
-        try {
+        } else {
+            SearchBookController.setKeyWord(keyword);
             openNewWindow("/fxml/Library/Tools/SearchBook.fxml");
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
-    // Handle Add Document action --Need Fix
     private void handleAddDocument() {
         try {
             openNewWindow("/fxml/Library/Tools/AddDocument.fxml");
@@ -350,7 +345,7 @@ public class LibraryHomeController {
         }
     }
 
-    // Handle Remove Document action --Need Fix
+    // Handle Remove Document action
     private void handleRemoveDocument() {
         try {
             openNewWindow("/fxml/Library/Tools/RemoveDocument.fxml");

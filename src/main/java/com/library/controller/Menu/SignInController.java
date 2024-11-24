@@ -70,6 +70,7 @@ public class SignInController {
                     } 
                 } catch (IOException e) {
                     errorLabel.setText("Faild to load the next scene. Error: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
 
