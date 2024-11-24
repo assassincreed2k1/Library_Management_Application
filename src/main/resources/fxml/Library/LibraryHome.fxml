@@ -72,7 +72,7 @@
             </Label>
             <Button fx:id="addDocumentButton" layoutX="5.0" layoutY="47.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Add Documents" />
             <Button fx:id="removeDocumentButton" layoutX="5.0" layoutY="85.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Remove Documents" />
-            <Button fx:id="updateDocumentButton" layoutX="5.0" layoutY="119.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Update Documents" />
+            <Button fx:id="bookTransactionButton" layoutX="5.0" layoutY="119.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Book's Transaction" />
             <ComboBox fx:id="addUserComboBox" layoutX="5.0" layoutY="153.0" prefHeight="34.0" prefWidth="243.0" promptText="Add User" styleClass="ChoiceBox" />
             <Button fx:id="searchUserButton" layoutX="5.0" layoutY="255.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" text="Search User" />
             <ComboBox fx:id="borrowCardComboBox" layoutX="5.0" layoutY="221.0" prefHeight="34.0" prefWidth="243.0" promptText="Borrowing receipt" styleClass="ChoiceBox" />

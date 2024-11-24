@@ -159,7 +159,7 @@ public class LibraryForBorrowerController {
         this.oldestDocsManager = new DocumentDisplayManager(bookManagement, libraryService,
                 oldestImageViews, oldestNames, oldestAuthors, oldestGenres, oldestAvailables);
 
-        // this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
+        this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
 
         setupComboBoxes();
         setupButtons();
