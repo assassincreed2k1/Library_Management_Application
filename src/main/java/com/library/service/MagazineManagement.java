@@ -148,4 +148,9 @@ public class MagazineManagement extends LibraryService {
         return magazine;
     }
 
+    public void setUrl(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setUrl'");
+    }
+
 }
