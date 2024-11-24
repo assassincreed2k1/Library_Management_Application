@@ -26,8 +26,8 @@ import java.io.File;
 import java.io.IOException;
 
 import com.google.zxing.WriterException;
-import com.library.API.QRCodeGenerator;
 import com.library.model.doc.Book;
+import com.library.service.APIService;
 import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
 import com.library.service.ServiceManager;
@@ -348,7 +348,7 @@ public class SearchBookController {
                 String filePath = "src/main/resources/img/qr_codes/book_" + selectedBook.getID() + ".png";
 
                 try {
-                    QRCodeGenerator.generateQRCodeImage(qrData, 200, 200, filePath);
+                    APIService.generateQRCodeImage(qrData, 200, 200, filePath);
                     Image qrImage = new Image(new File(filePath).toURI().toString());
                     Platform.runLater(() -> qrCodeImageView.setImage(qrImage));
                 } catch (WriterException | IOException e) {
