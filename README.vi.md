@@ -98,7 +98,7 @@ library-management-system/
 - `src/main/java/com.library`:
   - **`controller/`**: Chứa các controller quản lý giao diện người dùng và logic của ứng dụng.
   - **`model/`**: Định nghĩa các mô hình cho tài liệu (sách, báo, tạp chí), người dùng và giao dịch.
-  - **`service/`**: Triển khai các logic nghiệp vụ như quản lý tài liệu, người dùng và giao dịch.
+  - **`service/`**: Triển khai các logic như quản lý tài liệu, người dùng và giao dịch.
 - `src/main/resources`:
   - **`css/`**: Các tệp CSS để tạo kiểu cho giao diện.
   - **`fxml/`**: Các tệp FXML định nghĩa bố cục giao diện người dùng.
@@ -108,7 +108,7 @@ library-management-system/
 
 ### Các Tệp Quan Trọng
 - `App.java`: Nơi đặt lớp chính(main) của ứng dụng.
-- `module-info.java`: Khai báo các module Java và các dependencies của chúng.
+- `module-info.java`: Khai báo các module Java và các phụ thuộc của chúng.
 
 ## Tác Giả
 
