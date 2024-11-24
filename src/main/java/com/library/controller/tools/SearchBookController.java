@@ -26,7 +26,6 @@ import java.io.IOException;
 import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
-import com.library.service.LibraryService;
 import com.library.service.ServiceManager;
 
 /**
@@ -42,17 +41,12 @@ public class SearchBookController {
      * and ISBN.
      */
     public static String keyword;
-    private LibraryService libraryService = new LibraryService();
 
     private BookManagement bookManagement;
-
     private BackgroundService executor;
 
     @FXML
     private AnchorPane taskBar;
-
-    @FXML
-    Button exitButton;
 
     @FXML
     private TableView<Book> bookTable;
@@ -123,15 +117,6 @@ public class SearchBookController {
         bookTable.setOnKeyPressed(event -> runShowBookTask());
 
         prevImage.setOnMouseClicked(event -> showPreview());
-
-        exitButton.setOnAction(event -> {
-            try {
-                libraryService.switchTo("/fxml/Library/LibraryHome.fxml",
-                        (Stage) exitButton.getScene().getWindow());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
 
         showBookTask = reShowBookTask();
         showPrevTask = reShowPrevTask();
