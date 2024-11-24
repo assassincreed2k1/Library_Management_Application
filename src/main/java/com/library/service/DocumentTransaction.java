@@ -3,8 +3,9 @@ package com.library.service;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.library.model.doc.Book;
 import com.library.model.doc.Document;
@@ -164,7 +165,7 @@ public class DocumentTransaction extends LibraryService {
         String sql = """
             UPDATE bookTransaction
             SET score = ?, comment = ?
-            WHERE document_id = ? AND membershipId = ? AND status = 'returned'
+            WHERE document_id = ? AND membershipId = ? AND status = 'returned' AND score is null
         """;
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -181,7 +182,62 @@ public class DocumentTransaction extends LibraryService {
                 return "No matching transaction found for review.";
             }
         } catch (SQLException e) {
-            return "Error submitting review: " + e.getMessage();
+            return "Error submitting review: " + e.getMessage() + ". Please check!";
         }
+    }
+
+    public double getAverageScore(String isbn) {
+        String sql = """
+                SELECT b.isbn, AVG(t.score) AS average_score
+                FROM Books b
+                JOIN bookTransaction t ON t.document_ = b.id
+                WHERE b.isbn = ?
+                GROUP BY b.isbn;
+                """;
+
+        double averageScore = 0.0;
+
+        try (Connection conn = DriverManager.getConnection(url);
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, isbn);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    averageScore = rs.getDouble("average_score");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return averageScore;
+    }
+
+    public ArrayList<String> getComment(String isbn) {
+        String sql = """
+                SELECT t.comment
+                FROM Books b
+                JOIN bookTransaction t ON t.document_ = b.id
+                WHERE b.isbn = ?
+                """;
+
+        ArrayList<String> comments = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(url);
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, isbn);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    comments.add(rs.getString("comment"));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return comments;
     }
 }

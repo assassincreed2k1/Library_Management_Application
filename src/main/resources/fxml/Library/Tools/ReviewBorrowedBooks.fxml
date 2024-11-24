@@ -7,9 +7,13 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="642.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.tools.ReviewBookController">
    <children>
@@ -50,25 +54,34 @@
             </HBox>
 
             <!-- Comment Section -->
-            <VBox layoutX="50.0" layoutY="120.0" spacing="15.0">
+            <VBox layoutX="51.0" layoutY="119.0" spacing="15.0">
                <children>
 
                   <!-- Comment Input -->
                   <TextArea fx:id="commentTextArea" prefHeight="100.0" prefWidth="540.0" promptText="Write your comment here..." />
-
-                  <!-- Submit Button -->
-                  <Button fx:id="submitCommentButton" prefWidth="150.0" styleClass="primary-button" text="Submit Review" />
-
-                  <!-- Display Comments -->
-                  <VBox fx:id="commentsBox" spacing="10.0">
+                  <GridPane alignment="CENTER">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
-                        <!-- Placeholder for existing comments -->
-                        <Label fx:id="messageText" styleClass="placeholder" />
+      
+                                    <!-- Submit Button -->
+                        <Button fx:id="submitCommentButton" contentDisplay="CENTER" prefWidth="150.0" styleClass="primary-button" text="Submit Review" />
+                        <Button fx:id="backButton" alignment="CENTER" prefHeight="35.0" prefWidth="166.0" styleClass="primary-button" text="Back" GridPane.columnIndex="1" />
                      </children>
-                  </VBox>
+                  </GridPane>
 
                </children>
             </VBox>
+            <Text fx:id="messageText" layoutX="51.0" layoutY="318.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="540.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </children>

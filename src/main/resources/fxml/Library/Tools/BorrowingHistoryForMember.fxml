@@ -5,12 +5,14 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@../../../css/BasicUI.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background-main" stylesheets="@../../../css/BasicUI.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.tools.HistoryTransactionMember">
    <children>
       <!-- TaskBar -->
       <AnchorPane fx:id="taskBar" prefHeight="94.0" prefWidth="1210.0" styleClass="taskbar">
@@ -30,11 +32,13 @@
                   <Font name="Bodoni MT Bold Italic" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="438.0" layoutY="19.0" text="Borrowing History">
+            <Label layoutX="336.0" layoutY="21.0" text="Borrowing History">
                <font>
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
+            <TextField fx:id="searchTextField" layoutX="735.0" layoutY="37.0" prefHeight="25.0" prefWidth="357.0" promptText="Enter id transaction, document id or @Show alll, @Not reviewed" />
+            <Button fx:id="searchButton" layoutX="1110.0" layoutY="37.0" mnemonicParsing="false" text="Search" />
          </children>
       </AnchorPane>
 
@@ -43,27 +47,23 @@
          <content>
             <TableView fx:id="bookTable" prefHeight="706.0" prefWidth="908.0">
                <columns>
-                  <TableColumn prefWidth="103.0" text="ID Trasnsaction" />
-                  <TableColumn fx:id="titleColumn" prefWidth="228.0" text="Book Title" />
-                  <TableColumn fx:id="isbnColumn" prefWidth="83.0" text="ISBN" />
-                  <TableColumn prefWidth="102.0" text="Document ID" />
-                  <TableColumn fx:id="authorColumn" prefWidth="69.0" text="Star" />
-                  <TableColumn fx:id="genreColumn" prefWidth="165.0" text="Borrowed Date" />
-                  <TableColumn fx:id="publishDateColumn" prefWidth="145.0" text="Returned Date" />
+                  <TableColumn fx:id="idTransactionColumn" prefWidth="138.0" text="ID Trasnsaction" />
+                  <TableColumn fx:id="documentIdColumn" prefWidth="172.0" text="Document ID" />
+                  <TableColumn fx:id="borrowDateColumn" prefWidth="171.0" text="Borrowed Date" />
+                  <TableColumn fx:id="dueDateColumn" prefWidth="167.0" text="Due Date" />
+                  <TableColumn fx:id="returnDateColumn" prefWidth="148.0" text="Returned Date" />
+                  <TableColumn fx:id="scoreColumn" prefWidth="106.0" text="Score" />
                </columns>
             </TableView>
          </content>
       </ScrollPane>
 
-      <ImageView fx:id="prevImage" fitHeight="365.0" fitWidth="279.0" layoutX="917.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true" />
-
-      <Label layoutX="959.0" layoutY="493.0" text="MORE INFORMATION">
+      <Label layoutX="959.0" layoutY="134.0" text="MORE INFORMATION">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-
-      <AnchorPane fx:id="moreInfoPane" layoutX="917.0" layoutY="523.0" prefHeight="200.0" prefWidth="279.0" />
-      <Button layoutX="1014.0" layoutY="735.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="86.0" text="Review" />
+      <Button fx:id="reviewButton" layoutX="1014.0" layoutY="735.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="86.0" text="Review" />
+      <TextArea fx:id="documentTextArea" layoutX="927.0" layoutY="183.0" prefHeight="530.0" prefWidth="259.0" />
    </children>
 </AnchorPane>

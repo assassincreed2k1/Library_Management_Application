@@ -93,21 +93,18 @@ public class AddMemberController {
             }
         };
 
-        // Hiển thị thông báo cho người dùng việc đang thêm 
         MessageUtil.showMessage(messageText, "Adding member, please wait...", "blue");
 
-        //Chạy task trong một Thread riêng
         Thread thread = new Thread(addMemberTask);
-        thread.setDaemon(true); // Đảm bảo thread tự động dừng khi ứng dụng kết thúc
+        thread.setDaemon(true);
         thread.start();
     }
 
     private void clearFields() {
-        // Xóa thông tin đã nhập trong các trường
         nameField.clear();
         addressField.clear();
         dobField.clear();
         phoneField.clear();
-        genderComboBox.setValue(null); // Xóa lựa chọn trong ComboBox
+        genderComboBox.setValue(null); 
     }
 }
