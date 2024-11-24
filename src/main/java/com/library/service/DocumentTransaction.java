@@ -172,7 +172,7 @@ public class DocumentTransaction extends LibraryService {
                 return "No matching transaction found for review.";
             }
         } catch (SQLException e) {
-            return "Error submitting review: " + e.getMessage();
+            return "Error submitting review: " + e.getMessage() + ". Please check!";
         }
     }
 }

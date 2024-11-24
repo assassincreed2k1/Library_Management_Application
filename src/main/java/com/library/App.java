@@ -56,7 +56,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        User.setUser("A000001");
+        User.setUser("M000006");
         launch(args);
     }
 }
