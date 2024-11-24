@@ -140,12 +140,12 @@ public class DocumentDisplayManager {
      * @return the Image object, either from the cache or newly loaded.
      */
     private Image getCachedImage(String imageUrl) {
-        if (!imageUrl.startsWith("http://")) {
+        if (!imageUrl.startsWith("http://") && !imageUrl.startsWith("https://")) { // lúc đầu code thiếu https://
             URL localImageUrl = getClass().getResource(imageUrl);
             if (localImageUrl != null) {
                 imageUrl = localImageUrl.toExternalForm();
             } else {
-                System.out.println("Local image not found: " + imageUrl);
+                System.out.println("From getCachedImage(String imageUrl): Local image not found: " + imageUrl);
                 return null; 
             }
         }

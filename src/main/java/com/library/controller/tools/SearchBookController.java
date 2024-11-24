@@ -89,7 +89,7 @@ public class SearchBookController {
     private final Image defaultImagePrv = new Image(getClass().getResource("/img/prv.png").toExternalForm());
     // private final Image defaultErrImagePrv = new
     // Image(getClass().getResource("/img/prve.png").toExternalForm());
-    private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/noprv.png").toExternalForm());
+    private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/Noprev.png").toExternalForm());
 
     // This method is called by the FXMLLoader when initialization is complete
     @FXML
@@ -206,7 +206,11 @@ public class SearchBookController {
             @Override
             protected ObservableList<Book> call() {
                 System.out.println("Running loadBookListAsync()...");
-                return bookManagement.getAllBooksFilter(keyword);
+                if (keyword != null) {
+                    return bookManagement.getAllBooksFilter(keyword);
+                } else {
+                    return bookManagement.getAllBooks();
+                }
             }
         };
 
