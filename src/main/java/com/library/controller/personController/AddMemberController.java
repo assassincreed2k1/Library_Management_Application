@@ -31,12 +31,6 @@ public class AddMemberController {
     @FXML
     private Button addButton;
 
-    // private MemberManagement memberManagement;
-
-    // public AddMemberController() {
-    //     memberManagement = new MemberManagement();
-    // }
-
     @FXML
     private void initialize() {
         // Cài đặt giá trị mặc định cho ComboBox Gender
