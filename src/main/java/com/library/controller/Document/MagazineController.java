@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import com.library.controller.tools.RemoveDocumentController;
 import com.library.controller.tools.UpdateDocumentController;
+import com.library.model.Person.User;
 import com.library.model.doc.Magazine;
 import com.library.service.BackgroundService;
 import com.library.service.MagazineManagement;
@@ -236,8 +237,13 @@ public class MagazineController {
         Button editButton = createStyledButton("Edit", 5, 160, event -> openEditPage(selectedMagazine));
         Button deleteButton = createStyledButton("Delete", 200, 160, event -> openDeletePage(selectedMagazine));
 
-        moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, publisherLabel, availabilityLabel,
-                editButton, deleteButton);
+        if (!User.isMember()) { 
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, publisherLabel, availabilityLabel,
+                    editButton, deleteButton);
+        } else {
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, publisherLabel, availabilityLabel);
+        }
+        
         prevImage.setImage(defaultImagePrv);
     }
 
