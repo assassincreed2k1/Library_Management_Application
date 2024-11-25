@@ -75,7 +75,7 @@
             <Button fx:id="bookTransactionButton" layoutX="5.0" layoutY="119.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Book's Transaction" />
             <ComboBox fx:id="addUserComboBox" layoutX="5.0" layoutY="153.0" prefHeight="34.0" prefWidth="243.0" promptText="Add Person" styleClass="ChoiceBox" />
             <Button fx:id="searchUserButton" layoutX="5.0" layoutY="255.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" text="Search User" />
-            <ComboBox fx:id="borrowCardComboBox" layoutX="5.0" layoutY="221.0" prefHeight="34.0" prefWidth="243.0" promptText="Borrowing receipt" styleClass="ChoiceBox" />
+            <ComboBox fx:id="borrowCardComboBox" layoutX="5.0" layoutY="221.0" prefHeight="34.0" prefWidth="243.0" promptText="Membership &amp; Borrowing" styleClass="ChoiceBox" />
             <ComboBox fx:id="updateUserComboBox" layoutX="5.0" layoutY="187.0" prefHeight="34.0" prefWidth="243.0" promptText="Update Person" styleClass="ChoiceBox" />
          </children>
       </AnchorPane>

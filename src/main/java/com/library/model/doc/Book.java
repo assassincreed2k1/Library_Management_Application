@@ -119,6 +119,12 @@ public class Book extends Document {
                                     super.getDetails(), this.isbn, this.author, this.publishDate);
     }
 
+    public String getDetailsReview() {
+        return String.format("Information of Book:\nName: %s\nISBN: %s\nAuthor: %s\nGenre: %s\n"
+                            + "Publish date: %s\n",
+                            this.name, this.isbn, this.author, this.group, this.publishDate);
+    }
+
     public Book getInforFromDatabase(String id) {
         System.out.println(id);
         Book bookFromDB = bookManagement.getDocument(id);
