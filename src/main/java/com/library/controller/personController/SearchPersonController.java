@@ -156,6 +156,7 @@ public class SearchPersonController {
                     // Lấy controller của UpdateMember và truyền Member vào
                     UpdateMemberController controller = loader.getController();
                     controller.setMember((Member) person);
+                    controller.setBeforeSceneURL("/fxml/Person/SearchPerson.fxml");
         
                     stage.setScene(scene);
                     stage.show();

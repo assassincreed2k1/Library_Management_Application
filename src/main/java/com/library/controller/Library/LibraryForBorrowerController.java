@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.library.controller.personController.UpdateMemberController;
 import com.library.controller.tools.DocumentDisplayManager;
 import com.library.controller.tools.SearchBookController;
+import com.library.model.Person.Member;
 import com.library.model.Person.User;
 import com.library.service.BookManagement;
 import com.library.service.LibraryService;
@@ -211,8 +213,29 @@ public class LibraryForBorrowerController {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                else {
+                } else if (selectedPage.equals("Update Infor")) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Person/UpdateMember.fxml"));
+                        Stage stage = (Stage) usernameLabel.getScene().getWindow();
+                        Scene scene = new Scene(loader.load());
+    
+                        UpdateMemberController controller = loader.getController();
+                        Member member = new Member();
+                        member = member.getInforFromDatabase(User.getId());
+                        controller.setMember(member);
+                        //tạo setBeforeSceneURL trong UpdateMemberController
+                        
+                        // Set the URL to go back to after the update
+                        controller.setBeforeSceneURL("/fxml/Library/LibraryForBorrower.fxml");
+    
+                        // Set the scene and show the window
+                        stage.setScene(scene);
+                        stage.show();
+    
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }  
+                } else {
                     switchToPage(selectedPage);
                 }
             }
