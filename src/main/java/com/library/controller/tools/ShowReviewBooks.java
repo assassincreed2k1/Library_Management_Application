@@ -54,7 +54,7 @@ public class ShowReviewBooks {
         scoreLabel.setText(averageScore == 0.0 ? "N/A" : Double.toString(averageScore));
 
         Book book = bookManagement.getDocumentViaIsbn(isbn);
-        documentTextArea.setText(book != null ? book.getDetails() : "Book information not found.");
+        documentTextArea.setText(book != null ? book.getDetailsReview() : "Book information not found.");
 
         ArrayList<String> comments = documentTransaction.getComment(isbn);
         if (comments != null && !comments.isEmpty()) {

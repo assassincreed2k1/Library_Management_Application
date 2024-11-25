@@ -32,6 +32,7 @@ import java.io.IOException;
 import com.library.controller.tools.RemoveDocumentController;
 import com.library.controller.tools.ShowReviewBooks;
 import com.library.controller.tools.UpdateDocumentController;
+import com.library.model.Person.User;
 import com.library.model.doc.Book;
 import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
@@ -127,8 +128,14 @@ public class BookController {
 
         exitButton.setOnAction(event -> {
             try {
-                libraryService.switchTo("/fxml/Library/LibraryHome.fxml",
-                        (Stage) exitButton.getScene().getWindow());
+                if (User.isAdmin() || User.isLibrarian()) {
+                    libraryService.switchTo("/fxml/Library/LibraryHome.fxml",
+                    (Stage) exitButton.getScene().getWindow());
+                } else {
+                    libraryService.switchTo("/fxml/Library/LibraryForBorrower.fxml",
+                    (Stage) exitButton.getScene().getWindow());
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -261,9 +268,13 @@ public class BookController {
         Label availabilityLabel = createStyledLabel("Available: "
                 + (selectedBook.getIsAvailable() ? "Yes" : "No"), 5, 120);
 
-        Button editButton = createStyledButton("Edit", 5, 160, event -> openEditPage(selectedBook));
-        Button deleteButton = createStyledButton("Delete", 200, 160, event -> openDeletePage(selectedBook));
-
+        Button editButton = new Button();
+        Button deleteButton = new Button();
+        if (!User.isMember()) {
+            editButton = createStyledButton("Edit", 5, 160, event -> openEditPage(selectedBook));
+            deleteButton = createStyledButton("Delete", 200, 160, event -> openDeletePage(selectedBook));
+        }
+        
         moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel,
                 publishDateLabel, isbnLabel, availabilityLabel, editButton, deleteButton);
 

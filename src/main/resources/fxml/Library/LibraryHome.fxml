@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.Library.LibraryHomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.Library.LibraryHomeController">
    <children>
       <AnchorPane prefHeight="93.0" prefWidth="1311.0" styleClass="taskbar">
          <children>
@@ -73,10 +73,10 @@
             <Button fx:id="addDocumentButton" layoutX="5.0" layoutY="47.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Add Documents" />
             <Button fx:id="removeDocumentButton" layoutX="5.0" layoutY="85.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Remove Documents" />
             <Button fx:id="bookTransactionButton" layoutX="5.0" layoutY="119.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Book's Transaction" />
-            <ComboBox fx:id="addUserComboBox" layoutX="5.0" layoutY="153.0" prefHeight="34.0" prefWidth="243.0" promptText="Add User" styleClass="ChoiceBox" />
+            <ComboBox fx:id="addUserComboBox" layoutX="5.0" layoutY="153.0" prefHeight="34.0" prefWidth="243.0" promptText="Add Person" styleClass="ChoiceBox" />
             <Button fx:id="searchUserButton" layoutX="5.0" layoutY="255.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" text="Search User" />
-            <ComboBox fx:id="borrowCardComboBox" layoutX="5.0" layoutY="221.0" prefHeight="34.0" prefWidth="243.0" promptText="Borrowing receipt" styleClass="ChoiceBox" />
-            <ComboBox fx:id="updateUserComboBox" layoutX="5.0" layoutY="187.0" prefHeight="34.0" prefWidth="243.0" promptText="Update User" styleClass="ChoiceBox" />
+            <ComboBox fx:id="borrowCardComboBox" layoutX="5.0" layoutY="221.0" prefHeight="34.0" prefWidth="243.0" promptText="Membership &amp; Borrowing" styleClass="ChoiceBox" />
+            <ComboBox fx:id="updateUserComboBox" layoutX="5.0" layoutY="187.0" prefHeight="34.0" prefWidth="243.0" promptText="Update Person" styleClass="ChoiceBox" />
          </children>
       </AnchorPane>
       <TabPane layoutX="292.0" layoutY="394.0" prefHeight="462.0" prefWidth="1018.0" tabClosingPolicy="UNAVAILABLE">
@@ -217,19 +217,6 @@
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab text="Most View">
-                           <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <Label layoutX="355.0" layoutY="95.0" prefHeight="215.0" prefWidth="308.0" text="COMING SOON!">
-                                       <font>
-                                          <Font size="41.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </AnchorPane>
-                           </content>
-                        </Tab>
                      </tabs>
                   </TabPane>
                </content>
@@ -295,6 +282,11 @@
                                           <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
                                        </children>
                                     </AnchorPane>
+                                    <Label layoutX="370.0" layoutY="19.0" text="(COMING SOON)">
+                                       <font>
+                                          <Font size="31.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </AnchorPane>
                            </content>
@@ -356,17 +348,9 @@
                                           <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
                                        </children>
                                     </AnchorPane>
-                                 </children>
-                              </AnchorPane>
-                           </content>
-                        </Tab>
-                        <Tab text="Most View">
-                           <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <Label layoutX="355.0" layoutY="95.0" prefHeight="215.0" prefWidth="308.0" text="COMING SOON!">
+                                    <Label layoutX="370.0" layoutY="19.0" text="(COMING SOON)">
                                        <font>
-                                          <Font size="41.0" />
+                                          <Font size="31.0" />
                                        </font>
                                     </Label>
                                  </children>
@@ -438,6 +422,11 @@
                                           <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
                                        </children>
                                     </AnchorPane>
+                                    <Label layoutX="391.0" layoutY="19.0" text="(COMING SOON)">
+                                       <font>
+                                          <Font size="31.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </AnchorPane>
                            </content>
@@ -499,17 +488,9 @@
                                           <Label layoutX="8.0" layoutY="267.0" prefHeight="17.0" prefWidth="45.0" text="Author:" />
                                        </children>
                                     </AnchorPane>
-                                 </children>
-                              </AnchorPane>
-                           </content>
-                        </Tab>
-                        <Tab text="Most View">
-                           <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <Label layoutX="355.0" layoutY="95.0" prefHeight="215.0" prefWidth="308.0" text="COMING SOON!">
+                                    <Label layoutX="391.0" layoutY="19.0" text="(COMING SOON)">
                                        <font>
-                                          <Font size="41.0" />
+                                          <Font size="31.0" />
                                        </font>
                                     </Label>
                                  </children>
@@ -539,6 +520,15 @@
             </children>
          </content>
       </ScrollPane>
+      <AnchorPane layoutX="1092.0" layoutY="280.0" prefHeight="78.0" prefWidth="176.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="75.0" prefWidth="176.0" text="Trending" textFill="#ffa2a2">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
    <stylesheets>
       <URL value="@../../css/BasicUI.css" />

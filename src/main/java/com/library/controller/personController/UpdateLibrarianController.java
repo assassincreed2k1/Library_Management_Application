@@ -2,6 +2,7 @@ package com.library.controller.personController;
 
 import com.library.model.Person.Admin;
 import com.library.model.Person.Librarian;
+import com.library.model.Person.User;
 import com.library.model.helpers.DateString;
 import com.library.model.helpers.MessageUtil;
 import javafx.application.Platform;
@@ -157,6 +158,10 @@ public class UpdateLibrarianController {
 
                 if (password.equals(librarian.getPassword())) {
                     throw new Exception("This password is the same as before.");
+                }
+
+                if (!User.getId().equals(librarian.getEmployeeId()) && (password != null && !password.isEmpty())) {
+                    throw new Exception("You don't have access to change password.");
                 }
 
                 librarian.setName(name.isEmpty() ? librarian.getName() : name);

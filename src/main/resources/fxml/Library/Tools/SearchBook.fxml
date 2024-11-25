@@ -65,7 +65,7 @@
       </Label>
 
       <AnchorPane fx:id="moreInfoPane" layoutX="921.0" layoutY="587.0" prefHeight="200.0" prefWidth="279.0" />
-      <ImageView fx:id="qrCodeImageView" fitHeight="256.0" fitWidth="265.0" layoutX="754.0" layoutY="385.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="qrCodeImageView" fitHeight="256.0" fitWidth="265.0" layoutX="745.0" layoutY="481.0" pickOnBounds="true" preserveRatio="true" />
       <Button layoutX="1003.0" layoutY="101.0" mnemonicParsing="false" onAction="#generateQRCode" text="Get QR Code" textFill="#d00000">
          <font>
             <Font size="16.0" />

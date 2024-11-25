@@ -27,7 +27,7 @@ public class App extends Application {
         //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Documents/Books.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("/fxml/Person/DocBorrow.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/LibraryForBorrower.fxml"));
-        // Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/ShowBooksReview.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/fxml/Library/Tools/RemoveDocument.fxml"));
 
         Scene scene = new Scene(root); 
         
@@ -35,6 +35,7 @@ public class App extends Application {
 
         stage.initStyle(StageStyle.DECORATED);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.setOnCloseRequest(event -> {
             ServiceManager.getBackgroundService().stopAllThreads();
         });
