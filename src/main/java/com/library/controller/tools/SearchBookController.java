@@ -19,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 
@@ -26,8 +27,8 @@ import java.io.File;
 import java.io.IOException;
 
 import com.google.zxing.WriterException;
-import com.library.API.QRCodeGenerator;
 import com.library.model.doc.Book;
+import com.library.service.APIService;
 import com.library.service.BackgroundService;
 import com.library.service.BookManagement;
 import com.library.service.ServiceManager;
@@ -325,55 +326,72 @@ public class SearchBookController {
     }
 
     @FXML
-    private void generateQRCode() {
-        Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
+private void generateQRCode() {
+    Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
 
-        if (selectedBook == null) {
-            showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Please select a book to generate QR code.");
-            return;
+    if (selectedBook == null) {
+        showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Please select a book to generate QR code.");
+        return;
+    }
+
+    Task<Void> generateQRCodeTask = new Task<>() {
+        @Override
+        protected Void call() throws Exception {
+            String qrData = String.format(
+                    "{ \"bookID\": %s, \"title\": \"%s\", \"author\": \"%s\", \"genre\": \"%s\", \"publishedDate\": \"%s\" }",
+                    selectedBook.getID(),
+                    selectedBook.getName(),
+                    selectedBook.getAuthor(),
+                    selectedBook.getGroup(),
+                    selectedBook.getPublishDate()
+            );
+
+            String filePath = "src/main/resources/img/qr_codes/book_" + selectedBook.getID() + ".png";
+
+            try {
+                // Generate the QR Code image and save it to the specified file path
+                APIService.generateQRCodeImage(qrData, 200, 200, filePath);
+                Image qrImage = new Image(new File(filePath).toURI().toString());
+                Platform.runLater(() -> {
+                    // Create a new Stage to display the QR Code
+                    Stage qrCodeStage = new Stage();
+                    ImageView qrCodeImageView = new ImageView(qrImage);
+                    qrCodeImageView.setFitWidth(200);
+                    qrCodeImageView.setFitHeight(200);
+                    VBox vbox = new VBox(qrCodeImageView);
+                    Scene qrCodeScene = new Scene(vbox);
+                    qrCodeStage.setScene(qrCodeScene);
+                    qrCodeStage.setTitle("QR Code for Book");
+
+                    // Disable resizing (zoom in/out)
+                    qrCodeStage.setResizable(false);
+
+                    // Show the stage
+                    qrCodeStage.show();
+                });
+            } catch (WriterException | IOException e) {
+                e.printStackTrace();
+                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Error generating QR Code: " + e.getMessage()));
+            }
+
+            return null;
         }
 
-        Task<Void> generateQRCodeTask = new Task<>() {
-            @Override
-            protected Void call() throws Exception {
-                String qrData = String.format(
-                        "{ \"bookID\": %s, \"title\": \"%s\", \"author\": \"%s\", \"genre\": \"%s\", \"publishedDate\": \"%s\" }",
-                        selectedBook.getID(),
-                        selectedBook.getName(),
-                        selectedBook.getAuthor(),
-                        selectedBook.getGroup(),
-                        selectedBook.getPublishDate()
-                );
+        @Override
+        protected void succeeded() {
+            Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "QR Code Generated", "QR Code saved successfully."));
+        }
 
-                String filePath = "src/main/resources/img/qr_codes/book_" + selectedBook.getID() + ".png";
+        @Override
+        protected void failed() {
+            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Error generating QR Code."));
+        }
+    };
 
-                try {
-                    QRCodeGenerator.generateQRCodeImage(qrData, 200, 200, filePath);
-                    Image qrImage = new Image(new File(filePath).toURI().toString());
-                    Platform.runLater(() -> qrCodeImageView.setImage(qrImage));
-                } catch (WriterException | IOException e) {
-                    e.printStackTrace();
-                    Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Error generating QR Code: " + e.getMessage()));
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void succeeded() {
-                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "QR Code Generated", "QR Code saved successfully."));
-            }
-
-            @Override
-            protected void failed() {
-                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Error generating QR Code."));
-            }
-        };
-
-        Thread qrCodeThread = new Thread(generateQRCodeTask);
-        qrCodeThread.setDaemon(true);
-        qrCodeThread.start();
-    }
+    Thread qrCodeThread = new Thread(generateQRCodeTask);
+    qrCodeThread.setDaemon(true);
+    qrCodeThread.start();
+}
 
     private void createQRCodeDirectory() {
         File directory = new File("src/main/resources/img/qr_codes");

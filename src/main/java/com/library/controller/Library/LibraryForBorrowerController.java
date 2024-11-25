@@ -331,6 +331,7 @@ public class LibraryForBorrowerController {
             newStage.setTitle("New Window");
             newStage.setScene(scene);
             newStage.centerOnScreen();
+            newStage.setResizable(false);
             newStage.show();
         } catch (Exception e) {
             e.printStackTrace();
