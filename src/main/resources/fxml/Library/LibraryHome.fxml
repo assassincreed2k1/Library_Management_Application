@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.Library.LibraryHomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="856.0" prefWidth="1311.0" styleClass="background-main" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.controller.Library.LibraryHomeController">
    <children>
       <AnchorPane prefHeight="93.0" prefWidth="1311.0" styleClass="taskbar">
          <children>
@@ -73,10 +73,10 @@
             <Button fx:id="addDocumentButton" layoutX="5.0" layoutY="47.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="243.0" styleClass="ChoiceBox" text="Add Documents" />
             <Button fx:id="removeDocumentButton" layoutX="5.0" layoutY="85.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Remove Documents" />
             <Button fx:id="bookTransactionButton" layoutX="5.0" layoutY="119.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" styleClass="ChoiceBox" text="Book's Transaction" />
-            <ComboBox fx:id="addUserComboBox" layoutX="5.0" layoutY="153.0" prefHeight="34.0" prefWidth="243.0" promptText="Add User" styleClass="ChoiceBox" />
+            <ComboBox fx:id="addUserComboBox" layoutX="5.0" layoutY="153.0" prefHeight="34.0" prefWidth="243.0" promptText="Add Person" styleClass="ChoiceBox" />
             <Button fx:id="searchUserButton" layoutX="5.0" layoutY="255.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="243.0" text="Search User" />
             <ComboBox fx:id="borrowCardComboBox" layoutX="5.0" layoutY="221.0" prefHeight="34.0" prefWidth="243.0" promptText="Borrowing receipt" styleClass="ChoiceBox" />
-            <ComboBox fx:id="updateUserComboBox" layoutX="5.0" layoutY="187.0" prefHeight="34.0" prefWidth="243.0" promptText="Update User" styleClass="ChoiceBox" />
+            <ComboBox fx:id="updateUserComboBox" layoutX="5.0" layoutY="187.0" prefHeight="34.0" prefWidth="243.0" promptText="Update Person" styleClass="ChoiceBox" />
          </children>
       </AnchorPane>
       <TabPane layoutX="292.0" layoutY="394.0" prefHeight="462.0" prefWidth="1018.0" tabClosingPolicy="UNAVAILABLE">

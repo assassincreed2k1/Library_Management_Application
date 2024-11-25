@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.google.zxing.WriterException;
+import com.library.model.Person.User;
 import com.library.model.doc.Book;
 import com.library.service.APIService;
 import com.library.service.BackgroundService;
@@ -256,8 +257,12 @@ public class SearchBookController {
         Label availabilityLabel = createStyledLabel("Available: "
                 + (selectedBook.getIsAvailable() ? "Yes" : "No"), 5, 120);
 
-        Button editButton = createStyledButton("Edit", 5, 160, event -> openEditPage(selectedBook));
-        Button deleteButton = createStyledButton("Delete", 200, 160, event -> openDeletePage(selectedBook));
+        Button editButton = new Button();
+        Button deleteButton = new Button();
+        if (User.isAdmin() || User.isLibrarian()) {
+            editButton = createStyledButton("Edit", 5, 160, event -> openEditPage(selectedBook));
+            deleteButton = createStyledButton("Delete", 200, 160, event -> openDeletePage(selectedBook));
+        }
 
         moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel,
                 publishDateLabel, isbnLabel, availabilityLabel, editButton, deleteButton);
