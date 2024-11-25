@@ -32,6 +32,12 @@ import com.library.service.MagazineManagement;
 import com.library.service.ServiceManager;
 import com.library.service.LibraryService;
 
+/**
+ * Controller for managing newspaper-related operations in the library
+ * application.
+ * This class handles interactions with the Newspaper table and associated UI
+ * elements.
+ */
 public class MagazineController {
 
     private LibraryService libraryService = new LibraryService();
