@@ -92,6 +92,16 @@ public class APIService {
         return null; // Return null in case of error
     }
 
+    /**
+     * Retrieves the URL for the book cover image based on the provided ISBN.
+     * The method fetches book data using an external API and attempts to extract
+     * the
+     * medium-sized cover image URL.
+     *
+     * @param isbn the ISBN of the book whose cover image URL is to be fetched.
+     * @return a `String` containing the URL of the medium-sized cover image, or an
+     *         empty string if not found.
+     */
     public static String getCoverBookURL(String isbn) {
         JSONObject getAPIBook = APIService.getBookInfoByISBN(isbn);
         JSONObject bookData = getAPIBook.getJSONObject("ISBN:" + isbn);
@@ -108,9 +118,21 @@ public class APIService {
             return "";
         }
     }
-    
-    
-    public static void generateQRCodeImage(String text, int width, int height, String filePath) throws WriterException, IOException {
+
+    /**
+     * Generates a QR code image from the provided text and saves it to the
+     * specified file path.
+     *
+     * @param text     the content to encode in the QR code.
+     * @param width    the width of the generated QR code image.
+     * @param height   the height of the generated QR code image.
+     * @param filePath the file path (including file name) where the QR code image
+     *                 will be saved.
+     * @throws WriterException if an error occurs while encoding the QR code.
+     * @throws IOException     if an I/O error occurs during file writing.
+     */
+    public static void generateQRCodeImage(String text, int width, int height, String filePath)
+            throws WriterException, IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
 

@@ -34,7 +34,7 @@ public class AdminManagement extends LibraryService {
      * @return The Admin object containing the admin's information, or null if not found.
      */
     public Admin getAdminInfo() {
-        //check xem có bản ghi nào bên trong CSDL không
+        //checkIfThereIsAnyRecordInsideTheDatabase
         if (!hasAdminRecords()) {
             defaultAdd();;
         }
@@ -76,7 +76,7 @@ public class AdminManagement extends LibraryService {
             return;
         }
 
-        //check xem có bản ghi nào bên trong CSDL không
+       // check if there is any record inside the databaseaseasease
         if (!hasAdminRecords()) {
             defaultAdd();
         }
@@ -113,7 +113,7 @@ public class AdminManagement extends LibraryService {
         }
     }
 
-    // viet method default insert vao neu chua co gia tri nao ben trong
+    // Write Method Default Insert is on if there is any value
 
     /**
      * Inserts a default admin into the database if no records exist.

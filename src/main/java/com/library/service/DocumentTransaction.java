@@ -13,19 +13,36 @@ import com.library.model.doc.Document;
 import com.library.model.doc.Magazine;
 import com.library.model.doc.Newspaper;
 
+/**
+ * This class handles the transactions related to borrowing, returning, and reviewing library documents
+ * (books, magazines, newspapers) and stores these transactions in the database.
+ */
 public class DocumentTransaction extends LibraryService {
 
     private CombinedDocument combined_document = new CombinedDocument();
     private LoanManagement loanManagement = new LoanManagement();
 
+    /**
+     * Sets the combined document instance.
+     *
+     * @param combined_document The CombinedDocument instance used to manage various document types.
+     */
     public void setCombinedDocument(CombinedDocument combined_document) {
         this.combined_document = combined_document;
     }
 
+    /**
+     * Sets the loan management instance.
+     *
+     * @param loanManagement The LoanManagement instance used to handle the borrowing and returning of documents.
+     */
     public void setLoanManagement(LoanManagement loanManagement) {
         this.loanManagement = loanManagement;
     }
 
+    /**
+     * Constructs the DocumentTransaction instance and creates the database table for book transactions.
+     */
     public DocumentTransaction() {
         String sql = """
             CREATE TABLE IF NOT EXISTS bookTransaction (
@@ -47,6 +64,16 @@ public class DocumentTransaction extends LibraryService {
         super.createList(sql);
     }
 
+    /**
+     * Borrows a document (book, magazine, or newspaper) from the library.
+     *
+     * @param documentId   The ID of the document to borrow.
+     * @param membershipId The membership ID of the borrower.
+     * @param editedBy     The employee ID of the librarian processing the transaction.
+     * @param borrowDate   The date when the document is borrowed.
+     * @param dueDate      The date by which the document is due for return.
+     * @return A message indicating the result of the borrow operation.
+     */
     public String borrowDocument(String documentId, String membershipId, String editedBy, String borrowDate, String dueDate) {
         if (membershipId == null || membershipId.length() != 7) {
             return "Invalid membership ID format.";
@@ -100,6 +127,13 @@ public class DocumentTransaction extends LibraryService {
         }
     }
 
+    /**
+     * Returns a borrowed document (book, magazine, or newspaper) to the library.
+     *
+     * @param documentId   The ID of the document to return.
+     * @param membershipId The membership ID of the borrower returning the document.
+     * @return A message indicating the result of the return operation.
+     */
     public String returnDocument(String documentId, String membershipId) {
         if (membershipId == null || membershipId.length() != 7) {
             return "Invalid membership ID format.";
@@ -154,6 +188,15 @@ public class DocumentTransaction extends LibraryService {
         }
     }
 
+    /**
+     * Submits a review for a returned document.
+     *
+     * @param documentId   The ID of the document being reviewed.
+     * @param membershipId The membership ID of the reviewer.
+     * @param score        The score (between 1 and 5) for the document.
+     * @param comment      A comment or review for the document.
+     * @return A message indicating the result of the review submission.
+     */
     public String reviewDocument(String documentId, String membershipId, int score, String comment) {
         if (membershipId == null || membershipId.length() != 7) {
             return "Invalid membership ID format.";
@@ -187,6 +230,12 @@ public class DocumentTransaction extends LibraryService {
         }
     }
 
+    /**
+     * Retrieves the average score of a document based on its ISBN.
+     *
+     * @param isbn The ISBN of the document for which the average score is retrieved.
+     * @return The average score of the document, or 0 if no reviews are found.
+     */
     public double getAverageScore(String isbn) {
         String sql = """
                 SELECT b.isbn, AVG(t.score) AS average_score
@@ -215,6 +264,12 @@ public class DocumentTransaction extends LibraryService {
         return averageScore;
     }
 
+    /**
+     * Retrieves all comments for a document based on its ISBN.
+     *
+     * @param isbn The ISBN of the document for which the comments are retrieved.
+     * @return A list of comments for the document.
+     */
     public ArrayList<String> getComment(String isbn) {
         String sql = """
                 SELECT t.membershipId, t.comment 

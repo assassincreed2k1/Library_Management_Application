@@ -12,6 +12,13 @@ import java.sql.SQLException;
 import com.library.model.Person.Member;
 import com.library.model.helpers.DateString;
 
+/**
+ * Manages member-related operations for the library system.
+ * 
+ * This class provides functionality to add, remove, update, retrieve, and renew
+ * membership records for library members. It interacts with the `Member` table
+ * in the database.
+ */
 public class MemberManagement extends LibraryService {
 
     public static final String ONEMONTH = "1 month";
@@ -21,7 +28,10 @@ public class MemberManagement extends LibraryService {
 
     private final PersonIDManagement memberIdManagement = new PersonIDManagement("MemberID");
 
-    // Constructor
+    /**
+     * Constructs a new {@code MemberManagement} instance and initializes the 
+     * `Member` table in the database if it does not already exist.
+     */
     public MemberManagement() {
         super.createList("CREATE TABLE IF NOT EXISTS Member ("
                 + "membershipId CHAR(7) PRIMARY KEY, "
@@ -36,6 +46,12 @@ public class MemberManagement extends LibraryService {
                 + ");");
     }
 
+    /**
+     * Adds a new member to the library system.
+     * 
+     * @param member the {@code Member} object containing the details of the new member.
+     * @return {@code true} if the member was added successfully; {@code false} otherwise.
+     */
     public boolean addMember(Member member) {
         if (member == null) {
             System.err.println("Member object is null.");
@@ -71,6 +87,11 @@ public class MemberManagement extends LibraryService {
         }
     }
 
+    /**
+     * Removes a member from the library system.
+     * 
+     * @param membershipId the unique membership ID of the member to be removed.
+     */
     public void removeMember(String membershipId) {
         if (membershipId == null || membershipId.isEmpty()) {
             System.err.println("Invalid membership ID.");
@@ -90,6 +111,11 @@ public class MemberManagement extends LibraryService {
         }
     }
 
+    /**
+     * Updates the details of an existing member in the library system.
+     * 
+     * @param member the {@code Member} object containing updated information.
+     */
     public void updateMember(Member member) {
         if (member == null || member.getMembershipId() == null) {
             System.err.println("Invalid member object or membership ID.");
@@ -128,6 +154,12 @@ public class MemberManagement extends LibraryService {
         }
     }
 
+    /**
+     * Retrieves information about a specific member.
+     * 
+     * @param membershipId the unique membership ID of the member.
+     * @return a {@code Member} object containing the member's details, or {@code null} if no member is found.
+     */
     public Member getMemberInfo(String membershipId) {
         if (membershipId == null || membershipId.isEmpty()) {
             System.err.println("Invalid membership ID.");
@@ -162,6 +194,12 @@ public class MemberManagement extends LibraryService {
         return member;
     }
 
+    /**
+     * Renews a library member's card by extending its expiry date.
+     * 
+     * @param membershipId the unique membership ID of the member.
+     * @param addDate the duration to add to the current expiry date, formatted as an interval (e.g., "1 month").
+     */
     public void renewCard(String membershipId, String addDate) {
         if (membershipId == null || membershipId.isEmpty() || addDate == null || addDate.isEmpty()) {
             System.err.println("Invalid input for renew card.");

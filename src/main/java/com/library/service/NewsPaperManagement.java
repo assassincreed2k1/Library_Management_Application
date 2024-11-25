@@ -13,6 +13,22 @@ import javafx.collections.ObservableList;
 
 public class NewsPaperManagement extends LibraryService {
 
+    /**
+     * Constructor for the NewsPaperManagement class.
+     * 
+     * Initializes the management system by creating the `Newspaper` table in the
+     * database
+     * if it does not already exist. The table includes columns for:
+     * <ul>
+     * <li><b>id</b>: The unique identifier for each newspaper (primary key).</li>
+     * <li><b>name</b>: The name of the newspaper.</li>
+     * <li><b>newsGroup</b>: The group or category of the news.</li>
+     * <li><b>source</b>: The source of the newspaper.</li>
+     * <li><b>region</b>: The region the newspaper belongs to.</li>
+     * <li><b>isAvailable</b>: Indicates whether the newspaper is currently
+     * available.</li>
+     * </ul>
+     */
     public NewsPaperManagement() {
         // Create listNewspaper
         createList("CREATE TABLE IF NOT EXISTS Newspaper ("
@@ -25,6 +41,18 @@ public class NewsPaperManagement extends LibraryService {
                 + "isAvailable BOOLEAN)");
     }
 
+    /**
+     * Adds a new newspaper document to the database.
+     * 
+     * This method inserts a record into the `Newspaper` table with the provided
+     * newspaper details, such as ID, name, group, source, region, and availability.
+     * 
+     * @param newspaper the {@code Newspaper} object containing the details of the
+     *                  newspaper
+     *                  to be added to the database.
+     * @throws SQLException if a database access error occurs or the SQL statement
+     *                      fails to execute.
+     */
     public void addDocuments(Newspaper newspaper) {
         String sql_statement = "INSERT INTO Newspaper "
                 + "(id, name, newsGroup, source, region, isAvailable) "
@@ -44,6 +72,19 @@ public class NewsPaperManagement extends LibraryService {
         }
     }
 
+    /**
+     * Updates an existing newspaper document in the database.
+     * 
+     * This method updates the details of a newspaper record in the `Newspaper`
+     * table,
+     * including its name, group, source, region, and availability, based on its
+     * unique ID.
+     * 
+     * @param newspaper the {@code Newspaper} object containing the updated details
+     *                  of the newspaper.
+     * @throws SQLException if a database access error occurs or the SQL statement
+     *                      fails to execute.
+     */
     public void updateDocuments(Newspaper newspaper) {
         String sql_stmt = "UPDATE Newspaper SET "
                 + "name = ?, "
@@ -67,6 +108,18 @@ public class NewsPaperManagement extends LibraryService {
         }
     }
 
+    /**
+     * Removes a newspaper document from the database.
+     * 
+     * This method deletes a record from the `Newspaper` table based on the unique
+     * ID
+     * of the provided {@code Newspaper} object.
+     * 
+     * @param newspaper the {@code Newspaper} object identifying the record to be
+     *                  deleted.
+     * @throws SQLException if a database access error occurs or the SQL statement
+     *                      fails to execute.
+     */
     public void removeDocument(Newspaper newspaper) {
         String sql_stmt = "DELETE FROM Newspaper WHERE id = ?";
 

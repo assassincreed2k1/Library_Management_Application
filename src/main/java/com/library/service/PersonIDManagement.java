@@ -64,6 +64,12 @@ public class PersonIDManagement extends LibraryService {
         return id;
     }
 
+    /**
+    * Sets the URL for the object.
+    * 
+    * @param string the URL to be set. It should be a valid URL in string format.
+    * @throws UnsupportedOperationException if the method is not yet implemented.
+    */
     public void setUrl(String string) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setUrl'");

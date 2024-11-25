@@ -52,7 +52,6 @@ public class UpdateLibrarianController {
     @FXML
     private Button backButton;
 
-    // Hàm này được gọi khi khởi tạo để nhận Librarian từ controller trước đó
     public void setLibrarian(Librarian librarian) {
         this.librarian = librarian;
         populateFields();
@@ -62,9 +61,10 @@ public class UpdateLibrarianController {
         this.beforeSceneURL = url;
     }
 
-    // Hàm populateFields để điền thông tin vào các trường
+    /**
+     * populate fields.
+     */
     private void populateFields() {
-        // Set các trường là placeholder và không cho phép chỉnh sửa ngay
         nameTextField.setPromptText(librarian.getName());
         addressTextField.setPromptText(librarian.getAddress());
         dobTextField.setPromptText(librarian.getDateOfBirth());
@@ -72,13 +72,10 @@ public class UpdateLibrarianController {
         phoneTextField.setPromptText(librarian.getPhoneNumber());
         positionTextField.setPromptText(librarian.getPosition());
 
-        // Các lựa chọn giới tính cho ComboBox
         genderComboBox.getItems().addAll("Male", "Female");
 
-        // Thiết lập màu placeholder-style ban đầu
         setFieldStyle(Color.GRAY);
 
-        // Đổi màu khi nhấn vào TextField/ComboBox để chỉnh sửa
         enableFieldEdit(nameTextField);
         enableFieldEdit(addressTextField);
         enableFieldEdit(dobTextField);
@@ -88,6 +85,10 @@ public class UpdateLibrarianController {
         enableFieldEdit(genderComboBox);
     }
 
+    /**
+     * set field style.
+     * @param color Color color
+     */
     private void setFieldStyle(Color color) {
         String colorStyle = "-fx-prompt-text-fill: " + toRGBCode(color) + ";";
         nameTextField.setStyle(colorStyle);
@@ -99,6 +100,10 @@ public class UpdateLibrarianController {
         passwordField.setStyle(colorStyle);
     }
 
+    /**
+     * enaable field edit.
+     * @param textField TextField textField
+     */
     private void enableFieldEdit(TextField textField) {
         textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
             if (isNowFocused) {
@@ -109,6 +114,10 @@ public class UpdateLibrarianController {
         });
     }
 
+    /**
+     * enable field edit.
+     * @param comboBox ConboBox<String> comboBox
+     */
     private void enableFieldEdit(ComboBox<String> comboBox) {
         comboBox.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
             if (isNowFocused) {
@@ -119,6 +128,10 @@ public class UpdateLibrarianController {
         });
     }
 
+    /**
+     * enable field edit.
+     * @param passwordField Password field password Field
+     */
     private void enableFieldEdit(PasswordField passwordField) {
         passwordField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
             if (isNowFocused) {
@@ -129,6 +142,11 @@ public class UpdateLibrarianController {
         });
     }
 
+    /**
+     * to RGB Code.
+     * @param color Color color
+     * @return RBG code of color
+     */
     private String toRGBCode(Color color) {
         return String.format("#%02X%02X%02X", 
                 (int) (color.getRed() * 255),
@@ -136,7 +154,9 @@ public class UpdateLibrarianController {
                 (int) (color.getBlue() * 255));
     }
 
-    // Hàm này sẽ được gọi khi nhấn nút Update
+    /**
+     * update information of librarian.
+     */
     @FXML
     private void onUpdate() {
         String name = nameTextField.getText();
@@ -147,11 +167,9 @@ public class UpdateLibrarianController {
         String position = positionTextField.getText();
         String password = passwordField.getText();
 
-        // Tạo một task mới để thực hiện cập nhật
         Task<Void> updateTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                // Xử lý các ngoại lệ liên quan tới nhập liệu
                 if (!(dob.isEmpty() || dob == null) && !DateString.isValidDate(dob)) {
                     throw new Exception("Invalid Date of birth format.");
                 }
@@ -172,9 +190,8 @@ public class UpdateLibrarianController {
                 librarian.setPosition(position.isEmpty() ? librarian.getPosition() : position);
                 librarian.setPassword(password.isEmpty() ? librarian.getPassword() : password);
 
-                if (librarian instanceof Admin) { //nếu là Admin thì cập nhật vào bảng Admin, librarian cập nhật bảng librarian
+                if (librarian instanceof Admin) { 
                     Admin admin = (Admin) librarian;
-                    //admin.getInforFromDatabase();
                     admin.updateAdmin();
                 } else {
                     librarian.updateLibrarian(); 
@@ -203,6 +220,9 @@ public class UpdateLibrarianController {
         new Thread(updateTask).start();
     }
 
+    /**
+     * initialize when starting.
+     */
     @FXML
     public void initialize() {
         updateButton.setOnAction(event -> onUpdate());
@@ -211,6 +231,9 @@ public class UpdateLibrarianController {
         updateButton.setDisable(false);
     }
 
+    /**
+     * action of back button.
+     */
     @FXML
     public void onBack() {
         try {

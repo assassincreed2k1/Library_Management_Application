@@ -88,7 +88,7 @@ public class loanDocument {
         this.dueDate = dueDate;
     }
 
-    //chưa cập nhật được phương thức vì chưa có getDetails của document 
+    //
     /**
      * get information of loan activity with books.
      * @return String

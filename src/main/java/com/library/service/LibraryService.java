@@ -180,6 +180,14 @@ public class LibraryService {
         return generatedID;
     }
 
+    /**
+     * Retrieves the current ID from the "id_generator" table in the database.
+     * The ID is formatted as a zero-padded 9-digit string if it is less than 1
+     * billion.
+     * 
+     * @return A formatted string representing the current ID, or {@code null} if no
+     *         ID is found or an error occurs.
+     */
     public String getCurrentID() {
         String currentID = null;
         String selectCurrentIdSql = "SELECT id FROM id_generator";
@@ -198,6 +206,13 @@ public class LibraryService {
         return currentID;
     }
 
+    /**
+     * Retrieves the ISBN of a book based on its ID.
+     * 
+     * @param id The ID of the book to retrieve.
+     * @return The ISBN of the book, or {@code null} if the book is not found or an
+     *         error occurs.
+     */
     public String getBookISBN(String id) {
         String sql_statement = "SELECT * FROM Books WHERE id = ?";
         Book book = null;
@@ -233,6 +248,14 @@ public class LibraryService {
         return book.getISBN();
     }
 
+    /**
+     * Switches the current scene to the specified FXML page.
+     * 
+     * @param pagePath The relative path to the FXML file.
+     * @param curStage The current {@link Stage} to update.
+     * @throws IOException If the FXML file cannot be loaded or another I/O error
+     *                     occurs.
+     */
     public void switchTo(String pagePath, Stage curStage) throws IOException {
         try {
             Parent libraryPage = FXMLLoader.load(getClass().getResource(pagePath));

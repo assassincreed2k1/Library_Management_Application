@@ -219,6 +219,13 @@ public class BookManagement extends LibraryService {
         return bookList;
     }
 
+    /**
+     * Fetches all books filtered by a keyword that matches the ID, name, or ISBN.
+     * 
+     * @param keyword the keyword to filter books by; it is matched using the SQL
+     *                `LIKE` operator.
+     * @return an `ObservableList` of `Book` objects that match the keyword filter.
+     */
     public ObservableList<Book> getAllBooksFilter(String keyword) {
         ObservableList<Book> filteredBooks = FXCollections.observableArrayList();
         String sql_statement = "SELECT * FROM Books WHERE id LIKE ? OR name LIKE ? OR ISBN LIKE ?";
@@ -251,6 +258,14 @@ public class BookManagement extends LibraryService {
         return filteredBooks;
     }
 
+    /**
+     * Retrieves the most popular books based on the number of times they have been
+     * borrowed.
+     * Popularity is determined by the transaction count, ordered in descending
+     * order.
+     * 
+     * @return an `ObservableList` of the top 10 most popular `Book` objects.
+     */
     public ObservableList<Book> getPopularBooks() {
         ObservableList<Book> popularBooks = FXCollections.observableArrayList();
         String sql_statement = """
@@ -286,6 +301,13 @@ public class BookManagement extends LibraryService {
         return popularBooks;
     }
 
+    /**
+     * Fetches a `Book` object from the database using its ISBN.
+     * 
+     * @param isbn the ISBN of the book to retrieve.
+     * @return a `Book` object if found, or `null` if no book matches the provided
+     *         ISBN.
+     */
     public Book getDocumentViaIsbn(String isbn) {
         String sql_statement = "SELECT * FROM Books WHERE isbn = ?";
         Book book = null;

@@ -21,7 +21,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class HistoryTransactionMember {
     private CombinedDocument combinedDocument = new CombinedDocument();
@@ -53,6 +56,9 @@ public class HistoryTransactionMember {
     @FXML
     private Button reviewButton;
 
+    /**
+     * initialize when starting.
+     */
     @FXML
     private void initialize() {
         configureTableView();
@@ -63,6 +69,9 @@ public class HistoryTransactionMember {
         reviewButton.setOnAction(event -> onReview());
     }
 
+    /**
+     * configure table view.
+     */
     private void configureTableView() {
         idTransactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
         documentIdColumn.setCellValueFactory(new PropertyValueFactory<>("documentId"));
@@ -72,6 +81,9 @@ public class HistoryTransactionMember {
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
     }
 
+    /**
+     * load all transactions.
+     */
     private void loadAllTransactions() {
         Task<Void> loadTransactionsTask = new Task<>() {
             @Override
@@ -93,6 +105,11 @@ public class HistoryTransactionMember {
         thread.start();
     }
 
+    /**
+     * fetch transaction all data.
+     * @return ObservableList<Transaction> transaction of list.
+     * @throws SQLException
+     */
     private ObservableList<Transaction> fetchTransactions() throws SQLException {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
         String query = """
@@ -124,7 +141,9 @@ public class HistoryTransactionMember {
         return transactions;
     }
     
-
+    /**
+     * set action for search button.
+     */
     @FXML
     private void onSearch() {
         String query = searchTextField.getText().trim();
@@ -158,6 +177,12 @@ public class HistoryTransactionMember {
         thread.start();
     }
 
+    /**
+     * search transaction based on query.
+     * @param query String query
+     * @return ObservableList<Transaction> list of transaction.
+     * @throws SQLException
+     */
     private ObservableList<Transaction> searchTransactions(String query) throws SQLException {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
         String sql = """
@@ -188,6 +213,10 @@ public class HistoryTransactionMember {
         return transactions;
     }
 
+    /**
+     * handle click table, if 2 times -> selected.
+     * @param event MouseEvent event.
+     */
     @FXML
     private void handleTableClick(MouseEvent event) {
         if (event.getClickCount() == 2) {
@@ -213,6 +242,9 @@ public class HistoryTransactionMember {
         }
     }
 
+    /**
+     * set action for review button.
+     */
     @FXML
     private void onReview() {
         if (document == null) {
@@ -237,6 +269,11 @@ public class HistoryTransactionMember {
         }
     }
 
+    /**
+     * fetch not reviewd transaction.
+     * @return ObservableList<Transaction> list of transaction
+     * @throws SQLException
+     */
     private ObservableList<Transaction> fetchNotReviewed() throws SQLException {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
         String query = """

@@ -1,7 +1,12 @@
 package com.library.controller.tools;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import com.library.model.Person.Member;
-// import com.library.model.Person.User;
 import com.library.model.doc.Document;
 import com.library.model.helpers.MessageUtil;
 import com.library.model.loanDoc.Transaction;
@@ -13,11 +18,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
-import java.sql.*;
+
 
 public class HistoryTransactionEmployee {
     private CombinedDocument combinedDocument = new CombinedDocument();
@@ -54,6 +63,9 @@ public class HistoryTransactionEmployee {
     @FXML
     private Button returnButton;
 
+    /**
+     * initialize when starting.
+     */
     @FXML
     private void initialize() {
         configureTableView();
@@ -64,6 +76,9 @@ public class HistoryTransactionEmployee {
         returnButton.setOnAction(event -> onReturn());
     }
 
+    /**
+     * configure table view.
+     */
     private void configureTableView() {
         idTransactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
         documentIdColumn.setCellValueFactory(new PropertyValueFactory<>("documentId"));
@@ -74,6 +89,9 @@ public class HistoryTransactionEmployee {
         editedByColumn.setCellValueFactory(new PropertyValueFactory<>("edited_by"));
     }
 
+    /**
+     * load all transaction.
+     */
     private void loadAllTransactions() {
         Task<Void> loadTransactionsTask = new Task<Void>() {
             @Override
@@ -101,6 +119,11 @@ public class HistoryTransactionEmployee {
     }
     
 
+    /**
+     * fetch transaction for all data.
+     * @return transactions ObservableList
+     * @throws SQLException
+     */
     private ObservableList<Transaction> fetchTransactions() throws SQLException {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
         String query = """
@@ -127,6 +150,9 @@ public class HistoryTransactionEmployee {
         return transactions;
     }
 
+    /**
+     * set action for search button.
+     */
     @FXML
     private void onSearch() {
         String query = searchTextField.getText().trim();
@@ -163,6 +189,12 @@ public class HistoryTransactionEmployee {
         thread.start();
     }
 
+    /**
+     * search transaction with query find based on id.
+     * @param query String query
+     * @return transaction lists ObservableList<Transaction>
+     * @throws SQLException
+     */
     private ObservableList<Transaction> searchTransactions(String query) throws SQLException {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
         String sql = """
@@ -193,6 +225,11 @@ public class HistoryTransactionEmployee {
         }
         return transactions;
     }
+
+    /**
+     * handle table click, if click 2 times -> selected.
+     * @param event MouseEvent event
+     */
     @FXML
     private void handleTableClick(MouseEvent event) {
         if (event.getClickCount() == 2) {
@@ -220,7 +257,10 @@ public class HistoryTransactionEmployee {
             memberTextArea.setText(document.getDetails());
         }
     }
-        
+    
+    /**
+     * set action for return buttton.
+     */
     @FXML
     private void onReturn() {
         if (member == null || document == null) {

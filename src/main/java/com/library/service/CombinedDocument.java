@@ -13,15 +13,32 @@ import com.library.model.doc.Document;
 import com.library.model.doc.Magazine;
 import com.library.model.doc.Newspaper;
 
+/**
+ * This class manages the combined documents (books, magazines, and newspapers) in the library.
+ * It provides functionality for creating, updating, and retrieving documents from a combined table in the database.
+ */
 public class CombinedDocument extends LibraryService {
+    
+    /**
+     * Default constructor that creates the combined_documents table.
+     */
     public CombinedDocument() {
         createCombinedDocumentsTable();
     }
 
+    /**
+     * Constructor that accepts a database URL and creates the combined_documents table.
+     *
+     * @param url The database URL used to connect to the library database.
+     */
     public CombinedDocument(String url) {
         createCombinedDocumentsTable();
     }
 
+    /**
+     * Creates the combined_documents table by combining data from Books, Magazines, and Newspapers tables.
+     * The table will include the document's ID, name, and type (book, magazine, or news).
+     */
     private void createCombinedDocumentsTable() {
         String sql = """
                 CREATE TABLE IF NOT EXISTS combined_documents AS
@@ -41,6 +58,10 @@ public class CombinedDocument extends LibraryService {
         }
     }
 
+    /**
+     * Updates the combined_documents table by first deleting all existing data
+     * and then reinserting data from the Books, Magazines, and Newspapers tables.
+     */
     public void updateCombinedDocument() {
         // Delete all data and insert updated data
         String deleteDataSQL = "DELETE FROM combined_documents;";
@@ -69,31 +90,37 @@ public class CombinedDocument extends LibraryService {
         }
     }
 
+    /**
+     * Retrieves a document (book, magazine, or newspaper) based on its ID.
+     *
+     * @param documentId The ID of the document to retrieve.
+     * @return The corresponding Document object (Book, Magazine, or Newspaper), or null if not found.
+     */
     public Document getDocument(String documentId) {
         String sql_statement = "SELECT document_type FROM combined_documents WHERE id = ?";
-        Document document = null; // Khởi tạo tài liệu mặc định là null
+        Document document = null; // Initialize the default document is null
         try (Connection conn = DriverManager.getConnection(url);
             PreparedStatement stmt = conn.prepareStatement(sql_statement)) {
             
-            // Thiết lập tham số cho câu truy vấn
+            // Set parameters for queries
             stmt.setString(1, documentId);
             
-            // Thực hiện truy vấn và lấy kết quả
+           // perform query and get results
             ResultSet rs = stmt.executeQuery();
             
-            // Kiểm tra kết quả truy vấn
+            // check the query results
             if (rs.next()) {
                 String type = rs.getString("document_type");
                 
-                // Dựa vào document_type, tạo đối tượng Document phù hợp
+                // Based on document_type, create the appropriate document object
                 if ("book".equals(type)) {
                     document = new Book();
                 } else if ("magazine".equals(type)) {
                     document = new Magazine(); 
                 } else if ("news".equals(type)) {
-                    document = new Newspaper(); // Giả sử bạn có lớp News
+                    document = new Newspaper(); //Suppose you have News class
                 }
-                // Nếu `document` đã được khởi tạo, lấy thông tin từ database
+                // If the document` has been initialized, taking information from database
                 if (document != null) {
                     System.out.println(document.getClass().getName()); //test ok
                     document = document.getInforFromDatabase(documentId);
@@ -105,6 +132,6 @@ public class CombinedDocument extends LibraryService {
             e.printStackTrace();
         }
         
-        return document; // Trả về đối tượng Document tương ứng, có thể là null nếu không tìm thấy
+        return document; // Returns the corresponding document object, may be null if not found
     }
 }

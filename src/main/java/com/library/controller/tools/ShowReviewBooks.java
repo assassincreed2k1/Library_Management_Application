@@ -39,11 +39,17 @@ public class ShowReviewBooks {
     @FXML
     private Button backButton;
 
+    /**
+     * initialize when starting.
+     */
     @FXML
     public void initialize() {
         backButton.setOnAction(event -> onBack());
     }
 
+    /**
+     * load book details from isbn.
+     */
     private void loadBookDetails() {
         if (isbn == null || isbn.isEmpty()) {
             System.err.println("ISBN is not set.");
@@ -64,6 +70,10 @@ public class ShowReviewBooks {
         }
     }
 
+    /**
+     * add comments to VBox.
+     * @param comments ArrayList<String> comments
+     */
     private void addComments(ArrayList<String> comments) {
         for (String commentText : comments) {
             TextArea comment = new TextArea();

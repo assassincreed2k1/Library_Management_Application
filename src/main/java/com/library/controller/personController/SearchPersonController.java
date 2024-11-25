@@ -40,17 +40,22 @@ public class SearchPersonController {
 
     private Person person = null;
 
+    /**
+     * initizalize when starting.
+     */
     @FXML
     public void initialize() {
         searchButton.setOnAction(event -> onSearch());
         updateButton.setOnAction(event -> onUpdate());
         removeButton.setOnAction(event -> onRemove());
 
-        // Vô hiệu hóa 2 nút khi khởi động
         updateButton.setDisable(true);
         removeButton.setDisable(true);
     }
 
+    /**
+     * search person based on id.
+     */
     private void onSearch() {
         String personID = idTextField.getText();
     
@@ -88,13 +93,15 @@ public class SearchPersonController {
             };
     
             MessageUtil.showMessage(messageText, "Searching. Please wait.... ", "blue");
-            // Chạy Task trên một luồng riêng
             Thread thread = new Thread(searchTask);
             thread.setDaemon(true);
             thread.start();
         }
     }
     
+    /**
+     * remove person from database.
+     */
     private void onRemove() {
         if (person == null) {
             MessageUtil.showMessage(messageText, "Can't find this member.", "red");
@@ -144,6 +151,9 @@ public class SearchPersonController {
         thread.start();
     }
 
+    /**
+     * update database.
+     */
     private void onUpdate() {
         if (person != null) {
             if (person instanceof Member && (!User.isMember() 

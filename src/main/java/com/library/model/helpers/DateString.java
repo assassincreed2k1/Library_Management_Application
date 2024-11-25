@@ -36,6 +36,11 @@ public class DateString {
         return null;
     }
     
+    /**
+     * check date is valid.
+     * @param date String date
+     * @return boolean 
+     */
     public static boolean isValidDate(String date) {
         if (date == null || date.isEmpty()) {
             return false;

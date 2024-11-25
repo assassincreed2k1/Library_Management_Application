@@ -32,15 +32,19 @@ public class RenewMembershipController {
     @FXML
     private Text messageText;
 
+    /**
+     * initialize when starting.
+     */
     @FXML
     private void initialize() {
-        // Thêm các tùy chọn gia hạn vào ComboBox
         renewComboBox.getItems().addAll(MemberManagement.ONEMONTH, MemberManagement.THREEMONTHS, MemberManagement.SIXMONTHS, MemberManagement.ONEYEAR);
 
-        // Gán sự kiện cho nút Renew
         renewButton.setOnAction(event -> onRenewButtonClicked());
     }
 
+    /**
+     * renew card membership.
+     */
     @FXML
     private void onRenewButtonClicked() {
         String membershipId = membershipIdTextField.getText();
@@ -56,17 +60,14 @@ public class RenewMembershipController {
             return;
         }
         
-        // Tạo Task để gia hạn thành viên
         Task<Void> renewalTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                // Lấy thông tin thành viên
                 member = (Member) PersonIdHandle.getPerson(membershipId);
 
                 if (member == null) {
                     throw new Exception("No member found with ID: " + membershipId);
                 } else {
-                    // Gia hạn thẻ thành viên
                     member.renewMembership(selectedRenewal);
                     member = member.getInforFromDatabase(member.getMembershipId());
                     if (member.getExpiryDate() == null) {
@@ -90,7 +91,6 @@ public class RenewMembershipController {
         };
 
         MessageUtil.showMessage(messageText, "Finding member information. Please wait: ", "blue");
-        // Chạy Task trên một luồng riêng
         Thread thread = new Thread(renewalTask);
         thread.setDaemon(true);
         thread.start();

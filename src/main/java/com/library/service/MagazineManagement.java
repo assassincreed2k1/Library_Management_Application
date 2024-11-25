@@ -11,7 +11,12 @@ import com.library.model.doc.Magazine;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class MagazineManagement extends LibraryService {
+/**
+ * This class manages magazine-related operations in the library system.
+ * 
+ * It provides functionality for adding, updating, removing, and retrieving magazines,
+ * as well as fetching all magazines as an ObservableList.
+ */public class MagazineManagement extends LibraryService {
 
     public MagazineManagement() {
         // Create listMagazines
@@ -46,6 +51,12 @@ public class MagazineManagement extends LibraryService {
         }
     }
 
+     /**
+     * Updates the details of an existing magazine in the library system.
+     * 
+     * @param magazine the {@link Magazine} object containing the updated details.
+     *                 The magazine's ID must already exist in the database.
+     */
     public void updateDocuments(Magazine magazine) {
         String sql_stmt = "UPDATE Magazines SET "
                 + "name = ?, "
@@ -71,6 +82,12 @@ public class MagazineManagement extends LibraryService {
         }
     }
 
+    /**
+     * Removes a magazine from the library's collection.
+     * 
+     * @param magazine the {@link Magazine} object to be removed.
+     *                 The object must contain a valid ID.
+     */
     public void removeDocument(Magazine magazine) {
         String sql_statement = "DELETE FROM Magazines WHERE id = ?";
         try (Connection conn = DriverManager.getConnection(url);
@@ -148,6 +165,12 @@ public class MagazineManagement extends LibraryService {
         return magazine;
     }
 
+    /**
+     * Sets the database URL for the service.
+     * 
+     * @param string the database URL to be set.
+     * @throws UnsupportedOperationException if the method is not yet implemented.
+     */
     public void setUrl(String string) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setUrl'");

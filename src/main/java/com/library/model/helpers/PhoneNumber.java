@@ -4,6 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PhoneNumber {
+    /**
+     * check phone number is valid or not.
+     * @param phoneNumber String phone number
+     * @return boolean 
+     */
     public static boolean isValidPhoneNumber(String phoneNumber) {
         if (phoneNumber == null || phoneNumber.isEmpty()) {
             return false;
