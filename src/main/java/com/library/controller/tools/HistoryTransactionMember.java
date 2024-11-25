@@ -21,8 +21,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+/**
+ * The {@code HistoryTransactionMember} class manages the user's transaction history in the library system.
+ * It allows users to view their borrowing history, search for specific transactions, and submit reviews.
+ */
 public class HistoryTransactionMember {
     private CombinedDocument combinedDocument = new CombinedDocument();
     private Document document = null;
@@ -53,6 +60,9 @@ public class HistoryTransactionMember {
     @FXML
     private Button reviewButton;
 
+    /**
+     * Initializes the controller and sets up the table and event listeners.
+     */
     @FXML
     private void initialize() {
         configureTableView();
@@ -63,6 +73,9 @@ public class HistoryTransactionMember {
         reviewButton.setOnAction(event -> onReview());
     }
 
+    /**
+     * Configures the table view by associating table columns with properties from the {@link Transaction} class.
+     */
     private void configureTableView() {
         idTransactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
         documentIdColumn.setCellValueFactory(new PropertyValueFactory<>("documentId"));
@@ -72,6 +85,9 @@ public class HistoryTransactionMember {
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
     }
 
+    /**
+     * Loads all transactions for the current user from the database and populates the table.
+     */
     private void loadAllTransactions() {
         Task<Void> loadTransactionsTask = new Task<>() {
             @Override
@@ -93,6 +109,12 @@ public class HistoryTransactionMember {
         thread.start();
     }
 
+    /**
+     * Fetches all transactions for the current user from the database.
+     *
+     * @return an observable list of {@link Transaction} objects.
+     * @throws SQLException if there is an error accessing the database.
+     */
     private ObservableList<Transaction> fetchTransactions() throws SQLException {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
         String query = """
@@ -100,11 +122,11 @@ public class HistoryTransactionMember {
                 FROM bookTransaction
                 WHERE membershipId = ?;
                 """;
-    
+
         try (Connection connection = LibraryService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, User.getId());
-    
+
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     transactions.add(new Transaction(
@@ -123,8 +145,10 @@ public class HistoryTransactionMember {
         }
         return transactions;
     }
-    
 
+    /**
+     * Handles the search functionality for the transaction history.
+     */
     @FXML
     private void onSearch() {
         String query = searchTextField.getText().trim();
@@ -158,12 +182,19 @@ public class HistoryTransactionMember {
         thread.start();
     }
 
+    /**
+     * Fetches transactions matching the search query.
+     *
+     * @param query the search query.
+     * @return an observable list of matching {@link Transaction} objects.
+     * @throws SQLException if there is an error accessing the database.
+     */
     private ObservableList<Transaction> searchTransactions(String query) throws SQLException {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
         String sql = """
-                select idTransaction, document_id, borrowDate, dueDate, returnDate, score
-                from bookTransaction
-                where membershipId = ? and (idTransaction like ? or document_id like ?);
+                SELECT idTransaction, document_id, borrowDate, dueDate, returnDate, score
+                FROM bookTransaction
+                WHERE membershipId = ? AND (idTransaction LIKE ? OR document_id LIKE ?);
                 """;
 
         try (Connection connection = LibraryService.getConnection();
@@ -188,6 +219,11 @@ public class HistoryTransactionMember {
         return transactions;
     }
 
+    /**
+     * Handles a double-click event on the table, displaying detailed information about the selected document.
+     *
+     * @param event the mouse event triggered by the user.
+     */
     @FXML
     private void handleTableClick(MouseEvent event) {
         if (event.getClickCount() == 2) {
@@ -213,6 +249,9 @@ public class HistoryTransactionMember {
         }
     }
 
+    /**
+     * Navigates the user to the review submission screen for the selected document.
+     */
     @FXML
     private void onReview() {
         if (document == null) {
@@ -237,18 +276,24 @@ public class HistoryTransactionMember {
         }
     }
 
+    /**
+     * Fetches all transactions that have not been reviewed by the user.
+     *
+     * @return an observable list of unreviewed {@link Transaction} objects.
+     * @throws SQLException if there is an error accessing the database.
+     */
     private ObservableList<Transaction> fetchNotReviewed() throws SQLException {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
         String query = """
                 SELECT idTransaction, document_id, borrowDate, dueDate, returnDate, score
                 FROM bookTransaction
-                WHERE membershipId = ? AND score is null;
+                WHERE membershipId = ? AND score IS NULL;
                 """;
-    
+
         try (Connection connection = LibraryService.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, User.getId());
-    
+
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     transactions.add(new Transaction(

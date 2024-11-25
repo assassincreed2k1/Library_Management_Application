@@ -94,7 +94,17 @@ public class SearchBookController {
     // Image(getClass().getResource("/img/prve.png").toExternalForm());
     private final Image defaultNoImagePrv = new Image(getClass().getResource("/img/Noprev.png").toExternalForm());
 
-    // This method is called by the FXMLLoader when initialization is complete
+    /**
+     * Initializes the search book controller and sets up the table view and event
+     * handlers.
+     * <p>
+     * This method is called automatically by the FXMLLoader after all FXML fields
+     * are loaded.
+     * It configures the table columns, sets up event listeners for user
+     * interactions,
+     * and starts the asynchronous task to load the book list.
+     * </p>
+     */
     @FXML
     private void initialize() {
         createQRCodeDirectory();
@@ -134,6 +144,16 @@ public class SearchBookController {
         loadBookListAsync();
     }
 
+    /**
+     * Recreates a new task for updating the book details when a book is selected.
+     * <p>
+     * This method ensures the task is refreshed for every selection change,
+     * allowing
+     * the UI to update the displayed book details dynamically.
+     * </p>
+     * 
+     * @return a {@link Task} to update the book details.
+     */
     private Task<Void> reShowBookTask() {
         return new Task<>() {
             @Override
@@ -161,6 +181,15 @@ public class SearchBookController {
         };
     }
 
+    /**
+     * Recreates a new task for loading and displaying the book preview image.
+     * <p>
+     * The task fetches the image associated with the selected book and updates
+     * the UI asynchronously.
+     * </p>
+     * 
+     * @return a {@link Task} to update the preview image.
+     */
     private Task<Void> reShowPrevTask() {
         return new Task<>() {
             @Override
@@ -196,6 +225,16 @@ public class SearchBookController {
         };
     }
 
+    /**
+     * Loads the book list asynchronously based on the current keyword filter.
+     * <p>
+     * This method retrieves the list of books from the {@link BookManagement}
+     * service and updates
+     * the {@code TableView} with the results. It runs the retrieval task in a
+     * background thread to
+     * avoid blocking the UI.
+     * </p>
+     */
     private void loadBookListAsync() {
         Task<ObservableList<Book>> loadBookListAsyncTask = new Task<>() {
             @Override
@@ -221,6 +260,13 @@ public class SearchBookController {
         executor.startNewThread(loadBookListAsyncTask);
     }
 
+    /**
+     * Cancels any running tasks and starts a new task to display details of the
+     * selected book.
+     * <p>
+     * If no book is selected, the method exits without doing anything.
+     * </p>
+     */
     private void runShowBookTask() {
         if (showBookTask != null && showBookTask.isRunning()) {
             System.out.println("Task Cancelled");
@@ -238,11 +284,29 @@ public class SearchBookController {
         executor.startNewThread(showBookTask);
     }
 
+    /**
+     * Triggers the display of the preview image for the selected book.
+     * <p>
+     * This method recreates and starts a background task to fetch the preview
+     * image,
+     * ensuring the image is updated in the UI.
+     * </p>
+     */
     private void showPreview() {
         showPrevTask = reShowPrevTask();
         executor.startNewThread(showPrevTask);
     }
 
+    /**
+     * Updates the detailed information panel with the selected book's information.
+     * <p>
+     * The panel includes labels for book metadata (ID, title, author, genre, etc.),
+     * and action buttons (Edit/Delete) if the current user has appropriate
+     * permissions.
+     * </p>
+     * 
+     * @param selectedBook the selected {@link Book} whose details are displayed.
+     */
     private void updateBookDetails(Book selectedBook) {
         moreInfoPane.getChildren().clear();
 
@@ -271,6 +335,14 @@ public class SearchBookController {
         prevImage.setOnMouseClicked(event -> showPreview());
     }
 
+    /**
+     * Creates a styled label with specified text and position.
+     * 
+     * @param text the text to display in the label.
+     * @param x    the horizontal position of the label.
+     * @param y    the vertical position of the label.
+     * @return a styled {@link Label} instance.
+     */
     private Label createStyledLabel(String text, double x, double y) {
         Label label = new Label(text);
         label.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
@@ -279,6 +351,15 @@ public class SearchBookController {
         return label;
     }
 
+    /**
+     * Creates a styled button with specified text, position, and event handler.
+     * 
+     * @param text         the text to display on the button.
+     * @param x            the horizontal position of the button.
+     * @param y            the vertical position of the button.
+     * @param eventHandler the event handler to execute when the button is clicked.
+     * @return a styled {@link Button} instance.
+     */
     private Button createStyledButton(String text, double x, double y, EventHandler<ActionEvent> eventHandler) {
         Button button = new Button(text);
         button.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
@@ -288,6 +369,18 @@ public class SearchBookController {
         return button;
     }
 
+    /**
+     * Opens the edit page for the selected book, allowing users to update book
+     * details.
+     * <p>
+     * The edit page is loaded in a new {@link Stage} and is tied to the selected
+     * book.
+     * When the edit window is closed, the book table is refreshed to show updated
+     * data.
+     * </p>
+     * 
+     * @param selectedBook the {@link Book} to edit.
+     */
     private void openEditPage(Book selectedBook) {
         try {
             FXMLLoader editPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/updateDocument.fxml"));
@@ -307,6 +400,16 @@ public class SearchBookController {
         }
     }
 
+    /**
+     * Opens the delete confirmation page for the selected book.
+     * <p>
+     * The delete page is loaded in a new {@link Stage} and prompts the user to
+     * confirm
+     * deletion of the selected book. After deletion, the book table is refreshed.
+     * </p>
+     * 
+     * @param selectedBook the {@link Book} to delete.
+     */
     private void openDeletePage(Book selectedBook) {
         try {
             FXMLLoader delPage = new FXMLLoader(getClass().getResource("/fxml/Library/Tools/removeDocument.fxml"));
@@ -326,78 +429,112 @@ public class SearchBookController {
         }
     }
 
+    /**
+     * Sets the search keyword used to filter the book list.
+     * 
+     * @param keyString the keyword for filtering books.
+     */
     public static void setKeyWord(String keyString) {
         SearchBookController.keyword = keyString;
     }
 
+    /**
+     * Generates a QR code for the selected book in the table and displays it in a
+     * new window.
+     * 
+     * <p>
+     * This method retrieves the details of the selected book, creates a QR code
+     * containing the book's metadata, and displays it in a new stage. The QR code
+     * is also
+     * saved as a PNG image in the application's resource directory. If no book is
+     * selected,
+     * an error alert is displayed to the user.
+     * </p>
+     * 
+     * <p>
+     * Background tasks are used to perform the QR code generation and file saving
+     * to
+     * ensure the UI remains responsive.
+     * </p>
+     * 
+     * @implNote The QR code is saved in the directory
+     *           {@code src/main/resources/img/qr_codes}
+     *           with the file name format {@code book_<bookID>.png}.
+     */
     @FXML
-private void generateQRCode() {
-    Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
+    private void generateQRCode() {
+        Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
 
-    if (selectedBook == null) {
-        showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Please select a book to generate QR code.");
-        return;
-    }
+        if (selectedBook == null) {
+            showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Please select a book to generate QR code.");
+            return;
+        }
 
-    Task<Void> generateQRCodeTask = new Task<>() {
-        @Override
-        protected Void call() throws Exception {
-            String qrData = String.format(
-                    "{ \"bookID\": %s, \"title\": \"%s\", \"author\": \"%s\", \"genre\": \"%s\", \"publishedDate\": \"%s\" }",
-                    selectedBook.getID(),
-                    selectedBook.getName(),
-                    selectedBook.getAuthor(),
-                    selectedBook.getGroup(),
-                    selectedBook.getPublishDate()
-            );
+        Task<Void> generateQRCodeTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                String qrData = String.format(
+                        "{ \"bookID\": %s, \"title\": \"%s\", \"author\": \"%s\", \"genre\": \"%s\", \"publishedDate\": \"%s\" }",
+                        selectedBook.getID(),
+                        selectedBook.getName(),
+                        selectedBook.getAuthor(),
+                        selectedBook.getGroup(),
+                        selectedBook.getPublishDate());
 
-            String filePath = "src/main/resources/img/qr_codes/book_" + selectedBook.getID() + ".png";
+                String filePath = "src/main/resources/img/qr_codes/book_" + selectedBook.getID() + ".png";
 
-            try {
-                // Generate the QR Code image and save it to the specified file path
-                APIService.generateQRCodeImage(qrData, 200, 200, filePath);
-                Image qrImage = new Image(new File(filePath).toURI().toString());
-                Platform.runLater(() -> {
-                    // Create a new Stage to display the QR Code
-                    Stage qrCodeStage = new Stage();
-                    ImageView qrCodeImageView = new ImageView(qrImage);
-                    qrCodeImageView.setFitWidth(200);
-                    qrCodeImageView.setFitHeight(200);
-                    VBox vbox = new VBox(qrCodeImageView);
-                    Scene qrCodeScene = new Scene(vbox);
-                    qrCodeStage.setScene(qrCodeScene);
-                    qrCodeStage.setTitle("QR Code for Book");
+                try {
+                    // Generate the QR Code image and save it to the specified file path
+                    APIService.generateQRCodeImage(qrData, 200, 200, filePath);
+                    Image qrImage = new Image(new File(filePath).toURI().toString());
+                    Platform.runLater(() -> {
+                        // Create a new Stage to display the QR Code
+                        Stage qrCodeStage = new Stage();
+                        ImageView qrCodeImageView = new ImageView(qrImage);
+                        qrCodeImageView.setFitWidth(200);
+                        qrCodeImageView.setFitHeight(200);
+                        VBox vbox = new VBox(qrCodeImageView);
+                        Scene qrCodeScene = new Scene(vbox);
+                        qrCodeStage.setScene(qrCodeScene);
+                        qrCodeStage.setTitle("QR Code for Book");
 
-                    // Disable resizing (zoom in/out)
-                    qrCodeStage.setResizable(false);
+                        // Disable resizing (zoom in/out)
+                        qrCodeStage.setResizable(false);
 
-                    // Show the stage
-                    qrCodeStage.show();
-                });
-            } catch (WriterException | IOException e) {
-                e.printStackTrace();
-                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Error generating QR Code: " + e.getMessage()));
+                        // Show the stage
+                        qrCodeStage.show();
+                    });
+                } catch (WriterException | IOException e) {
+                    e.printStackTrace();
+                    Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Generate QR Code",
+                            "Error generating QR Code: " + e.getMessage()));
+                }
+
+                return null;
             }
 
-            return null;
-        }
+            @Override
+            protected void succeeded() {
+                Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "QR Code Generated",
+                        "QR Code saved successfully."));
+            }
 
-        @Override
-        protected void succeeded() {
-            Platform.runLater(() -> showAlert(Alert.AlertType.INFORMATION, "QR Code Generated", "QR Code saved successfully."));
-        }
+            @Override
+            protected void failed() {
+                Platform.runLater(
+                        () -> showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Error generating QR Code."));
+            }
+        };
 
-        @Override
-        protected void failed() {
-            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Generate QR Code", "Error generating QR Code."));
-        }
-    };
+        Thread qrCodeThread = new Thread(generateQRCodeTask);
+        qrCodeThread.setDaemon(true);
+        qrCodeThread.start();
+    }
 
-    Thread qrCodeThread = new Thread(generateQRCodeTask);
-    qrCodeThread.setDaemon(true);
-    qrCodeThread.start();
-}
-
+    /**
+     * Creates the directory for storing generated QR codes if it does not already
+     * exist.
+     */
     private void createQRCodeDirectory() {
         File directory = new File("src/main/resources/img/qr_codes");
         if (!directory.exists()) {
@@ -405,6 +542,14 @@ private void generateQRCode() {
         }
     }
 
+    /**
+     * Displays an alert dialog with the specified type, title, and content.
+     * 
+     * @param type    the {@link Alert.AlertType} of the alert (e.g., ERROR,
+     *                INFORMATION).
+     * @param title   the title of the alert dialog.
+     * @param content the content message to display in the alert.
+     */
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
