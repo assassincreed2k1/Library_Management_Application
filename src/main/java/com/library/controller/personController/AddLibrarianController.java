@@ -31,6 +31,9 @@ public class AddLibrarianController {
     @FXML
     private Button addButton;
 
+    /**
+     * initialize when starting.
+     */
     @FXML
     private void initialize() {
         genderComboBox.getItems().addAll("Male", "Female");
@@ -42,6 +45,9 @@ public class AddLibrarianController {
         }
     }
 
+    /**
+     * add all information to database.
+     */
     private void addToDataBase() {
         String name = nameField.getText();
         String address = addressField.getText();
@@ -50,13 +56,11 @@ public class AddLibrarianController {
         String position = positionField.getText();
         String gender = genderComboBox.getValue();
 
-        // Kiểm tra các trường bắt buộc có trống không
         if (name.isEmpty() || address.isEmpty() || dob.isEmpty() || phone.isEmpty() || position.isEmpty() || gender == null) {
             MessageUtil.showMessage(messageText, "Please fill in all required fields.", "red");
             return;
         }
 
-        // Tạo Task để xử lý việc thêm thư viện trong luồng riêng
         Task<Void> addLibrarianTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -75,37 +79,34 @@ public class AddLibrarianController {
                 return null;
             }
 
-            // Khi thêm thành công, gọi succeeded()
             @Override
             protected void succeeded() {
                 MessageUtil.showMessage(messageText, "Librarian added successfully!", "green");
                 clearFields();
             }
 
-            // Nếu gặp lỗi, gọi failed()
             @Override
             protected void failed() {
                 MessageUtil.showMessage(messageText, "Failed to add librarian: " + getException().getMessage(), "red");
             }
         };
 
-        // Hiển thị thông báo "Đang thêm" trong khi chạy công việc trong background
         MessageUtil.showMessage(messageText, "Adding librarian, please wait...", "blue");
 
-        // Chạy Task trong một thread riêng
         Thread thread = new Thread(addLibrarianTask);
-        thread.setDaemon(true); // Đảm bảo thread tự động dừng khi ứng dụng kết thúc
+        thread.setDaemon(true);
         thread.start();
     }
 
-    
+    /**
+     * clear fields when finishing.
+     */
     private void clearFields() {
-        // Xóa thông tin đã nhập trong các trường
         nameField.clear();
         addressField.clear();
         dobField.clear();
         phoneField.clear();
         positionField.clear();
-        genderComboBox.setValue(null); // Xóa lựa chọn trong ComboBox
+        genderComboBox.setValue(null); 
     }
 }

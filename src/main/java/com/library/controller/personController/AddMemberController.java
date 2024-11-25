@@ -31,15 +31,11 @@ public class AddMemberController {
     @FXML
     private Button addButton;
 
-    // private MemberManagement memberManagement;
-
-    // public AddMemberController() {
-    //     memberManagement = new MemberManagement();
-    // }
-
+    /**
+     * initialize when starting.
+     */
     @FXML
     private void initialize() {
-        // Cài đặt giá trị mặc định cho ComboBox Gender
         genderComboBox.getItems().addAll("Male", "Female");
 
         if (!User.isMember()) {
@@ -49,21 +45,21 @@ public class AddMemberController {
         }
     }
 
+    /**
+     * add member to database.
+     */
     private void addToDataBase() {
-        // Lấy giá trị từ các trường nhập liệu
         String name = nameField.getText();
         String address = addressField.getText();
         String dob = dobField.getText();
         String phone = phoneField.getText();
         String gender = genderComboBox.getValue();
 
-        // Kiểm tra các trường bắt buộc có trống không
         if (name.isEmpty() || address.isEmpty() || dob.isEmpty() || phone.isEmpty() || gender == null) {
             MessageUtil.showMessage(messageText, "Please fill in all required fields.", "red");
             return;
         }
 
-        //Tạo task để xử lý đa luồng thêm member, xử lý ngoại lệ - done 
         Task<Void> addMemberTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -100,6 +96,9 @@ public class AddMemberController {
         thread.start();
     }
 
+    /**
+     * clear fields when finishing.
+     */
     private void clearFields() {
         nameField.clear();
         addressField.clear();

@@ -257,7 +257,7 @@ public class BookManagement extends LibraryService {
                 SELECT b.*, COUNT(*) AS borrowed_total
                 FROM Books b
                 JOIN bookTransaction t ON t.document_id = b.id
-                GROUP BY b.id
+                GROUP BY b.isbn
                 HAVING COUNT(*) > 0
                 ORDER BY borrowed_total DESC
                 LIMIT 10;

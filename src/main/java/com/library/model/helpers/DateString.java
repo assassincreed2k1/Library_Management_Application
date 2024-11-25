@@ -6,58 +6,62 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+/**
+ * Utility class for converting and validating date strings.
+ * Provides methods for converting between different date formats and checking the validity of dates.
+ */
 public class DateString {
+
     /**
-     * convert Sting to java.util.Date.
-     * @param dateString String date
-     * @return java.util.Date date
+     * Converts a date string in the format "yyyy-MM-dd" to a {@link java.util.Date}.
+     *
+     * @param dateString the date string to convert.
+     * @return a {@link java.util.Date} representation of the input string, or null if the conversion fails.
      */
     public static Date convertStringToDate(String dateString) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            Date date = formatter.parse(dateString);
-            return date;
+            return formatter.parse(dateString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
     }
-    
+
     /**
-     * convert java.util.Date to java.sql.Date.
-     * @param dateString java.util.Date date
-     * @return java.sql.Date date
+     * Converts a date string in the format "yyyy-MM-dd" to a {@link java.sql.Date}.
+     *
+     * @param dateString the date string to convert.
+     * @return a {@link java.sql.Date} representation of the input string, or null if the conversion fails.
      */
     public static java.sql.Date toSqlDate(String dateString) {
-        java.util.Date utilDate = convertStringToDate(dateString);
+        Date utilDate = convertStringToDate(dateString);
         if (utilDate != null) {
             return new java.sql.Date(utilDate.getTime());
         }
         return null;
     }
-    
+
+    /**
+     * Validates a date string to ensure it is in the format "yyyy-MM-dd" and within the valid range
+     * (between 1900-01-01 and the current date).
+     *
+     * @param date the date string to validate.
+     * @return true if the date string is valid, false otherwise.
+     */
     public static boolean isValidDate(String date) {
         if (date == null || date.isEmpty()) {
             return false;
         }
 
-        // Sử dụng LocalDate để làm chuẩn
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
         try {
-            // Parse chuỗi ngày sang LocalDate
             LocalDate parsedDate = LocalDate.parse(date, formatter);
-
-            // So sánh với ngày hiện tại và giới hạn 1900-01-01
             LocalDate minDate = LocalDate.of(1900, 1, 1);
             LocalDate today = LocalDate.now();
-
-            if (parsedDate.isBefore(minDate) || parsedDate.isAfter(today)) {
-                return false;
-            }
-            return true;
+            return !parsedDate.isBefore(minDate) && !parsedDate.isAfter(today);
         } catch (Exception e) {
-            return false; 
+            return false;
         }
-    } 
+    }
 }

@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import com.library.controller.tools.RemoveDocumentController;
 import com.library.controller.tools.UpdateDocumentController;
+import com.library.model.Person.User;
+import com.library.model.Person.User;
 import com.library.model.doc.Newspaper;
 import com.library.service.BackgroundService;
 import com.library.service.NewsPaperManagement;
@@ -87,7 +89,14 @@ public class NewspaperController {
 
         exitButton.setOnAction(event -> {
             try {
-                libraryService.switchTo("/fxml/Library/LibraryHome.fxml", (Stage) exitButton.getScene().getWindow());
+                if (User.isAdmin() || User.isLibrarian()) {
+                    libraryService.switchTo("/fxml/Library/LibraryHome.fxml",
+                    (Stage) exitButton.getScene().getWindow());
+                } else {
+                    libraryService.switchTo("/fxml/Library/LibraryForBorrower.fxml",
+                    (Stage) exitButton.getScene().getWindow());
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -174,10 +183,12 @@ public class NewspaperController {
         Button editButton = createStyledButton("Edit", 5, 120, event -> openEditPage(selectedNewspaper));
         Button deleteButton = createStyledButton("Delete", 200, 120, event -> openDeletePage(selectedNewspaper));
 
-        moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel, editButton,
-                deleteButton);
-
-        moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel);
+        if (!User.isMember()) {
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel, editButton,
+                    deleteButton);
+        } else {
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel);
+        }
         prevImage.setImage(defaultImagePrv);
     }
 

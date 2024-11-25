@@ -20,12 +20,12 @@ class CombinedDocumentTest {
         try (Connection conn = DriverManager.getConnection(TEST_DB_URL);
              Statement stmt = conn.createStatement()) {
 
-            // Tạo bảng Books, Magazines, Newspaper
+            // Create Books, Magazines, Newspaper
             stmt.execute("CREATE TABLE IF NOT EXISTS Books (id TEXT PRIMARY KEY, name TEXT);");
             stmt.execute("CREATE TABLE IF NOT EXISTS Magazines (id TEXT PRIMARY KEY, name TEXT);");
             stmt.execute("CREATE TABLE IF NOT EXISTS Newspaper (id TEXT PRIMARY KEY, name TEXT);");
 
-            // Thêm dữ liệu mẫu
+            // Add sample data
             stmt.execute("INSERT INTO Books (id, name) VALUES ('b1', 'Book One');");
             stmt.execute("INSERT INTO Magazines (id, name) VALUES ('m1', 'Magazine One');");
             stmt.execute("INSERT INTO Newspaper (id, name) VALUES ('n1', 'News One');");
@@ -37,9 +37,8 @@ class CombinedDocumentTest {
     @AfterAll
     static void cleanupDatabase() {
         try (Connection conn = DriverManager.getConnection(TEST_DB_URL);
-             Statement stmt = conn.createStatement()) {
-
-            // Xóa các bảng sau khi kiểm tra
+            Statement stmt = conn.createStatement()) {
+            // delete the tables after checking
             stmt.execute("DROP TABLE IF EXISTS Books;");
             stmt.execute("DROP TABLE IF EXISTS Magazines;");
             stmt.execute("DROP TABLE IF EXISTS Newspaper;");
@@ -77,7 +76,7 @@ class CombinedDocumentTest {
 
             ResultSet rs = stmt.executeQuery("SELECT * FROM combined_documents;");
 
-            // Kiểm tra có đủ dữ liệu từ 3 bảng
+            // Check with enough data from 3 pounds
             int rowCount = 0;
             while (rs.next()) {
                 rowCount++;
@@ -93,7 +92,7 @@ class CombinedDocumentTest {
     void testGetDocument() {
         combinedDocument.updateCombinedDocument();
 
-        // Kiểm tra lấy dữ liệu cho từng loại document
+        // check data for each type of document
         Document book = combinedDocument.getDocument("b1");
         assertNotNull(book);
         assertTrue(book instanceof Book, "Document with id 'b1' should be a Book.");
@@ -106,7 +105,7 @@ class CombinedDocumentTest {
         assertNotNull(newspaper);
         assertTrue(newspaper instanceof Newspaper, "Document with id 'n1' should be a Newspaper.");
 
-        // Kiểm tra document không tồn tại
+        // check the document does not exist
         Document nonExistent = combinedDocument.getDocument("unknown");
         assertNull(nonExistent, "Non-existent document should return null.");
     }

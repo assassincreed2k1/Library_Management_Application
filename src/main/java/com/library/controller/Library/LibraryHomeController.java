@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.library.service.BookManagement;
+import com.library.model.Person.Admin;
 import com.library.model.Person.Librarian;
 import com.library.model.Person.User;
 import com.library.model.doc.Book;
@@ -88,9 +89,6 @@ public class LibraryHomeController {
 
     @FXML
     private Button addDocumentButton, removeDocumentButton;
-
-    @FXML
-    private Button showAllButton;
 
     @FXML
     private Button searchUserButton;
@@ -226,7 +224,6 @@ public class LibraryHomeController {
         addDocumentButton.setOnAction(event -> handleAddDocument());
         removeDocumentButton.setOnAction(event -> handleRemoveDocument());
         searchButton.setOnAction(event -> handleSearchDocuments());
-        showAllButton.setOnAction(event -> handleShowAll());
         searchUserButton.setOnAction(event -> handleSearchUser());
         bookTransactionButton.setOnAction(event -> handleShowTransaction());
 
@@ -251,22 +248,53 @@ public class LibraryHomeController {
             @Override
             public void handle(ActionEvent event) {
                 String selectedPage = comboBox.getValue();
-                if (selectedPage == "Log Out") {
+                if (selectedPage.equals("Log Out")) {
                     System.out.println("Logging out...");
                     try {
                         showAlert("Log Out", "Logging out!");
-                        User.clearUser(); // xoá thông tin User trước khi ra khỏi
+                        User.clearUser(); // Clear user info before logging out
                         libraryService.switchTo("/fxml/Login/SignIn.fxml",
                                 (Stage) usernameLabel.getScene().getWindow());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else if (selectedPage.equals("Update Infor")) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Person/UpdateLibrarian.fxml"));
+                        Stage stage = (Stage) usernameLabel.getScene().getWindow();
+                        Scene scene = new Scene(loader.load());
+    
+                        UpdateLibrarianController controller = loader.getController();
+    
+                        if (User.isLibrarian()) {
+                            // If the user is a librarian, fetch librarian information
+                            Librarian librarian = new Librarian();
+                            librarian = librarian.getInforFromDatabase(User.getId());
+                            controller.setLibrarian(librarian);
+                        } else if (User.isAdmin()) {
+                            // If the user is an admin, fetch the admin's information and cast it to librarian
+                            Admin admin = new Admin();
+                            admin = admin.getInforFromDatabase();
+                            controller.setLibrarian((Librarian) admin);
+                        }
+    
+                        // Set the URL to go back to after the update
+                        controller.setBeforeSceneURL("/fxml/Library/LibraryHome.fxml");
+    
+                        // Set the scene and show the window
+                        stage.setScene(scene);
+                        stage.show();
+    
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }  
                 } else {
                     switchToPage(selectedPage);
                 }
             }
         });
     }
+    
 
     // Handle Switch Page
     private void switchToPage(String pageName) {
@@ -302,24 +330,6 @@ public class LibraryHomeController {
                 break;
             case "Membership Card Renewal":
                 fxmlFile = "/fxml/Person/ExpiryCard.fxml";
-                break;
-            case "Update Infor":
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Person/UpdateLibrarian.fxml"));
-                    Stage stage = (Stage) usernameLabel.getScene().getWindow();
-                    Scene scene = new Scene(loader.load());
-        
-                    UpdateLibrarianController controller = loader.getController();
-                    Librarian librarian = new Librarian();
-                    librarian = librarian.getInforFromDatabase(User.getId());
-                    controller.setLibrarian(librarian);
-                    controller.setBeforeSceneURL("/fxml/Library/LibraryHome.fxml");
-        
-                    stage.setScene(scene);
-                    stage.show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }  
                 break;
             default:
                 break;
@@ -385,16 +395,6 @@ public class LibraryHomeController {
         }
     }
 
-    // Handle Show All action -- Need Fix
-    private void handleShowAll() {
-        System.out.println("Showing all documents...");
-        try {
-            libraryService.switchTo("/fxml/Documents/Documents.fxml", (Stage) usernameLabel.getScene().getWindow());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     // Helper method to show alerts
     private void showAlert(String title, String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -426,6 +426,7 @@ public class LibraryHomeController {
             newStage.setTitle("New Window");
             newStage.setScene(scene);
             newStage.centerOnScreen();
+            newStage.setResizable(false);
             newStage.show();
         } catch (Exception e) {
             e.printStackTrace();

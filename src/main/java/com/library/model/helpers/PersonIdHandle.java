@@ -5,13 +5,17 @@ import com.library.model.Person.Librarian;
 import com.library.model.Person.Member;
 import com.library.model.Person.Person;
 
+/**
+ * Utility class for handling operations related to person identification and retrieval.
+ */
 public class PersonIdHandle {
+
     /**
      * Retrieves a person object (Member, Librarian, or Admin) based on their ID.
-     * 
+     *
      * @param id The ID of the person, starting with "M" (Member), "L" (Librarian), or "A" (Admin),
      *           followed by a 6-digit numeric value (e.g., "M000001").
-     * @return A {@link Person} object corresponding to the ID, or null if the ID is invalid or not found.
+     * @return A {@link Person} object corresponding to the ID, or {@code null} if the ID is invalid or not found.
      */
     public static Person getPerson(String id) {
         // Validate ID format (should be 7 characters: 1 letter + 6 digits)

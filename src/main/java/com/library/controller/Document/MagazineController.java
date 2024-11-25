@@ -25,12 +25,19 @@ import java.io.IOException;
 
 import com.library.controller.tools.RemoveDocumentController;
 import com.library.controller.tools.UpdateDocumentController;
+import com.library.model.Person.User;
 import com.library.model.doc.Magazine;
 import com.library.service.BackgroundService;
 import com.library.service.MagazineManagement;
 import com.library.service.ServiceManager;
 import com.library.service.LibraryService;
 
+/**
+ * Controller for managing newspaper-related operations in the library
+ * application.
+ * This class handles interactions with the Newspaper table and associated UI
+ * elements.
+ */
 public class MagazineController {
 
     private LibraryService libraryService = new LibraryService();
@@ -105,8 +112,14 @@ public class MagazineController {
 
         exitButton.setOnAction(event -> {
             try {
-                libraryService.switchTo("/fxml/Library/LibraryHome.fxml",
-                        (Stage) exitButton.getScene().getWindow());
+                if (User.isAdmin() || User.isLibrarian()) {
+                    libraryService.switchTo("/fxml/Library/LibraryHome.fxml",
+                    (Stage) exitButton.getScene().getWindow());
+                } else {
+                    libraryService.switchTo("/fxml/Library/LibraryForBorrower.fxml",
+                    (Stage) exitButton.getScene().getWindow());
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -233,11 +246,20 @@ public class MagazineController {
         Label availabilityLabel = createStyledLabel("Available: " + (selectedMagazine.getIsAvailable() ? "Yes" : "No"),
                 5, 80);
 
-        Button editButton = createStyledButton("Edit", 5, 160, event -> openEditPage(selectedMagazine));
-        Button deleteButton = createStyledButton("Delete", 200, 160, event -> openDeletePage(selectedMagazine));
+        Button editButton = new Button();
+        Button deleteButton = new Button();
+        if (User.isAdmin() || User.isLibrarian()) {
+            editButton = createStyledButton("Edit", 5, 160, event -> openEditPage(selectedMagazine));
+            deleteButton = createStyledButton("Delete", 200, 160, event -> openDeletePage(selectedMagazine));
+        }
 
-        moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, publisherLabel, availabilityLabel,
-                editButton, deleteButton);
+        if (!User.isMember()) { 
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, publisherLabel, availabilityLabel,
+                    editButton, deleteButton);
+        } else {
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, publisherLabel, availabilityLabel);
+        }
+        
         prevImage.setImage(defaultImagePrv);
     }
 

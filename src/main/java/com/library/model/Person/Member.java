@@ -111,6 +111,12 @@ public class Member extends Person {
         memManagement.updateMember(this);
     }
 
+    /**
+     * get information of member from database.
+     * 
+     * @param id String id 
+     * @return Member 
+     */
     public Member getInforFromDatabase(String id) {
         Member memberFromDB = memManagement.getMemberInfo(id);
         
@@ -122,12 +128,20 @@ public class Member extends Person {
         return memberFromDB;  // Return the retrieved Member object
     }  
 
+    /**
+     * renew membership card.
+     * @param addDate String date
+     */
     public void renewMembership(String addDate) {
         System.out.println(addDate);
         memManagement.renewCard(this.membershipId, addDate);
         
     }
 
+    /**
+     * get last name of name.
+     * @return String last name
+     */
     public String getLastName() {
         Person person = PersonIdHandle.getPerson(this.membershipId);
         String fullName = person.getName();

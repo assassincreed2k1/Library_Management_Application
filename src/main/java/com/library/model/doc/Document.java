@@ -5,11 +5,11 @@ package com.library.model.doc;
  * availability status, and an image preview.
  */
 public abstract class Document {
-    private String id;
-    private String name;
-    private String group;
-    private boolean isAvailable;
-    private String imagePreview;
+    protected String id;
+    protected String name;
+    protected String group;
+    protected boolean isAvailable;
+    protected String imagePreview;
 
     /**
      * Default constructor for the {@code Document} class.

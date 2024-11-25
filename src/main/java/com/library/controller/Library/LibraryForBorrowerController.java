@@ -4,13 +4,18 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.library.controller.personController.UpdateMemberController;
 import com.library.controller.tools.DocumentDisplayManager;
 import com.library.controller.tools.SearchBookController;
+import com.library.model.Person.Member;
 import com.library.model.Person.User;
+import com.library.model.doc.Book;
 import com.library.service.BookManagement;
 import com.library.service.LibraryService;
 import com.library.service.ServiceManager;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -35,6 +40,8 @@ public class LibraryForBorrowerController {
     private BookManagement bookManagement;
     private DocumentDisplayManager latestDocsManager;
     private DocumentDisplayManager oldestDocsManager;
+        private DocumentDisplayManager trendingDocsManager;
+    private ObservableList<Book> trendingBookList = FXCollections.observableArrayList();
 
     public static Map<String, Image> imageCache = new HashMap<>();
 
@@ -69,9 +76,6 @@ public class LibraryForBorrowerController {
     private Button searchButton;
 
     @FXML
-    private Button showAllButton;
-
-    @FXML
     private Button borrowedBooksButton;
 
     @FXML
@@ -82,6 +86,10 @@ public class LibraryForBorrowerController {
 
     @FXML
     private Tab latestBooks, oldestBooks;
+
+    @FXML
+    private ImageView myImageView1, myImageView2, myImageView3, myImageView4, myImageView5, myImageView6, myImageView7,
+            myImageView8, myImageView9, myImageView10;
 
     @FXML
     private ImageView latestDoc1, latestDoc2, latestDoc3, latestDoc4;
@@ -125,6 +133,7 @@ public class LibraryForBorrowerController {
     private Label[] oldestGenres;
     private Label[] oldestAvailables;
     private ImageView[] oldestImageViews = { oldestDoc1, oldestDoc2, oldestDoc3, oldestDoc4 };
+    private ImageView[] trendingImageList;
 
 
     @FXML
@@ -136,6 +145,8 @@ public class LibraryForBorrowerController {
      */
     @FXML
     public void initialize() {
+        this.trendingImageList = new ImageView[] { myImageView1, myImageView2, myImageView3, myImageView4, myImageView5,
+                myImageView6, myImageView7, myImageView8, myImageView9, myImageView10 };
         this.latestNames = new Label[] { latestName1, latestName2, latestName3, latestName4 };
         this.latestAuthors = new Label[] { latestAuthor1, latestAuthor2, latestAuthor3, latestAuthor4 };
         this.latestGenres = new Label[] { latestGenre1, latestGenre2, latestGenre3, latestGenre4 };
@@ -152,6 +163,7 @@ public class LibraryForBorrowerController {
 
         this.libraryService = ServiceManager.getLibraryService();
         this.bookManagement = ServiceManager.getBookManagement();
+        this.trendingBookList = bookManagement.getPopularBooks();
 
         this.latestDocsManager = new DocumentDisplayManager(bookManagement, libraryService,
                 latestImageViews, latestNames, latestAuthors, latestGenres, latestAvailables);
@@ -159,8 +171,11 @@ public class LibraryForBorrowerController {
         this.oldestDocsManager = new DocumentDisplayManager(bookManagement, libraryService,
                 oldestImageViews, oldestNames, oldestAuthors, oldestGenres, oldestAvailables);
 
+        this.trendingDocsManager = new DocumentDisplayManager(trendingImageList);
+
         this.usernameLabel.setText("Welcome " + User.getLastName() + " !");
 
+        showTrendingImg();
         setupComboBoxes();
         setupButtons();
         setUpTabPane();
@@ -181,7 +196,6 @@ public class LibraryForBorrowerController {
         setComboBoxHandler(newspapersComboBox);
         setComboBoxHandler(menuComboBox);
         searchButton.setOnAction(event -> handleSearchDocuments());
-        showAllButton.setOnAction(event -> handleShowAll());
         borrowedBooksButton.setOnAction(event -> handleBorrowBookButton());
 
         for (int i = 0; i < 2; i++) {
@@ -211,12 +225,37 @@ public class LibraryForBorrowerController {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                else {
+                } else if (selectedPage.equals("Update Infor")) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Person/UpdateMember.fxml"));
+                        Stage stage = (Stage) usernameLabel.getScene().getWindow();
+                        Scene scene = new Scene(loader.load());
+
+                        UpdateMemberController controller = loader.getController();
+                        Member member = new Member();
+                        member = member.getInforFromDatabase(User.getId());
+                        controller.setMember(member);
+                        //tạo setBeforeSceneURL trong UpdateMemberController
+
+                        // Set the URL to go back to after the update
+                        controller.setBeforeSceneURL("/fxml/Library/LibraryForBorrower.fxml");
+
+                        // Set the scene and show the window
+                        stage.setScene(scene);
+                        stage.show();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
                     switchToPage(selectedPage);
                 }
             }
         });
+    }
+    
+    private void showTrendingImg() {
+        trendingDocsManager.showDocumentsImg(trendingBookList);
     }
 
     // Handle Switch Page
@@ -258,21 +297,11 @@ public class LibraryForBorrowerController {
         }
     }
 
-    // Handle Show All action -- Need Fix
-    private void handleShowAll() {
-        System.out.println("Showing all documents...");
-        try {
-            libraryService.switchTo("/fxml/Documents/Documents.fxml", (Stage) usernameLabel.getScene().getWindow());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     //Borrow Books
     private void handleBorrowBookButton() {
         try {
-            libraryService.switchTo("/fxml/Library/Tools/BorrowingHistoryForMember.fxml", (Stage) usernameLabel.getScene().getWindow());
-        } catch (IOException e) {
+            openNewWindow("/fxml/Library/Tools/BorrowingHistoryForMember.fxml");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -308,6 +337,7 @@ public class LibraryForBorrowerController {
             newStage.setTitle("New Window");
             newStage.setScene(scene);
             newStage.centerOnScreen();
+            newStage.setResizable(false);
             newStage.show();
         } catch (Exception e) {
             e.printStackTrace();

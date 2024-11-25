@@ -11,6 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 
+/**
+ * Controller class for handling the removal of library documents.
+ */
 public class RemoveDocumentController {
 
     @FXML
@@ -30,6 +33,9 @@ public class RemoveDocumentController {
 
     private Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
+    /**
+     * Initializes the controller and sets up the UI components.
+     */
     @FXML
     public void initialize() {
         mainBox.setPadding(new Insets(20));
@@ -37,11 +43,19 @@ public class RemoveDocumentController {
         setupUI();
     }
 
+    /**
+     * Sets the document ID in the input field and triggers the check action.
+     *
+     * @param id The document ID to set.
+     */
     public void setId(String id) {
         this.idField.setText(id);
         checkButton.fire();
     }
 
+    /**
+     * Configures the UI elements, including event listeners for buttons.
+     */
     private void setupUI() {
         statusLabel.setStyle("-fx-font-size: 14px; -fx-padding: 5;");
         statusLabel.setWrapText(true);
@@ -50,6 +64,9 @@ public class RemoveDocumentController {
         removeButton.setOnAction(event -> handleRemoveAction());
     }
 
+    /**
+     * Handles the action of checking if a document exists by its ID.
+     */
     private void handleCheckAction() {
         String id = idField.getText().trim();
         if (id.isEmpty()) {
@@ -65,6 +82,9 @@ public class RemoveDocumentController {
         }
     }
 
+    /**
+     * Handles the action of removing a document by its ID.
+     */
     private void handleRemoveAction() {
         String id = idField.getText().trim();
         if (id.isEmpty()) {
@@ -92,6 +112,12 @@ public class RemoveDocumentController {
         });
     }
 
+    /**
+     * Finds a document by its ID from the library's collections.
+     *
+     * @param id The document ID to search for.
+     * @return The Document object if found, or null if not found.
+     */
     private Document findDocumentById(String id) {
         Document document = ServiceManager.getBookManagement().getDocument(id);
         if (document == null) {
@@ -103,6 +129,11 @@ public class RemoveDocumentController {
         return document;
     }
 
+    /**
+     * Removes a document from the library based on its type.
+     *
+     * @param document The Document object to remove.
+     */
     private void removeDocument(Document document) {
         try {
             if (document instanceof Book) {
@@ -118,6 +149,12 @@ public class RemoveDocumentController {
         }
     }
 
+    /**
+     * Generates a detailed string description of a document.
+     *
+     * @param document The Document object to describe.
+     * @return A string representation of the document details.
+     */
     private String documentDetails(Document document) {
         if (document instanceof Book book) {
             return "Name: " + book.getName() +
@@ -138,6 +175,12 @@ public class RemoveDocumentController {
         return "Unknown document type.";
     }
 
+    /**
+     * Updates the status label with a message and color.
+     *
+     * @param message The status message to display.
+     * @param color   The color of the text (e.g., "red", "green", "orange").
+     */
     private void updateStatus(String message, String color) {
         statusLabel.setText(message);
         statusLabel.setStyle("-fx-text-fill: " + color + ";");

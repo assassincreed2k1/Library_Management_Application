@@ -18,10 +18,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Controller class for managing book reviews, including adding comments and ratings.
+ */
 public class ReviewBookController {
-    String membershipId;
-    String documentId;
-    DocumentTransaction documentTransaction = new DocumentTransaction();
+
+    private String membershipId;
+    private String documentId;
+    private DocumentTransaction documentTransaction = new DocumentTransaction();
 
     @FXML
     private HBox starRatingBox;
@@ -43,16 +47,26 @@ public class ReviewBookController {
 
     private int selectedRating = 0;
 
+    /**
+     * Sets the membership ID for the reviewer.
+     *
+     * @param membershipId The membership ID.
+     */
     public void setMembershipId(String membershipId) {
         this.membershipId = membershipId;
     }
 
+    /**
+     * Sets the document ID for the book being reviewed.
+     *
+     * @param documentId The document ID.
+     */
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
     }
 
     /**
-     * Initialize the controller after the root element has been processed.
+     * Initializes the controller after the root element has been processed.
      */
     @FXML
     public void initialize() {
@@ -63,18 +77,16 @@ public class ReviewBookController {
     }
 
     /**
-     * Setup star rating logic.
+     * Configures the star rating functionality, allowing users to hover and select a rating.
      */
     private void setupStarRating() {
         for (int i = 0; i < starRatingBox.getChildren().size(); i++) {
             Label star = (Label) starRatingBox.getChildren().get(i);
             int starIndex = i + 1;
 
-            // Highlight stars on hover
             star.setOnMouseEntered(event -> highlightStars(starIndex));
             star.setOnMouseExited(event -> highlightStars(selectedRating));
 
-            // Set rating on click
             star.setOnMouseClicked(event -> {
                 selectedRating = starIndex;
                 highlightStars(selectedRating);
@@ -83,8 +95,9 @@ public class ReviewBookController {
     }
 
     /**
-     * Highlight stars up to the given count.
-     * @param count Number of stars to highlight.
+     * Highlights stars up to the specified count.
+     *
+     * @param count The number of stars to highlight.
      */
     private void highlightStars(int count) {
         for (int i = 0; i < starRatingBox.getChildren().size(); i++) {
@@ -98,7 +111,7 @@ public class ReviewBookController {
     }
 
     /**
-     * Handle the submission of a review.
+     * Handles the submission of a review, including rating and comments.
      */
     private void handleSubmitReview() {
         String comment = commentTextArea.getText().trim();
@@ -113,34 +126,37 @@ public class ReviewBookController {
             return;
         }
 
-        Task<Void> handleComment = new Task<Void>() {
+        Task<Void> handleComment = new Task<>() {
             @Override
             protected Void call() throws Exception {
                 MessageUtil.showMessage(messageText, documentTransaction.reviewDocument(documentId, membershipId, selectedRating, comment),
-                                 "black");
+                        "black");
                 return null;
             }
 
             @Override
             protected void succeeded() {
-                // MessageUtil.showMessage(messageText, "Your comment submited successfully", "green");
                 commentTextArea.clear();
                 selectedRating = 0;
                 highlightStars(0);
+                MessageUtil.showMessage(messageText, "Your comment was submitted successfully.", "green");
             }
 
             @Override
             protected void failed() {
-                MessageUtil.showMessage(messageText, "Your comment submmited failed", "red");
+                MessageUtil.showMessage(messageText, "Your comment submission failed.", "red");
             }
         };
 
-        MessageUtil.showMessage(messageText, "In progress submitting your comment", "blue");
+        MessageUtil.showMessage(messageText, "Submitting your comment, please wait...", "blue");
         Thread thread = new Thread(handleComment);
         thread.setDaemon(true);
         thread.start();
     }
 
+    /**
+     * Handles the back button action to return to the borrowing history screen.
+     */
     @FXML
     private void onBack() {
         try {
@@ -151,8 +167,7 @@ public class ReviewBookController {
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Error loading MainScene.fxml. Ensure the file path is correct.");
+            System.err.println("Error loading BorrowingHistoryForMember.fxml. Ensure the file path is correct.");
         }
     }
-
 }

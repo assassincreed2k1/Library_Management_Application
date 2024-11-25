@@ -76,7 +76,6 @@ public class AdminManagement extends LibraryService {
             return;
         }
 
-        //check xem có bản ghi nào bên trong CSDL không
         if (!hasAdminRecords()) {
             defaultAdd();
         }

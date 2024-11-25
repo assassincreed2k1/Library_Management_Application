@@ -1,5 +1,9 @@
 # Library Management System
 
+## Available Languages
+- 🇬🇧 [English](README.md)
+- 🇻🇳 [Tiếng Việt](README.vi.md)
+
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Features](#features)
@@ -28,7 +32,7 @@ The **Library Management System** is a Java-based application designed to assist
 
 ## System Requirements
 - **Language:** Java 17 or higher.
-- **Development Tools:** IntelliJ IDEA or Eclipse.
+- **Development Tools:** Visual Studio Code
 - **Libraries/Dependencies:** 
   - JavaFX for the user interface.
   - JUnit for testing.
@@ -104,8 +108,6 @@ library-management-system/
 ### Notable Files
 - `App.java`: The main entry point for running the application.
 - `module-info.java`: Declares Java modules and their dependencies.
-
-This structure ensures the code is modular, maintainable, and easy to navigate.
 
 ## Authors
 
