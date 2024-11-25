@@ -24,6 +24,7 @@ import java.io.IOException;
 import com.library.controller.tools.RemoveDocumentController;
 import com.library.controller.tools.UpdateDocumentController;
 import com.library.model.Person.User;
+import com.library.model.Person.User;
 import com.library.model.doc.Newspaper;
 import com.library.service.BackgroundService;
 import com.library.service.NewsPaperManagement;

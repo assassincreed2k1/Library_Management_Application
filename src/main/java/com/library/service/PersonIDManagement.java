@@ -63,4 +63,9 @@ public class PersonIDManagement extends LibraryService {
         }
         return id;
     }
+
+    public void setUrl(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setUrl'");
+    }
 }
