@@ -84,11 +84,9 @@ public class ReviewBookController {
             Label star = (Label) starRatingBox.getChildren().get(i);
             int starIndex = i + 1;
 
-            // Highlight stars on hover
             star.setOnMouseEntered(event -> highlightStars(starIndex));
             star.setOnMouseExited(event -> highlightStars(selectedRating));
 
-            // Set rating on click
             star.setOnMouseClicked(event -> {
                 selectedRating = starIndex;
                 highlightStars(selectedRating);

@@ -2,14 +2,14 @@ package com.library.model.Person;
 
 import com.library.model.helpers.PersonIdHandle;
 
-/**
- * This class saves information of the logged-in user
- */
 public class User {
-    private static String id; //consider changing to int 
+    private static String id; 
     private static String type; 
 
-    // Set the user ID and type based on login
+    /**
+     * set user information based on user id.
+     * @param userId user id 
+     */
     public static void setUser(String userId) {
         id = userId;
         type = userId != null && !userId.isEmpty() ? String.valueOf(userId.charAt(0)) : null;
@@ -59,6 +59,11 @@ public class User {
 
         return "User not found";
     }
+
+    /**
+     * get last name from name.
+     * @return String
+     */
     public static String getLastName() {
         Person person = PersonIdHandle.getPerson(id);
         if (person == null) {

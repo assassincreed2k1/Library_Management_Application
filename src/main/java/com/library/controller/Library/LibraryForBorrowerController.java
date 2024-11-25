@@ -71,9 +71,6 @@ public class LibraryForBorrowerController {
     private Button searchButton;
 
     @FXML
-    private Button showAllButton;
-
-    @FXML
     private Button borrowedBooksButton;
 
     @FXML
@@ -183,7 +180,6 @@ public class LibraryForBorrowerController {
         setComboBoxHandler(newspapersComboBox);
         setComboBoxHandler(menuComboBox);
         searchButton.setOnAction(event -> handleSearchDocuments());
-        showAllButton.setOnAction(event -> handleShowAll());
         borrowedBooksButton.setOnAction(event -> handleBorrowBookButton());
 
         for (int i = 0; i < 2; i++) {
@@ -281,21 +277,11 @@ public class LibraryForBorrowerController {
         }
     }
 
-    // Handle Show All action -- Need Fix
-    private void handleShowAll() {
-        System.out.println("Showing all documents...");
-        try {
-            libraryService.switchTo("/fxml/Documents/Documents.fxml", (Stage) usernameLabel.getScene().getWindow());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     //Borrow Books
     private void handleBorrowBookButton() {
         try {
-            libraryService.switchTo("/fxml/Library/Tools/BorrowingHistoryForMember.fxml", (Stage) usernameLabel.getScene().getWindow());
-        } catch (IOException e) {
+            openNewWindow("/fxml/Library/Tools/BorrowingHistoryForMember.fxml");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -39,6 +39,12 @@ import com.library.service.BookManagement;
 import com.library.service.ServiceManager;
 import com.library.service.LibraryService;
 
+/**
+ * Controller for managing book-related operations in the library application.
+ * This class handles interactions with the Book table and associated UI
+ * elements.
+ */
+
 public class BookController {
 
     private LibraryService libraryService = new LibraryService();

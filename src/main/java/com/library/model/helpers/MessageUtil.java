@@ -36,6 +36,7 @@ public class MessageUtil {
     public static void showAlert(String alertTypeString, String title, String message) {
         Alert.AlertType alertType;
 
+
         switch (alertTypeString.toLowerCase()) {
             case "information":
                 alertType = Alert.AlertType.INFORMATION;
@@ -50,7 +51,7 @@ public class MessageUtil {
                 alertType = Alert.AlertType.CONFIRMATION;
                 break;
             default:
-                alertType = Alert.AlertType.NONE;  // Default type if no valid string is passed
+                alertType = Alert.AlertType.NONE;  
                 break;
         }
 

@@ -57,7 +57,6 @@
             <ComboBox fx:id="booksComboBox" layoutX="9.0" layoutY="45.0" prefHeight="38.0" prefWidth="235.0" promptText="Books" styleClass="ChoiceBox" />
             <ComboBox fx:id="magazinesComboBox" layoutX="9.0" layoutY="83.0" prefHeight="38.0" prefWidth="235.0" promptText="Magazines" styleClass="ChoiceBox" />
             <ComboBox fx:id="newspapersComboBox" layoutX="9.0" layoutY="121.0" prefHeight="38.0" prefWidth="235.0" promptText="Newspapers" styleClass="ChoiceBox" />
-            <Button fx:id="showAllButton" layoutX="9.0" layoutY="159.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="235.0" styleClass="ChoiceBox" text="Show All" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="toolsPane" layoutX="10.0" layoutY="393.0" prefHeight="379.0" prefWidth="252.0" styleClass="mini-box">

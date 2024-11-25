@@ -91,9 +91,6 @@ public class LibraryHomeController {
     private Button addDocumentButton, removeDocumentButton;
 
     @FXML
-    private Button showAllButton;
-
-    @FXML
     private Button searchUserButton;
 
     @FXML
@@ -227,7 +224,6 @@ public class LibraryHomeController {
         addDocumentButton.setOnAction(event -> handleAddDocument());
         removeDocumentButton.setOnAction(event -> handleRemoveDocument());
         searchButton.setOnAction(event -> handleSearchDocuments());
-        showAllButton.setOnAction(event -> handleShowAll());
         searchUserButton.setOnAction(event -> handleSearchUser());
         bookTransactionButton.setOnAction(event -> handleShowTransaction());
 
@@ -395,16 +391,6 @@ public class LibraryHomeController {
         try {
             openNewWindow("/fxml/Library/Tools/RemoveDocument.fxml");
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Handle Show All action -- Need Fix
-    private void handleShowAll() {
-        System.out.println("Showing all documents...");
-        try {
-            libraryService.switchTo("/fxml/Documents/Documents.fxml", (Stage) usernameLabel.getScene().getWindow());
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }

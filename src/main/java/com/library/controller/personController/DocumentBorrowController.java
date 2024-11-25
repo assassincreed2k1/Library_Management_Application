@@ -65,6 +65,9 @@ public class DocumentBorrowController {
     String documentType = null;
     String transactionType = null;
 
+    /**
+     * initialize when starting.
+     */
     @FXML
     public void initialize() {
         documentTypeComboBox.getItems().addAll("Book", "Magazine", "Newspaper");
@@ -75,9 +78,12 @@ public class DocumentBorrowController {
         printButton.setOnAction(event -> onPrint());
 
         printButton.setDisable(true);
-        confirmButton.setDisable(true); // Vô hiệu hóa nút Confirm trước khi check thông tin
+        confirmButton.setDisable(true); 
     }
 
+    /**
+     * on checking in borrowing document.
+     */
     @FXML
     private void onCheck() {
         memberID = memberIDTextField.getText().trim();
@@ -85,17 +91,14 @@ public class DocumentBorrowController {
         documentType = documentTypeComboBox.getValue();
         transactionType = typeComboBox.getValue();
 
-        // Kiểm tra các trường có được điền đầy đủ không
         if (memberID.isEmpty() || documentID.isEmpty() || documentType == null || transactionType == null) {
             MessageUtil.showMessage(notification, "Please fill in all required fields.", "red");
             return;
         }
 
-        // Tạo một Task để thực hiện các công việc nặng
         Task<Void> findInforTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                // Kiểm tra thông tin của thành viên 
                 member = (Member) PersonIdHandle.getPerson(memberID);
 
                 if (member == null) {
@@ -113,8 +116,7 @@ public class DocumentBorrowController {
 
                 Platform.runLater(() -> inforMemTextArea.setText(member.getDetails()));
 
-                // Kiểm tra thông tin của tài liệu
-                combinedDocument.updateCombinedDocument(); // Cập nhật dữ liệu
+                combinedDocument.updateCombinedDocument();
                 document = combinedDocument.getDocument(documentID); 
 
                 if (document == null) {
@@ -122,7 +124,6 @@ public class DocumentBorrowController {
                     throw new IllegalArgumentException("Not exists document with id: " + documentID);
                 }
 
-                // Cập nhật thông tin tài liệu vào UI
                 Platform.runLater(() -> {
                     if (document instanceof Book && "Book".equals(documentType)) {
                         inforDocTextArea.setText(((Book) document).getDetails());
@@ -132,11 +133,11 @@ public class DocumentBorrowController {
                         inforDocTextArea.setText(((Newspaper) document).getDetails());
                     } else {
                         inforDocTextArea.setText("Invalid ID. This is for another type.");
-                        throw new IllegalArgumentException("Invalid document type."); // Ném ngoại lệ
+                        throw new IllegalArgumentException("Invalid document type."); 
                     }
                 });
 
-                return null; // Trả về null khi hoàn thành
+                return null; 
             }
 
             @Override
@@ -145,22 +146,22 @@ public class DocumentBorrowController {
                 confirmButton.setDisable(false);
             } 
 
-            // Nếu gặp lỗi, gọi failed()
             @Override
             protected void failed() {
                 MessageUtil.showMessage(notification, "Failed to finding information: " + getException().getMessage(), "red");
             }
         };
 
-        // Hiển thị thông báo "Đang thêm" trong khi chạy công việc trong background
         MessageUtil.showMessage(notification, "Finding information of document and member, please wait...", "blue");
 
-        // Chạy Task trong một thread riêng
         Thread thread = new Thread(findInforTask);
-        thread.setDaemon(true); // Đảm bảo thread tự động dừng khi ứng dụng kết thúc
+        thread.setDaemon(true); 
         thread.start();
     }
 
+    /**
+     * confirm putting to database after checking.
+     */
     @FXML
     private void onConfirm() {
         String memberID = memberIDTextField.getText().trim();
@@ -199,12 +200,14 @@ public class DocumentBorrowController {
             }
         };
     
-        // Bắt đầu tác vụ trong một luồng mới
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
     }
-
+    
+    /**
+     * print transaction when borrowing.
+     */
     private void onPrint() {
         VBox contentBox = new VBox();
         contentBox.setSpacing(10);
