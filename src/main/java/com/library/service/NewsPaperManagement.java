@@ -147,4 +147,9 @@ public class NewsPaperManagement extends LibraryService {
 
         return newspaper;
     }
+
+    public void setUrl(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setUrl'");
+    }
 }

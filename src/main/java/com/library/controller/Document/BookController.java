@@ -273,10 +273,12 @@ public class BookController {
         if (!User.isMember()) {
             editButton = createStyledButton("Edit", 5, 160, event -> openEditPage(selectedBook));
             deleteButton = createStyledButton("Delete", 200, 160, event -> openDeletePage(selectedBook));
-        }
-        
-        moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel,
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel,
                 publishDateLabel, isbnLabel, availabilityLabel, editButton, deleteButton);
+        } else {
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, authorLabel, genreLabel,
+                publishDateLabel, isbnLabel, availabilityLabel);
+        }
 
         prevImage.setImage(defaultImagePrv);
         prevImage.setOnMouseClicked(event -> showPreview());

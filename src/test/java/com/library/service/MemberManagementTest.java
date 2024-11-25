@@ -43,7 +43,7 @@ public class MemberManagementTest {
 
     @Test
     public void testUpdateMember() {
-        // Giả sử member đã tồn tại
+        // Suppose the members have existed
         Member member = new Member();
         member.setMembershipId("M001");
         member.setName("Tran Thi B");
@@ -56,7 +56,7 @@ public class MemberManagementTest {
 
         memberManagement.updateMember(member);
 
-        // Kiểm tra nếu member đã được cập nhật thành công
+        // Check if the member has been successfully updated
         Member updatedMember = memberManagement.getMemberInfo("M001");
         assertEquals("Tran Thi B", updatedMember.getName());
         assertEquals("456 Xuan Thuy", updatedMember.getAddress());
@@ -66,14 +66,14 @@ public class MemberManagementTest {
     public void testRemoveMember() {
         String membershipId = "M001";
 
-        // Thêm member để xóa
+        // Add member to delete
         Member member = new Member();
         member.setMembershipId(membershipId);
         memberManagement.addMember(member);
 
         memberManagement.removeMember(membershipId);
 
-        // Kiểm tra nếu member đã bị xóa thành công
+        // Check if the member has been successfully deleted
         Member removedMember = memberManagement.getMemberInfo(membershipId);
         assertNull(removedMember.getMembershipId());
     }
@@ -82,7 +82,7 @@ public class MemberManagementTest {
     public void testGetMemberInfo() {
         String membershipId = "M001";
 
-        // Thêm member để lấy thông tin
+        // Add member to get information
         Member member = new Member();
         member.setMembershipId(membershipId);
         member.setName("Tran Thi B");

@@ -179,17 +179,15 @@ public class NewspaperController {
         Label sourceLabel = createStyledLabel("Source: " + selectedNewspaper.getSource(), 5, 60);
         Label regionLabel = createStyledLabel("Region: " + selectedNewspaper.getRegion(), 5, 80);
 
-        Button editButton = new Button();
-        Button deleteButton = new Button();
-        if (User.isAdmin() || User.isLibrarian()) {
-            editButton = createStyledButton("Edit", 5, 120, event -> openEditPage(selectedNewspaper));
-            deleteButton = createStyledButton("Delete", 200, 120, event -> openDeletePage(selectedNewspaper));
-        }
-    
-        moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel, editButton,
-                deleteButton);
+        Button editButton = createStyledButton("Edit", 5, 120, event -> openEditPage(selectedNewspaper));
+        Button deleteButton = createStyledButton("Delete", 200, 120, event -> openDeletePage(selectedNewspaper));
 
-        moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel);
+        if (!User.isMember()) {
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel, editButton,
+                    deleteButton);
+        } else {
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, sourceLabel, regionLabel);
+        }
         prevImage.setImage(defaultImagePrv);
     }
 

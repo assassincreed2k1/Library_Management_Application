@@ -247,8 +247,13 @@ public class MagazineController {
             deleteButton = createStyledButton("Delete", 200, 160, event -> openDeletePage(selectedMagazine));
         }
 
-        moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, publisherLabel, availabilityLabel,
-                editButton, deleteButton);
+        if (!User.isMember()) { 
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, publisherLabel, availabilityLabel,
+                    editButton, deleteButton);
+        } else {
+            moreInfoPane.getChildren().addAll(idLabel, titleLabel, genreLabel, publisherLabel, availabilityLabel);
+        }
+        
         prevImage.setImage(defaultImagePrv);
     }
 
