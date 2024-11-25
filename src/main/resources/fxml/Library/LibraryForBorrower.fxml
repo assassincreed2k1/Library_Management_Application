@@ -674,16 +674,16 @@
          <content>
             <HBox prefHeight="239.0" prefWidth="1004.0" />
             <children>
-                     <ImageView fx:id="myImageView1" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView2" fitHeight="176.0" fitWidth="136.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView3" fitHeight="174.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView4" fitHeight="175.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView5" fitHeight="174.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView6" fitHeight="175.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView7" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView8" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView9" fitHeight="169.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true" />
-                     <ImageView fx:id="myImageView10" fitHeight="174.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true" />
+                     <ImageView fx:id="myImageView1" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView2" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView3" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView4" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView5" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView6" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView7" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView8" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView9" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
+                     <ImageView fx:id="myImageView10" fitHeight="239.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="false" />
             </children>
          </content>
       </ScrollPane>
