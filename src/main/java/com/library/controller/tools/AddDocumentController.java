@@ -35,6 +35,13 @@ import javafx.concurrent.Task;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 
+/**
+ * Controller for managing the addition of new documents (Books, Magazines,
+ * Newspapers)
+ * into the library system. Provides a GUI interface for inputting document
+ * information
+ * and validating data.
+ */
 public class AddDocumentController {
 
     private BookManagement bookManagement;
@@ -73,6 +80,10 @@ public class AddDocumentController {
     private double spacing = 35;
     Label errorLabel;
 
+    /**
+     * Initializes the controller, setting up services, populating the ComboBox,
+     * and preparing the input pane for dynamic field generation.
+     */
     @FXML
     public void initialize() {
         this.bookManagement = ServiceManager.getBookManagement();
@@ -90,6 +101,10 @@ public class AddDocumentController {
         });
     }
 
+    /**
+     * Opens a dialog to set the document image preview using a URL.
+     * Handles input validation and updates the preview image accordingly.
+     */
     private void setDocImagePreview() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Set Image Preview");
@@ -121,6 +136,12 @@ public class AddDocumentController {
         });
     }
 
+    /**
+     * Dynamically creates input fields based on the selected document type.
+     *
+     * @param documentType The type of document selected (Book, Magazine,
+     *                     Newspaper).
+     */
     private void createInputFields(String documentType) {
         getDocumentInfoPane.getChildren().clear();
         inputPane.getChildren().clear();
@@ -136,6 +157,13 @@ public class AddDocumentController {
         getDocumentInfoPane.getChildren().add(inputPane);
     }
 
+    /**
+     * Creates a label to display error messages.
+     *
+     * @param layoutX X-coordinate of the label.
+     * @param layoutY Y-coordinate of the label.
+     * @return A configured Label for error messages.
+     */
     private Label createErrorLabel(double layoutX, double layoutY) {
         Label errorLabel = new Label();
         errorLabel.setLayoutX(layoutX);
@@ -144,6 +172,15 @@ public class AddDocumentController {
         return errorLabel;
     }
 
+    /**
+     * Creates a text field with the specified properties.
+     *
+     * @param promptText Prompt text for the field.
+     * @param layoutX    X-coordinate of the field.
+     * @param layoutY    Y-coordinate of the field.
+     * @param prefWidth  Preferred width of the field.
+     * @return A configured TextField.
+     */
     private TextField createTextField(String promptText, double layoutX,
             double layoutY, double prefWidth) {
         TextField textField = new TextField();
@@ -154,6 +191,11 @@ public class AddDocumentController {
         return textField;
     }
 
+    /**
+     * Generates input fields for adding a book document, and sets up API
+     * integration
+     * for ISBN-based book information retrieval.
+     */
     private void createForBook() {
         TextField isbnField = createTextField("Enter ISBN",
                 startX, startY, fieldWidth);
@@ -190,7 +232,7 @@ public class AddDocumentController {
 
         scheduler.schedule(() -> {
             if (bookInfoService.isRunning()) {
-                bookInfoService.cancel(); 
+                bookInfoService.cancel();
                 Platform.runLater(() -> {
                     errorLabel.setText("Service timed out.");
                     errorLabel.setTextFill(javafx.scene.paint.Color.RED);
@@ -207,9 +249,9 @@ public class AddDocumentController {
             JSONObject getAPIBook = bookInfoService.getValue();
             if (getAPIBook != null && getAPIBook.has("ISBN:" + isbnField.getText())) {
                 JSONObject bookData = getAPIBook.getJSONObject("ISBN:" + isbnField.getText());
-        
+
                 titleField.setText(bookData.optString("title", "Unknown Title"));
-        
+
                 JSONArray authorsArray = bookData.getJSONArray("authors");
                 String athString = "";
                 if (authorsArray.length() > 0) {
@@ -221,13 +263,13 @@ public class AddDocumentController {
                     }
                     authorField.setText(athString);
                 }
-        
+
                 if (bookData.has("publish_date")) {
                     publishDateField.setText(bookData.optString("publish_date", ""));
                 } else {
                     publishDateField.setText("Unknown Publish Date");
                 }
-        
+
                 if (bookData.has("subjects")) {
                     JSONArray subjectsArray = bookData.getJSONArray("subjects");
                     genreField.setText(subjectsArray.length() > 0
@@ -236,7 +278,7 @@ public class AddDocumentController {
                 } else {
                     genreField.setText("Unknown Genre");
                 }
-        
+
                 if (bookData.has("cover")) {
                     JSONObject cover = bookData.getJSONObject("cover");
                     String prevImgUrl = cover.optString("medium", "");
@@ -252,7 +294,7 @@ public class AddDocumentController {
                     docImagePreview.setImage(defaultDocImgPrev);
                     docImagePreview.setOnMouseClicked(event2 -> setDocImagePreview());
                 }
-        
+
                 errorLabel.setTextFill(javafx.scene.paint.Color.GREEN);
                 errorLabel.setText("Success!");
             } else {
@@ -336,6 +378,9 @@ public class AddDocumentController {
         });
     }
 
+    /**
+     * Generates input fields for adding a magazine document.
+     */
     private void createForMagazine() {
         TextField titleField = createTextField("Enter Title",
                 startX, startY, fieldWidth);
@@ -373,6 +418,9 @@ public class AddDocumentController {
         });
     }
 
+    /**
+     * Generates input fields for adding a newspaper document.
+     */
     private void createForNewspaper() {
         TextField titleField = createTextField("Enter Title",
                 startX, startY, fieldWidth);

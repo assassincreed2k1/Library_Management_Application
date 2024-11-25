@@ -1,7 +1,6 @@
 package com.library.controller.tools;
 
 import com.library.model.Person.Member;
-// import com.library.model.Person.User;
 import com.library.model.doc.Document;
 import com.library.model.helpers.MessageUtil;
 import com.library.model.loanDoc.Transaction;
@@ -19,7 +18,12 @@ import javafx.scene.input.MouseEvent;
 
 import java.sql.*;
 
+/**
+ * Controller class to manage the transaction history of library employees.
+ * Handles actions such as viewing transactions, searching, and processing document returns.
+ */
 public class HistoryTransactionEmployee {
+
     private CombinedDocument combinedDocument = new CombinedDocument();
     private Member member = null;
     private Document document = null;
@@ -54,6 +58,9 @@ public class HistoryTransactionEmployee {
     @FXML
     private Button returnButton;
 
+    /**
+     * Initializes the controller, sets up event listeners, and loads initial data.
+     */
     @FXML
     private void initialize() {
         configureTableView();
@@ -64,16 +71,22 @@ public class HistoryTransactionEmployee {
         returnButton.setOnAction(event -> onReturn());
     }
 
+    /**
+     * Configures the columns of the TableView for displaying transaction data.
+     */
     private void configureTableView() {
         idTransactionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
         documentIdColumn.setCellValueFactory(new PropertyValueFactory<>("documentId"));
         memberIdColumn.setCellValueFactory(new PropertyValueFactory<>("membershipId"));
         borrowedDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowedDate"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
-        dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate")); 
+        dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         editedByColumn.setCellValueFactory(new PropertyValueFactory<>("edited_by"));
     }
 
+    /**
+     * Loads all transaction records from the database and populates the TableView.
+     */
     private void loadAllTransactions() {
         Task<Void> loadTransactionsTask = new Task<Void>() {
             @Override
@@ -82,31 +95,31 @@ public class HistoryTransactionEmployee {
                 bookTable.setItems(transactions);
                 return null;
             }
-    
-            @Override
-            protected void succeeded() {
-                super.succeeded();
-            }
-    
+
             @Override
             protected void failed() {
                 MessageUtil.showAlert("error", "Database Error", "Failed to load transactions.");
                 System.out.println(getException().getMessage());
             }
         };
-    
+
         Thread thread = new Thread(loadTransactionsTask);
-        thread.setDaemon(true); 
+        thread.setDaemon(true);
         thread.start();
     }
-    
 
+    /**
+     * Fetches all transactions from the database.
+     *
+     * @return an observable list of transactions.
+     * @throws SQLException if a database access error occurs.
+     */
     private ObservableList<Transaction> fetchTransactions() throws SQLException {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
         String query = """
                 select idTransaction, document_id, membershipId, borrowDate, dueDate, returnDate, edited_by 
                 from bookTransaction;
-                """;;
+                """;
 
         try (Connection connection = LibraryService.getConnection();
              Statement statement = connection.createStatement();
@@ -119,7 +132,7 @@ public class HistoryTransactionEmployee {
                         resultSet.getString("membershipId"),
                         resultSet.getString("borrowDate"),
                         resultSet.getString("dueDate"),
-                        resultSet.getString("returnDate"), 
+                        resultSet.getString("returnDate"),
                         resultSet.getString("edited_by")
                 ));
             }
@@ -127,6 +140,10 @@ public class HistoryTransactionEmployee {
         return transactions;
     }
 
+    /**
+     * Handles the search functionality for transactions.
+     * Fetches and displays transactions that match the search query.
+     */
     @FXML
     private void onSearch() {
         String query = searchTextField.getText().trim();
@@ -137,18 +154,13 @@ public class HistoryTransactionEmployee {
 
         Task<Void> searchTask = new Task<>() {
             @Override
-            protected Void call() throws SQLException{
+            protected Void call() throws SQLException {
                 if (query.equalsIgnoreCase("@Show all")) {
                     bookTable.setItems(fetchTransactions());
                 } else {
                     bookTable.setItems(searchTransactions(query));
-                }  
+                }
                 return null;
-            }
-
-            @Override
-            protected void succeeded() {
-                super.succeeded();
             }
 
             @Override
@@ -163,6 +175,13 @@ public class HistoryTransactionEmployee {
         thread.start();
     }
 
+    /**
+     * Searches for transactions based on a query.
+     *
+     * @param query the search query.
+     * @return an observable list of matching transactions.
+     * @throws SQLException if a database access error occurs.
+     */
     private ObservableList<Transaction> searchTransactions(String query) throws SQLException {
         ObservableList<Transaction> transactions = FXCollections.observableArrayList();
         String sql = """
@@ -185,7 +204,7 @@ public class HistoryTransactionEmployee {
                             resultSet.getString("membershipId"),
                             resultSet.getString("borrowDate"),
                             resultSet.getString("dueDate"),
-                            resultSet.getString("returnDate"), 
+                            resultSet.getString("returnDate"),
                             resultSet.getString("edited_by")
                     ));
                 }
@@ -193,6 +212,12 @@ public class HistoryTransactionEmployee {
         }
         return transactions;
     }
+
+    /**
+     * Handles the double-click event on the TableView, populating document and member details.
+     *
+     * @param event the mouse event.
+     */
     @FXML
     private void handleTableClick(MouseEvent event) {
         if (event.getClickCount() == 2) {
@@ -208,19 +233,22 @@ public class HistoryTransactionEmployee {
                 memberTextArea.setText("Not found!");
                 return;
             }
-    
+
             combinedDocument.updateCombinedDocument();
             document = combinedDocument.getDocument(selectedTransaction.getDocumentId());
             if (document == null) {
                 documentTextArea.setText("Not found!");
                 return;
             }
-    
+
             documentTextArea.setText(member.getDetails());
             memberTextArea.setText(document.getDetails());
         }
     }
-        
+
+    /**
+     * Handles the return of a document, updating the database and refreshing the TableView.
+     */
     @FXML
     private void onReturn() {
         if (member == null || document == null) {
@@ -248,8 +276,7 @@ public class HistoryTransactionEmployee {
         };
 
         Thread thread = new Thread(returnTask);
-        thread.setDaemon(true); 
+        thread.setDaemon(true);
         thread.start();
     }
-
 }
