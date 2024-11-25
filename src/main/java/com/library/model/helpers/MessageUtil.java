@@ -21,10 +21,15 @@ public class MessageUtil {
         timeline.play();
     }
 
+    /**
+     * sample for show alert
+     * @param alertTypeString alert type String
+     * @param title String title 
+     * @param message String message
+     */
     public static void showAlert(String alertTypeString, String title, String message) {
         Alert.AlertType alertType;
-    
-        // Convert the String to Alert.AlertType
+
         switch (alertTypeString.toLowerCase()) {
             case "information":
                 alertType = Alert.AlertType.INFORMATION;
@@ -39,11 +44,10 @@ public class MessageUtil {
                 alertType = Alert.AlertType.CONFIRMATION;
                 break;
             default:
-                alertType = Alert.AlertType.NONE;  // Default type if no valid string is passed
+                alertType = Alert.AlertType.NONE;  
                 break;
         }
     
-        // Create and show the alert
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setContentText(message);

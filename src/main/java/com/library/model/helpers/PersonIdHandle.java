@@ -7,11 +7,9 @@ import com.library.model.Person.Person;
 
 public class PersonIdHandle {
     /**
-     * Retrieves a person object (Member, Librarian, or Admin) based on their ID.
-     * 
-     * @param id The ID of the person, starting with "M" (Member), "L" (Librarian), or "A" (Admin),
-     *           followed by a 6-digit numeric value (e.g., "M000001").
-     * @return A {@link Person} object corresponding to the ID, or null if the ID is invalid or not found.
+     * get Person from Id. 
+     * @param id String id of Person
+     * @return child class of Person
      */
     public static Person getPerson(String id) {
         // Validate ID format (should be 7 characters: 1 letter + 6 digits)

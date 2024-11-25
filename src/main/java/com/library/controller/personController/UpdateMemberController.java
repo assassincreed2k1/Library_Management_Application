@@ -51,7 +51,7 @@ public class UpdateMemberController {
     @FXML
     private Button backButton;
 
-    // Nhận `Member` từ controller trước
+    
     public void setMember(Member member) {
         this.member = member;
         populateFields();
@@ -61,7 +61,9 @@ public class UpdateMemberController {
         this.beforeSceneURL = url;
     }
 
-    // Điền dữ liệu vào các trường
+    /**
+     * fill in all information of text field.
+     */
     private void populateFields() {
         nameTextField.setPromptText(member.getName());
         addressTextField.setPromptText(member.getAddress());
@@ -83,6 +85,10 @@ public class UpdateMemberController {
         enableFieldEdit(passwordField);
     }
 
+    /**
+     * set field style.
+     * @param color Color color
+     */
     private void setFieldStyle(Color color) {
         String colorStyle = "-fx-prompt-text-fill: " + toRGBCode(color) + ";";
         nameTextField.setStyle(colorStyle);
@@ -94,6 +100,10 @@ public class UpdateMemberController {
         passwordField.setStyle(colorStyle);
     }
 
+    /**
+     * enable field edit.
+     * @param textField TextField textField
+     */
     private void enableFieldEdit(TextField textField) {
         textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
             if (isNowFocused) {
@@ -104,6 +114,10 @@ public class UpdateMemberController {
         });
     }
 
+    /**
+     * enable field edit.
+     * @param comboBox ComboBox<String> comboBox
+     */
     private void enableFieldEdit(ComboBox<String> comboBox) {
         comboBox.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
             if (isNowFocused) {
@@ -114,6 +128,10 @@ public class UpdateMemberController {
         });
     }
 
+    /**
+     * enable field edit.
+     * @param passwordField PasswordField passwordField
+     */
     private void enableFieldEdit(PasswordField passwordField) {
         passwordField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
             if (isNowFocused) {
@@ -124,6 +142,11 @@ public class UpdateMemberController {
         });
     }
 
+    /**
+     * to RBG Code.
+     * @param color Color color
+     * @return RGG of color
+     */
     private String toRGBCode(Color color) {
         return String.format("#%02X%02X%02X",
                 (int) (color.getRed() * 255),
@@ -131,6 +154,9 @@ public class UpdateMemberController {
                 (int) (color.getBlue() * 255));
     }
 
+    /**
+     * set action for update button.
+     */
     @FXML
     private void onUpdate() {
         String name = nameTextField.getText();
@@ -191,12 +217,18 @@ public class UpdateMemberController {
         new Thread(updateTask).start();
     }
 
+    /**
+     * initialize when starting.
+     */
     @FXML
     public void initialize() {
         updateButton.setOnAction(event -> onUpdate());
         backButton.setOnAction(event -> onBack());
     }
 
+    /**
+     * set action of back button.
+     */
     @FXML
     public void onBack() {
         try {

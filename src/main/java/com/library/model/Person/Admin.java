@@ -19,10 +19,17 @@ public class Admin extends Librarian {
         adminManagament = new AdminManagement();
     }
 
+    /**
+     * update admin.
+     */
     public void updateAdmin() {
         adminManagament.updateAdmin(this);
     }
 
+    /**
+     * get information of admin from database.
+     * @return Admin 
+     */
     public Admin getInforFromDatabase() {
         Admin adminFromDB = adminManagament.getAdminInfo();
 

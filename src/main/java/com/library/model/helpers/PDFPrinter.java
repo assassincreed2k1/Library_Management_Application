@@ -1,6 +1,5 @@
 package com.library.model.helpers;
 
-// import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -11,7 +10,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class PDFPrinter {
-
+    /**
+     * export VBox contentBox to pdf.
+     * @param contentBox is VBox
+     * @param pdfName is String 
+     */
     public static void printPDF(VBox contentBox, String pdfName) {
         // Create a new PDF document
         PDDocument document = new PDDocument();
@@ -21,7 +24,6 @@ public class PDFPrinter {
         document.addPage(page);
     
         try {
-            // Prepare content stream in a try-with-resources block
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
                 contentStream.beginText();
@@ -41,7 +43,8 @@ public class PDFPrinter {
                 }
     
                 contentStream.endText();
-            } // Automatically closes the stream here
+            } 
+
             // Save document to a file
             File directory = new File("pdf");
             if (!directory.exists()) {
@@ -50,7 +53,6 @@ public class PDFPrinter {
             File file = new File(directory, pdfName + ".pdf");
             document.save(file);
     
-            // Success message
             MessageUtil.showAlert("information", "Print Success", "The document has been saved as a PDF.");
         } catch (IOException e) {
             e.printStackTrace();

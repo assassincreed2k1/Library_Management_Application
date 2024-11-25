@@ -12,6 +12,16 @@ public class Transaction {
     private int score;
     private String comment;
 
+    /**
+     * Transaction constructor used for Employee.
+     * @param transactionid int transaction id
+     * @param documentId String document id
+     * @param memberId String member id 
+     * @param borrowedDate String borrowed date
+     * @param dueDate String due date
+     * @param returnedDate String returned date
+     * @param editedBy String edited by
+     */
     public Transaction(int transactionid, String documentId, String memberId,
                     String borrowedDate, String dueDate, String returnedDate, String editedBy) {
         this.transactionId = transactionid;
@@ -23,6 +33,15 @@ public class Transaction {
         this.edited_by = editedBy;        
     }
 
+    /**
+     * Transaction constructor used for member.
+     * @param transactionId int transaction id
+     * @param documentId String document id
+     * @param borrowDate String borrowed date
+     * @param dueDate String due date
+     * @param returnDate String returned date
+     * @param score int score
+     */
     public Transaction(int transactionId, String documentId, String borrowDate, 
                     String dueDate, String returnDate, int score) {
         this.transactionId = transactionId;
